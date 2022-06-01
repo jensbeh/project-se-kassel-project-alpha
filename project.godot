@@ -11,12 +11,17 @@ config_version=4
 [application]
 
 config/name="Project Alpha"
+run/main_scene="res://scenes/SceneManager.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/vnen.tiled_importer/plugin.cfg" )
 
 [physics]
 
 common/enable_pause_aware_picking=true
 
-[rendering]
+[tiled_importer]
 
-environment/default_environment="res://default_env.tres"
+enable_json_format=true
