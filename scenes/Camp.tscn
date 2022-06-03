@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/map/camp.tmx" type="PackedScene" id=1]
+
+[node name="Camp" type="Node2D"]
+
+[node name="camp" parent="." instance=ExtResource( 1 )]

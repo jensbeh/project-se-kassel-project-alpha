@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/animated_water.tsx-27fd7cab11033c30409b7e61b888cbf8.res"
+
+[deps]
+
+source_file="res://assets/tilesets/animated_water.tsx"
+dest_files=[ "res://.import/animated_water.tsx-27fd7cab11033c30409b7e61b888cbf8.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=0
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""
