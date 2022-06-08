@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/animated_decorations.tsx-8c72713ee3393f8e1ac3fb36222654ed.res"
+
+[deps]
+
+source_file="res://assets/tilesets/animated_decorations.tsx"
+dest_files=[ "res://.import/animated_decorations.tsx-8c72713ee3393f8e1ac3fb36222654ed.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=0
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""
