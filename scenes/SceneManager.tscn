@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/Camp.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 
 [node name="SceneManager" type="Node2D"]
 
@@ -8,7 +9,9 @@
 
 [node name="Camp" parent="CurrentScene" instance=ExtResource( 1 )]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 1352, 656 )
-current = true
-zoom = Vector2( 0.3, 0.3 )
+[node name="Player" parent="CurrentScene/Camp/camp/Level 1" index="5" instance=ExtResource( 2 )]
+position = Vector2( 1328, 616 )
+scale = Vector2( 0.7, 0.7 )
+
+[editable path="CurrentScene/Camp"]
+[editable path="CurrentScene/Camp/camp"]
