@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1035" nextobjectid="327">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1035" nextobjectid="354">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -10,8 +10,10 @@
  <tileset firstgid="4807" source="../tilesets/roofs.tsx"/>
  <tileset firstgid="6139" source="../tilesets/decoration.tsx"/>
  <tileset firstgid="6283" source="../tilesets/animated_doors.tsx"/>
- <tileset firstgid="6443" source="../tilesets/tree1-treetrunk.tsx"/>
- <tileset firstgid="6444" source="../tilesets/tree1-treecrown.tsx"/>
+ <tileset firstgid="6443" source="../tilesets/trees-treetrunks.tsx"/>
+ <tileset firstgid="6447" source="../tilesets/trees-treecrowns.tsx"/>
+ <tileset firstgid="6451" source="../tilesets/small-trees-treecrowns.tsx"/>
+ <tileset firstgid="6455" source="../tilesets/small-trees-treetrunks.tsx"/>
  <group id="9" name="Level 1">
   <group id="973" name="ground">
    <layer id="88" name="dirt" width="128" height="96">
@@ -15346,28 +15348,49 @@
     <object id="308" gid="6443" x="1600" y="544" width="48" height="16"/>
     <object id="309" x="1621" y="512" width="38" height="16"/>
     <object id="310" gid="6443" x="1616" y="528" width="48" height="16"/>
-    <object id="315" x="1733" y="528" width="38" height="16"/>
-    <object id="316" gid="6443" x="1728" y="544" width="48" height="16"/>
+    <object id="315" x="1669" y="176" width="38" height="16"/>
+    <object id="316" gid="6443" x="1664" y="192" width="48" height="16"/>
     <object id="318" x="1781" y="608" width="38" height="16"/>
     <object id="319" gid="6443" x="1776" y="624" width="48" height="16"/>
     <object id="320" x="1781" y="688" width="38" height="16"/>
     <object id="321" gid="6443" x="1776" y="704" width="48" height="16"/>
     <object id="322" x="1701" y="736" width="38" height="16"/>
     <object id="323" gid="6443" x="1696" y="752" width="48" height="16"/>
+    <object id="328" gid="6445" x="1664" y="256" width="48" height="16"/>
+    <object id="329" x="1669" y="240" width="38" height="16"/>
+    <object id="330" x="1733" y="176" width="38" height="16"/>
+    <object id="331" x="1733" y="240" width="38" height="16"/>
+    <object id="335" gid="6446" x="1728" y="256" width="48" height="16"/>
+    <object id="336" gid="6444" x="1728" y="192" width="48" height="16"/>
+    <object id="342" gid="6455" x="1664" y="336" width="16" height="16"/>
+    <object id="343" gid="6456" x="1696" y="336" width="16" height="16"/>
+    <object id="344" gid="6457" x="1664" y="384" width="16" height="16"/>
+    <object id="346" gid="6458" x="1696" y="384" width="16" height="16"/>
+    <object id="347" x="1664" y="320" width="16" height="16"/>
+    <object id="351" x="1696" y="320" width="16" height="16"/>
+    <object id="352" x="1664" y="368" width="16" height="16"/>
+    <object id="353" x="1696" y="368" width="16" height="16"/>
    </objectgroup>
   </group>
   <group id="974" name="playerlayer-lvl1"/>
   <group id="972" name="higher">
    <objectgroup id="1034" name="treecrown">
-    <object id="302" gid="6444" x="1664" y="656" width="48" height="32"/>
-    <object id="311" gid="6444" x="1712" y="656" width="48" height="32"/>
-    <object id="312" gid="6444" x="1584" y="544" width="48" height="32"/>
-    <object id="313" gid="6444" x="1600" y="528" width="48" height="32"/>
-    <object id="314" gid="6444" x="1616" y="512" width="48" height="32"/>
-    <object id="317" gid="6444" x="1728" y="528" width="48" height="32"/>
-    <object id="324" gid="6444" x="1776" y="608" width="48" height="32"/>
-    <object id="325" gid="6444" x="1776" y="688" width="48" height="32"/>
-    <object id="326" gid="6444" x="1696" y="736" width="48" height="32"/>
+    <object id="302" gid="6447" x="1664" y="656" width="48" height="32"/>
+    <object id="311" gid="6447" x="1712" y="656" width="48" height="32"/>
+    <object id="312" gid="6447" x="1584" y="544" width="48" height="32"/>
+    <object id="313" gid="6447" x="1600" y="528" width="48" height="32"/>
+    <object id="314" gid="6447" x="1616" y="512" width="48" height="32"/>
+    <object id="317" gid="6447" x="1664" y="176" width="48" height="32"/>
+    <object id="324" gid="6447" x="1776" y="608" width="48" height="32"/>
+    <object id="325" gid="6447" x="1776" y="688" width="48" height="32"/>
+    <object id="326" gid="6447" x="1696" y="736" width="48" height="32"/>
+    <object id="327" gid="6449" x="1664" y="240" width="48" height="32"/>
+    <object id="332" gid="6448" x="1728" y="176" width="48" height="32"/>
+    <object id="333" gid="6450" x="1728" y="240" width="48" height="32"/>
+    <object id="338" gid="6451" x="1664" y="320" width="16" height="16"/>
+    <object id="339" gid="6452" x="1696" y="320" width="16" height="16"/>
+    <object id="340" gid="6453" x="1664" y="368" width="16" height="16"/>
+    <object id="341" gid="6454" x="1696" y="368" width="16" height="16"/>
    </objectgroup>
   </group>
   <objectgroup id="632" name="grassland">
