@@ -14,6 +14,10 @@ config/name="Project Alpha"
 run/main_scene="res://scenes/SceneManager.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Utils="*res://autoload/Utils.gd"
+
 [display]
 
 window/size/width=1920
@@ -53,6 +57,11 @@ s={
 d={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+Shift={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

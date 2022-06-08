@@ -9,9 +9,8 @@
 
 [node name="Camp" parent="CurrentScene" instance=ExtResource( 1 )]
 
-[node name="Player" parent="CurrentScene/Camp/camp/Level 1" index="5" instance=ExtResource( 2 )]
-position = Vector2( 1328, 616 )
-scale = Vector2( 0.7, 0.7 )
+[node name="Player" parent="CurrentScene/Camp/camp/Level 1/playerlayer-lvl1" index="0" instance=ExtResource( 2 )]
+position = Vector2( 1648, 680 )
 
 [editable path="CurrentScene/Camp"]
 [editable path="CurrentScene/Camp/camp"]
