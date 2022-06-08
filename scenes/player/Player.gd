@@ -87,6 +87,12 @@ func _physics_process(delta):
 	else:
 		velocity.y = 0
 	
+	if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
+		velocity /= 1.45
+		
+	if Input.is_action_pressed("Shift"):
+		velocity *= 1.4
+	
 	if velocity != Vector2.ZERO:
 		animation_tree.set("parameters/Idle/blend_position", velocity)
 		animation_tree.set("parameters/Walk/blend_position", velocity)
