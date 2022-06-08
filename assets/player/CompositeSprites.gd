@@ -25,14 +25,14 @@ const clothes_spritesheet = {
 	10: preload("res://assets/player/clothes/suit.png"),
 }
 
-const clothes2_spritesheet = {
-	0: preload("res://assets/player/clothes/pumpkin.png"),
-	1: preload("res://assets/player/clothes/clown.png"),
-}
-
 const clothes1_spritesheet = {
 	0: preload("res://assets/player/clothes/spooky .png"),
 	1: preload("res://assets/player/clothes/witch.png"),
+}
+
+const clothes2_spritesheet = {
+	0: preload("res://assets/player/clothes/pumpkin.png"),
+	1: preload("res://assets/player/clothes/clown.png"),
 }
 
 const pants_spritesheet = {
