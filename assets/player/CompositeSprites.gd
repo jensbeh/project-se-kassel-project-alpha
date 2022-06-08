@@ -13,20 +13,26 @@ const body_spritesheet = {
 
 const clothes_spritesheet = {
 	0: preload("res://assets/player/clothes/basic.png"),
+	1: preload("res://assets/player/clothes/dress .png"),
+	2: preload("res://assets/player/clothes/floral.png"),
+	3: preload("res://assets/player/clothes/overalls.png"),
+	4: preload("res://assets/player/clothes/sailor.png"),
+	5: preload("res://assets/player/clothes/sailor_bow.png"),
+	6: preload("res://assets/player/clothes/skull.png"),
+	7: preload("res://assets/player/clothes/spaghetti.png"),
+	8: preload("res://assets/player/clothes/sporty.png"),
+	9: preload("res://assets/player/clothes/stripe.png"),
+	10: preload("res://assets/player/clothes/suit.png"),
+}
+
+const clothes2_spritesheet = {
+	0: preload("res://assets/player/clothes/pumpkin.png"),
 	1: preload("res://assets/player/clothes/clown.png"),
-	2: preload("res://assets/player/clothes/dress .png"),
-	3: preload("res://assets/player/clothes/floral.png"),
-	4: preload("res://assets/player/clothes/overalls.png"),
-	5: preload("res://assets/player/clothes/pumpkin.png"),
-	6: preload("res://assets/player/clothes/sailor.png"),
-	7: preload("res://assets/player/clothes/sailor_bow.png"),
-	8: preload("res://assets/player/clothes/skull.png"),
-	9: preload("res://assets/player/clothes/spaghetti.png"),
-	10: preload("res://assets/player/clothes/spooky .png"),
-	11: preload("res://assets/player/clothes/sporty.png"),
-	12: preload("res://assets/player/clothes/stripe.png"),
-	13: preload("res://assets/player/clothes/suit.png"),
-	14: preload("res://assets/player/clothes/witch.png"),
+}
+
+const clothes1_spritesheet = {
+	0: preload("res://assets/player/clothes/spooky .png"),
+	1: preload("res://assets/player/clothes/witch.png"),
 }
 
 const pants_spritesheet = {
