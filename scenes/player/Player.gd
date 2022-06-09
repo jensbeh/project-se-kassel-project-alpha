@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 #Signals
-signal player_entering_door_signal
+signal player_collided(collision)
 
 #Animation
 onready var animation_tree = $AnimationTree
@@ -102,14 +102,13 @@ func _physics_process(delta):
 		animation_state.travel("Walk")
 	else:
 		animation_state.travel("Idle")
-	
-	var motion = velocity * delta
-	var collision = move_and_collide(motion)
-	
-	if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-		#print(collision.get_collider().get_parent().get_meta_list()) # returns all custom properties
-		if collision.get_collider().get_parent().get_meta("type") == "DOOR":
-			emit_signal("player_entering_door_signal")
+		
+	move_and_slide(velocity)
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+			#print(collision.get_collider().get_parent().get_meta_list()) # returns all custom properties
+			emit_signal("player_collided", collision.get_collider())		
 
 #Sets the Visibility of a given Sprite
 func set_visibility(sprite, value):
