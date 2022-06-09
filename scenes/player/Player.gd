@@ -1,14 +1,14 @@
 extends KinematicBody2D
 
-#Animation
+# Animation
 onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
 
-#Collision
+# Collision
 onready var ray = $RayCast2D
 
-#Look
+# Look
 onready var shadow = $Shadow
 onready var bodySprite = $Body
 onready var shoesSprite = $Shoes
@@ -25,7 +25,7 @@ onready var glassesSprite = $Glasses
 onready var hatSprite = $Hat
 
 const composite_sprites = preload("res://assets/player/CompositeSprites.gd")
-#Count Textures, Count Colors
+# Count Textures, Count Colors
 var curr_body: int = 0 #0-8, 1
 var curr_shoes: int = 0 #0, 10
 var curr_pants: int = 0 #0-2, 10
@@ -40,13 +40,13 @@ var curr_mask: int = 0 #0-2, 1
 var curr_glasses: int = 0 #0-1, 10
 var curr_hat: int = 0 #0-4, 1
 
-#Walk
+# Walk
 const WALK_SPEED = 50
 var velocity = Vector2(0,1)
 
 
 func _ready():
-	#Style
+	# Style
 	bodySprite.texture = composite_sprites.body_spritesheet[curr_body]
 	shoesSprite.texture = composite_sprites.shoes_spritesheet[curr_shoes]
 	pantsSprite.texture = composite_sprites.pants_spritesheet[curr_pants]
@@ -63,20 +63,20 @@ func _ready():
 	
 	shadow.visible = false
 	
-	#Sets the Visibility of a given Sprite
+	# Sets the Visibility of a given Sprite
 	set_visibility(maskSprite, true) #Sprite, true/false 
 	
-	#Change Color
+	# Change Color
 	_set_key(9, 64)#Track_idx #0-12, +Frame #8er steps by walk
 
-	#Animation
+	# Animation
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	
 
 func _physics_process(delta):
-	#Handle User Input
+	# Handle User Input
 	if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
 		velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * WALK_SPEED
 	else:
@@ -104,12 +104,12 @@ func _physics_process(delta):
 	move_and_collide(motion)
 
 
-#Sets the Visibility of a given Sprite
+# Sets the Visibility of a given Sprite
 func set_visibility(sprite, value):
 	sprite.visible = value
 
 
-#Track Key Value change for Colors
+# Track Key Value change for Colors
 func _set_key(track_idx, value):
 	var newDown = animation_player.get_animation("WalkDown")
 	set_key(newDown, track_idx, value)
