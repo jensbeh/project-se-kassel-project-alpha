@@ -9,10 +9,11 @@ func _ready():
 	# setup all market buyingZone collisions
 	setup_market_buying_zone_collisions()
 	
+	# ONLY FOR TESTING
+	setup_test()
+	
 	var player = Utils.get_player()
 	player.connect("player_collided", self, "collision_detected")
-#			if collision.get_collider().get_parent().get_meta("type") == "DOOR":
-#			emit_signal("player_entering_door_signal")
 
 # Method to handle collision detetcion dependent of the collision object type
 func collision_detected(collision):
@@ -31,8 +32,35 @@ func collision_detected(collision):
 func start_door_animation(door):
 	if door.get_texture().pause == true:
 		door.get_texture().pause = false
+		
+func body_entered_buying_zone(body, area):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" ENTERED buying zone \"" + area.name + "\"")
+		
+func body_exited_buying_zone(body, area):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" EXITED buying zone \"" + area.name + "\"")
+		
+		
+func body_entered_door(body, area):
+	for child in area.get_children():
+		if "animationPlayer" in child.name:
+			child.play("openDoor")
+			
+func body_exited_door(body, area):
+	for child in area.get_children():
+		if "animationPlayer" in child.name:
+			child.play("closeDoor")
 
-
+# ONLY FOR TESTING
+func setup_test():
+	var testObject = get_node("camp/Level 1/ground/Buildings/test")
+	for child in testObject.get_children():
+		if "test_door" in child.name:
+			# add animation to pos
+			child.connect("body_entered", self, "body_entered_door", [child])
+			child.connect("body_exited", self, "body_exited_door", [child])
+			
 # Setup and stop all door animations on start
 func setup_door_animations():
 	var doorsObject = get_node("camp/Level 1/ground/Buildings/doors")
@@ -46,5 +74,6 @@ func setup_door_animations():
 # Setup all market buyingZones to walk on
 func setup_market_buying_zone_collisions():
 	var buyingZoneObject = get_node("camp/Level 1/ground/Buildings/buyingZones")
-	for buyingZone in buyingZoneObject.get_children():
-		pass
+	for buyingZoneArea2D in buyingZoneObject.get_children():
+		buyingZoneArea2D.connect("body_entered", self, "body_entered_buying_zone", [buyingZoneArea2D])
+		buyingZoneArea2D.connect("body_exited", self, "body_exited_buying_zone", [buyingZoneArea2D])
