@@ -60,8 +60,8 @@ func post_import(scene):
 			closeDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
 			closeDoorAnimation.loop = 0
 			
-			child.current_animation = "idleDoor"
-			child.autoplay = "idleDoor"
+			animationPlayer.current_animation = "idleDoor"
+			animationPlayer.autoplay = "idleDoor"
 			
 			child.add_child(animationPlayer)
 			animationPlayer.set_owner(scene)

@@ -362,36 +362,12 @@
   </objectgroup>
  </tile>
  <tile id="60">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="60" duration="750"/>
    <frame tileid="61" duration="750"/>
    <frame tileid="62" duration="750"/>
    <frame tileid="63" duration="750"/>
   </animation>
- </tile>
- <tile id="61">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="62">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="63">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="64">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-   <object id="2" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
  </tile>
  <tile id="72">
   <objectgroup draworder="index" id="2">
@@ -654,30 +630,12 @@
   </objectgroup>
  </tile>
  <tile id="132" probability="0.1">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="132" duration="750"/>
    <frame tileid="133" duration="750"/>
    <frame tileid="134" duration="750"/>
    <frame tileid="135" duration="750"/>
   </animation>
- </tile>
- <tile id="133">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="134">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="135">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
  </tile>
  <tile id="144">
   <objectgroup draworder="index" id="2">
@@ -1070,30 +1028,12 @@
   </objectgroup>
  </tile>
  <tile id="204" probability="0.1">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="204" duration="750"/>
    <frame tileid="205" duration="750"/>
    <frame tileid="206" duration="750"/>
    <frame tileid="207" duration="750"/>
   </animation>
- </tile>
- <tile id="205">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="206">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="207">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
  </tile>
  <tile id="216">
   <objectgroup draworder="index" id="2">
@@ -1356,9 +1296,6 @@
   </objectgroup>
  </tile>
  <tile id="276">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="276" duration="750"/>
    <frame tileid="279" duration="750"/>
@@ -1367,9 +1304,6 @@
   </animation>
  </tile>
  <tile id="277">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="277" duration="750"/>
    <frame tileid="280" duration="750"/>
@@ -1378,60 +1312,12 @@
   </animation>
  </tile>
  <tile id="278">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="278" duration="750"/>
    <frame tileid="281" duration="750"/>
    <frame tileid="284" duration="750"/>
    <frame tileid="287" duration="750"/>
   </animation>
- </tile>
- <tile id="279">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="280">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="281">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="282">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="283">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="284">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="285">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="286">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="287">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
  </tile>
  <tile id="288">
   <objectgroup draworder="index" id="2">
@@ -3068,30 +2954,12 @@
   </objectgroup>
  </tile>
  <tile id="636" probability="0.02">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="636" duration="750"/>
    <frame tileid="637" duration="750"/>
    <frame tileid="638" duration="750"/>
    <frame tileid="639" duration="750"/>
   </animation>
- </tile>
- <tile id="637">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="638">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="639">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
  </tile>
  <tile id="648">
   <objectgroup draworder="index" id="2">
@@ -3354,30 +3222,12 @@
   </objectgroup>
  </tile>
  <tile id="708" probability="0.02">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
   <animation>
    <frame tileid="708" duration="750"/>
    <frame tileid="709" duration="750"/>
    <frame tileid="710" duration="750"/>
    <frame tileid="711" duration="750"/>
   </animation>
- </tile>
- <tile id="709">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="710">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
- </tile>
- <tile id="711">
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="0" width="16" height="16"/>
-  </objectgroup>
  </tile>
  <tile id="720">
   <objectgroup draworder="index" id="2">

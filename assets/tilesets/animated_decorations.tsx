@@ -57,6 +57,12 @@
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
+  <animation>
+   <frame tileid="8" duration="200"/>
+   <frame tileid="9" duration="200"/>
+   <frame tileid="10" duration="200"/>
+   <frame tileid="11" duration="200"/>
+  </animation>
  </tile>
  <tile id="9">
   <objectgroup draworder="index" id="2">
@@ -77,6 +83,12 @@
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
+  <animation>
+   <frame tileid="12" duration="200"/>
+   <frame tileid="13" duration="200"/>
+   <frame tileid="14" duration="200"/>
+   <frame tileid="15" duration="200"/>
+  </animation>
  </tile>
  <tile id="13">
   <objectgroup draworder="index" id="2">
@@ -97,6 +109,12 @@
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
+  <animation>
+   <frame tileid="16" duration="200"/>
+   <frame tileid="17" duration="200"/>
+   <frame tileid="18" duration="200"/>
+   <frame tileid="19" duration="200"/>
+  </animation>
  </tile>
  <tile id="17">
   <objectgroup draworder="index" id="2">
