@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1090" nextobjectid="2145">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1090" nextobjectid="2155">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -2244,7 +2244,7 @@
        <chunk x="48" y="48" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,4761,4762,0,4772,4773,0,0,0,0,
+0,0,0,0,0,0,0,4761,4762,6159,4772,4773,0,0,0,0,
 0,0,0,0,0,0,0,4759,4760,4763,4690,4777,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -2282,63 +2282,40 @@
       </properties>
      </object>
     </objectgroup>
-    <objectgroup id="1036" name="doors">
-     <properties>
-      <property name="type" value="Door"/>
-     </properties>
-     <object id="356" name="door house2" gid="6303" x="1488" y="688" width="16" height="16"/>
-     <object id="366" name="door travern" gid="6283" x="1584" y="688" width="16" height="16"/>
-     <object id="367" name="door house1" gid="6331" x="1360" y="688" width="16" height="16"/>
-     <object id="377" x="1588" y="672" width="8" height="17">
+    <objectgroup id="1089" name="doors">
+     <object id="2143" name="door_house1" type="area" x="1360" y="672" width="16" height="17">
       <properties>
-       <property name="door_name" value="door travern"/>
-       <property name="enter_house" value="tavern"/>
-      </properties>
-     </object>
-     <object id="380" x="1492" y="672" width="8" height="16"/>
-     <object id="381" x="1492" y="672" width="8" height="16"/>
-     <object id="384" x="1492" y="672" width="8" height="17">
-      <properties>
-       <property name="door_name" value="door house2"/>
-       <property name="enter_house" value="house2"/>
-      </properties>
-     </object>
-     <object id="385" x="1364" y="672" width="8" height="17">
-      <properties>
-       <property name="door_name" value="door house1"/>
        <property name="enter_house" value="house1"/>
+       <property name="selected_door_sprite" type="int" value="13"/>
       </properties>
      </object>
-     <object id="2123" name="door house4" gid="6351" x="1376" y="816" width="16" height="16"/>
-     <object id="2124" x="1380" y="800" width="8" height="17">
+     <object id="2149" name="door_house2" type="area" x="1488" y="672" width="16" height="17">
       <properties>
-       <property name="door_name" value="door house4"/>
+       <property name="enter_house" value="house2"/>
+       <property name="selected_door_sprite" type="int" value="6"/>
+      </properties>
+     </object>
+     <object id="2151" name="door_tavern" type="area" x="1584" y="672" width="16" height="17">
+      <properties>
+       <property name="enter_house" value="tavern"/>
+       <property name="selected_door_sprite" type="int" value="1"/>
+      </properties>
+     </object>
+     <object id="2152" name="door_house4" type="area" x="1376" y="800" width="16" height="17">
+      <properties>
        <property name="enter_house" value="house4"/>
+       <property name="selected_door_sprite" type="int" value="18"/>
       </properties>
      </object>
-     <object id="2125" name="door house5" gid="6287" x="1472" y="816" width="16" height="16"/>
-     <object id="2126" x="1476" y="800" width="8" height="17">
+     <object id="2153" name="door_house5" type="area" x="1472" y="800" width="16" height="17">
       <properties>
-       <property name="door_name" value="door house5"/>
        <property name="enter_house" value="house5"/>
+       <property name="selected_door_sprite" type="int" value="2"/>
       </properties>
      </object>
-     <object id="2127" name="door house6" gid="6283" x="1600" y="816" width="16" height="16"/>
-     <object id="2128" x="1604" y="800" width="8" height="17">
+     <object id="2154" name="door_hostel" type="area" x="1600" y="800" width="16" height="17">
       <properties>
-       <property name="door_name" value="door house6"/>
-       <property name="enter_house" value="house6"/>
-      </properties>
-     </object>
-    </objectgroup>
-    <objectgroup id="1089" name="test">
-     <object id="2143" name="test_door" type="area" x="1552" y="848" width="16" height="16">
-      <properties>
-       <property name="selected_door_sprite" type="int" value="3"/>
-      </properties>
-     </object>
-     <object id="2144" name="test_door2" type="area" x="1488" y="848" width="16" height="16">
-      <properties>
+       <property name="enter_house" value="hostel"/>
        <property name="selected_door_sprite" type="int" value="1"/>
       </properties>
      </object>

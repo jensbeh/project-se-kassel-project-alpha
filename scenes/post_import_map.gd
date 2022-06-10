@@ -3,9 +3,9 @@ extends Node
 
 func post_import(scene):
 	print(scene)
-	var testObject = scene.find_node("test")
-	for child in testObject.get_children():
-		if "test_door" in child.name:
+	var doorsObject = scene.find_node("doors")
+	for child in doorsObject.get_children():
+		if "door_" in child.name:
 			var selected_door_sprite = child.get_meta("selected_door_sprite")
 			print(selected_door_sprite)
 			
@@ -26,6 +26,15 @@ func post_import(scene):
 			var animationPlayer = AnimationPlayer.new()
 			animationPlayer.name = "animationPlayer"
 			var path = sprite.name + ":frame"
+			
+			var idleDoorAnimation = Animation.new()
+			animationPlayer.add_animation( "idleDoor", idleDoorAnimation)
+			idleDoorAnimation.add_track(0)
+			idleDoorAnimation.length = 0.4
+			idleDoorAnimation.track_set_path(0, path)
+			idleDoorAnimation.track_insert_key(0, 0.0, frame)
+			idleDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+			idleDoorAnimation.loop = 0
 
 			var openDoorAnimation = Animation.new()
 			animationPlayer.add_animation( "openDoor", openDoorAnimation)
@@ -51,8 +60,10 @@ func post_import(scene):
 			closeDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
 			closeDoorAnimation.loop = 0
 			
-			animationPlayer.set_current_animation("openDoor")
-
+#			child.current_animation = "idleDoor"
+#			child.autoplay = "idleDoor"
+#			child.play("idleDoor")
+			
 			child.add_child(animationPlayer)
 			animationPlayer.set_owner(scene)
 			print("added AnimationPlayer")

@@ -9,9 +9,6 @@ func _ready():
 	# setup all market buyingZone collisions
 	setup_market_buying_zone_collisions()
 	
-	# ONLY FOR TESTING
-	setup_test()
-	
 	var player = Utils.get_player()
 	player.connect("player_collided", self, "collision_detected")
 
@@ -42,13 +39,13 @@ func body_exited_buying_zone(body, area):
 		print("-> Body \""  + str(body.name) + "\" EXITED buying zone \"" + area.name + "\"")
 		
 		
-func body_entered_door(body, area):
-	for child in area.get_children():
+func body_entered_door(body, doorArea):
+	for child in doorArea.get_children():
 		if "animationPlayer" in child.name:
 			child.play("openDoor")
 			
-func body_exited_door(body, area):
-	for child in area.get_children():
+func body_exited_door(body, doorArea):
+	for child in doorArea.get_children():
 		if "animationPlayer" in child.name:
 			child.play("closeDoor")
 
@@ -64,12 +61,18 @@ func setup_test():
 # Setup and stop all door animations on start
 func setup_door_animations():
 	var doorsObject = get_node("camp/Level 1/ground/Buildings/doors")
-	for child in doorsObject.get_children():
-		if "door" in child.name:
-			var animatedDoor = child
-			animatedDoor.get_texture().pause = true
-			animatedDoor.get_texture().current_frame = 0
-			animatedDoor.get_texture().oneshot = true
+	for door in doorsObject.get_children():
+		if "door_" in door.name:
+			# connect area2d with function to animatie the sprite
+			door.connect("body_entered", self, "body_entered_door", [door])
+			door.connect("body_exited", self, "body_exited_door", [door])
+			
+			for child in door.get_children():
+				if "animationPlayer" in child.name:
+#					child.current_animation = "idleDoor"
+#					child.autoplay = "idleDoor"
+#					child.play("idleDoor")
+					pass
 			
 # Setup all market buyingZones to walk on
 func setup_market_buying_zone_collisions():
