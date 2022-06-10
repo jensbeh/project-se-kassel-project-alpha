@@ -8,21 +8,4 @@
 
 [node name="MainMenuScreen" parent="CurrentScene" instance=ExtResource( 2 )]
 
-[node name="CenterContainer" parent="CurrentScene/MainMenuScreen" index="0"]
-margin_left = 4.0
-margin_right = 1918.0
-
-[node name="MarginContainer" parent="CurrentScene/MainMenuScreen/CenterContainer" index="0"]
-margin_top = 371.0
-margin_bottom = 711.0
-rect_pivot_offset = Vector2( 0, 0 )
-
-[node name="VBoxContainer2" parent="CurrentScene/MainMenuScreen/CenterContainer/MarginContainer" index="0"]
-margin_bottom = 340.0
-custom_constants/separation = 200
-
-[node name="Exit to Desktop" parent="CurrentScene/MainMenuScreen/CenterContainer/MarginContainer/VBoxContainer2" index="1"]
-margin_top = 320.0
-margin_bottom = 340.0
-
 [editable path="CurrentScene/MainMenuScreen"]
