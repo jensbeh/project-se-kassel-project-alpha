@@ -1,13 +1,13 @@
 extends Node2D
 
-#onready var door = $"camp/Level 1/Buildings/House 3/door/75/CollisionShape2D"
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# setup all door animations
-	setup_door_animations()
-	# setup all market buyingZone collisions
-	setup_market_buying_zone_collisions()
+	# setup areas to change areaScenes
+	setup_change_scene_areas()
+	# setup all door areas to handle action
+	setup_door_areas()
+	# setup all market buyingZone areas to handle action
+	setup_market_buying_zone_areas()
 	
 	var player = Utils.get_player()
 	player.connect("player_collided", self, "collision_detected")
@@ -15,68 +15,68 @@ func _ready():
 # Method to handle collision detetcion dependent of the collision object type
 func collision_detected(collision):
 	var type = collision.get_parent().get_meta("type") # type is string
-	
-	if type == "Door":
-		var doorSpriteName = collision.get_meta("door_name")		
-		var houseId = collision.get_meta("enter_house")
-		print("-> Enter House: \"" + houseId + "\"")
-		start_door_animation(find_node(doorSpriteName))
-		
-	elif type == "BuyingZone":
-		var marketId = collision.get_meta("enter_market")
-		print("-> Enter Market: \"" + marketId + "\"")
+	print("collision_detected")
 
-func start_door_animation(door):
-	if door.get_texture().pause == true:
-		door.get_texture().pause = false
-		
-func body_entered_buying_zone(body, area):
+# Method which is called when a body has entered a buyingZoneArea
+func body_entered_buying_zone(body, buyingZoneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" ENTERED buying zone \"" + area.name + "\"")
-		
-func body_exited_buying_zone(body, area):
+		print("-> Body \""  + str(body.name) + "\" ENTERED buying zone \"" + buyingZoneArea.name + "\"")
+
+# Method which is called when a body has exited a buyingZoneArea
+func body_exited_buying_zone(body, buyingZoneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED buying zone \"" + area.name + "\"")
+		print("-> Body \""  + str(body.name) + "\" EXITED buying zone \"" + buyingZoneArea.name + "\"")
 		
-		
+# Method which is called when a body has entered a doorArea
 func body_entered_door(body, doorArea):
-	for child in doorArea.get_children():
-		if "animationPlayer" in child.name:
-			child.play("openDoor")
-			
-func body_exited_door(body, doorArea):
-	for child in doorArea.get_children():
-		if "animationPlayer" in child.name:
-			child.play("closeDoor")
+	if body.name == "Player":
+		for child in doorArea.get_children():
+			if "animationPlayer" in child.name:
+				# Start door animation
+				child.play("openDoor")
 
-# ONLY FOR TESTING
-func setup_test():
-	var testObject = get_node("camp/Level 1/ground/Buildings/test")
-	for child in testObject.get_children():
-		if "test_door" in child.name:
-			# add animation to pos
-			child.connect("body_entered", self, "body_entered_door", [child])
-			child.connect("body_exited", self, "body_exited_door", [child])
-			
-# Setup and stop all door animations on start
-func setup_door_animations():
+# Method which is called when a body has exited a doorArea
+func body_exited_door(body, doorArea):
+	if body.name == "Player":
+		for child in doorArea.get_children():
+			if "animationPlayer" in child.name:
+				# Start door animation
+				child.play("closeDoor")
+
+# Method which is called when a body has entered a changeSceneArea
+func body_entered_change_scene_area(body, changeSceneArea):
+	if body.name == "Player":
+		var change_scene_to = changeSceneArea.get_meta("change_scene_to")
+		if change_scene_to == "grassland":
+			print("-> Change scene \"CAMP\" to \""  + str(change_scene_to) + "\"")
+
+# Method which is called when a body has exited a changeSceneArea
+func body_exited_change_scene_area(body, changeSceneArea):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+
+# Setup all door objectes/Area2D's on start
+func setup_change_scene_areas():
+	var grasslandObject = get_node("camp/Level 1/grassland")
+	for child in grasslandObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
+			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
+
+# Setup all door objectes/Area2D's on start
+func setup_door_areas():
 	var doorsObject = get_node("camp/Level 1/ground/Buildings/doors")
 	for door in doorsObject.get_children():
 		if "door_" in door.name:
-			# connect area2d with function to animatie the sprite
+			# connect Area2D with functions to handle body action
 			door.connect("body_entered", self, "body_entered_door", [door])
 			door.connect("body_exited", self, "body_exited_door", [door])
-			
-			for child in door.get_children():
-				if "animationPlayer" in child.name:
-#					child.current_animation = "idleDoor"
-#					child.autoplay = "idleDoor"
-#					child.play("idleDoor")
-					pass
-			
-# Setup all market buyingZones to walk on
-func setup_market_buying_zone_collisions():
+
+# Setup all buyingZone objectes/Area2D's on start
+func setup_market_buying_zone_areas():
 	var buyingZoneObject = get_node("camp/Level 1/ground/Buildings/buyingZones")
 	for buyingZoneArea2D in buyingZoneObject.get_children():
+		# connect Area2D with functions to handle body action
 		buyingZoneArea2D.connect("body_entered", self, "body_entered_buying_zone", [buyingZoneArea2D])
 		buyingZoneArea2D.connect("body_exited", self, "body_exited_buying_zone", [buyingZoneArea2D])
