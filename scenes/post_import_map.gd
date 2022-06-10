@@ -38,7 +38,7 @@ func post_import(scene):
 			openDoorAnimation.track_insert_key(0, 0.3, frame + 3)
 			openDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
 			openDoorAnimation.loop = 0
-
+			
 			var closeDoorAnimation = Animation.new()
 			animationPlayer.add_animation( "closeDoor", closeDoorAnimation)
 			closeDoorAnimation.add_track(0)
@@ -47,9 +47,11 @@ func post_import(scene):
 			closeDoorAnimation.track_insert_key(0, 0.0, frame + 3)
 			closeDoorAnimation.track_insert_key(0, 0.1, frame + 2)
 			closeDoorAnimation.track_insert_key(0, 0.2, frame + 1)
-			closeDoorAnimation.track_insert_key(0, 0.3, frame + 0)
+			closeDoorAnimation.track_insert_key(0, 0.3, frame)
 			closeDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
 			closeDoorAnimation.loop = 0
+			
+			animationPlayer.set_current_animation("openDoor")
 
 			child.add_child(animationPlayer)
 			animationPlayer.set_owner(scene)

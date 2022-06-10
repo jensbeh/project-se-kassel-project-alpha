@@ -2324,7 +2324,7 @@
       </properties>
      </object>
      <object id="2127" name="door house6" gid="6283" x="1600" y="816" width="16" height="16"/>
-     <object id="2128" type="area" x="1604" y="800" width="8" height="17">
+     <object id="2128" x="1604" y="800" width="8" height="17">
       <properties>
        <property name="door_name" value="door house6"/>
        <property name="enter_house" value="house6"/>
