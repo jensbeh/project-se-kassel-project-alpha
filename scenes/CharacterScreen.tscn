@@ -1,9 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/CharacterScreen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
+
+[sub_resource type="DynamicFont" id=4]
+size = 25
+font_data = ExtResource( 3 )
 
 [sub_resource type="Environment" id=2]
 background_mode = 1
@@ -48,269 +53,325 @@ margin_bottom = 758.0
 custom_styles/bg = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
-margin_right = 260.0
-margin_bottom = 804.0
+margin_right = 564.0
+margin_bottom = 1140.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 80
 custom_constants/margin_top = 30
 custom_constants/margin_left = 80
 
 [node name="CharacterList" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 margin_left = 80.0
 margin_top = 30.0
-margin_right = 260.0
-margin_bottom = 804.0
+margin_right = 484.0
+margin_bottom = 1140.0
 custom_constants/separation = 60
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_right = 180.0
-margin_bottom = 38.0
+margin_right = 404.0
+margin_bottom = 70.0
 custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer"]
-margin_top = 24.0
-margin_right = 180.0
-margin_bottom = 38.0
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
 custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer/HBoxContainer"]
-margin_left = 88.0
-margin_right = 130.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 98.0
-margin_right = 180.0
-margin_bottom = 130.0
+margin_top = 130.0
+margin_right = 404.0
+margin_bottom = 200.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer2"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer2"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer2/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer2/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 190.0
-margin_right = 180.0
-margin_bottom = 222.0
+margin_top = 260.0
+margin_right = 404.0
+margin_bottom = 330.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer3"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer3"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer3/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer3/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 282.0
-margin_right = 180.0
-margin_bottom = 314.0
+margin_top = 390.0
+margin_right = 404.0
+margin_bottom = 460.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer4"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer4"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer4/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer4/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer5" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 374.0
-margin_right = 180.0
-margin_bottom = 406.0
+margin_top = 520.0
+margin_right = 404.0
+margin_bottom = 590.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer5"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer5"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer5/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer5/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer6" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 466.0
-margin_right = 180.0
-margin_bottom = 498.0
+margin_top = 650.0
+margin_right = 404.0
+margin_bottom = 720.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer6"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer6"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer6/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer6/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer7" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 558.0
-margin_right = 180.0
-margin_bottom = 590.0
+margin_top = 780.0
+margin_right = 404.0
+margin_bottom = 850.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer7"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer7"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer7/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer7/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer8" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 650.0
-margin_right = 180.0
-margin_bottom = 682.0
+margin_top = 910.0
+margin_right = 404.0
+margin_bottom = 980.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer8"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer8"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer8/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer8/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="VBoxContainer9" type="VBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList"]
-margin_top = 742.0
-margin_right = 180.0
-margin_bottom = 774.0
+margin_top = 1040.0
+margin_right = 404.0
+margin_bottom = 1110.0
+custom_constants/separation = 10
 alignment = 1
 
 [node name="Name" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer9"]
-margin_right = 180.0
-margin_bottom = 14.0
+margin_right = 404.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 4 )
 text = "Name: "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer9"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 32.0
-custom_constants/separation = 100
+margin_top = 40.0
+margin_right = 404.0
+margin_bottom = 70.0
+custom_constants/separation = 50
 
 [node name="Gold" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer9/HBoxContainer"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 177.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Gold: "
 
 [node name="Level" type="Label" parent="ScrollContainer/MarginContainer/CharacterList/VBoxContainer9/HBoxContainer"]
-margin_left = 138.0
-margin_right = 180.0
-margin_bottom = 14.0
+margin_left = 227.0
+margin_right = 404.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 4 )
 text = "Level: "
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]

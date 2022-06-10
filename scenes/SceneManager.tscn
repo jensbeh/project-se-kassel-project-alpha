@@ -7,5 +7,3 @@
 [node name="CurrentScene" type="Node2D" parent="."]
 
 [node name="MainMenuScreen" parent="CurrentScene" instance=ExtResource( 2 )]
-
-[editable path="CurrentScene/MainMenuScreen"]
