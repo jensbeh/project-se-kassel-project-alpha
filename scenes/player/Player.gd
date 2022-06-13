@@ -27,7 +27,7 @@ onready var maskSprite = $Mask
 onready var glassesSprite = $Glasses
 onready var hatSprite = $Hat
 
-const composite_sprites = preload("res://assets/player/CompositeSprites.gd")
+const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
 var curr_body: int = 0 #0-8, 1
 var curr_shoes: int = 0 #0, 10
@@ -44,25 +44,25 @@ var curr_glasses: int = 0 #0-1, 10
 var curr_hat: int = 0 #0-4, 1
 
 # Walk
-const WALK_SPEED = 50
+var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
 
 
 func _ready():
 	# Style
-	bodySprite.texture = composite_sprites.body_spritesheet[curr_body]
-	shoesSprite.texture = composite_sprites.shoes_spritesheet[curr_shoes]
-	pantsSprite.texture = composite_sprites.pants_spritesheet[curr_pants]
-	clothesSprite.texture = composite_sprites.clothes_spritesheet[curr_clothes]
-	blushSprite.texture = composite_sprites.blush_spritesheet[curr_blush]
-	lipstickSprite.texture = composite_sprites.lipstick_spritesheet[curr_lipstick]
-	beardSprite.texture = composite_sprites.beard_spritesheet[curr_beard]
-	eyesSprite.texture = composite_sprites.eyes_spritesheet[curr_eyes]
-	earringSprite.texture = composite_sprites.earring_spritesheet[curr_earring]
-	hairSprite.texture = composite_sprites.hair_spritesheet[curr_hair]
-	maskSprite.texture = composite_sprites.mask_spritesheet[curr_mask]
-	glassesSprite.texture = composite_sprites.glasses_spritesheet[curr_glasses]
-	hatSprite.texture = composite_sprites.hat_spritesheet[curr_hat]
+	bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
+	shoesSprite.texture = CompositeSprites.SHOES_SPRITESHEET[curr_shoes]
+	pantsSprite.texture = CompositeSprites.PANTS_SPRITESHEET[curr_pants]
+	clothesSprite.texture = CompositeSprites.CLOTHES_SPRITESHEET[curr_clothes]
+	blushSprite.texture = CompositeSprites.BLUSH_SPRITESHEET[curr_blush]
+	lipstickSprite.texture = CompositeSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
+	beardSprite.texture = CompositeSprites.BEARD_SPRITESHEET[curr_beard]
+	eyesSprite.texture = CompositeSprites.EYES_SPRITESHEET[curr_eyes]
+	earringSprite.texture = CompositeSprites.EARRING_SPRITESHEET[curr_earring]
+	hairSprite.texture = CompositeSprites.HAIR_SPRITESHEET[curr_hair]
+	maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
+	glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
+	hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
 	
 	shadow.visible = false
 	
@@ -81,12 +81,12 @@ func _ready():
 func _physics_process(delta):
 	# Handle User Input
 	if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
-		velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * WALK_SPEED
+		velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
 	else:
 		velocity.x = 0
 		
 	if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
-		velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * WALK_SPEED
+		velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
 	else:
 		velocity.y = 0
 	
@@ -107,9 +107,15 @@ func _physics_process(delta):
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-			#print(collision.get_collider().get_parent().get_meta_list()) # returns all custom properties
-			emit_signal("player_collided", collision.get_collider())		
+			emit_signal("player_collided", collision.get_collider())
 
+# Method to set a new player walk speed with a factor
+func set_speed(factor: float):
+	current_walk_speed *= factor
+
+# Method to reset the player walk speed to const
+func reset_speed():
+	current_walk_speed = Constants.PLAYER_WALK_SPEED
 
 # Sets the Visibility of a given Sprite
 func set_visibility(sprite, value):

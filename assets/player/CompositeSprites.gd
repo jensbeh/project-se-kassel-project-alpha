@@ -1,6 +1,6 @@
 extends Node
 
-const body_spritesheet = {
+const BODY_SPRITESHEET = {
 	0: preload("res://assets/player/characters/char1.png"),
 	1: preload("res://assets/player/characters/char2.png"),
 	2: preload("res://assets/player/characters/char3.png"),
@@ -11,7 +11,7 @@ const body_spritesheet = {
 	7: preload("res://assets/player/characters/char8.png"),
 }
 
-const clothes_spritesheet = {
+const CLOTHES_SPRITESHEET = {
 	0: preload("res://assets/player/clothes/basic.png"),
 	1: preload("res://assets/player/clothes/dress .png"),
 	2: preload("res://assets/player/clothes/floral.png"),
@@ -25,43 +25,43 @@ const clothes_spritesheet = {
 	10: preload("res://assets/player/clothes/suit.png"),
 }
 
-const clothes1_spritesheet = {
+const CLOTHES1_SPRITESHEET = {
 	0: preload("res://assets/player/clothes/spooky .png"),
 	1: preload("res://assets/player/clothes/witch.png"),
 }
 
-const clothes2_spritesheet = {
+const CLOTHES2_SPRITESHEET = {
 	0: preload("res://assets/player/clothes/pumpkin.png"),
 	1: preload("res://assets/player/clothes/clown.png"),
 }
 
-const pants_spritesheet = {
+const PANTS_SPRITESHEET = {
 	0: preload("res://assets/player/clothes/skirt.png"),
 	1: preload("res://assets/player/clothes/pants_suit.png"),
 	2: preload("res://assets/player/clothes/pants.png"),
 }
 
-const shoes_spritesheet = {
+const SHOES_SPRITESHEET = {
 	0: preload("res://assets/player/clothes/shoes.png"),
 }
 
-const beard_spritesheet = {
+const BEARD_SPRITESHEET = {
 	0: preload("res://assets/player/acc/beard.png"),
 }
 
-const earring_spritesheet = {
+const EARRING_SPRITESHEET = {
 	0: preload("res://assets/player/acc/earring_emerald.png"),
 	1: preload("res://assets/player/acc/earring_emerald_silver.png"),
 	2: preload("res://assets/player/acc/earring_red.png"),
 	3: preload("res://assets/player/acc/earring_red_silver.png"),
 }
 
-const glasses_spritesheet = {
+const GLASSES_SPRITESHEET = {
 	0: preload("res://assets/player/acc/glasses.png"),
 	1: preload("res://assets/player/acc/glasses_sun.png"),
 }
 
-const hat_spritesheet = {
+const HAT_SPRITESHEET = {
 	0: preload("res://assets/player/acc/hat_cowboy.png"),
 	1: preload("res://assets/player/acc/hat_lucky.png"),
 	2: preload("res://assets/player/acc/hat_pumpkin.png"),
@@ -69,25 +69,25 @@ const hat_spritesheet = {
 	4: preload("res://assets/player/acc/hat_witch.png"),
 }
 
-const mask_spritesheet = {
+const MASK_SPRITESHEET = {
 	0: preload("res://assets/player/acc/mask_clown_blue.png"),
 	1: preload("res://assets/player/acc/mask_clown_red.png"),
 	2: preload("res://assets/player/acc/mask_spooky.png"),
 }
 
-const blush_spritesheet = {
+const BLUSH_SPRITESHEET = {
 	0: preload("res://assets/player/face/blush_all.png"),
 }
 
-const lipstick_spritesheet = {
+const LIPSTICK_SPRITESHEET = {
 	0: preload("res://assets/player/face/lipstick .png"),
 }
 
-const eyes_spritesheet = {
+const EYES_SPRITESHEET = {
 	0: preload("res://assets/player/face/eyes.png"),
 }
 
-const hair_spritesheet = {
+const HAIR_SPRITESHEET = {
 	0: preload("res://assets/player/hair/bob .png"),
 	1: preload("res://assets/player/hair/braids.png"),
 	2: preload("res://assets/player/hair/buzzcut.png"),

@@ -55,10 +55,10 @@ func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 
-# Setup all door objectes/Area2D's on start
+# Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
-	var grasslandObject = get_node("camp/Level 1/grassland")
-	for child in grasslandObject.get_children():
+	var changeScenesObject = get_node("camp/Level 1/changeScenes")
+	for child in changeScenesObject.get_children():
 		if "changeScene" in child.name:
 			# connect Area2D with functions to handle body action
 			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
