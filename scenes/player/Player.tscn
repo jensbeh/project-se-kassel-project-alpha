@@ -813,6 +813,42 @@ tracks/12/keys = {
 "update": 0,
 "values": [ 0 ]
 }
+tracks/13/type = "value"
+tracks/13/path = NodePath("Eyes:frame")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1 ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("Blush:frame")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 41 ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("Lipstick:frame")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1 ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "WalkDown"
@@ -864,31 +900,31 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
+"values": [ 1, 2, 3, 1, 5, 6, 7, 0 ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Blush:frame_coords")
+tracks/4/path = NodePath("Blush:frame")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 0 ), Vector2( 2, 0 ), Vector2( 3, 0 ), Vector2( 4, 0 ), Vector2( 5, 0 ), Vector2( 6, 0 ), Vector2( 7, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Lipstick:frame_coords")
+tracks/5/path = NodePath("Lipstick:frame")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 0 ), Vector2( 2, 0 ), Vector2( 3, 0 ), Vector2( 4, 0 ), Vector2( 5, 0 ), Vector2( 6, 0 ), Vector2( 7, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Beard:frame")
@@ -903,16 +939,16 @@ tracks/6/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Eyes:frame_coords")
+tracks/7/path = NodePath("Eyes:frame")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 0 ), Vector2( 2, 0 ), Vector2( 3, 0 ), Vector2( 4, 0 ), Vector2( 5, 0 ), Vector2( 6, 0 ), Vector2( 7, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1028,28 +1064,28 @@ tracks/3/keys = {
 "values": [ 241, 242, 243, 244, 245, 246, 247, 240 ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Blush:frame_coords")
+tracks/4/path = NodePath("Blush:frame")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 3 ), Vector2( 2, 3 ), Vector2( 3, 3 ), Vector2( 4, 3 ), Vector2( 5, 3 ), Vector2( 6, 3 ), Vector2( 7, 3 ), Vector2( 0, 3 ), Vector2( 0, 3 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 121, 122, 123, 124, 125, 126, 127, 120 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Lipstick:frame_coords")
+tracks/5/path = NodePath("Lipstick:frame")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 3 ), Vector2( 2, 3 ), Vector2( 3, 3 ), Vector2( 4, 3 ), Vector2( 5, 3 ), Vector2( 6, 3 ), Vector2( 7, 3 ), Vector2( 0, 3 ), Vector2( 0, 3 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 121, 122, 123, 124, 125, 126, 127, 120 ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Beard:frame")
@@ -1064,16 +1100,16 @@ tracks/6/keys = {
 "values": [ 337, 338, 339, 340, 341, 342, 343, 336 ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Eyes:frame_coords")
+tracks/7/path = NodePath("Eyes:frame")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 3 ), Vector2( 2, 3 ), Vector2( 3, 3 ), Vector2( 4, 3 ), Vector2( 5, 3 ), Vector2( 6, 3 ), Vector2( 7, 3 ), Vector2( 0, 3 ), Vector2( 0, 3 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.500962, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 337, 338, 339, 340, 341, 342, 343, 336 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1189,28 +1225,28 @@ tracks/3/keys = {
 "values": [ 161, 162, 163, 164, 165, 166, 167, 160 ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Blush:frame_coords")
+tracks/4/path = NodePath("Blush:frame")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 2 ), Vector2( 2, 2 ), Vector2( 3, 2 ), Vector2( 4, 2 ), Vector2( 5, 2 ), Vector2( 6, 2 ), Vector2( 7, 2 ), Vector2( 0, 2 ), Vector2( 0, 2 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 81, 82, 83, 84, 85, 86, 87, 80 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Lipstick:frame_coords")
+tracks/5/path = NodePath("Lipstick:frame")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 2 ), Vector2( 2, 2 ), Vector2( 3, 2 ), Vector2( 4, 2 ), Vector2( 5, 2 ), Vector2( 6, 2 ), Vector2( 7, 2 ), Vector2( 0, 2 ), Vector2( 0, 2 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 81, 82, 83, 84, 85, 86, 87, 80 ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Beard:frame")
@@ -1225,16 +1261,16 @@ tracks/6/keys = {
 "values": [ 225, 226, 227, 228, 229, 230, 231, 224 ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Eyes:frame_coords")
+tracks/7/path = NodePath("Eyes:frame")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 2 ), Vector2( 2, 2 ), Vector2( 3, 2 ), Vector2( 4, 2 ), Vector2( 5, 2 ), Vector2( 6, 2 ), Vector2( 7, 2 ), Vector2( 0, 2 ), Vector2( 0, 2 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 225, 226, 227, 228, 229, 230, 231, 224 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1350,28 +1386,28 @@ tracks/3/keys = {
 "values": [ 81, 82, 83, 84, 85, 86, 87, 80 ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Blush:frame_coords")
+tracks/4/path = NodePath("Blush:frame")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 2, 1 ), Vector2( 3, 1 ), Vector2( 4, 1 ), Vector2( 5, 1 ), Vector2( 6, 1 ), Vector2( 7, 1 ), Vector2( 0, 1 ), Vector2( 0, 1 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 41, 42, 43, 44, 45, 46, 47, 40 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Lipstick:frame_coords")
+tracks/5/path = NodePath("Lipstick:frame")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 2, 1 ), Vector2( 3, 1 ), Vector2( 4, 1 ), Vector2( 5, 1 ), Vector2( 6, 1 ), Vector2( 7, 1 ), Vector2( 0, 1 ), Vector2( 0, 1 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 41, 42, 43, 44, 45, 46, 47, 40 ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Beard:frame")
@@ -1386,16 +1422,16 @@ tracks/6/keys = {
 "values": [ 113, 114, 115, 116, 117, 118, 119, 112 ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Eyes:frame_coords")
+tracks/7/path = NodePath("Eyes:frame")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 2, 1 ), Vector2( 3, 1 ), Vector2( 4, 1 ), Vector2( 5, 1 ), Vector2( 6, 1 ), Vector2( 7, 1 ), Vector2( 0, 1 ), Vector2( 0, 1 ) ]
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 113, 114, 115, 116, 117, 118, 119, 112 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1608,6 +1644,7 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 40
 vframes = 49
+frame = 41
 
 [node name="Lipstick" type="Sprite" parent="."]
 position = Vector2( -8, -16 )
@@ -1616,8 +1653,10 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 40
 vframes = 49
+frame = 1
 
 [node name="Beard" type="Sprite" parent="."]
+visible = false
 position = Vector2( -8, -16 )
 texture = ExtResource( 15 )
 centered = false
@@ -1632,6 +1671,7 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 112
 vframes = 49
+frame = 1
 
 [node name="Earring" type="Sprite" parent="."]
 position = Vector2( -8, -16 )
@@ -1651,6 +1691,7 @@ hframes = 112
 vframes = 49
 
 [node name="Mask" type="Sprite" parent="."]
+visible = false
 position = Vector2( -8, -16 )
 texture = ExtResource( 11 )
 centered = false
@@ -1660,6 +1701,7 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Glasses" type="Sprite" parent="."]
+visible = false
 position = Vector2( -8, -12.5 )
 scale = Vector2( 1, 0.875 )
 texture = ExtResource( 12 )
@@ -1669,6 +1711,7 @@ hframes = 80
 vframes = 49
 
 [node name="Hat" type="Sprite" parent="."]
+visible = false
 position = Vector2( -8, -16 )
 texture = ExtResource( 14 )
 centered = false
@@ -1678,6 +1721,7 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 8, 7 )
 shape = SubResource( 1 )
 

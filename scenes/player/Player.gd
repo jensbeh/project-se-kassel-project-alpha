@@ -38,7 +38,7 @@ var curr_lipstick: int = 0 #0, 5
 var curr_beard: int = 0 #0, 14
 var curr_eyes: int = 0 #0, 14
 var curr_earring: int = 0 #0-3, 1
-var curr_hair: int = 0 #0-14, 14
+var curr_hair: int = 8 #0-14, 14
 var curr_mask: int = 0 #0-2, 1
 var curr_glasses: int = 0 #0-1, 10
 var curr_hat: int = 0 #0-4, 1
@@ -65,12 +65,16 @@ func _ready():
 	hatSprite.texture = composite_sprites.hat_spritesheet[curr_hat]
 	
 	shadow.visible = false
+	maskSprite.visible = false
+	glassesSprite.visible = false
+	earringSprite.visible = false
+	hatSprite.visible = false
 	
 	# Sets the Visibility of a given Sprite
-	set_visibility(maskSprite, true) #Sprite, true/false 
+	#set_visibility(maskSprite, true) #Sprite, true/false 
 	
 	# Change Color
-	_set_key(9, 64)#Track_idx #0-12, +Frame #8er steps by walk
+	_set_key(9, 0)#Track_idx #0-12, +Frame #8er steps by walk
 
 	# Animation
 	animation_tree.active = true
@@ -78,7 +82,7 @@ func _ready():
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Handle User Input
 	if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
 		velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * WALK_SPEED
