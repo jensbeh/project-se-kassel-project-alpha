@@ -1,27 +1,36 @@
-extends Node2D ## TODO: Load Character and show, Bug: synconize mouse click and keyboard
+extends Node2D ## TODO: Load Character and show, Bug: syncronize mouse click and keyboard
 
 var selected_character = 0
 var style2 = StyleBoxFlat.new()
 var style1 = StyleBoxFlat.new()
+
 onready var list = $ScrollContainer/MarginContainer/CharacterList
 onready var scroll = $ScrollContainer
 
 func _ready():
+	# Create Selected Style
 	style2.set_bg_color(Color(0.6, 0.6, 0.6, 1))
 	style1.set_bg_color(Color(0.5, 0.5, 0.5, 1))
 	style1.set_corner_radius_all(5)
-	change_menu_color()
+	
+	# Auto Scroll activated
 	scroll.set_follow_focus(true)
 	for i in list.get_children():
 		i.set_focus_mode(2)
-	create_item("Test", 12, 200)
-	create_item("Test1", 2, 100)
-	create_item("Test1", 1, 100)
-	create_item("Test1", 4, 100)
-	create_item("Test1", 3, 100)
+	
+	# Set first Selected
+	change_menu_color()
 	if list.get_child_count() != 0:
 		list.get_child(0).grab_focus()
 	
+	create_item("Test", 12, 200)
+	create_item("Test1", 2, 100)
+	create_item("Test2", 1, 100)
+	create_item("Test3", 4, 100)
+	create_item("Test4", 3, 100)
+	
+
+# create Character Item to Choose
 func create_item(charac_name, charac_level, charac_gold):
 	var container = MarginContainer.new()
 	var panel = Panel.new()
@@ -59,20 +68,26 @@ func create_item(charac_name, charac_level, charac_gold):
 	container.set_focus_mode(2)
 	list.add_child(container)
 	
+	
+# set unselected style
 func unchange_menu_color():
 	if list.get_child_count() != 0:
 		for i in list.get_child_count():
 			list.get_child(i).get_child(0).add_stylebox_override("panel", style2)
 
+# set select style
 func change_menu_color():
 	if list.get_child_count() != 0:
 		list.get_child(selected_character).get_child(0).add_stylebox_override("panel", style1)
 
+
 func _on_Back_pressed():
 	Utils.get_scene_manager().transition_to_scene("res://scenes/MainMenuScreen.tscn")
 
+
 func _on_Create_Character_pressed():
 	Utils.get_scene_manager().transition_to_scene("res://scenes/CreateCharacter.tscn")
+
 
 func _input(event):
 	if Input.is_action_just_pressed("ui_down"):

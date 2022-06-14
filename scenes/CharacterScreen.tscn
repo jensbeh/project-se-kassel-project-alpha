@@ -5,13 +5,13 @@
 
 [sub_resource type="StyleBoxFlat" id=1]
 
-[sub_resource type="Environment" id=2]
+[sub_resource type="Environment" id=4]
 background_mode = 1
 background_color = Color( 0.92549, 0.862745, 0.862745, 1 )
 ambient_light_color = Color( 0.639216, 0.254902, 0.254902, 1 )
 
 [sub_resource type="World" id=3]
-environment = SubResource( 2 )
+environment = SubResource( 4 )
 
 [node name="CharacterScreen" type="Node2D"]
 script = ExtResource( 1 )

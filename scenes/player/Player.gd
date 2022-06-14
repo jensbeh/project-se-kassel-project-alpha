@@ -28,6 +28,7 @@ onready var glassesSprite = $Glasses
 onready var hatSprite = $Hat
 
 const composite_sprites = preload("res://assets/player/CompositeSprites.gd")
+
 # Count Textures, Count Colors
 var curr_body: int = 0 #0-8, 1
 var curr_shoes: int = 0 #0, 10
@@ -65,16 +66,15 @@ func _ready():
 	hatSprite.texture = composite_sprites.hat_spritesheet[curr_hat]
 	
 	shadow.visible = false
-	maskSprite.visible = false
-	glassesSprite.visible = false
-	earringSprite.visible = false
-	hatSprite.visible = false
 	
 	# Sets the Visibility of a given Sprite
-	#set_visibility(maskSprite, true) #Sprite, true/false 
+	set_visibility(maskSprite, false) #Sprite, true/false 
+	set_visibility(glassesSprite, false)
+	set_visibility(earringSprite, false)
+	set_visibility(hatSprite, false)
 	
 	# Change Color
-	_set_key(9, 0)#Track_idx #0-12, +Frame #8er steps by walk
+	_set_key(9, 0)#Track_idx #0-12 for clothing, +Frame #8er steps by walk for color
 
 	# Animation
 	animation_tree.active = true
@@ -111,13 +111,56 @@ func _physics_process(_delta):
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-			#print(collision.get_collider().get_parent().get_meta_list()) # returns all custom properties
 			emit_signal("player_collided", collision.get_collider())		
 
 
 # Sets the Visibility of a given Sprite
 func set_visibility(sprite, value):
 	sprite.visible = value
+
+
+# Sets the current texture
+func set_texture(name, value):
+	match name:
+		"curr_body":
+			curr_body = value
+			bodySprite.texture = composite_sprites.body_spritesheet[curr_body]
+		"curr_shoes":
+			curr_shoes = value
+			shoesSprite.texture = composite_sprites.shoes_spritesheet[curr_shoes]
+		"curr_pants":
+			curr_pants = value
+			pantsSprite.texture = composite_sprites.pants_spritesheet[curr_pants]
+		"curr_clothes":
+			curr_clothes = value
+			clothesSprite.texture = composite_sprites.clothes_spritesheet[curr_clothes]
+		"curr_blush":
+			curr_blush = value
+			blushSprite.texture = composite_sprites.blush_spritesheet[curr_blush]
+		"curr_lipstick":
+			curr_lipstick = value
+			lipstickSprite.texture = composite_sprites.lipstick_spritesheet[curr_lipstick]
+		"curr_beard":
+			curr_beard = value
+			beardSprite.texture = composite_sprites.beard_spritesheet[curr_beard]
+		"curr_eyes":
+			curr_eyes = value
+			eyesSprite.texture = composite_sprites.eyes_spritesheet[curr_eyes]
+		"curr_earring":
+			curr_earring = value
+			earringSprite.texture = composite_sprites.earring_spritesheet[curr_earring]
+		"curr_hair":
+			curr_hair = value
+			hairSprite.texture = composite_sprites.hair_spritesheet[curr_hair]
+		"curr_mask":
+			curr_mask = value
+			maskSprite.texture = composite_sprites.mask_spritesheet[curr_mask]
+		"curr_glasses":
+			curr_glasses = value
+			glassesSprite.texture = composite_sprites.glasses_spritesheet[curr_glasses]
+		"curr_hat":
+			curr_hat = value
+			hatSprite.texture = composite_sprites.hat_spritesheet[curr_hat]
 
 
 # Track Key Value change for Colors

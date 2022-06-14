@@ -900,7 +900,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 1, 5, 6, 7, 0 ]
+"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -1656,7 +1656,6 @@ vframes = 49
 frame = 1
 
 [node name="Beard" type="Sprite" parent="."]
-visible = false
 position = Vector2( -8, -16 )
 texture = ExtResource( 15 )
 centered = false
@@ -1691,7 +1690,6 @@ hframes = 112
 vframes = 49
 
 [node name="Mask" type="Sprite" parent="."]
-visible = false
 position = Vector2( -8, -16 )
 texture = ExtResource( 11 )
 centered = false
@@ -1701,7 +1699,6 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Glasses" type="Sprite" parent="."]
-visible = false
 position = Vector2( -8, -12.5 )
 scale = Vector2( 1, 0.875 )
 texture = ExtResource( 12 )
@@ -1711,7 +1708,6 @@ hframes = 80
 vframes = 49
 
 [node name="Hat" type="Sprite" parent="."]
-visible = false
 position = Vector2( -8, -16 )
 texture = ExtResource( 14 )
 centered = false
@@ -1721,7 +1717,6 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 8, 7 )
 shape = SubResource( 1 )
 
