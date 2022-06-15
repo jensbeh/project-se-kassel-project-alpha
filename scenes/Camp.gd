@@ -2,6 +2,9 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Setup scene with properties
+	setup_scene()
+	
 	# setup areas to change areaScenes
 	setup_change_scene_areas()
 	# setup all door areas to handle action
@@ -54,6 +57,30 @@ func body_entered_change_scene_area(body, changeSceneArea):
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+
+# Setup the scene with all importent properties on start
+func setup_scene():
+	get_node("camp/Level 1/ground/dirt").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/dirt").cell_y_sort = false
+	
+	get_node("camp/Level 1/ground/ground").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/ground").cell_y_sort = false	
+	
+	get_node("camp/Level 1/ground/little stones in water").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/little stones in water").cell_y_sort = false
+	
+	get_node("camp/Level 1/ground/bridge").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/bridge").cell_y_sort = false
+	
+	get_node("camp/Level 1/ground/fences").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/fences").cell_y_sort = false
+	
+	get_node("camp/Level 1/ground/decorations layer1").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/decorations layer1").cell_y_sort = false
+	
+	get_node("camp/Level 1/ground/decorations layer2").cell_quadrant_size = 1
+	get_node("camp/Level 1/ground/decorations layer2").cell_y_sort = false
+	
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():

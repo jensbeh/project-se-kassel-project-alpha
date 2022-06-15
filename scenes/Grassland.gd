@@ -3,10 +3,13 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# setup areas to change areaScenes
+	# Setup scene with properties
+	setup_scene()
+	
+	# Setup areas to change areaScenes
 	setup_change_scene_areas()
 	
-	# setup stair areas
+	# Setup stair areas
 	setup_stair_areas()
 
 # Method which is called when a body has entered a changeSceneArea
@@ -33,6 +36,38 @@ func body_exited_stair_area(body, stairArea):
 	if body.name == "Player":
 		# reset player speed
 		Utils.get_player().reset_speed()
+
+# Setup the scene with all importent properties on start
+func setup_scene():
+	find_node("dirt lvl0").cell_quadrant_size = 1
+	find_node("dirt lvl0").cell_y_sort = false
+	find_node("ground lvl0").cell_quadrant_size = 1
+	find_node("ground lvl0").cell_y_sort = false
+	find_node("decoration lvl0").cell_quadrant_size = 1
+	find_node("decoration lvl0").cell_y_sort = false
+	
+	find_node("dirt lvl1").cell_quadrant_size = 1
+	find_node("dirt lvl1").cell_y_sort = false
+	find_node("ground lvl1").cell_quadrant_size = 1
+	find_node("ground lvl1").cell_y_sort = false
+	
+	find_node("dirt lvl2").cell_quadrant_size = 1
+	find_node("dirt lvl2").cell_y_sort = false
+	find_node("ground lvl2").cell_quadrant_size = 1
+	find_node("ground lvl2").cell_y_sort = false
+	
+	find_node("dirt lvl3").cell_quadrant_size = 1
+	find_node("dirt lvl3").cell_y_sort = false
+	find_node("ground lvl3").cell_quadrant_size = 1
+	find_node("ground lvl3").cell_y_sort = false
+	find_node("bridge lvl3").cell_quadrant_size = 1
+	find_node("bridge lvl3").cell_y_sort = false
+	
+	find_node("dirt lvl4").cell_quadrant_size = 1
+	find_node("dirt lvl4").cell_y_sort = false
+	find_node("ground lvl4").cell_quadrant_size = 1
+	find_node("ground lvl4").cell_y_sort = false
+
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
