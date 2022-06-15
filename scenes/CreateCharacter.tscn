@@ -215,7 +215,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SkinCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 102.0
 margin_right = 114.0
 margin_bottom = 51.0
@@ -280,7 +280,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HairCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 102.0
 margin_right = 114.0
 margin_bottom = 51.0
@@ -344,7 +344,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TorsoCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 102.0
 margin_right = 114.0
 margin_bottom = 51.0
@@ -408,7 +408,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="LegsCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 102.0
 margin_right = 114.0
 margin_bottom = 51.0
@@ -480,7 +480,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ShoesCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 103.0
 margin_right = 115.0
 margin_bottom = 51.0
@@ -544,7 +544,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="EyesCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 103.0
 margin_right = 115.0
 margin_bottom = 51.0
@@ -608,7 +608,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MakeupCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 103.0
 margin_right = 115.0
 margin_bottom = 51.0
@@ -672,7 +672,7 @@ margin_bottom = 51.0
 custom_fonts/font = SubResource( 7 )
 text = "←"
 
-[node name="Count" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="BeardCount" type="Label" parent="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 103.0
 margin_right = 115.0
 margin_bottom = 51.0
@@ -706,6 +706,7 @@ scale = Vector2( 4, 4 )
 
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+[connection signal="text_changed" from="ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/LineEdit" to="." method="_on_LineEdit_text_changed"]
 [connection signal="pressed" from="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinLeft" to="." method="_on_SkinLeft_pressed"]
 [connection signal="pressed" from="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinRight" to="." method="_on_SkinRight_pressed"]
 [connection signal="pressed" from="ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairLeft" to="." method="_on_HairLeft_pressed"]

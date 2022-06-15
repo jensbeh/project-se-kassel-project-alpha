@@ -30,7 +30,7 @@ onready var hatSprite = $Hat
 const composite_sprites = preload("res://assets/player/CompositeSprites.gd")
 
 # Count Textures, Count Colors
-var curr_body: int = 0 #0-8, 1
+var curr_body: int = 0 #0-7, 1
 var curr_shoes: int = 0 #0, 10
 var curr_pants: int = 0 #0-2, 10
 var curr_clothes: int = 0 #0-10, 10 -> not by everyone
@@ -39,7 +39,7 @@ var curr_lipstick: int = 0 #0, 5
 var curr_beard: int = 0 #0, 14
 var curr_eyes: int = 0 #0, 14
 var curr_earring: int = 0 #0-3, 1
-var curr_hair: int = 8 #0-14, 14
+var curr_hair: int = 0 #0-14, 14
 var curr_mask: int = 0 #0-2, 1
 var curr_glasses: int = 0 #0-1, 10
 var curr_hat: int = 0 #0-4, 1
@@ -72,9 +72,6 @@ func _ready():
 	set_visibility(glassesSprite, false)
 	set_visibility(earringSprite, false)
 	set_visibility(hatSprite, false)
-	
-	# Change Color
-	_set_key(9, 0)#Track_idx #0-12 for clothing, +Frame #8er steps by walk for color
 
 	# Animation
 	animation_tree.active = true
@@ -165,6 +162,7 @@ func set_texture(name, value):
 
 # Track Key Value change for Colors
 func _set_key(track_idx, value):
+	
 	var newDown = animation_player.get_animation("WalkDown")
 	set_key(newDown, track_idx, value)
 	
@@ -193,16 +191,22 @@ func _set_key(track_idx, value):
 	animation_player.get_animation("IdleRight").track_find_key(track_idx, 0.0, 1), 
 	animation_player.get_animation("IdleRight").track_get_key_value(track_idx, 
 	newRight.track_find_key(track_idx, 0.0, 1)) + value)
+	
 
 func set_key(newAnimation, track_idx, value):
+	print(value, "value")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)) + value)
+	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)), "set0")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)) + value)
+	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)), "set1")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)) + value)
+	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)), "set2")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)) + value)
+	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)), "set3")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1), 
@@ -211,3 +215,4 @@ func set_key(newAnimation, track_idx, value):
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
+	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)), "se7")

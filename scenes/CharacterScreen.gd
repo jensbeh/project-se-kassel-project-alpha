@@ -1,4 +1,7 @@
-extends Node2D ## TODO: Load Character and show, Bug: syncronize mouse click and keyboard
+extends Node2D ## TODO: load character with mouse click, Bug: syncronize mouse click and keyboard
+
+const SAVE_PATH = "user://"
+const SAVE_FILE_EXTENSION = ".json"
 
 var selected_character = 0
 var style2 = StyleBoxFlat.new()
@@ -6,12 +9,24 @@ var style1 = StyleBoxFlat.new()
 
 onready var list = $ScrollContainer/MarginContainer/CharacterList
 onready var scroll = $ScrollContainer
+var data_list = []
+var body
+var shoes
+var pants
+var clothes
+var blush
+var lipstick
+var beard
+var eyes
+var hair
 
 func _ready():
 	# Create Selected Style
 	style2.set_bg_color(Color(0.6, 0.6, 0.6, 1))
 	style1.set_bg_color(Color(0.5, 0.5, 0.5, 1))
 	style1.set_corner_radius_all(5)
+	
+	load_data()
 	
 	# Auto Scroll activated
 	scroll.set_follow_focus(true)
@@ -23,11 +38,51 @@ func _ready():
 	if list.get_child_count() != 0:
 		list.get_child(0).grab_focus()
 	
-	create_item("Test", 12, 200)
-	create_item("Test1", 2, 100)
-	create_item("Test2", 1, 100)
-	create_item("Test3", 4, 100)
-	create_item("Test4", 3, 100)
+	for child in Utils.get_player().get_children():
+		match child.name:
+			"Body":
+				body = child
+			"Shoes":
+				shoes = child
+			"Pants":
+				pants = child
+			"Clothes":
+				clothes = child
+			"Blush":
+				blush = child
+			"Lipstick":
+				lipstick = child
+			"Beard":
+				beard = child
+			"Eyes":
+				eyes = child
+			"Hair":
+				hair = child
+				
+	load_character()
+
+	
+# loaded the player data
+func load_data():
+	var dir = Directory.new()
+	dir.open(SAVE_PATH)
+	dir.list_dir_begin()
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif ((!file.begins_with(".")) and (file.ends_with(".json"))):
+			var save_game = File.new()
+			save_game.open(SAVE_PATH + file, File.READ)
+			var save_game_data = {}
+			save_game_data = parse_json(save_game.get_line())
+			save_game.close()
+			data_list.append(save_game_data)
+			var name = save_game_data.name
+			var gold = save_game_data.gold
+			var level = save_game_data.level
+			create_item(name, level, gold)
+	dir.list_dir_end()
 	
 
 # create Character Item to Choose
@@ -75,6 +130,7 @@ func unchange_menu_color():
 		for i in list.get_child_count():
 			list.get_child(i).get_child(0).add_stylebox_override("panel", style2)
 
+
 # set select style
 func change_menu_color():
 	if list.get_child_count() != 0:
@@ -95,17 +151,50 @@ func _input(event):
 		if selected_character < list.get_child_count()-1:
 			selected_character = selected_character + 1
 			list.get_child(selected_character).grab_focus()
-		print(selected_character)
+			load_character()
 		change_menu_color()
 	elif Input.is_action_just_pressed("ui_up"):
 		unchange_menu_color()
 		if selected_character > 0:
 			selected_character = selected_character - 1
 			list.get_child(selected_character).grab_focus()
-		print(selected_character)
+			load_character()
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+		load_character()
+		set_animation_data()
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			unchange_menu_color()
+
+
+func load_character():
+	var data = data_list[selected_character]
+	var player = Utils.get_player()
+	# set the clothes ...
+	player.set_texture("curr_hair", data.hairs)
+	hair.frame = (data.hair_color*8)
+	player.set_texture("curr_body", data.skincolor)
+	player.set_texture("curr_clothes", data.torso)
+	clothes.frame = (data.torso_color*8)
+	pants.frame = (data.legs_color*8)
+	player.set_texture("curr_pants", data.legs)
+	shoes.frame = (data.shoe_color*8)
+	eyes.frame = (data.eyes_color*8)
+	lipstick.frame = (data.lipstick_color*8)
+	blush.frame = (data.blush_color*8)
+	beard.frame = (data.beard_color*8)
+
+func set_animation_data():
+	var data = data_list[selected_character]
+	var player = Utils.get_player()
+	# set the animation colors
+	player._set_key(9, data.hair_color*8)
+	player._set_key(3, data.torso_color*8)
+	player._set_key(2, data.legs_color*8)
+	player._set_key(1, data.shoe_color*8)
+	player._set_key(7, data.eyes_color*8)
+	player._set_key(5, data.lipstick_color*8)
+	player._set_key(4, data.blush_color*8)
+	player._set_key(6, data.beard_color*8)
