@@ -16,6 +16,7 @@ func post_import(scene):
 			light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
 			light.texture_scale = 0.2
 			light.energy = 0.8
+			light.color = Color("64ffde7e")
 			
 			light.set_script(load("res://scenes/animated_dungeon_lights.gd"))
 			
