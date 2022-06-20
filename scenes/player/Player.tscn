@@ -1713,6 +1713,7 @@ cast_to = Vector2( 0, 8 )
 [node name="Light2D" type="Light2D" parent="."]
 position = Vector2( 8, 8 )
 texture = ExtResource( 16 )
-texture_scale = 0.3
+texture_scale = 0.2
+energy = 0.8
 mode = 2
 script = ExtResource( 17 )

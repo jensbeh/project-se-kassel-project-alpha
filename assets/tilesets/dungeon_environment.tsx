@@ -354,6 +354,16 @@
    <object id="1" x="1" y="0" width="14" height="10"/>
   </objectgroup>
  </tile>
+ <tile id="195">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1" y="0" width="14" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="196">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1" y="0" width="14" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="273">
   <animation>
    <frame tileid="273" duration="200"/>
@@ -362,6 +372,16 @@
    <frame tileid="276" duration="200"/>
    <frame tileid="277" duration="200"/>
   </animation>
+ </tile>
+ <tile id="282">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1" y="0" width="15" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="285">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1" y="0" width="15" height="16"/>
+  </objectgroup>
  </tile>
  <wangsets>
   <wangset name="blue-wall-blue-stone-floor" type="corner" tile="59">
