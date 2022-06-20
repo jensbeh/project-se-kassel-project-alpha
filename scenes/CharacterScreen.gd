@@ -9,6 +9,7 @@ var style1 = StyleBoxFlat.new()
 
 onready var list = $ScrollContainer/MarginContainer/CharacterList
 onready var scroll = $ScrollContainer
+
 var data_list = []
 var body
 var shoes
@@ -59,7 +60,7 @@ func _ready():
 			"Hair":
 				hair = child
 				
-	load_character()
+	call_deferred("load_character")
 
 	
 # loaded the player data
@@ -119,6 +120,8 @@ func create_item(charac_name, charac_level, charac_gold):
 	mcontainer.add_child(vbox)
 	mcontainer.set_script(load("res://scenes/MarginContainerScript.gd"))
 	mcontainer.connect("gui_input", mcontainer, "_on_MarginContainer_gui_input")
+	mcontainer.connect("click", self, "on_click", [mcontainer.get_instance_id()])
+	mcontainer.connect("double_click", self, "on_double_click")
 	container.add_child(mcontainer) 
 	container.set_focus_mode(2)
 	list.add_child(container)
@@ -162,29 +165,41 @@ func _input(event):
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
-		load_character()
 		set_animation_data()
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		load_character()
+
+
+func on_click(id):
+	for item in list.get_children():
+		if item.get_child(1).get_instance_id() == id:
 			unchange_menu_color()
+			selected_character = item.get_index()
+			load_character()
+
+
+func on_double_click():
+	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+	set_animation_data()
+	load_character()
 
 
 func load_character():
-	var data = data_list[selected_character]
-	var player = Utils.get_player()
-	# set the clothes ...
-	player.set_texture("curr_hair", data.hairs)
-	hair.frame = (data.hair_color*8)
-	player.set_texture("curr_body", data.skincolor)
-	player.set_texture("curr_clothes", data.torso)
-	clothes.frame = (data.torso_color*8)
-	pants.frame = (data.legs_color*8)
-	player.set_texture("curr_pants", data.legs)
-	shoes.frame = (data.shoe_color*8)
-	eyes.frame = (data.eyes_color*8)
-	lipstick.frame = (data.lipstick_color*8)
-	blush.frame = (data.blush_color*8)
-	beard.frame = (data.beard_color*8)
+	if data_list != []:
+		var data = data_list[selected_character]
+		var player = Utils.get_player()
+		# set the clothes ...
+		player.set_texture("curr_hair", data.hairs)
+		hair.frame = (data.hair_color*8)
+		player.set_texture("curr_body", data.skincolor)
+		player.set_texture("curr_clothes", data.torso)
+		clothes.frame = (data.torso_color*8)
+		pants.frame = (data.legs_color*8)
+		player.set_texture("curr_pants", data.legs)
+		shoes.frame = (data.shoe_color*8)
+		eyes.frame = (data.eyes_color*8)
+		lipstick.frame = (data.lipstick_color*8)
+		blush.frame = (data.blush_color*8)
+		beard.frame = (data.beard_color*8)
 
 func set_animation_data():
 	var data = data_list[selected_character]

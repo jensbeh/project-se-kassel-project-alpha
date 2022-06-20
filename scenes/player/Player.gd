@@ -194,19 +194,14 @@ func _set_key(track_idx, value):
 	
 
 func set_key(newAnimation, track_idx, value):
-	print(value, "value")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)) + value)
-	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)), "set0")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)) + value)
-	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)), "set1")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)) + value)
-	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)), "set2")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)) + value)
-	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)), "set3")
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1), 
@@ -215,4 +210,3 @@ func set_key(newAnimation, track_idx, value):
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
-	print(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)), "se7")

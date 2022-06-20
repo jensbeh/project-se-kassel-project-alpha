@@ -42,12 +42,16 @@ var hair
 func _ready():
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(0))
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(0))
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer/BeardCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(0))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(0))
+
 	for child in player.get_children():
 		match child.name:
 			"Body":
@@ -113,66 +117,77 @@ func _on_Back_pressed():
 
 
 func _on_Create_Character_pressed():
-	save_game_data.skincolor = curr_body
-	save_game_data.shoes = curr_shoes
-	save_game_data.shoe_color = curr_shoe_color
-	save_game_data.legs = curr_pants
-	save_game_data.legs_color = curr_pants_color
-	save_game_data.torso = curr_clothes
-	save_game_data.torso_color = curr_clothes_color
-	save_game_data.blush = curr_blush
-	save_game_data.blush_color = curr_blush_color
-	save_game_data.lipstick = curr_lipstick
-	save_game_data.lipstick_color = curr_lipstick_color
-	save_game_data.beard = curr_beard
-	save_game_data.beard_color = curr_beard_color
-	save_game_data.eyes = curr_eyes
-	save_game_data.eyes_color = curr_eyes_color
-	save_game_data.earring = curr_earring
-	save_game_data.hairs = curr_hair
-	save_game_data.hair_color = curr_hair_color
-	save_game_data.mask = curr_mask
-	save_game_data.glasses = curr_glasses
-	save_game_data.hat = curr_hat
-	save_game_data.name = charac_name
-	save_data()
-	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
-	Utils.get_player().set_texture("curr_hair", curr_hair)
-	Utils.get_player().set_texture("curr_body", curr_body)
-	Utils.get_player().set_texture("curr_clothes", curr_clothes)
-	Utils.get_player().set_texture("curr_pants", curr_pants)
-	Utils.get_player()._set_key(9, curr_hair_color*8)
-	Utils.get_player()._set_key(3, curr_clothes_color*8)
-	Utils.get_player()._set_key(2, curr_pants_color*8)
-	Utils.get_player()._set_key(1, curr_shoe_color*8)
-	Utils.get_player()._set_key(7, curr_eyes_color*8)
-	Utils.get_player()._set_key(5, curr_lipstick_color*8)
-	Utils.get_player()._set_key(4, curr_blush_color*8)
-	Utils.get_player()._set_key(6, curr_beard_color*8)
+	if charac_name != "":
+		save_game_data.skincolor = curr_body
+		save_game_data.shoes = curr_shoes
+		save_game_data.shoe_color = curr_shoe_color
+		save_game_data.legs = curr_pants
+		save_game_data.legs_color = curr_pants_color
+		save_game_data.torso = curr_clothes
+		save_game_data.torso_color = curr_clothes_color
+		save_game_data.blush = curr_blush
+		save_game_data.blush_color = curr_blush_color
+		save_game_data.lipstick = curr_lipstick
+		save_game_data.lipstick_color = curr_lipstick_color
+		save_game_data.beard = curr_beard
+		save_game_data.beard_color = curr_beard_color
+		save_game_data.eyes = curr_eyes
+		save_game_data.eyes_color = curr_eyes_color
+		save_game_data.earring = curr_earring
+		save_game_data.hairs = curr_hair
+		save_game_data.hair_color = curr_hair_color
+		save_game_data.mask = curr_mask
+		save_game_data.glasses = curr_glasses
+		save_game_data.hat = curr_hat
+		save_game_data.name = charac_name
+		save_data()
+		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+		Utils.get_player().set_texture("curr_hair", curr_hair)
+		Utils.get_player().set_texture("curr_body", curr_body)
+		Utils.get_player().set_texture("curr_clothes", curr_clothes)
+		Utils.get_player().set_texture("curr_pants", curr_pants)
+		Utils.get_player()._set_key(9, curr_hair_color*8)
+		Utils.get_player()._set_key(3, curr_clothes_color*8)
+		Utils.get_player()._set_key(2, curr_pants_color*8)
+		Utils.get_player()._set_key(1, curr_shoe_color*8)
+		Utils.get_player()._set_key(7, curr_eyes_color*8)
+		Utils.get_player()._set_key(5, curr_lipstick_color*8)
+		Utils.get_player()._set_key(4, curr_blush_color*8)
+		Utils.get_player()._set_key(6, curr_beard_color*8)
+		#Utils.get_player().set_visibility(Sprite,sprite_visible)####
 	
 
 func _on_HairLeft_pressed():
-	curr_hair_color = (curr_hair_color -1)
-	if curr_hair_color < 0:
-		curr_hair_color = 13
-		curr_hair -= 1
-		if curr_hair < 0:
-			curr_hair = 13
-	hair.frame = (curr_hair_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair_color + curr_hair*14))
+	curr_hair -= 1
+	if curr_hair < 0:
+		curr_hair = 13
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
 	player.set_texture("curr_hair", curr_hair)
 
 
 func _on_HairRight_pressed():
+	curr_hair += 1
+	if curr_hair > 13:
+		curr_hair = 0
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
+	player.set_texture("curr_hair", curr_hair)
+
+
+
+func _on_HairColorLeft_pressed():
+	curr_hair_color = (curr_hair_color -1)
+	if curr_hair_color < 0:
+		curr_hair_color = 13
+	hair.frame = (curr_hair_color*8)
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorCount.set_text(str(curr_hair_color))
+
+
+func _on_HairColorRight_pressed():
 	curr_hair_color = (curr_hair_color +1)
 	if curr_hair_color > 13:
 		curr_hair_color = 0
-		curr_hair += 1
-		if curr_hair > 13:
-			curr_hair = 0
 	hair.frame = (curr_hair_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair_color + curr_hair*14))
-	player.set_texture("curr_hair", curr_hair)
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorCount.set_text(str(curr_hair_color))
 
 
 func _on_SkinLeft_pressed():
@@ -191,51 +206,67 @@ func _on_SkinRight_pressed():
 
 
 func _on_TorsoLeft_pressed():
-	curr_clothes_color = (curr_clothes_color -1)
-	if curr_clothes_color < 0:
-		curr_clothes_color = 9
-		curr_clothes -= 1
-		if curr_clothes < 0:
-			curr_clothes = 10
-	clothes.frame = (curr_clothes_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(curr_clothes_color + curr_clothes*14))
+	curr_clothes -= 1
+	if curr_clothes < 0:
+		curr_clothes = 10
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(curr_clothes))
 	player.set_texture("curr_clothes", curr_clothes)
 
 
 func _on_TorsoRight_pressed():
-	curr_clothes_color = (curr_clothes_color +1)
-	if curr_clothes_color > 9:
-		curr_clothes_color = 0
-		curr_clothes += 1
-		if curr_clothes > 10:
-			curr_clothes = 0
-	clothes.frame = (curr_clothes_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(curr_clothes_color + curr_clothes*10))
+	curr_clothes += 1
+	if curr_clothes > 10:
+		curr_clothes = 0
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(curr_clothes))
 	player.set_texture("curr_clothes", curr_clothes)
 
 
+func _on_TorsoColorLeft_pressed():
+	curr_clothes_color = (curr_clothes_color -1)
+	if curr_clothes_color < 0:
+		curr_clothes_color = 9
+	clothes.frame = (curr_clothes_color*8)
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(curr_clothes_color))
+
+
+func _on_TorsoColorRight_pressed():
+	curr_clothes_color = (curr_clothes_color +1)
+	if curr_clothes_color > 9:
+		curr_clothes_color = 0
+	clothes.frame = (curr_clothes_color*8)
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(curr_clothes_color))
+
+
 func _on_LegsLeft_pressed():
-	curr_pants_color = (curr_pants_color -1)
-	if curr_pants_color < 0:
-		curr_pants_color = 9
-		curr_pants -= 1
-		if curr_pants < 0:
-			curr_pants = 2
-	pants.frame = (curr_pants_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(curr_pants_color + curr_pants*10))
+	curr_pants -= 1
+	if curr_pants < 0:
+		curr_pants = 2
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(curr_pants))
 	player.set_texture("curr_pants", curr_pants)
 
 
 func _on_LegsRight_pressed():
+	curr_pants += 1
+	if curr_pants > 2:
+		curr_pants = 0
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(curr_pants))
+	player.set_texture("curr_pants", curr_pants)
+
+
+func _on_LegsColorLeft_pressed():
+	curr_pants_color = (curr_pants_color -1)
+	if curr_pants_color < 0:
+		curr_pants_color = 9
+	pants.frame = (curr_pants_color*8)
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(curr_pants_color))
+
+
+func _on_LegsColorRight_pressed():
 	curr_pants_color = (curr_pants_color +1)
 	if curr_pants_color > 9:
 		curr_pants_color = 0
-		curr_pants += 1
-		if curr_pants > 2:
-			curr_pants = 0
 	pants.frame = (curr_pants_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(curr_pants_color + curr_pants*10))
-	player.set_texture("curr_pants", curr_pants)
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(curr_pants_color))
 
 
 func _on_ShoesLeft_pressed():
@@ -243,7 +274,7 @@ func _on_ShoesLeft_pressed():
 	if curr_shoe_color < 0:
 		curr_shoe_color = 9
 	shoes.frame = (curr_shoe_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(curr_shoe_color))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(curr_shoe_color))
 	player.set_texture("curr_shoes", curr_shoes)
 
 
@@ -252,7 +283,7 @@ func _on_ShoesRight_pressed():
 	if curr_shoe_color > 9:
 		curr_shoe_color = 0
 	shoes.frame = (curr_shoe_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(curr_shoe_color))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(curr_shoe_color))
 	player.set_texture("curr_shoes", curr_shoes)
 
 
@@ -261,7 +292,7 @@ func _on_EyesLeft_pressed():
 	if curr_eyes_color < 0:
 		curr_eyes_color = 13
 	eyes.frame = (curr_eyes_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(curr_eyes_color))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(curr_eyes_color))
 	player.set_texture("curr_eyes", curr_eyes)
 
 
@@ -270,7 +301,7 @@ func _on_EyesRight_pressed():
 	if curr_eyes_color > 13:
 		curr_eyes_color = 0
 	eyes.frame = (curr_eyes_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(curr_eyes_color))
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(curr_eyes_color))
 	player.set_texture("curr_eyes", curr_eyes)
 
 
@@ -286,7 +317,7 @@ func _on_MakeupLeft_pressed():
 		curr_blush_color = 4
 	blush.frame = (curr_blush_color*8)
 	player.set_texture("curr_blush", curr_blush)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
+	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
 
 
 func _on_MakeupRight_pressed():
@@ -301,7 +332,7 @@ func _on_MakeupRight_pressed():
 		curr_blush_color = 0
 	blush.frame = (curr_blush_color*8)
 	player.set_texture("curr_blush", curr_blush)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
+	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
 
 
 func _on_BeardLeft_pressed():
@@ -324,3 +355,5 @@ func _on_BeardRight_pressed():
 
 func _on_LineEdit_text_changed(new_text):
 	charac_name = new_text
+
+
