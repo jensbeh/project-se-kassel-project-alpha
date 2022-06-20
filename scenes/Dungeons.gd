@@ -21,7 +21,7 @@ func body_exited_enter_level_area(body, enter_level_area):
 
 # Setup all objects Area2D's on start
 func setup_objects_areas():
-	var object = get_node("dungeon1-1/objects")
+	var object = find_node("objects")
 	for child in object.get_children():
 		if "enter_level" in child.name:
 			# connect Area2D with functions to handle body action
@@ -29,4 +29,4 @@ func setup_objects_areas():
 			child.connect("body_exited", self, "body_exited_enter_level_area", [child])
 		elif "player_spawn" in child.name:
 			# connect Area2D with functions to handle body action
-			$"dungeon1-1/playerlayer/Player".position = Vector2(child.position.x + 5, child.position.y)
+			find_node("Player").position = Vector2(child.position.x + 5, child.position.y)
