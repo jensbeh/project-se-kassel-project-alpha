@@ -47,6 +47,7 @@ var curr_hat: int = 0 #0-4, 1
 # Walk
 const WALK_SPEED = 50
 var velocity = Vector2(0,1)
+var movement
 
 
 func _ready():
@@ -103,13 +104,17 @@ func _physics_process(_delta):
 		animation_state.travel("Walk")
 	else:
 		animation_state.travel("Idle")
-		
-	move_and_slide(velocity)
-	for i in get_slide_count():
-		var collision = get_slide_collision(i)
-		if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-			emit_signal("player_collided", collision.get_collider())		
+	
+	if movement:	
+		move_and_slide(velocity)
+		for i in get_slide_count():
+			var collision = get_slide_collision(i)
+			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+				emit_signal("player_collided", collision.get_collider())		
 
+
+func set_movement(value):
+	movement = value
 
 # Sets the Visibility of a given Sprite
 func set_visibility(sprite, visibility):

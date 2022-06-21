@@ -58,7 +58,7 @@ func _ready():
 
 	get_sprites()
 	
-	
+	Utils.get_player().set_movement(false)
 	
 	beard.visible = false
 	blush.visible = false
@@ -163,6 +163,7 @@ func _on_Create_Character_pressed():
 		save_data()
 		# Load Created Settings in World
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+		Utils.get_player().set_movement(true)
 		Utils.get_player().set_texture("curr_body", curr_body)
 		Utils.get_player().set_texture("curr_clothes", curr_clothes)
 		Utils.get_player().set_texture("curr_pants", curr_pants)

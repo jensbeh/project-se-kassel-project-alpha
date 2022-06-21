@@ -40,6 +40,7 @@ func _ready():
 		list.get_child(0).grab_focus()
 	else:
 		Utils.get_player().visible = false
+	Utils.get_player().set_movement(false)
 	
 	for child in Utils.get_player().get_children():
 		match child.name:
@@ -168,6 +169,7 @@ func _input(event):
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+		Utils.get_player().set_movement(true)
 		set_animation_data()
 		load_character()
 
@@ -182,6 +184,7 @@ func on_click(id):
 
 func on_double_click():
 	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+	Utils.get_player().set_movement(true)
 	set_animation_data()
 	load_character()
 
@@ -203,7 +206,6 @@ func load_character():
 			player.set_visibility("Beard", false)
 			beard.frame = ((data.beard_color)*8)
 		else: 
-			beard.visible = true
 			player.set_visibility("Beard", true)
 			beard.frame = ((data.beard_color-1)*8)
 		if data.blush_color == 0:
@@ -225,6 +227,7 @@ func load_character():
 			player.set_visibility("Hair", true)
 			player.set_texture("curr_hair", data.hairs-1)
 
+
 func set_animation_data():
 	var data = data_list[selected_character]
 	var player = Utils.get_player()
@@ -234,6 +237,15 @@ func set_animation_data():
 	player._set_key(2, data.legs_color*8)
 	player._set_key(1, data.shoe_color*8)
 	player._set_key(7, data.eyes_color*8)
-	player._set_key(5, data.lipstick_color*8)
-	player._set_key(4, data.blush_color*8)
-	player._set_key(6, data.beard_color*8)
+	if data.beard_color == 0:
+		player._set_key(6, data.beard_color*8)
+	else: 
+		player._set_key(6, (data.beard_color-1)*8)
+	if data.blush_color == 0:
+		player._set_key(4, data.blush_color*8)
+	else: 
+		player._set_key(4, (data.blush_color-1)*8)
+	if data.lipstick_color == 0:
+		player._set_key(5, data.lipstick_color*8)
+	else: 
+		player._set_key(5, (data.lipstick_color-1)*8)
