@@ -38,6 +38,8 @@ func _ready():
 	change_menu_color()
 	if list.get_child_count() != 0:
 		list.get_child(0).grab_focus()
+	else:
+		Utils.get_player().visible = false
 	
 	for child in Utils.get_player().get_children():
 		match child.name:
@@ -60,6 +62,7 @@ func _ready():
 			"Hair":
 				hair = child
 				
+	
 	call_deferred("load_character")
 
 	
@@ -188,7 +191,6 @@ func load_character():
 		var data = data_list[selected_character]
 		var player = Utils.get_player()
 		# set the clothes ...
-		player.set_texture("curr_hair", data.hairs)
 		hair.frame = (data.hair_color*8)
 		player.set_texture("curr_body", data.skincolor)
 		player.set_texture("curr_clothes", data.torso)
@@ -197,9 +199,31 @@ func load_character():
 		player.set_texture("curr_pants", data.legs)
 		shoes.frame = (data.shoe_color*8)
 		eyes.frame = (data.eyes_color*8)
-		lipstick.frame = (data.lipstick_color*8)
-		blush.frame = (data.blush_color*8)
-		beard.frame = (data.beard_color*8)
+		if data.beard_color == 0:
+			player.set_visibility("Beard", false)
+			beard.frame = ((data.beard_color)*8)
+		else: 
+			beard.visible = true
+			player.set_visibility("Beard", true)
+			beard.frame = ((data.beard_color-1)*8)
+		if data.blush_color == 0:
+			player.set_visibility("Blush", false)
+			blush.frame = ((data.blush_color)*8)
+		else: 
+			player.set_visibility("Blush", true)
+			blush.frame = ((data.blush_color-1)*8)
+		if data.lipstick_color == 0:
+			player.set_visibility("Lipstick", false)
+			lipstick.frame = ((data.lipstick_color)*8)
+		else: 
+			player.set_visibility("Lipstick", true)
+			lipstick.frame = ((data.lipstick_color-1)*8)
+		if data.hairs == 0:
+			player.set_visibility("Hair", false)
+			player.set_texture("curr_hair", data.hairs)
+		else: 
+			player.set_visibility("Hair", true)
+			player.set_texture("curr_hair", data.hairs-1)
 
 func set_animation_data():
 	var data = data_list[selected_character]

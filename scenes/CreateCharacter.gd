@@ -2,9 +2,11 @@ extends Node2D
 
 const SAVE_PATH = "user://"
 const SAVE_FILE_EXTENSION = ".json"
+const uuid_util = preload("res://addons/uuid.gd")
 
-onready var player = get_node("ViewportContainer/Viewport/Player")
+onready var player = Utils.get_player()
 
+var uuid
 var charac_name = ""
 # Count Textures, Count Colors
 var curr_body: int = 0
@@ -28,6 +30,8 @@ var curr_hair_color: int = 0
 var curr_mask: int = 0
 var curr_glasses: int = 0
 var curr_hat: int = 0
+
+# Sprites
 var body
 var shoes
 var pants
@@ -52,7 +56,20 @@ func _ready():
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(0))
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(0))
 
-	for child in player.get_children():
+	get_sprites()
+	
+	
+	
+	beard.visible = false
+	blush.visible = false
+	lipstick.visible = false
+	hair.visible = false
+	
+	uuid = uuid_util.v4()
+
+
+func get_sprites():
+	for child in Utils.get_player().get_children():
 		match child.name:
 			"Body":
 				body = child
@@ -72,6 +89,7 @@ func _ready():
 				eyes = child
 			"Hair":
 				hair = child
+
 
 var save_game_data = {
 	"name": charac_name,
@@ -100,13 +118,14 @@ var save_game_data = {
 	"mask": curr_mask,
 	"earring": curr_earring,
 	"glasses": curr_glasses,
+	"id" : uuid
 }
 
 
 # save the player data
 func save_data():
 	var save_game = File.new()
-	save_game.open(SAVE_PATH + charac_name + SAVE_FILE_EXTENSION, File.WRITE)
+	save_game.open(SAVE_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))
 	save_game.close()
 	print("Savegame saved")
@@ -140,9 +159,10 @@ func _on_Create_Character_pressed():
 		save_game_data.glasses = curr_glasses
 		save_game_data.hat = curr_hat
 		save_game_data.name = charac_name
+		save_game_data.id = uuid
 		save_data()
+		# Load Created Settings in World
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
-		Utils.get_player().set_texture("curr_hair", curr_hair)
 		Utils.get_player().set_texture("curr_body", curr_body)
 		Utils.get_player().set_texture("curr_clothes", curr_clothes)
 		Utils.get_player().set_texture("curr_pants", curr_pants)
@@ -151,27 +171,54 @@ func _on_Create_Character_pressed():
 		Utils.get_player()._set_key(2, curr_pants_color*8)
 		Utils.get_player()._set_key(1, curr_shoe_color*8)
 		Utils.get_player()._set_key(7, curr_eyes_color*8)
-		Utils.get_player()._set_key(5, curr_lipstick_color*8)
-		Utils.get_player()._set_key(4, curr_blush_color*8)
-		Utils.get_player()._set_key(6, curr_beard_color*8)
-		#Utils.get_player().set_visibility(Sprite,sprite_visible)####
+		if curr_beard_color == 0:
+			Utils.get_player().set_visibility("Beard", false)
+			Utils.get_player()._set_key(6, curr_beard_color*8)
+		else: 
+			Utils.get_player().set_visibility("Beard", true)
+			Utils.get_player()._set_key(6, (curr_beard_color-1)*8)
+		if curr_blush_color == 0:
+			Utils.get_player().set_visibility("Blush", false)
+			Utils.get_player()._set_key(4, curr_blush_color*8)
+		else: 
+			Utils.get_player().set_visibility("Blush", true)
+			Utils.get_player()._set_key(4, (curr_blush_color-1)*8)
+		if curr_lipstick_color == 0:
+			Utils.get_player().set_visibility("Lipstick", false)
+			Utils.get_player()._set_key(5, curr_lipstick_color*8)
+		else: 
+			Utils.get_player().set_visibility("Lipstick", true)
+			Utils.get_player()._set_key(5, (curr_lipstick_color-1)*8)
+		if curr_hair == 0:
+			Utils.get_player().set_visibility("Hair", false)
+			Utils.get_player().set_texture("curr_hair", curr_hair)
+		else: 
+			Utils.get_player().set_visibility("Hair", true)
+			Utils.get_player().set_texture("curr_hair", curr_hair-1)
 	
 
 func _on_HairLeft_pressed():
 	curr_hair -= 1
 	if curr_hair < 0:
-		curr_hair = 13
+		curr_hair = 14
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
-	player.set_texture("curr_hair", curr_hair)
+	if curr_hair == 0:
+		hair.visible = false
+	else:
+		hair.visible = true
+		player.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairRight_pressed():
 	curr_hair += 1
-	if curr_hair > 13:
+	if curr_hair > 14:
 		curr_hair = 0
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
-	player.set_texture("curr_hair", curr_hair)
-
+	if curr_hair == 0:
+		hair.visible = false
+	else:
+		hair.visible = true
+		player.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairColorLeft_pressed():
@@ -308,29 +355,45 @@ func _on_EyesRight_pressed():
 func _on_MakeupLeft_pressed():
 	curr_lipstick_color = (curr_lipstick_color -1)
 	if curr_lipstick_color < 0:
-		curr_lipstick_color = 4
-	lipstick.frame = (curr_lipstick_color*8)
+		curr_lipstick_color = 5
+	if curr_lipstick_color == 0:
+		lipstick.visible = false
+	else:
+		lipstick.frame = ((curr_lipstick_color-1)*8)
+		lipstick.visible = true
 	player.set_texture("curr_lipstick", curr_lipstick)
 	
 	curr_blush_color = (curr_blush_color -1)
 	if curr_blush_color < 0:
-		curr_blush_color = 4
-	blush.frame = (curr_blush_color*8)
+		curr_blush_color = 5
+	if curr_blush_color == 0:
+		blush.visible = false
+	else:
+		blush.frame = ((curr_blush_color-1)*8)
+		blush.visible = true
 	player.set_texture("curr_blush", curr_blush)
 	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
 
 
 func _on_MakeupRight_pressed():
 	curr_lipstick_color = (curr_lipstick_color +1)
-	if curr_lipstick_color > 4:
+	if curr_lipstick_color > 5:
 		curr_lipstick_color = 0
-	lipstick.frame = (curr_lipstick_color*8)
+	if curr_lipstick_color == 0:
+		lipstick.visible = false
+	else:
+		lipstick.frame = ((curr_lipstick_color-1)*8)
+		lipstick.visible = true
 	player.set_texture("curr_lipstick", curr_lipstick)
 	
 	curr_blush_color = (curr_blush_color +1)
-	if curr_blush_color > 4:
+	if curr_blush_color > 5:
 		curr_blush_color = 0
-	blush.frame = (curr_blush_color*8)
+	if curr_blush_color == 0:
+		blush.visible = false
+	else:
+		blush.visible = true
+		blush.frame = ((curr_blush_color-1)*8)
 	player.set_texture("curr_blush", curr_blush)
 	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
 
@@ -338,18 +401,26 @@ func _on_MakeupRight_pressed():
 func _on_BeardLeft_pressed():
 	curr_beard_color = (curr_beard_color -1)
 	if curr_beard_color < 0:
-		curr_beard_color = 13
-	beard.frame = (curr_beard_color*8)
+		curr_beard_color = 14
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer/BeardCount.set_text(str(curr_beard_color))
+	if curr_beard_color == 0:
+		beard.visible = false
+	else:
+		beard.visible = true
+		beard.frame = ((curr_beard_color-1)*8)
 	player.set_texture("curr_beard", curr_beard)
 
 
 func _on_BeardRight_pressed(): 
 	curr_beard_color = (curr_beard_color +1)
-	if curr_beard_color > 13:
+	if curr_beard_color > 14:
 		curr_beard_color = 0
-	beard.frame = (curr_beard_color*8)
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer/BeardCount.set_text(str(curr_beard_color))
+	if curr_beard_color == 0:
+		beard.visible = false
+	else:
+		beard.visible = true
+		beard.frame = ((curr_beard_color-1)*8)	
 	player.set_texture("curr_beard", curr_beard)
 
 

@@ -1585,7 +1585,7 @@ hframes = 80
 vframes = 49
 
 [node name="Pants" type="Sprite" parent="."]
-position = Vector2( -8, -12.5 )
+position = Vector2( -8, -13 )
 scale = Vector2( 1, 0.875 )
 texture = ExtResource( 5 )
 centered = false

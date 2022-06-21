@@ -68,10 +68,10 @@ func _ready():
 	shadow.visible = false
 	
 	# Sets the Visibility of a given Sprite
-	set_visibility(maskSprite, false) #Sprite, true/false 
-	set_visibility(glassesSprite, false)
-	set_visibility(earringSprite, false)
-	set_visibility(hatSprite, false)
+	set_visibility("Mask", false) #Sprite, true/false 
+	set_visibility("Glasses", false)
+	set_visibility("Earrings", false)
+	set_visibility("Hat", false)
 
 	# Animation
 	animation_tree.active = true
@@ -112,8 +112,34 @@ func _physics_process(_delta):
 
 
 # Sets the Visibility of a given Sprite
-func set_visibility(sprite, value):
-	sprite.visible = value
+func set_visibility(sprite, visibility):
+	match sprite:
+		"Body":
+			bodySprite.visible = visibility
+		"Shoes":
+			shoesSprite.visible = visibility
+		"Pants":
+			pantsSprite.visible = visibility
+		"Clothes":
+			clothesSprite.visible = visibility
+		"Blush":
+			blushSprite.visible = visibility
+		"Lipstick":
+			lipstickSprite.visible = visibility
+		"Beard":
+			beardSprite.visible = visibility
+		"Eyes":
+			eyesSprite.visible = visibility
+		"Hair":
+			hairSprite.visible = visibility
+		"Mask":
+			maskSprite.visible = visibility
+		"Hat":
+			hatSprite.visible = visibility
+		"Earrings":
+			earringSprite.visible = visibility
+		"Glasses":
+			glassesSprite.visible = visibility
 
 
 # Sets the current texture
