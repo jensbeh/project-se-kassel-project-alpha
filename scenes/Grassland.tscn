@@ -20,5 +20,8 @@ parameters/playback = SubResource( 1 )
 [node name="Camera2D" parent="grassland/level 1/playerlayer-lvl1/Player" index="17"]
 limit_bottom = 794
 
+[node name="Light2D" parent="grassland/level 1/playerlayer-lvl1/Player" index="19"]
+enabled = false
+
 [editable path="grassland"]
 [editable path="grassland/level 1/playerlayer-lvl1/Player"]
