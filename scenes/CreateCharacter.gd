@@ -167,23 +167,31 @@ func _on_Create_Character_pressed():
 		Utils.get_player().set_texture("curr_body", curr_body)
 		Utils.get_player().set_texture("curr_clothes", curr_clothes)
 		Utils.get_player().set_texture("curr_pants", curr_pants)
+		Utils.get_player().reset_key(9)
 		Utils.get_player()._set_key(9, curr_hair_color*8)
+		Utils.get_player().reset_key(3)
 		Utils.get_player()._set_key(3, curr_clothes_color*8)
+		Utils.get_player().reset_key(2)
 		Utils.get_player()._set_key(2, curr_pants_color*8)
+		Utils.get_player().reset_key(1)
 		Utils.get_player()._set_key(1, curr_shoe_color*8)
+		Utils.get_player().reset_key(7)
 		Utils.get_player()._set_key(7, curr_eyes_color*8)
+		Utils.get_player().reset_key(6)
 		if curr_beard_color == 0:
 			Utils.get_player().set_visibility("Beard", false)
 			Utils.get_player()._set_key(6, curr_beard_color*8)
 		else: 
 			Utils.get_player().set_visibility("Beard", true)
 			Utils.get_player()._set_key(6, (curr_beard_color-1)*8)
+		Utils.get_player().reset_key(4)
 		if curr_blush_color == 0:
 			Utils.get_player().set_visibility("Blush", false)
 			Utils.get_player()._set_key(4, curr_blush_color*8)
 		else: 
 			Utils.get_player().set_visibility("Blush", true)
 			Utils.get_player()._set_key(4, (curr_blush_color-1)*8)
+		Utils.get_player().reset_key(5)
 		if curr_lipstick_color == 0:
 			Utils.get_player().set_visibility("Lipstick", false)
 			Utils.get_player()._set_key(5, curr_lipstick_color*8)

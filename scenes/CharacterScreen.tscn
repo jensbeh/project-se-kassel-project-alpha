@@ -1541,6 +1541,10 @@ current = false
 [node name="RayCast2D" parent="Node2D/Player" index="18"]
 visible = false
 
+[node name="Light2D" parent="Node2D/Player" index="19"]
+visible = false
+enabled = false
+
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
 
