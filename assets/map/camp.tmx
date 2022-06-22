@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1101" nextobjectid="3001">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1102" nextobjectid="3011">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -5882,6 +5882,43 @@
     <object id="2966" gid="6453" x="1744" y="560" width="16" height="16"/>
    </objectgroup>
   </group>
+  <objectgroup id="1101" name="playerSpawns">
+   <object id="3002" name="player_spawn_from_house4" type="area" x="1356" y="772" width="24" height="23">
+    <properties>
+     <property name="from" value="house4"/>
+    </properties>
+   </object>
+   <object id="3003" name="player_spawn_from_house1" type="area" x="1180" y="724" width="24" height="23">
+    <properties>
+     <property name="from" value="house1"/>
+    </properties>
+   </object>
+   <object id="3004" name="player_spawn_from_tavern" type="area" x="1356" y="644" width="24" height="23">
+    <properties>
+     <property name="from" value="tavern"/>
+    </properties>
+   </object>
+   <object id="3005" name="player_spawn_from_hostel" type="area" x="1516" y="676" width="24" height="23">
+    <properties>
+     <property name="from" value="hostel"/>
+    </properties>
+   </object>
+   <object id="3007" name="player_spawn_from_house2" type="area" x="1740" y="852" width="24" height="23">
+    <properties>
+     <property name="from" value="house2"/>
+    </properties>
+   </object>
+   <object id="3008" name="player_spawn_from_house5" type="area" x="1596" y="484" width="24" height="23">
+    <properties>
+     <property name="from" value="house5"/>
+    </properties>
+   </object>
+   <object id="3010" name="player_spawn_from_grassland" type="area" x="1056" y="201" width="48" height="23">
+    <properties>
+     <property name="from" value="grassland"/>
+    </properties>
+   </object>
+  </objectgroup>
   <objectgroup id="1095" name="collisions">
    <object id="2967" x="1824" y="833" width="72" height="8"/>
    <object id="2968" x="1813" y="870" width="83" height="8"/>
