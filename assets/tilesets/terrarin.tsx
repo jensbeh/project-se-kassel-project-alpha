@@ -6,7 +6,7 @@
  <tile id="7" probability="0.01"/>
  <tile id="14">
   <objectgroup draworder="index" id="2">
-   <object id="2" x="2" y="4" width="9" height="12"/>
+   <object id="2" x="1" y="4" width="10" height="12"/>
    <object id="3" x="11" y="1" width="5" height="3"/>
   </objectgroup>
  </tile>
@@ -17,7 +17,7 @@
  </tile>
  <tile id="16">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
+   <object id="1" x="4" y="4" width="11" height="12"/>
    <object id="4" x="0" y="1" width="4" height="3"/>
   </objectgroup>
  </tile>
@@ -43,8 +43,8 @@
  </tile>
  <tile id="23">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="24">
@@ -54,8 +54,8 @@
  </tile>
  <tile id="25">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
    <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
   </objectgroup>
  </tile>
  <tile id="26">
@@ -158,8 +158,8 @@
  <tile id="89" probability="0.02"/>
  <tile id="90">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="1" x="1" y="0" width="10" height="3"/>
+   <object id="2" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="91">
@@ -169,8 +169,8 @@
  </tile>
  <tile id="92">
   <objectgroup draworder="index" id="2">
-   <object id="2" x="0" y="3" width="14" height="12"/>
-   <object id="3" x="4" y="0" width="10" height="3"/>
+   <object id="2" x="0" y="3" width="15" height="12"/>
+   <object id="3" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="93" probability="0.001">
@@ -181,8 +181,8 @@
  <tile id="94" probability="0.001"/>
  <tile id="99">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="3" x="1" y="0" width="10" height="3"/>
+   <object id="4" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="100">
@@ -192,8 +192,8 @@
  </tile>
  <tile id="101">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="3" width="14" height="12"/>
-   <object id="2" x="4" y="0" width="10" height="3"/>
+   <object id="3" x="0" y="3" width="15" height="12"/>
+   <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="102" probability="0.001"/>
@@ -205,8 +205,8 @@
  <tile id="127" probability="0.02"/>
  <tile id="128">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="129">
@@ -216,8 +216,8 @@
  </tile>
  <tile id="130">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
-   <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
+   <object id="4" x="0" y="1" width="4" height="3"/>
   </objectgroup>
  </tile>
  <tile id="131">
@@ -242,8 +242,8 @@
  </tile>
  <tile id="137">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="138">
@@ -253,8 +253,8 @@
  </tile>
  <tile id="139">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
    <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
   </objectgroup>
  </tile>
  <tile id="140">
@@ -340,8 +340,8 @@
  </tile>
  <tile id="204">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="3" x="1" y="0" width="10" height="3"/>
+   <object id="4" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="205">
@@ -351,8 +351,8 @@
  </tile>
  <tile id="206">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="3" width="14" height="12"/>
-   <object id="2" x="4" y="0" width="10" height="3"/>
+   <object id="3" x="0" y="3" width="15" height="12"/>
+   <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="207" probability="0.001">
@@ -363,8 +363,8 @@
  <tile id="208" probability="0.001"/>
  <tile id="213">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="3" x="1" y="0" width="10" height="3"/>
+   <object id="4" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="214">
@@ -374,8 +374,8 @@
  </tile>
  <tile id="215">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="3" width="14" height="12"/>
-   <object id="2" x="4" y="0" width="10" height="3"/>
+   <object id="3" x="0" y="3" width="15" height="12"/>
+   <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="216" probability="0.001"/>
@@ -385,8 +385,8 @@
  <tile id="235" probability="0.01"/>
  <tile id="242">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="243">
@@ -396,8 +396,8 @@
  </tile>
  <tile id="244">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
    <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
   </objectgroup>
  </tile>
  <tile id="245">
@@ -422,8 +422,8 @@
  </tile>
  <tile id="251">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="252">
@@ -433,8 +433,8 @@
  </tile>
  <tile id="253">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
    <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
   </objectgroup>
  </tile>
  <tile id="254">
@@ -527,8 +527,8 @@
  <tile id="317" probability="0.05"/>
  <tile id="318">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="3" x="1" y="0" width="10" height="3"/>
+   <object id="4" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="319">
@@ -538,8 +538,8 @@
  </tile>
  <tile id="320">
   <objectgroup draworder="index" id="3">
-   <object id="3" x="0" y="3" width="14" height="12"/>
-   <object id="4" x="4" y="0" width="10" height="3"/>
+   <object id="5" x="0" y="3" width="15" height="12"/>
+   <object id="6" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="321" probability="0.001">
@@ -550,8 +550,8 @@
  <tile id="322" probability="0.001"/>
  <tile id="327">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="3" x="1" y="0" width="10" height="3"/>
+   <object id="4" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="328">
@@ -561,8 +561,8 @@
  </tile>
  <tile id="329">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="3" width="14" height="12"/>
-   <object id="2" x="4" y="0" width="10" height="3"/>
+   <object id="3" x="0" y="3" width="15" height="12"/>
+   <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="330" probability="0.001"/>
@@ -570,8 +570,8 @@
  <tile id="349" probability="0.02"/>
  <tile id="356">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="357">
@@ -581,8 +581,8 @@
  </tile>
  <tile id="358">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
    <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
   </objectgroup>
  </tile>
  <tile id="359">
@@ -607,8 +607,8 @@
  </tile>
  <tile id="365">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="4" width="9" height="12"/>
    <object id="2" x="11" y="1" width="5" height="3"/>
+   <object id="3" x="1" y="4" width="10" height="12"/>
   </objectgroup>
  </tile>
  <tile id="366">
@@ -618,8 +618,8 @@
  </tile>
  <tile id="367">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="4" width="10" height="12"/>
    <object id="2" x="0" y="1" width="4" height="3"/>
+   <object id="3" x="4" y="4" width="11" height="12"/>
   </objectgroup>
  </tile>
  <tile id="368">
@@ -705,8 +705,8 @@
  </tile>
  <tile id="432">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2" y="0" width="9" height="3"/>
-   <object id="2" x="2" y="3" width="14" height="12"/>
+   <object id="3" x="1" y="0" width="10" height="3"/>
+   <object id="4" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="433">
@@ -716,8 +716,8 @@
  </tile>
  <tile id="434">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="3" width="14" height="12"/>
-   <object id="2" x="4" y="0" width="10" height="3"/>
+   <object id="3" x="0" y="3" width="15" height="12"/>
+   <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="435" probability="0.001">
@@ -728,8 +728,8 @@
  <tile id="436" probability="0.001"/>
  <tile id="441">
   <objectgroup draworder="index" id="3">
-   <object id="3" x="2" y="0" width="9" height="3"/>
-   <object id="4" x="2" y="3" width="14" height="12"/>
+   <object id="5" x="1" y="0" width="10" height="3"/>
+   <object id="6" x="1" y="3" width="15" height="12"/>
   </objectgroup>
  </tile>
  <tile id="442">
@@ -739,8 +739,8 @@
  </tile>
  <tile id="443">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="3" width="14" height="12"/>
-   <object id="2" x="4" y="0" width="10" height="3"/>
+   <object id="3" x="0" y="3" width="15" height="12"/>
+   <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
  <tile id="444" probability="0.001"/>
