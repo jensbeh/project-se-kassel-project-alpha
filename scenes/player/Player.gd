@@ -39,7 +39,7 @@ var curr_lipstick: int = 0 #0, 5
 var curr_beard: int = 0 #0, 14
 var curr_eyes: int = 0 #0, 14
 var curr_earring: int = 0 #0-3, 1
-var curr_hair: int = 0 #0-14, 14
+var curr_hair: int = 0 #0-13, 14
 var curr_mask: int = 0 #0-2, 1
 var curr_glasses: int = 0 #0-1, 10
 var curr_hat: int = 0 #0-4, 1
@@ -145,6 +145,8 @@ func set_visibility(sprite, visibility):
 			earringSprite.visible = visibility
 		"Glasses":
 			glassesSprite.visible = visibility
+		"Shadow":
+			shadow.visible = visibility
 
 
 # Sets the current texture
@@ -222,7 +224,7 @@ func _set_key(track_idx, value):
 	animation_player.get_animation("IdleRight").track_find_key(track_idx, 0.0, 1), 
 	animation_player.get_animation("IdleRight").track_get_key_value(track_idx, 
 	newRight.track_find_key(track_idx, 0.0, 1)) + value)
-	
+
 
 func set_key(newAnimation, track_idx, value):
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1), 

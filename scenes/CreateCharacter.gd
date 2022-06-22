@@ -1,6 +1,6 @@
 extends Node2D
 
-const SAVE_PATH = "user://"
+const SAVE_PATH = "user://player/"
 const SAVE_FILE_EXTENSION = ".json"
 const uuid_util = preload("res://addons/uuid.gd")
 
@@ -41,6 +41,7 @@ var lipstick
 var beard
 var eyes
 var hair
+var shadow
 
 
 func _ready():
@@ -56,6 +57,9 @@ func _ready():
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(0))
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(0))
 
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = true
+	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = true
+
 	get_sprites()
 	
 	Utils.get_player().set_movement(false)
@@ -64,6 +68,7 @@ func _ready():
 	blush.visible = false
 	lipstick.visible = false
 	hair.visible = false
+	shadow.visible = true
 	
 	uuid = uuid_util.v4()
 
@@ -89,6 +94,8 @@ func get_sprites():
 				eyes = child
 			"Hair":
 				hair = child
+			"Shadow":
+				shadow = child
 
 
 var save_game_data = {
@@ -163,6 +170,7 @@ func _on_Create_Character_pressed():
 		save_data()
 		# Load Created Settings in World
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+		Utils.get_player().set_visibility("Shadow", false)
 		Utils.get_player().set_movement(true)
 		Utils.get_player().set_texture("curr_body", curr_body)
 		Utils.get_player().set_texture("curr_clothes", curr_clothes)
@@ -209,24 +217,32 @@ func _on_Create_Character_pressed():
 func _on_HairLeft_pressed():
 	curr_hair -= 1
 	if curr_hair < 0:
-		curr_hair = 14
+		curr_hair = 13
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
 	if curr_hair == 0:
 		hair.visible = false
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = true
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = true
 	else:
 		hair.visible = true
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = false
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = false
 		player.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairRight_pressed():
 	curr_hair += 1
-	if curr_hair > 14:
+	if curr_hair > 13:
 		curr_hair = 0
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
 	if curr_hair == 0:
 		hair.visible = false
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = true
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = true
 	else:
 		hair.visible = true
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = false
+		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = false
 		player.set_texture("curr_hair", curr_hair-1)
 
 
@@ -479,11 +495,11 @@ func reset_frame():
 	if curr_blush_color == 0:
 		blush.frame = (curr_blush_color)*8
 	else:
-		blush.frame = (curr_blush_color)*8
+		blush.frame = (curr_blush_color-1)*8
 	if curr_lipstick_color == 0:
 		lipstick.frame = (curr_lipstick_color)*8
 	else:
-		lipstick.frame = (curr_lipstick_color)*8
+		lipstick.frame = (curr_lipstick_color-1)*8
 	if curr_beard_color == 0:
 		beard.frame = (curr_beard_color)*8
 	else:

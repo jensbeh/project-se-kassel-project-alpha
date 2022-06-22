@@ -1,14 +1,15 @@
 extends Node2D ## TODO: load character with mouse click, Bug: syncronize mouse click and keyboard
 
-const SAVE_PATH = "user://"
+const SAVE_PATH = "user://player/"
 const SAVE_FILE_EXTENSION = ".json"
 
 var selected_character = 0
 var style2 = StyleBoxFlat.new()
 var style1 = StyleBoxFlat.new()
 
-onready var list = $ScrollContainer/MarginContainer/CharacterList
-onready var scroll = $ScrollContainer
+onready var list = $ScrollContainer2/MarginContainer/ScrollContainer/MarginContainer/CharacterList
+onready var scroll = $ScrollContainer2/MarginContainer/ScrollContainer
+onready var icon = preload("res://assets/deleteButtonIcon.png")
 
 var data_list = []
 var body
@@ -24,8 +25,9 @@ var hair
 func _ready():
 	# Create Selected Style
 	style2.set_bg_color(Color(0.6, 0.6, 0.6, 1))
-	style1.set_bg_color(Color(0.5, 0.5, 0.5, 1))
+	style1.set_bg_color(Color(0.4, 0.4, 0.4, 1))
 	style1.set_corner_radius_all(5)
+	style2.set_corner_radius_all(5)
 	
 	load_data()
 	
@@ -39,6 +41,12 @@ func _ready():
 	if list.get_child_count() != 0:
 		list.get_child(0).grab_focus()
 		Utils.get_player().visible = true
+		# disabled the play and delete buttons
+		for child in list.get_children():
+			child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
+			child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 	else:
 		Utils.get_player().visible = false
 	Utils.get_player().set_movement(false)
@@ -64,10 +72,10 @@ func _ready():
 			"Hair":
 				hair = child
 				
-	
+	Utils.get_player().set_visibility("Shadow", true)
 	call_deferred("load_character")
 
-	
+
 # loaded the player data
 func load_data():
 	var dir = Directory.new()
@@ -87,14 +95,36 @@ func load_data():
 			var name = save_game_data.name
 			var gold = save_game_data.gold
 			var level = save_game_data.level
-			create_item(name, level, gold)
+			var character_id = save_game_data.id
+			create_item(name, level, gold, character_id)
 	dir.list_dir_end()
-	
+
+
+# click for delete this character
+func on_delete_click(id, container):
+	var dir = Directory.new()
+	if dir.file_exists(SAVE_PATH + id + SAVE_FILE_EXTENSION):
+		dir.remove(SAVE_PATH + id + SAVE_FILE_EXTENSION)
+	list.remove_child(container)
+
+
+# click on play button to enter camp
+func on_play_click():
+	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+	Utils.get_player().set_movement(true)
+	load_character()
+	Utils.get_player().set_visibility("Shadow", false)
+
 
 # create Character Item to Choose
-func create_item(charac_name, charac_level, charac_gold):
+func create_item(charac_name, charac_level, charac_gold, character_id):
 	var container = MarginContainer.new()
 	var panel = Panel.new()
+	var delete_button = Button.new()
+	var play_button = Button.new()
+	play_button.set_text(" ▶ ")
+	delete_button.connect("pressed", self, "on_delete_click", [character_id, container])
+	play_button.connect("pressed", self, "on_play_click")
 	panel.add_stylebox_override("panel", style2)
 	container.add_child(panel)
 	var mcontainer = MarginContainer.new()
@@ -102,6 +132,8 @@ func create_item(charac_name, charac_level, charac_gold):
 	mcontainer.add_constant_override("margin_left", 10)
 	mcontainer.add_constant_override("margin_bottom", 10)
 	var vbox = VBoxContainer.new()
+	var hboxc = HBoxContainer.new()
+	hboxc.add_constant_override("separation", 50)
 	vbox.add_constant_override("separation", 10)
 	var name = Label.new()
 	name.set_text("Name: " + charac_name)
@@ -114,15 +146,28 @@ func create_item(charac_name, charac_level, charac_gold):
 	var hbox = HBoxContainer.new()
 	hbox.add_constant_override("separation", 50)
 	var gold = Label.new()
-	gold.set_text("Gold: " + var2str(charac_gold))
+	gold.set_text("Gold: " + str(charac_gold))
 	gold.add_font_override("font", font)
 	hbox.add_child(gold)
 	var level = Label.new()
-	level.set_text("Level: " + var2str(charac_level))
+	level.set_text("Level: " + str(charac_level))
 	level.add_font_override("font", font)
 	hbox.add_child(level)
 	vbox.add_child(hbox)
-	mcontainer.add_child(vbox)
+	hboxc.add_child(vbox)
+	var hboxbutton = HBoxContainer.new()
+	hbox.add_constant_override("separation", 30)
+	hboxbutton.add_constant_override("separation", 30)
+	var font1 = DynamicFont.new()
+	font1.font_data = load("res://assets/Hack_Regular.ttf")
+	font1.set_size(32)
+	font1.set_outline_color(0xffffff)
+	play_button.add_font_override("font", font1)
+	delete_button.icon = icon
+	hboxbutton.add_child(play_button)
+	hboxbutton.add_child(delete_button)
+	hboxc.add_child(hboxbutton)
+	mcontainer.add_child(hboxc)
 	mcontainer.set_script(load("res://scenes/MarginContainerScript.gd"))
 	mcontainer.connect("gui_input", mcontainer, "_on_MarginContainer_gui_input")
 	mcontainer.connect("click", self, "on_click", [mcontainer.get_instance_id()])
@@ -130,8 +175,8 @@ func create_item(charac_name, charac_level, charac_gold):
 	container.add_child(mcontainer) 
 	container.set_focus_mode(2)
 	list.add_child(container)
-	
-	
+
+
 # set unselected style
 func unchange_menu_color():
 	if list.get_child_count() != 0:
@@ -160,6 +205,11 @@ func _input(_event):
 			selected_character = selected_character + 1
 			list.get_child(selected_character).grab_focus()
 			load_character()
+			for child in list.get_children():
+				child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
+				child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 		change_menu_color()
 	elif Input.is_action_just_pressed("ui_up"):
 		unchange_menu_color()
@@ -167,11 +217,17 @@ func _input(_event):
 			selected_character = selected_character - 1
 			list.get_child(selected_character).grab_focus()
 			load_character()
+			for child in list.get_children():
+				child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
+				child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
 		Utils.get_player().set_movement(true)
 		load_character()
+		Utils.get_player().set_visibility("Shadow", false)
 
 
 func on_click(id):
@@ -179,6 +235,11 @@ func on_click(id):
 		if item.get_child(1).get_instance_id() == id:
 			unchange_menu_color()
 			selected_character = item.get_index()
+			for child in list.get_children():
+				child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
+				child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 			load_character()
 
 
@@ -186,6 +247,7 @@ func on_double_click():
 	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
 	Utils.get_player().set_movement(true)
 	load_character()
+	Utils.get_player().set_visibility("Shadow", false)
 
 
 func load_character():
