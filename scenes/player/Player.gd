@@ -241,3 +241,11 @@ func set_key(newAnimation, track_idx, value):
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
+
+
+func reset_key(track_idx):
+	var newAnimation = animation_player.get_animation("WalkDown")
+	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
+	_set_key(track_idx, newValue)
+	
+	

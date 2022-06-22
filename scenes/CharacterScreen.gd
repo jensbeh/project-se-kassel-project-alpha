@@ -38,6 +38,7 @@ func _ready():
 	change_menu_color()
 	if list.get_child_count() != 0:
 		list.get_child(0).grab_focus()
+		Utils.get_player().visible = true
 	else:
 		Utils.get_player().visible = false
 	Utils.get_player().set_movement(false)
@@ -152,7 +153,7 @@ func _on_Create_Character_pressed():
 	Utils.get_scene_manager().transition_to_scene("res://scenes/CreateCharacter.tscn")
 
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed("ui_down"):
 		unchange_menu_color()
 		if selected_character < list.get_child_count()-1:
@@ -170,7 +171,6 @@ func _input(event):
 	elif Input.is_action_just_pressed("enter"):
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
 		Utils.get_player().set_movement(true)
-		set_animation_data()
 		load_character()
 
 
@@ -185,7 +185,6 @@ func on_click(id):
 func on_double_click():
 	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
 	Utils.get_player().set_movement(true)
-	set_animation_data()
 	load_character()
 
 
@@ -196,6 +195,7 @@ func load_character():
 		# set the clothes ...
 		hair.frame = (data.hair_color*8)
 		player.set_texture("curr_body", data.skincolor)
+		body.frame = 0
 		player.set_texture("curr_clothes", data.torso)
 		clothes.frame = (data.torso_color*8)
 		pants.frame = (data.legs_color*8)
@@ -226,25 +226,34 @@ func load_character():
 		else: 
 			player.set_visibility("Hair", true)
 			player.set_texture("curr_hair", data.hairs-1)
+		set_animation_data()
 
 
 func set_animation_data():
 	var data = data_list[selected_character]
 	var player = Utils.get_player()
 	# set the animation colors
+	player.reset_key(9)
 	player._set_key(9, data.hair_color*8)
+	player.reset_key(3)
 	player._set_key(3, data.torso_color*8)
+	player.reset_key(2)
 	player._set_key(2, data.legs_color*8)
+	player.reset_key(1)
 	player._set_key(1, data.shoe_color*8)
+	player.reset_key(7)
 	player._set_key(7, data.eyes_color*8)
+	player.reset_key(6)
 	if data.beard_color == 0:
 		player._set_key(6, data.beard_color*8)
 	else: 
 		player._set_key(6, (data.beard_color-1)*8)
+	player.reset_key(4)
 	if data.blush_color == 0:
 		player._set_key(4, data.blush_color*8)
 	else: 
 		player._set_key(4, (data.blush_color-1)*8)
+	player.reset_key(5)
 	if data.lipstick_color == 0:
 		player._set_key(5, data.lipstick_color*8)
 	else: 
