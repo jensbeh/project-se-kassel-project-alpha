@@ -1,11 +1,29 @@
 extends Node
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# setup areas to change areaScenes
+	# Setup player
+	setup_player()
+	
+	# setup areas to change areaScenes and player_spawn
 	setup_objects_areas()
+	
+	# Say SceneManager that new_scene is ready
+	Utils.get_scene_manager().finish_transition()
 
+func setup_player():
+	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
+	
+	# Set position
+	var player_spawn_area = find_node("player_spawn")
+	var player_position = Vector2(player_spawn_area.position.x + 5, player_spawn_area.position.y)
+	var view_direction = Vector2(0,1)
+	Utils.get_current_player().set_spawn(player_position, view_direction)
+	
+	# Replace template player in scene with current_player
+	find_node("Player").get_parent().remove_child(find_node("Player"))
+	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
+	find_node("playerlayer").add_child(Utils.get_current_player())
 
 # Method which is called when a body has entered a enter_level_area
 func body_entered_enter_level_area(body, enter_level_area):
@@ -27,6 +45,3 @@ func setup_objects_areas():
 			# connect Area2D with functions to handle body action
 			child.connect("body_entered", self, "body_entered_enter_level_area", [child])
 			child.connect("body_exited", self, "body_exited_enter_level_area", [child])
-		elif "player_spawn" in child.name:
-			# connect Area2D with functions to handle body action
-			find_node("Player").position = Vector2(child.position.x + 5, child.position.y)

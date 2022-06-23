@@ -71,6 +71,9 @@ func _ready():
 	shadow.visible = true
 	
 	uuid = uuid_util.v4()
+	
+	# Say SceneManager that new_scene is ready
+	Utils.get_scene_manager().finish_transition()
 
 
 func get_sprites():
@@ -142,7 +145,7 @@ func save_data():
 
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn")
+	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn", Constants.TransitionType.MENU_SCENE)
 
 
 func _on_Create_Character_pressed():
@@ -172,7 +175,7 @@ func _on_Create_Character_pressed():
 		save_game_data.id = uuid
 		save_data()
 		# Load Created Settings in World
-		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
+		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
 		Utils.get_player().set_visibility("Shadow", false)
 		Utils.get_player().set_movement(true)
 		Utils.get_player().set_texture("curr_body", curr_body)

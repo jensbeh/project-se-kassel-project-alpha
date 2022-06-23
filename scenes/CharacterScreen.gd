@@ -74,6 +74,9 @@ func _ready():
 				
 	Utils.get_player().set_visibility("Shadow", true)
 	call_deferred("load_character")
+	
+	# Say SceneManager that new_scene is ready
+	Utils.get_scene_manager().finish_transition()
 
 
 # loaded the player data
@@ -124,11 +127,10 @@ func on_delete_click(id, container):
 
 # click on play button to enter camp
 func on_play_click():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
-	Utils.get_player().set_movement(true)
-	load_character()
-	Utils.get_player().set_visibility("Shadow", false)
-
+	# set current player to use for other scenes
+	Utils.set_current_player(Utils.get_player())	
+	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
+	
 
 # create Character Item to Choose
 func create_item(charac_name, charac_level, charac_gold, character_id):
@@ -207,11 +209,11 @@ func change_menu_color():
 
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/MainMenuScreen.tscn")
+	Utils.get_scene_manager().transition_to_scene("res://scenes/MainMenuScreen.tscn", Constants.TransitionType.MENU_SCENE)
 
 
 func _on_Create_Character_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/CreateCharacter.tscn")
+	Utils.get_scene_manager().transition_to_scene("res://scenes/CreateCharacter.tscn", Constants.TransitionType.MENU_SCENE)
 
 
 func _input(_event):

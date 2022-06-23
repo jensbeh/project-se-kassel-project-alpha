@@ -118,6 +118,9 @@ func set_speed(factor: float):
 func set_movement(value):
 	movement = value
 
+func get_movement():
+	return movement
+
 # Method to reset the player walk speed to const
 func reset_speed():
 	current_walk_speed = Constants.PLAYER_WALK_SPEED
@@ -153,6 +156,38 @@ func set_visibility(sprite, visibility):
 			glassesSprite.visible = visibility
 		"Shadow":
 			shadow.visible = visibility
+			
+# Gets the Visibility of a given Sprite
+func get_visibility(sprite):
+	match sprite:
+		"Body":
+			return bodySprite.visible
+		"Shoes":
+			return shoesSprite.visible
+		"Pants":
+			return pantsSprite.visible
+		"Clothes":
+			return clothesSprite.visible
+		"Blush":
+			return blushSprite.visible
+		"Lipstick":
+			return lipstickSprite.visible
+		"Beard":
+			return beardSprite.visible
+		"Eyes":
+			return eyesSprite.visible
+		"Hair":
+			return hairSprite.visible
+		"Mask":
+			return maskSprite.visible
+		"Hat":
+			return hatSprite.visible
+		"Earrings":
+			return earringSprite.visible
+		"Glasses":
+			return glassesSprite.visible
+		"Shadow":
+			return shadow.visible
 
 
 # Sets the current texture
@@ -256,4 +291,25 @@ func reset_key(track_idx):
 	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
 	_set_key(track_idx, newValue)
 	
+
+func set_spawn(spawn_position: Vector2, view_direction: Vector2):
+	animation_tree.active = false # Otherwise player_view_direction won't change
+	animation_tree.set("parameters/Idle/blend_position", view_direction)
+	animation_tree.set("parameters/Walk/blend_position", view_direction)
+	position = spawn_position
+	animation_tree.active = true
 	
+func setup_player_in_new_scene(scene_player: KinematicBody2D):
+	# Setup camera
+	var scene_camera = scene_player.get_node("Camera2D")
+	var _new_camera = get_node("Camera2D")
+	# Set camera zoom level
+	_new_camera.zoom = scene_camera.zoom
+	
+	# Set camera limits
+	_new_camera.limit_bottom = scene_camera.limit_bottom
+	_new_camera.limit_left = scene_camera.limit_left
+	_new_camera.limit_right = scene_camera.limit_right
+	_new_camera.limit_top = scene_camera.limit_top
+	_new_camera.current = true
+	scene_camera.current = false

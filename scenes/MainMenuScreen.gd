@@ -3,11 +3,12 @@ extends Node2D
 
 
 func _ready():
-	pass # Replace with function body.
+	# Say SceneManager that new_scene is ready
+	Utils.get_scene_manager().finish_transition()
 
 
 func _on_Start_Game_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn")
+	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn", Constants.TransitionType.MENU_SCENE)
 
 func _on_Settings_pressed():
 	pass

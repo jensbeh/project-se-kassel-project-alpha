@@ -5,6 +5,7 @@
 [ext_resource path="res://scenes/Dungeons.gd" type="Script" id=3]
 
 [node name="Dungeon-1-2" type="Node2D"]
+position = Vector2( 728, 416 )
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
