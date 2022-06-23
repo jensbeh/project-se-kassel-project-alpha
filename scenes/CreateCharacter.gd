@@ -1,6 +1,6 @@
 extends Node2D
 
-const SAVE_PATH = "user://player/"
+const SAVE_PATH = "user://character/"
 const SAVE_FILE_EXTENSION = ".json"
 const uuid_util = preload("res://addons/uuid.gd")
 
@@ -131,6 +131,9 @@ var save_game_data = {
 
 # save the player data
 func save_data():
+	var dir = Directory.new()
+	if !dir.dir_exists(SAVE_PATH):
+		dir.make_dir(SAVE_PATH)
 	var save_game = File.new()
 	save_game.open(SAVE_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))

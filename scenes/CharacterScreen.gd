@@ -1,6 +1,6 @@
 extends Node2D ## TODO: load character with mouse click, Bug: syncronize mouse click and keyboard
 
-const SAVE_PATH = "user://player/"
+const SAVE_PATH = "user://character/"
 const SAVE_FILE_EXTENSION = ".json"
 
 var selected_character = 0
@@ -106,6 +106,15 @@ func on_delete_click(id, container):
 	if dir.file_exists(SAVE_PATH + id + SAVE_FILE_EXTENSION):
 		dir.remove(SAVE_PATH + id + SAVE_FILE_EXTENSION)
 	list.remove_child(container)
+	data_list.remove(selected_character)
+	if list.get_child_count() != 0:
+		if selected_character != 0: 
+			selected_character -= 1
+		load_character()
+		change_menu_color()
+	else:
+		selected_character = 0
+		Utils.get_player().visible = false
 
 
 # click on play button to enter camp
@@ -135,8 +144,10 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	var hboxc = HBoxContainer.new()
 	hboxc.add_constant_override("separation", 50)
 	vbox.add_constant_override("separation", 10)
+	#vbox.add_color_override("color", Color(0, 1, 0.298039))
 	var name = Label.new()
 	name.set_text("Name: " + charac_name)
+	name.set_size(Vector2(400,100))
 	var font = DynamicFont.new()
 	font.font_data = load("res://assets/Hack_Regular.ttf")
 	font.set_size(25)
