@@ -103,7 +103,7 @@ var save_game_data = {
 	"level": "1",
 	"maxLP": "100",
 	"currentHP": "100",
-	"gold": "0",
+	"gold": "100",
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
@@ -487,7 +487,10 @@ func _on_BeardRight_pressed():
 
 
 func _on_LineEdit_text_changed(new_text):
-	charac_name = new_text
+	if new_text.length() > 28:
+		$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/LineEdit.delete_char_at_cursor()
+	else:
+		charac_name = new_text
 
 
 func reset_frame():
