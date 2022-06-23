@@ -22,5 +22,4 @@ func _on_MarginContainer_gui_input(event):
 			change_menu_color()
 			self.grab_focus()
 		if event.button_index == BUTTON_LEFT and event.doubleclick:
-			#Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
 			emit_signal("double_click")

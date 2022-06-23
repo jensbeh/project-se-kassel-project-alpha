@@ -184,7 +184,7 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	hboxbutton.add_child(delete_button)
 	hboxc.add_child(hboxbutton)
 	mcontainer.add_child(hboxc)
-	mcontainer.set_script(load("res://scenes/MarginContainerScript.gd"))
+	mcontainer.set_script(load("res://scenes/CharacterScreenContainerScript.gd"))
 	mcontainer.connect("gui_input", mcontainer, "_on_MarginContainer_gui_input")
 	mcontainer.connect("click", self, "on_click", [mcontainer.get_instance_id()])
 	mcontainer.connect("double_click", self, "on_double_click")
