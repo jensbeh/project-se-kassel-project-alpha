@@ -7,3 +7,7 @@ func _ready():
 func transition_to_scene(new_scene: String):
 	$CurrentScene.get_child(0).queue_free()
 	$CurrentScene.add_child(load(new_scene).instance())
+
+
+func _process(delta):
+	print("fps: " + str(Engine.get_frames_per_second()))
