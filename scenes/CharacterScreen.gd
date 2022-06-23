@@ -112,6 +112,11 @@ func on_delete_click(id, container):
 			selected_character -= 1
 		load_character()
 		change_menu_color()
+		for child in list.get_children():
+			child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
+			child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 	else:
 		selected_character = 0
 		Utils.get_player().visible = false
