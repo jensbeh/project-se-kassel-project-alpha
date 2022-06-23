@@ -14,15 +14,6 @@ script = ExtResource( 2 )
 [node name="Player" parent="camp/Level 1/playerlayer-lvl1" index="0" instance=ExtResource( 3 )]
 position = Vector2( 1128, 616 )
 
-[node name="Blush" parent="camp/Level 1/playerlayer-lvl1/Player" index="5"]
-frame = 0
-
-[node name="Lipstick" parent="camp/Level 1/playerlayer-lvl1/Player" index="6"]
-frame = 0
-
-[node name="Eyes" parent="camp/Level 1/playerlayer-lvl1/Player" index="8"]
-frame = 0
-
 [node name="AnimationTree" parent="camp/Level 1/playerlayer-lvl1/Player" index="16"]
 parameters/playback = SubResource( 1 )
 
