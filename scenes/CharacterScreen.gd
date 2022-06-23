@@ -136,7 +136,7 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	var panel = Panel.new()
 	var delete_button = Button.new()
 	var play_button = Button.new()
-	play_button.set_text(" ▶ ")
+	play_button.set_text(" ➤ ")
 	delete_button.connect("pressed", self, "on_delete_click", [character_id, container])
 	play_button.connect("pressed", self, "on_play_click")
 	panel.add_stylebox_override("panel", style2)
@@ -176,7 +176,7 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	hboxbutton.add_constant_override("separation", 30)
 	var font1 = DynamicFont.new()
 	font1.font_data = load("res://assets/Hack_Regular.ttf")
-	font1.set_size(32)
+	font1.set_size(38)
 	font1.set_outline_color(0xffffff)
 	play_button.add_font_override("font", font1)
 	delete_button.icon = icon

@@ -12,7 +12,7 @@ func _ready():
 	# Setup noise
 	noise.period = 75
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	value += 1.0
 	if (value > MAX_VALUE):
 		value = 0.0
