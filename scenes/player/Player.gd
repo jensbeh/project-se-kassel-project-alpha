@@ -29,7 +29,7 @@ onready var hatSprite = $Hat
 
 const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
-var curr_body: int = 0 #0-8, 1
+var curr_body: int = 0 #0-7, 1
 var curr_shoes: int = 0 #0, 10
 var curr_pants: int = 0 #0-2, 10
 var curr_clothes: int = 0 #0-10, 10 -> not by everyone
@@ -38,7 +38,7 @@ var curr_lipstick: int = 0 #0, 5
 var curr_beard: int = 0 #0, 14
 var curr_eyes: int = 0 #0, 14
 var curr_earring: int = 0 #0-3, 1
-var curr_hair: int = 0 #0-14, 14
+var curr_hair: int = 0 #0-13, 14
 var curr_mask: int = 0 #0-2, 1
 var curr_glasses: int = 0 #0-1, 10
 var curr_hat: int = 0 #0-4, 1
@@ -46,6 +46,7 @@ var curr_hat: int = 0 #0-4, 1
 # Walk
 var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
+var movement
 
 
 func _ready():
@@ -67,10 +68,10 @@ func _ready():
 	shadow.visible = false
 	
 	# Sets the Visibility of a given Sprite
-	set_visibility(maskSprite, true) #Sprite, true/false 
-	
-	# Change Color
-	_set_key(9, 64)#Track_idx #0-12, +Frame #8er steps by walk
+	set_visibility("Mask", false) #Sprite, true/false 
+	set_visibility("Glasses", false)
+	set_visibility("Earrings", false)
+	set_visibility("Hat", false)
 
 	# Animation
 	animation_tree.active = true
@@ -78,7 +79,7 @@ func _ready():
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Handle User Input
 	if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
 		velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
@@ -102,28 +103,105 @@ func _physics_process(delta):
 		animation_state.travel("Walk")
 	else:
 		animation_state.travel("Idle")
-		
-	move_and_slide(velocity)
-	for i in get_slide_count():
-		var collision = get_slide_collision(i)
-		if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-			emit_signal("player_collided", collision.get_collider())
+	
+	if movement:	
+		move_and_slide(velocity)
+		for i in get_slide_count():
+			var collision = get_slide_collision(i)
+			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+				emit_signal("player_collided", collision.get_collider())		
 
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):
 	current_walk_speed *= factor
+
+func set_movement(value):
+	movement = value
 
 # Method to reset the player walk speed to const
 func reset_speed():
 	current_walk_speed = Constants.PLAYER_WALK_SPEED
 
 # Sets the Visibility of a given Sprite
-func set_visibility(sprite, value):
-	sprite.visible = value
+func set_visibility(sprite, visibility):
+	match sprite:
+		"Body":
+			bodySprite.visible = visibility
+		"Shoes":
+			shoesSprite.visible = visibility
+		"Pants":
+			pantsSprite.visible = visibility
+		"Clothes":
+			clothesSprite.visible = visibility
+		"Blush":
+			blushSprite.visible = visibility
+		"Lipstick":
+			lipstickSprite.visible = visibility
+		"Beard":
+			beardSprite.visible = visibility
+		"Eyes":
+			eyesSprite.visible = visibility
+		"Hair":
+			hairSprite.visible = visibility
+		"Mask":
+			maskSprite.visible = visibility
+		"Hat":
+			hatSprite.visible = visibility
+		"Earrings":
+			earringSprite.visible = visibility
+		"Glasses":
+			glassesSprite.visible = visibility
+		"Shadow":
+			shadow.visible = visibility
+
+
+# Sets the current texture
+func set_texture(name, value):
+	match name:
+		"curr_body":
+			curr_body = value
+			bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
+		"curr_shoes":
+			curr_shoes = value
+			shoesSprite.texture = CompositeSprites.SHOES_SPRITESHEET[curr_shoes]
+		"curr_pants":
+			curr_pants = value
+			pantsSprite.texture = CompositeSprites.PANTS_SPRITESHEET[curr_pants]
+		"curr_clothes":
+			curr_clothes = value
+			clothesSprite.texture = CompositeSprites.CLOTHES_SPRITESHEET[curr_clothes]
+		"curr_blush":
+			curr_blush = value
+			blushSprite.texture = CompositeSprites.BLUSH_SPRITESHEET[curr_blush]
+		"curr_lipstick":
+			curr_lipstick = value
+			lipstickSprite.texture = CompositeSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
+		"curr_beard":
+			curr_beard = value
+			beardSprite.texture = CompositeSprites.BEARD_SPRITESHEET[curr_beard]
+		"curr_eyes":
+			curr_eyes = value
+			eyesSprite.texture = CompositeSprites.EYES_SPRITESHEET[curr_eyes]
+		"curr_earring":
+			curr_earring = value
+			earringSprite.texture = CompositeSprites.EARRING_SPRITESHEET[curr_earring]
+		"curr_hair":
+			curr_hair = value
+			hairSprite.texture = CompositeSprites.HAIR_SPRITESHEET[curr_hair]
+		"curr_mask":
+			curr_mask = value
+			maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
+		"curr_glasses":
+			curr_glasses = value
+			glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
+		"curr_hat":
+			curr_hat = value
+			hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
 
 
 # Track Key Value change for Colors
 func _set_key(track_idx, value):
+	
 	var newDown = animation_player.get_animation("WalkDown")
 	set_key(newDown, track_idx, value)
 	
@@ -153,6 +231,7 @@ func _set_key(track_idx, value):
 	animation_player.get_animation("IdleRight").track_get_key_value(track_idx, 
 	newRight.track_find_key(track_idx, 0.0, 1)) + value)
 
+
 func set_key(newAnimation, track_idx, value):
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)) + value)
@@ -170,3 +249,11 @@ func set_key(newAnimation, track_idx, value):
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1), 
 	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
+
+
+func reset_key(track_idx):
+	var newAnimation = animation_player.get_animation("WalkDown")
+	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
+	_set_key(track_idx, newValue)
+	
+	

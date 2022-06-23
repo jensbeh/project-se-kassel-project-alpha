@@ -7,7 +7,7 @@ func _ready():
 
 
 func _on_Start_Game_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn") # currently Camp Scene - change later
+	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn")
 
 func _on_Settings_pressed():
 	pass
