@@ -291,6 +291,8 @@ func reset_key(track_idx):
 	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
 	_set_key(track_idx, newValue)
 	
+func set_movment_animation(state: bool):
+	animation_tree.active = state
 
 func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change

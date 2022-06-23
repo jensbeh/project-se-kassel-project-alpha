@@ -174,51 +174,10 @@ func _on_Create_Character_pressed():
 		save_game_data.name = charac_name
 		save_game_data.id = uuid
 		save_data()
-		# Load Created Settings in World
+
+		# Set current player to use for other scenes
+		Utils.set_current_player(Utils.get_player())
 		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
-		Utils.get_player().set_visibility("Shadow", false)
-		Utils.get_player().set_movement(true)
-		Utils.get_player().set_texture("curr_body", curr_body)
-		Utils.get_player().set_texture("curr_clothes", curr_clothes)
-		Utils.get_player().set_texture("curr_pants", curr_pants)
-		Utils.get_player().reset_key(9)
-		Utils.get_player()._set_key(9, curr_hair_color*8)
-		Utils.get_player().reset_key(3)
-		Utils.get_player()._set_key(3, curr_clothes_color*8)
-		Utils.get_player().reset_key(2)
-		Utils.get_player()._set_key(2, curr_pants_color*8)
-		Utils.get_player().reset_key(1)
-		Utils.get_player()._set_key(1, curr_shoe_color*8)
-		Utils.get_player().reset_key(7)
-		Utils.get_player()._set_key(7, curr_eyes_color*8)
-		Utils.get_player().reset_key(6)
-		if curr_beard_color == 0:
-			Utils.get_player().set_visibility("Beard", false)
-			Utils.get_player()._set_key(6, curr_beard_color*8)
-		else: 
-			Utils.get_player().set_visibility("Beard", true)
-			Utils.get_player()._set_key(6, (curr_beard_color-1)*8)
-		Utils.get_player().reset_key(4)
-		if curr_blush_color == 0:
-			Utils.get_player().set_visibility("Blush", false)
-			Utils.get_player()._set_key(4, curr_blush_color*8)
-		else: 
-			Utils.get_player().set_visibility("Blush", true)
-			Utils.get_player()._set_key(4, (curr_blush_color-1)*8)
-		Utils.get_player().reset_key(5)
-		if curr_lipstick_color == 0:
-			Utils.get_player().set_visibility("Lipstick", false)
-			Utils.get_player()._set_key(5, curr_lipstick_color*8)
-		else: 
-			Utils.get_player().set_visibility("Lipstick", true)
-			Utils.get_player()._set_key(5, (curr_lipstick_color-1)*8)
-		if curr_hair == 0:
-			Utils.get_player().set_visibility("Hair", false)
-			Utils.get_player().set_texture("curr_hair", curr_hair)
-		else: 
-			Utils.get_player().set_visibility("Hair", true)
-			Utils.get_player().set_texture("curr_hair", curr_hair-1)
-	
 
 func _on_HairLeft_pressed():
 	curr_hair -= 1
@@ -515,3 +474,11 @@ func reset_frame():
 		beard.frame = (curr_beard_color-1)*8
 	eyes.frame = curr_eyes_color*8
 	hair.frame = curr_hair_color*8
+
+# Disable movment of player when type in name
+func _on_LineEdit_focus_entered():
+	Utils.get_player().set_movment_animation(false)
+
+# Enable movment of player when exiting the lineEdit
+func _on_LineEdit_focus_exited():
+	Utils.get_player().set_movment_animation(true)

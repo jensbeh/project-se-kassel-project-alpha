@@ -127,8 +127,8 @@ func on_delete_click(id, container):
 
 # click on play button to enter camp
 func on_play_click():
-	# set current player to use for other scenes
-	Utils.set_current_player(Utils.get_player())	
+	# Set current player to use for other scenes
+	Utils.set_current_player(Utils.get_player())
 	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
 	
 
@@ -242,10 +242,10 @@ func _input(_event):
 			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
-		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
-		Utils.get_player().set_movement(true)
-		load_character()
-		Utils.get_player().set_visibility("Shadow", false)
+		# Set current player to use for other scenes
+		Utils.set_current_player(Utils.get_player())
+		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
+		
 
 
 func on_click(id):
@@ -262,10 +262,10 @@ func on_click(id):
 
 
 func on_double_click():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn")
-	Utils.get_player().set_movement(true)
-	load_character()
-	Utils.get_player().set_visibility("Shadow", false)
+	# Set current player to use for other scenes
+	Utils.set_current_player(Utils.get_player())
+	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
+	
 
 
 func load_character():
