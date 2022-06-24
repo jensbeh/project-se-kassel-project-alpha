@@ -145,7 +145,7 @@ func save_data():
 
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn", Constants.TransitionType.MENU_SCENE)
+	Utils.get_scene_manager().transition_to_scene("res://scenes/character_screens/CharacterScreen.tscn", Constants.TransitionType.MENU_SCENE, self.name)
 
 
 func _on_Create_Character_pressed():
@@ -175,10 +175,8 @@ func _on_Create_Character_pressed():
 		save_game_data.id = uuid
 		save_data()
 
-		# Set current player to use for other scenes
-		Utils.set_current_player(Utils.get_player())
-		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
-
+		start_game()
+		
 func _on_HairLeft_pressed():
 	curr_hair -= 1
 	if curr_hair < 0:
@@ -482,3 +480,9 @@ func _on_LineEdit_focus_entered():
 # Enable movment of player when exiting the lineEdit
 func _on_LineEdit_focus_exited():
 	Utils.get_player().set_movment_animation(true)
+
+
+func start_game():
+	# Set current player to use for other scenes
+	Utils.set_current_player(Utils.get_player())
+	Utils.get_scene_manager().transition_to_scene("res://scenes/camp/Camp.tscn", Constants.TransitionType.GAME_SCENE, self.name)

@@ -19,7 +19,7 @@ func post_import(scene):
 				light.energy = 0.8
 				light.color = Color("64ffde7e")
 				
-				light.set_script(load("res://scenes/animated_dungeon_lights.gd"))
+				light.set_script(load("res://scenes/dungeons/animated_dungeon_lights.gd"))
 				
 				lightsObject.add_child(light)
 				light.set_owner(scene)

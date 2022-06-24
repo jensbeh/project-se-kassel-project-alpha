@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 # Signals
 signal player_collided(collision)
+signal player_interact
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -110,6 +111,12 @@ func _physics_process(_delta):
 			var collision = get_slide_collision(i)
 			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 				emit_signal("player_collided", collision.get_collider())		
+
+
+func _input(event):
+	if event.is_action_pressed("e"):
+		print("Pressed e")
+		emit_signal("player_interact")
 
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):

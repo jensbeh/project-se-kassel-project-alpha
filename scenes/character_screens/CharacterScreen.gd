@@ -127,10 +127,7 @@ func on_delete_click(id, container):
 
 # click on play button to enter camp
 func on_play_click():
-	# Set current player to use for other scenes
-	Utils.set_current_player(Utils.get_player())
-	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
-	
+	start_game()
 
 # create Character Item to Choose
 func create_item(charac_name, charac_level, charac_gold, character_id):
@@ -186,7 +183,7 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	hboxbutton.add_child(delete_button)
 	hboxc.add_child(hboxbutton)
 	mcontainer.add_child(hboxc)
-	mcontainer.set_script(load("res://scenes/CharacterScreenContainerScript.gd"))
+	mcontainer.set_script(load("res://scenes/character_screens/CharacterScreenContainerScript.gd"))
 	mcontainer.connect("gui_input", mcontainer, "_on_MarginContainer_gui_input")
 	mcontainer.connect("click", self, "on_click", [mcontainer.get_instance_id()])
 	mcontainer.connect("double_click", self, "on_double_click")
@@ -209,11 +206,11 @@ func change_menu_color():
 
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/MainMenuScreen.tscn", Constants.TransitionType.MENU_SCENE)
+	Utils.get_scene_manager().transition_to_scene("res://scenes/MainMenuScreen.tscn", Constants.TransitionType.MENU_SCENE, self.name)
 
 
 func _on_Create_Character_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/CreateCharacter.tscn", Constants.TransitionType.MENU_SCENE)
+	Utils.get_scene_manager().transition_to_scene("res://scenes/character_screens/CreateCharacter.tscn", Constants.TransitionType.MENU_SCENE, self.name)
 
 
 func _input(_event):
@@ -242,10 +239,7 @@ func _input(_event):
 			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
-		# Set current player to use for other scenes
-		Utils.set_current_player(Utils.get_player())
-		Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
-		
+		start_game()
 
 
 func on_click(id):
@@ -262,11 +256,7 @@ func on_click(id):
 
 
 func on_double_click():
-	# Set current player to use for other scenes
-	Utils.set_current_player(Utils.get_player())
-	Utils.get_scene_manager().transition_to_scene("res://scenes/Camp.tscn", Constants.TransitionType.GAME_SCENE)
-	
-
+	start_game()
 
 func load_character():
 	if data_list != []:
@@ -338,3 +328,10 @@ func set_animation_data():
 		player._set_key(5, data.lipstick_color*8)
 	else: 
 		player._set_key(5, (data.lipstick_color-1)*8)
+		
+func start_game():
+	# Set current player to use for other scenes
+	Utils.set_current_player(Utils.get_player())
+	var player_position = Vector2(1128,616)
+	Utils.get_scene_manager().transition_to_game_scene_area("res://scenes/camp/Camp.tscn", player_position)
+		

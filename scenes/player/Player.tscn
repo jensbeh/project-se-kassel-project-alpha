@@ -16,7 +16,7 @@
 [ext_resource path="res://assets/player/acc/hat_cowboy.png" type="Texture" id=14]
 [ext_resource path="res://assets/player/acc/beard.png" type="Texture" id=15]
 [ext_resource path="res://assets/light.png" type="Texture" id=16]
-[ext_resource path="res://scenes/animated_dungeon_lights.gd" type="Script" id=17]
+[ext_resource path="res://scenes/dungeons/animated_dungeon_lights.gd" type="Script" id=17]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )

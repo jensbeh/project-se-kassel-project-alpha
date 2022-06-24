@@ -19418,6 +19418,7 @@
   <object id="5593" name="player_spawn_from_camp" type="area" x="-32" y="752" width="48" height="23">
    <properties>
     <property name="from" value="camp"/>
+    <property name="spawn_area_id" value="ps_grassland-from-camp"/>
    </properties>
   </object>
   <object id="5594" name="player_spawn_from_dungeon1" type="area" x="832" y="675" width="48" height="23">
@@ -19445,6 +19446,7 @@
   <object id="586" name="changeScene camp" type="area" x="-48" y="784" width="80" height="32">
    <properties>
     <property name="change_scene_to" value="camp"/>
+    <property name="to_spawn_area_id" value="ps_camp-from-grassland"/>
    </properties>
   </object>
   <object id="2486" name="changeScene dungeon1" type="area" x="852" y="656" width="8" height="17">

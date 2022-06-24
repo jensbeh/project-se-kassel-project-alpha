@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/map/map_dungeon2_lvl4.tmx" type="PackedScene" id=2]
+[ext_resource path="res://scenes/dungeons/dungeons.gd" type="Script" id=3]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=1]
+
+[node name="Dungeon2-lvl4" type="Node2D"]
+position = Vector2( 472, 360 )
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -808.0
+margin_top = -720.0
+margin_right = 1600.0
+margin_bottom = 1040.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="map_dungeon2_lvl4" parent="." instance=ExtResource( 2 )]
+
+[node name="Player" parent="map_dungeon2_lvl4/playerlayer" index="0" instance=ExtResource( 1 )]
+position = Vector2( 200, 440 )
+
+[node name="AnimationTree" parent="map_dungeon2_lvl4/playerlayer/Player" index="16"]
+parameters/playback = SubResource( 1 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0, 0, 0, 1 )
+
+[editable path="map_dungeon2_lvl4"]
+[editable path="map_dungeon2_lvl4/playerlayer/Player"]

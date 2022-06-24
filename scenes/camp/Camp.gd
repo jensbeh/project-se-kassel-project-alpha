@@ -1,5 +1,12 @@
 extends Node2D
 
+# Variables
+var player_in_buying_zone : bool = false
+var current_area : Area2D = null
+
+# Variables - Data passed from scene before
+var player_position : Vector2
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup player
@@ -15,8 +22,6 @@ func _ready():
 	# setup all market buyingZone areas to handle action
 	setup_market_buying_zone_areas()
 	
-	Utils.get_current_player().connect("player_collided", self, "collision_detected")
-	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 
@@ -24,7 +29,6 @@ func setup_player():
 	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
 	
 	# Set position
-	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	Utils.get_current_player().set_spawn(player_position, view_direction)
 	
@@ -32,22 +36,37 @@ func setup_player():
 	find_node("Player").get_parent().remove_child(find_node("Player"))
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
+	
+	# Connect signals
+	Utils.get_current_player().connect("player_collided", self, "collision_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+
+func set_player_spawn(new_player_position : Vector2):
+	player_position = new_player_position
 
 # Method to handle collision detetcion dependent of the collision object type
 func collision_detected(collision):
 	var _type = collision.get_parent().get_meta("type") # type is string
 	print("collision_detected")
+	
+# Method to handle collision detetcion dependent of the collision object type
+func interaction_detected():
+	if player_in_buying_zone:
+		Utils.get_scene_manager().transition_to_game_scene_area("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", current_area.get_meta("to_spawn_area_id"))
 
 # Method which is called when a body has entered a buyingZoneArea
 func body_entered_buying_zone(body, buyingZoneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" ENTERED buying zone \"" + buyingZoneArea.name + "\"")
-		Utils.get_scene_manager().transition_to_scene("res://scenes/Dungeon-1-1.tscn", Constants.TransitionType.GAME_SCENE)
-
+		player_in_buying_zone = true
+		current_area = buyingZoneArea
+		
 # Method which is called when a body has exited a buyingZoneArea
 func body_exited_buying_zone(body, buyingZoneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED buying zone \"" + buyingZoneArea.name + "\"")
+		player_in_buying_zone = false
+		current_area = null
 		
 # Method which is called when a body has entered a doorArea
 func body_entered_door(body, doorArea):
@@ -71,6 +90,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 		var change_scene_to = changeSceneArea.get_meta("change_scene_to")
 		if change_scene_to == "grassland":
 			print("-> Change scene \"CAMP\" to \""  + str(change_scene_to) + "\"")
+			Utils.get_scene_manager().transition_to_game_scene_area("res://scenes/grassland/Grassland.tscn", changeSceneArea.get_meta("to_spawn_area_id"))
 
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
@@ -79,30 +99,30 @@ func body_exited_change_scene_area(body, changeSceneArea):
 
 # Setup the scene with all importent properties on start
 func setup_scene():
-	get_node("camp/ground/dirt").cell_quadrant_size = 1
-	get_node("camp/ground/dirt").cell_y_sort = false
+	get_node("map_camp/ground/dirt").cell_quadrant_size = 1
+	get_node("map_camp/ground/dirt").cell_y_sort = false
 	
-	get_node("camp/ground/ground").cell_quadrant_size = 1
-	get_node("camp/ground/ground").cell_y_sort = false	
+	get_node("map_camp/ground/ground").cell_quadrant_size = 1
+	get_node("map_camp/ground/ground").cell_y_sort = false	
 	
-	get_node("camp/ground/little stones in water").cell_quadrant_size = 1
-	get_node("camp/ground/little stones in water").cell_y_sort = false
+	get_node("map_camp/ground/little stones in water").cell_quadrant_size = 1
+	get_node("map_camp/ground/little stones in water").cell_y_sort = false
 	
-	get_node("camp/ground/bridge").cell_quadrant_size = 1
-	get_node("camp/ground/bridge").cell_y_sort = false
+	get_node("map_camp/ground/bridge").cell_quadrant_size = 1
+	get_node("map_camp/ground/bridge").cell_y_sort = false
 	
-	get_node("camp/ground/fences").cell_quadrant_size = 1
-	get_node("camp/ground/fences").cell_y_sort = false
+	get_node("map_camp/ground/fences").cell_quadrant_size = 1
+	get_node("map_camp/ground/fences").cell_y_sort = false
 	
-	get_node("camp/ground/decorations layer1").cell_quadrant_size = 1
-	get_node("camp/ground/decorations layer1").cell_y_sort = false
+	get_node("map_camp/ground/decorations layer1").cell_quadrant_size = 1
+	get_node("map_camp/ground/decorations layer1").cell_y_sort = false
 	
-	get_node("camp/ground/decorations layer2").cell_quadrant_size = 1
-	get_node("camp/ground/decorations layer2").cell_y_sort = false
+	get_node("map_camp/ground/decorations layer2").cell_quadrant_size = 1
+	get_node("map_camp/ground/decorations layer2").cell_y_sort = false
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
-	var changeScenesObject = get_node("camp/changeScenes")
+	var changeScenesObject = get_node("map_camp/changeScenes")
 	for child in changeScenesObject.get_children():
 		if "changeScene" in child.name:
 			# connect Area2D with functions to handle body action
@@ -111,7 +131,7 @@ func setup_change_scene_areas():
 
 # Setup all door objectes/Area2D's on start
 func setup_door_areas():
-	var doorsObject = get_node("camp/ground/Buildings/doors")
+	var doorsObject = get_node("map_camp/ground/Buildings/doors")
 	for door in doorsObject.get_children():
 		if "door_" in door.name:
 			# connect Area2D with functions to handle body action
@@ -120,7 +140,7 @@ func setup_door_areas():
 
 # Setup all buyingZone objectes/Area2D's on start
 func setup_market_buying_zone_areas():
-	var buyingZoneObject = get_node("camp/ground/Buildings/buyingZones")
+	var buyingZoneObject = get_node("map_camp/ground/Buildings/buyingZones")
 	for buyingZoneArea2D in buyingZoneObject.get_children():
 		# connect Area2D with functions to handle body action
 		buyingZoneArea2D.connect("body_entered", self, "body_entered_buying_zone", [buyingZoneArea2D])

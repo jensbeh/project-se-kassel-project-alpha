@@ -1,5 +1,13 @@
 extends Node
 
+# Variables
+var next_level_to  = null
+var current_dungeon  = null
+var player_in_enter_level_area = false
+
+# Variables - Data passed from scene before
+var spawning_area_id  = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup player
@@ -15,7 +23,14 @@ func setup_player():
 	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
 	
 	# Set position
-	var player_spawn_area = find_node("player_spawn")
+	var player_spawn_area = null
+	for child in find_node("objects").get_children():
+		if "player_spawn" in child.name:
+			if child.has_meta("spawn_area_id"):
+				if child.get_meta("spawn_area_id") == spawning_area_id:
+					player_spawn_area = child
+					break
+
 	var player_position = Vector2(player_spawn_area.position.x + 5, player_spawn_area.position.y)
 	var view_direction = Vector2(0,1)
 	Utils.get_current_player().set_spawn(player_position, view_direction)
@@ -29,17 +44,29 @@ func setup_player():
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
 
+	# Connect signals
+	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+
+# Method to handle collision detetcion dependent of the collision object type
+func interaction_detected():
+	if player_in_enter_level_area:
+		Utils.get_scene_manager().transition_to_scene("res://scenes/dungeons/dungeon" + current_dungeon + "/Dungeon"+ current_dungeon + "-lvl" + next_level_to + ".tscn", Constants.TransitionType.GAME_SCENE, self.name)
+
+func set_spawning_area_id(new_spawning_area_id: String):
+	spawning_area_id = new_spawning_area_id
+
 # Method which is called when a body has entered a enter_level_area
 func body_entered_enter_level_area(body, enter_level_area):
 	if body.name == "Player":
-		var next_level_to = enter_level_area.get_meta("next_level")
-		var current_dungeon = enter_level_area.get_meta("current_dungeon")
+		next_level_to = enter_level_area.get_meta("next_level")
+		current_dungeon = enter_level_area.get_meta("current_dungeon")
+		player_in_enter_level_area = true
 		print("-> Next level to \"" + current_dungeon + "-" + str(next_level_to) + "\"")
-		Utils.get_scene_manager().transition_to_scene("res://scenes/Dungeon-"+ current_dungeon + "-" + next_level_to + ".tscn", Constants.TransitionType.GAME_SCENE)
 
 # Method which is called when a body has exited a enter_level_area
 func body_exited_enter_level_area(body, enter_level_area):
 	if body.name == "Player":
+		player_in_enter_level_area = false
 		print("-> Body \""  + str(body.name) + "\" EXITED enter_level_area \"" + enter_level_area.name + "\"")
 		
 # Setup all objects Area2D's on start

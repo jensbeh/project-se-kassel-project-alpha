@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="7">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
  <group id="5" name="ground">
   <layer id="1" name="ground" width="30" height="20">
@@ -457,11 +457,30 @@
   </layer>
  </group>
  <objectgroup id="9" name="objects">
-  <object id="1" name="player_spawn" type="area" x="412" y="278" width="24" height="16"/>
   <object id="2" name="enter_level" type="area" x="316" y="16" width="24" height="16">
    <properties>
     <property name="current_dungeon" value="1"/>
+    <property name="id" value="el_d1-lvl2-to-lvl2"/>
     <property name="next_level" value="3"/>
+   </properties>
+  </object>
+  <object id="4" name="enter_level" type="area" x="412" y="272" width="24" height="16">
+   <properties>
+    <property name="current_dungeon" value="1"/>
+    <property name="id" value="el_d1-lvl2-to-lvl1"/>
+    <property name="next_level" value="1"/>
+   </properties>
+  </object>
+  <object id="5" name="player_spawn" type="area" x="316" y="22" width="24" height="16">
+   <properties>
+    <property name="from_level" value="3"/>
+    <property name="id" value="ps_d1-lvl2-from-lvl3"/>
+   </properties>
+  </object>
+  <object id="6" name="player_spawn" type="area" x="272" y="32" width="24" height="16">
+   <properties>
+    <property name="from_level" value="1"/>
+    <property name="id" value="ps_d1-lvl2-from-lvl1"/>
    </properties>
   </object>
  </objectgroup>

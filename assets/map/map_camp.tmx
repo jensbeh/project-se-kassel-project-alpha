@@ -3493,6 +3493,7 @@
     <object id="70" name="buyingZone market3" type="area" x="1184" y="528" width="80" height="32">
      <properties>
       <property name="enter_market" value="market3"/>
+      <property name="to_spawn_area_id" value="ps_d1-lvl1-entry"/>
      </properties>
     </object>
     <object id="386" name="buyingZone market2" type="area" x="1040" y="544" width="80" height="32">
@@ -5916,6 +5917,7 @@
   <object id="3010" name="player_spawn_from_grassland" type="area" x="1056" y="201" width="48" height="23">
    <properties>
     <property name="from" value="grassland"/>
+    <property name="spawn_area_id" value="ps_camp-from-grassland"/>
    </properties>
   </object>
  </objectgroup>
@@ -5931,6 +5933,7 @@
   <object id="68" name="changeScene grassland" type="area" x="1040" y="160" width="80" height="32">
    <properties>
     <property name="change_scene_to" value="grassland"/>
+    <property name="to_spawn_area_id" value="ps_grassland-from-camp"/>
    </properties>
   </object>
  </objectgroup>

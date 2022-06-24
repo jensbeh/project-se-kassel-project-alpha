@@ -8,7 +8,7 @@ func _ready():
 
 
 func _on_Start_Game_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/CharacterScreen.tscn", Constants.TransitionType.MENU_SCENE)
+	Utils.get_scene_manager().transition_to_menu_scene("res://scenes/character_screens/CharacterScreen.tscn")
 
 func _on_Settings_pressed():
 	pass

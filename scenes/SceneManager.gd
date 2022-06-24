@@ -1,10 +1,10 @@
 extends Node2D
 
 # Variables
-var next_scene = ""
+var next_scene_path = ""
+var data_to_pass = null
 var thread
 var current_transition_type = null
-
 
 
 # Nodes CurrentScreen
@@ -17,26 +17,36 @@ onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlac
 func _ready():
 	# Set size of fade screen
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
-	
-func transition_to_scene(new_scene: String, transition_type):
+
+func transition_to_menu_scene(new_scene_path: String):
 	# Show black fade/loading screen and load new scene after fading to black
-	next_scene = new_scene
-	current_transition_type = transition_type
+	print("transition_to_scene_menu")
+	next_scene_path = new_scene_path
+	current_transition_type = Constants.TransitionType.MENU_SCENE
 	
+	# Can't click any button
+	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	loading_screen_animation_player.play("MenuFadeToBlack")
+
+func transition_to_game_scene_area(new_scene_path: String, new_data_to_pass):
+	# Show black fade/loading screen and load new scene after fading to black
+	print(new_data_to_pass)
+	next_scene_path = new_scene_path
+	data_to_pass = new_data_to_pass
+	current_transition_type = Constants.TransitionType.GAME_SCENE
+	
+	# Can't click any button
 	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
 	
-	if current_transition_type == Constants.TransitionType.GAME_SCENE:
-		loading_screen_animation_player.play("GameFadeToBlack")
-		
-	elif current_transition_type == Constants.TransitionType.MENU_SCENE:
-		loading_screen_animation_player.play("MenuFadeToBlack")
+	loading_screen_animation_player.play("GameFadeToBlack")
 
 func load_new_scene():
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
 	
 func _load_scene_in_background():
-	var loader = ResourceLoader.load_interactive(next_scene)
+	var loader = ResourceLoader.load_interactive(next_scene_path)
 	set_process(true)
 
 	while true:
@@ -50,6 +60,7 @@ func _load_scene_in_background():
 func _on_load_scene_done():
 	var resource = thread.wait_to_finish()
 	var scene = resource.instance();
+	pass_data_to_scene(scene)
 	
 	# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
 	if current_scene.get_child(0).find_node("CanvasModulate") != null:
@@ -58,10 +69,23 @@ func _on_load_scene_done():
 	current_scene.get_child(0).queue_free()
 	current_scene.call_deferred("add_child", scene)
 	
+func pass_data_to_scene(scene):
+	if "Camp" in scene.name:
+		var player_position : Vector2 = data_to_pass
+		scene.set_player_spawn(player_position)
+		
+	elif "Dungeon" in scene.name:
+		var spawning_area_id = data_to_pass
+		scene.set_spawning_area_id(spawning_area_id)
+		print("put dungeon_scene data")
+		
+	elif "Grassland" in scene.name:
+		var spawning_area_id = data_to_pass
+		scene.set_spawning_area_id(spawning_area_id)
+		print("put grassland_scene data")
+		
+	
 func finish_transition():
-	# set and update player
-	
-	
 	if current_transition_type != null:
 		# When finished setting up new scene fade back to normal
 		if current_transition_type == Constants.TransitionType.GAME_SCENE:
