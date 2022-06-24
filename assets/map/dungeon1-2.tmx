@@ -460,6 +460,7 @@
   <object id="1" name="player_spawn" type="area" x="412" y="278" width="24" height="16"/>
   <object id="2" name="enter_level" type="area" x="316" y="16" width="24" height="16">
    <properties>
+    <property name="current_dungeon" value="1"/>
     <property name="next_level" value="3"/>
    </properties>
   </object>

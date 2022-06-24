@@ -244,6 +244,7 @@
   <object id="1" name="player_spawn" type="area" x="812" y="-10" width="24" height="16"/>
   <object id="2" name="enter_level" type="area" x="-116" y="64" width="24" height="16">
    <properties>
+    <property name="current_dungeon" value="1"/>
     <property name="next_level" value="1"/>
    </properties>
   </object>

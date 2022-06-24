@@ -20,6 +20,10 @@ func setup_player():
 	var view_direction = Vector2(0,1)
 	Utils.get_current_player().set_spawn(player_position, view_direction)
 	
+	# Set light
+	var light = Utils.get_current_player().get_node("Light2D")
+	light.enabled = true
+	
 	# Replace template player in scene with current_player
 	find_node("Player").get_parent().remove_child(find_node("Player"))
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
@@ -29,14 +33,15 @@ func setup_player():
 func body_entered_enter_level_area(body, enter_level_area):
 	if body.name == "Player":
 		var next_level_to = enter_level_area.get_meta("next_level")
-		print("-> Next level to \""  + str(next_level_to) + "\"")
+		var current_dungeon = enter_level_area.get_meta("current_dungeon")
+		print("-> Next level to \"" + current_dungeon + "-" + str(next_level_to) + "\"")
+		Utils.get_scene_manager().transition_to_scene("res://scenes/Dungeon-"+ current_dungeon + "-" + next_level_to + ".tscn", Constants.TransitionType.GAME_SCENE)
 
 # Method which is called when a body has exited a enter_level_area
 func body_exited_enter_level_area(body, enter_level_area):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED enter_level_area \"" + enter_level_area.name + "\"")
-
-
+		
 # Setup all objects Area2D's on start
 func setup_objects_areas():
 	var object = find_node("objects")

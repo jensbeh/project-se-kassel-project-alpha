@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/map/dungeon1-1.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Dungeons.gd" type="Script" id=3]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [node name="Dungeon-1-1" type="Node2D"]
 position = Vector2( 720, 424 )
@@ -20,7 +22,11 @@ color = Color( 0, 0, 0, 1 )
 [node name="Player" parent="dungeon1-1/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( -48, 96 )
 
+[node name="AnimationTree" parent="dungeon1-1/playerlayer/Player" index="16"]
+parameters/playback = SubResource( 1 )
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color( 0, 0, 0, 1 )
 
 [editable path="dungeon1-1"]
+[editable path="dungeon1-1/playerlayer/Player"]

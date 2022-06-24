@@ -218,7 +218,6 @@ mouse_filter = 2
 color = Color( 0, 0, 0, 0 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="LoadingScreen"]
-self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 10 )

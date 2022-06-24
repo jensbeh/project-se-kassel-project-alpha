@@ -1556,14 +1556,9 @@ anims/WalkUp = SubResource( 10 )
 parameters/playback = SubResource( 11 )
 
 [node name="Camera2D" parent="Node2D/Player" index="17"]
-visible = false
 current = false
 
-[node name="RayCast2D" parent="Node2D/Player" index="18"]
-visible = false
-
 [node name="Light2D" parent="Node2D/Player" index="19"]
-visible = false
 enabled = false
 
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
