@@ -50,6 +50,11 @@ func _load_scene_in_background():
 func _on_load_scene_done():
 	var resource = thread.wait_to_finish()
 	var scene = resource.instance();
+	
+	# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
+	if current_scene.get_child(0).find_node("CanvasModulate") != null:
+		current_scene.get_child(0).remove_child(current_scene.get_child(0).find_node("CanvasModulate"))
+
 	current_scene.get_child(0).queue_free()
 	current_scene.call_deferred("add_child", scene)
 	
