@@ -1,10 +1,8 @@
 extends Node2D
 
 # Variables
-var next_scene_path = ""
-var data_to_pass = null
 var thread
-var current_transition_type = null
+var current_transition_data = null
 
 
 # Nodes CurrentScreen
@@ -18,35 +16,27 @@ func _ready():
 	# Set size of fade screen
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
 
-func transition_to_menu_scene(new_scene_path: String):
-	# Show black fade/loading screen and load new scene after fading to black
-	print("transition_to_scene_menu")
-	next_scene_path = new_scene_path
-	current_transition_type = Constants.TransitionType.MENU_SCENE
+func transition_to_scene(transition_data):
+	current_transition_data = transition_data
 	
-	# Can't click any button
-	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
-
-	loading_screen_animation_player.play("MenuFadeToBlack")
-
-func transition_to_game_scene_area(new_scene_path: String, new_data_to_pass):
-	# Show black fade/loading screen and load new scene after fading to black
-	print(new_data_to_pass)
-	next_scene_path = new_scene_path
-	data_to_pass = new_data_to_pass
-	current_transition_type = Constants.TransitionType.GAME_SCENE
-	
-	# Can't click any button
+	# Can't click any button now
 	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
 	
-	loading_screen_animation_player.play("GameFadeToBlack")
+	# Show black fade/loading screen and load new scene after fading to black
+	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
+		loading_screen_animation_player.play("GameFadeToBlack")
+		print("change to game scene")
+		
+	elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
+		loading_screen_animation_player.play("MenuFadeToBlack")
+		print("change to menu scene")
 
 func load_new_scene():
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
 	
 func _load_scene_in_background():
-	var loader = ResourceLoader.load_interactive(next_scene_path)
+	var loader = ResourceLoader.load_interactive(current_transition_data.get_scene_path())
 	set_process(true)
 
 	while true:
@@ -70,25 +60,13 @@ func _on_load_scene_done():
 	current_scene.call_deferred("add_child", scene)
 	
 func pass_data_to_scene(scene):
-	if "Camp" in scene.name:
-		var player_position : Vector2 = data_to_pass
-		scene.set_player_spawn(player_position)
-		
-	elif "Dungeon" in scene.name:
-		var spawning_area_id = data_to_pass
-		scene.set_spawning_area_id(spawning_area_id)
-		print("put dungeon_scene data")
-		
-	elif "Grassland" in scene.name:
-		var spawning_area_id = data_to_pass
-		scene.set_spawning_area_id(spawning_area_id)
-		print("put grassland_scene data")
-		
+	if current_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
+		scene.set_transition_data(current_transition_data)
 	
 func finish_transition():
-	if current_transition_type != null:
+	if current_transition_data != null:
 		# When finished setting up new scene fade back to normal
-		if current_transition_type == Constants.TransitionType.GAME_SCENE:
+		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
 			# Set player scale/movment ability/shadow to normal if coming from menu
 			if Utils.get_current_player().scale != Vector2(Constants.PLAYER_TRANSFORM_SCALE, Constants.PLAYER_TRANSFORM_SCALE):
@@ -98,10 +76,10 @@ func finish_transition():
 			if Utils.get_current_player().get_visibility("Shadow") == true:
 				Utils.get_current_player().set_visibility("Shadow", false)
 			
-			# tart fade out
+			# start fade out
 			loading_screen_animation_player.play("GameFadeToNormal")
 			
-		elif current_transition_type == Constants.TransitionType.MENU_SCENE:
+		elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 			loading_screen_animation_player.play("MenuFadeToNormal")
 			
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE

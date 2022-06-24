@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "TransitionData",
+"language": "GDScript",
+"path": "res://scenes/TransitionData.gd"
+} ]
+_global_script_class_icons={
+"TransitionData": ""
+}
+
 [application]
 
 config/name="Project Alpha"

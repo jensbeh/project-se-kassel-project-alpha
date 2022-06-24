@@ -145,7 +145,8 @@ func save_data():
 
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/character_screens/CharacterScreen.tscn", Constants.TransitionType.MENU_SCENE, self.name)
+	var transition_data = TransitionData.Menu.new("res://scenes/character_screens/CharacterScreen.tscn")
+	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
@@ -485,4 +486,8 @@ func _on_LineEdit_focus_exited():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	Utils.get_scene_manager().transition_to_scene("res://scenes/camp/Camp.tscn", Constants.TransitionType.GAME_SCENE, self.name)
+	var player_position = Vector2(1128,616)
+	var view_direction = Vector2(0,1)
+	
+	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
+	Utils.get_scene_manager().transition_to_scene(transition_data)

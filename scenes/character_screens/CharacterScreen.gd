@@ -206,11 +206,13 @@ func change_menu_color():
 
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/MainMenuScreen.tscn", Constants.TransitionType.MENU_SCENE, self.name)
+	var transition_data = TransitionData.Menu.new("res://scenes/MainMenuScreen.tscn")
+	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
-	Utils.get_scene_manager().transition_to_scene("res://scenes/character_screens/CreateCharacter.tscn", Constants.TransitionType.MENU_SCENE, self.name)
+	var transition_data = TransitionData.Menu.new("res://scenes/character_screens/CreateCharacter.tscn")
+	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _input(_event):
@@ -332,6 +334,9 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	var player_position = Vector2(1128,616)
-	Utils.get_scene_manager().transition_to_game_scene_area("res://scenes/camp/Camp.tscn", player_position)
+	var player_position = Vector2(1064,232)
+	var view_direction = Vector2(0,1)
+	
+	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
+	Utils.get_scene_manager().transition_to_scene(transition_data)
 		

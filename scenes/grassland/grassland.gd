@@ -1,7 +1,7 @@
 extends Node2D
 
 # Variables - Data passed from scene before
-var spawning_area_id  = null
+var init_transition_data = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,25 +16,38 @@ func _ready():
 	
 	# Setup stair areas
 	setup_stair_areas()
+	
+	# Say SceneManager that new_scene is ready
+	Utils.get_scene_manager().finish_transition()
 
 func setup_player():
 	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
 	
 	# Set position
-	var player_spawn_area = null
-	for child in find_node("playerSpawns").get_children():
-		if "player_spawn" in child.name:
-			if child.has_meta("spawn_area_id"):
-				if child.get_meta("spawn_area_id") == spawning_area_id:
-					player_spawn_area = child
-					break
-					
-	var player_position = Vector2(player_spawn_area.position.x + 5, player_spawn_area.position.y)
-	var view_direction = Vector2(0,-1)
-	Utils.get_current_player().set_spawn(player_position, view_direction)
+	if init_transition_data.is_type(TransitionData.GameArea):
+		var player_spawn_area = null
+		for child in find_node("playerSpawns").get_children():
+			if "player_spawn" in child.name:
+				if child.has_meta("spawn_area_id"):
+					if child.get_meta("spawn_area_id") == init_transition_data.get_spawn_area_id():
+						player_spawn_area = child
+						break
 
-func set_spawning_area_id(new_spawning_area_id: String):
-	spawning_area_id = new_spawning_area_id
+		var player_position = Vector2(player_spawn_area.position.x + 5, player_spawn_area.position.y)
+		var view_direction = Vector2(0,-1)
+		Utils.get_current_player().set_spawn(player_position, view_direction)
+		
+	# Replace template player in scene with current_player
+	find_node("Player").get_parent().remove_child(find_node("Player"))
+	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
+	find_node("playerlayer").add_child(Utils.get_current_player())
+	
+	# Connect signals
+	Utils.get_current_player().connect("player_collided", self, "collision_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+
+func set_transition_data(transition_data):
+	init_transition_data = transition_data
 
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
@@ -42,6 +55,9 @@ func body_entered_change_scene_area(body, changeSceneArea):
 		var change_scene_to = changeSceneArea.get_meta("change_scene_to")
 		if change_scene_to == "camp":
 			print("-> Change scene \"GRASSLAND\" to \""  + str(change_scene_to) + "\"")
+			
+			var transition_data = TransitionData.GameArea.new("res://scenes/camp/Camp.tscn", changeSceneArea.get_meta("to_spawn_area_id"))
+			Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -53,13 +69,13 @@ func body_exited_change_scene_area(body, changeSceneArea):
 func body_entered_stair_area(body, stairArea):
 	if body.name == "Player":
 		# reduce player speed
-		Utils.get_player().set_speed(0.6)
+		Utils.get_current_player().set_speed(0.6)
 
 # Method which is called when a body has exited a stairArea
 func body_exited_stair_area(body, stairArea):
 	if body.name == "Player":
 		# reset player speed
-		Utils.get_player().reset_speed()
+		Utils.get_current_player().reset_speed()
 
 # Setup the scene with all importent properties on start
 func setup_scene():
