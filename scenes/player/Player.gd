@@ -326,6 +326,7 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	# Setup camera
 	var scene_camera = scene_player.get_node("Camera2D")
 	var _new_camera = get_node("Camera2D")
+	
 	# Set camera zoom level
 	_new_camera.zoom = scene_camera.zoom
 	
@@ -336,3 +337,8 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	_new_camera.limit_top = scene_camera.limit_top
 	_new_camera.current = true
 	scene_camera.current = false
+	
+	# Setup light
+	var scene_light = scene_player.get_node("Light2D")
+	var _new_light = get_node("Light2D")
+	_new_light.enabled = scene_light.enabled

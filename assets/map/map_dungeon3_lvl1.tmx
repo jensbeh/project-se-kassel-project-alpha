@@ -1126,11 +1126,31 @@
    </data>
   </layer>
  </group>
- <objectgroup id="9" name="objects">
-  <object id="7" name="player_spawn" type="area" x="460" y="-224" width="24" height="16"/>
-  <object id="8" name="enter_level" type="area" x="-228" y="-416" width="24" height="16">
+ <objectgroup id="14" name="playerSpawns">
+  <object id="14" name="player_spawn_from_grassland" type="area" x="460" y="-223" width="24" height="16">
    <properties>
-    <property name="next_level" value="2"/>
+    <property name="spawn_area_id" value="ps_dungeon3-lvl1-from-grassland"/>
+   </properties>
+  </object>
+  <object id="18" name="player_spawn_from_dungeon3-lvl2" type="area" x="-228" y="-405" width="24" height="16">
+   <properties>
+    <property name="spawn_area_id" value="ps_dungeon3-lvl1-from-dungeon3-lvl2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="15" name="changeScenes">
+  <object id="20" name="changeScene grassland" type="area" x="464" y="-240" width="16" height="16">
+   <properties>
+    <property name="need_to_press_button_for_change" type="bool" value="false"/>
+    <property name="next_scene_path" value="res://scenes/grassland/Grassland.tscn"/>
+    <property name="to_spawn_area_id" value="ps_grassland-from-dungeon3"/>
+   </properties>
+  </object>
+  <object id="21" name="changeScene dungeon3-lvl2" type="area" x="-228" y="-416" width="24" height="16">
+   <properties>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn"/>
+    <property name="to_spawn_area_id" value="ps_dungeon3-lvl2-from-dungeon3-lvl1"/>
    </properties>
   </object>
  </objectgroup>
