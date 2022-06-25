@@ -1,5 +1,6 @@
 class_name TransitionData
 
+# Class with information about a transition to a menu scene
 class Menu:
 	var transition_type = Constants.TransitionType.MENU_SCENE
 	var scene_path = null
@@ -16,6 +17,7 @@ class Menu:
 	func is_type(type): return type == Menu
 	func get_type(): return Menu
 
+# Class with information about a transition to a game scene with area spawning
 class GameArea:
 	var transition_type = Constants.TransitionType.GAME_SCENE
 	var scene_path = null
@@ -42,6 +44,7 @@ class GameArea:
 	func is_type(type): return type == GameArea
 	func get_type(): return GameArea
 
+# Class with information about a transition to a game scene with custom position spawning
 class GamePosition:
 	var transition_type = Constants.TransitionType.GAME_SCENE
 	var scene_path = null

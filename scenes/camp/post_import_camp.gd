@@ -1,20 +1,18 @@
 extends Node
 
-
+# Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print(scene)
+	print("reimported " + scene.name)
+	
+	# Setup all doors with animation
 	var doorsObject = scene.find_node("doors")
 	for child in doorsObject.get_children():
 		if "door_" in child.name:
-			var selected_door_sprite = child.get_meta("selected_door_sprite")
-			print(selected_door_sprite)
-			
-			# possible slected doors = 1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19,24,29
+			var selected_door_sprite = child.get_meta("selected_door_sprite") # possible slected doors = 1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19,24,29
 			var frame = selected_door_sprite * 4 - 4
-			
 			var sprite = Sprite.new()
 			sprite.name = "sprite"
-			sprite.centered = false			
+			sprite.centered = false
 			sprite.texture = load("res://assets/tilesets/Village Animated Doors.png")
 			sprite.hframes = 20
 			sprite.vframes = 8
@@ -65,7 +63,5 @@ func post_import(scene):
 			
 			child.add_child(animationPlayer)
 			animationPlayer.set_owner(scene)
-			print("added AnimationPlayer")
-
-	print("End")
+			
 	return scene

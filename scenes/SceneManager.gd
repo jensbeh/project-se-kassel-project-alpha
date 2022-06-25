@@ -16,11 +16,13 @@ func _ready():
 	# Set size of fade screen
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
 
+# Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
 	current_transition_data = transition_data
 	
-	# Can't click any button now
+	# Mouse actions will be stopped until transition is done
 	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
+	
 	# Disabel movment & interaction of player
 	if Utils.get_current_player() != null:
 		Utils.get_current_player().set_movement(false)
@@ -30,29 +32,29 @@ func transition_to_scene(transition_data):
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 		loading_screen_animation_player.play("GameFadeToBlack")
-		print("change to game scene")
-		
 	elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 		loading_screen_animation_player.play("MenuFadeToBlack")
-		print("change to menu scene")
 
+# Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
-	
+
+# Method to load the new scene with a thread in background
 func _load_scene_in_background():
 	var loader = ResourceLoader.load_interactive(current_transition_data.get_scene_path())
 	set_process(true)
 
 	while true:
-		# Poll your loader.
 		var err = loader.poll()
 		
 		if err == ERR_FILE_EOF: # Finished loading.
 			call_deferred("_on_load_scene_done");
-			return loader.get_resource();
+			return loader.get_resource(); # Return the ressource with the scene
 
+# Method is called when thread is done and the scene is loaded - here the scene will be instancing with all information and will be added to current_scene
 func _on_load_scene_done():
+	# Get scene and pass init data
 	var resource = thread.wait_to_finish()
 	var scene = resource.instance();
 	pass_data_to_scene(scene)
@@ -61,16 +63,19 @@ func _on_load_scene_done():
 	if current_scene.get_child(0).find_node("CanvasModulate") != null:
 		current_scene.get_child(0).remove_child(current_scene.get_child(0).find_node("CanvasModulate"))
 
+	# Add scene to current_scene
 	current_scene.get_child(0).queue_free()
 	current_scene.call_deferred("add_child", scene)
 	
+# Method to pass the transition_data to the new scene 
 func pass_data_to_scene(scene):
 	print(scene)
 	if current_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
 		scene.set_transition_data(current_transition_data)
-	
+
+# Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
-	if current_transition_data != null:
+	if current_transition_data != null: # In menu it is null
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
@@ -87,15 +92,18 @@ func finish_transition():
 				Utils.get_current_player().set_player_can_interact(true)
 
 			
-			# start fade out
+			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
 			
 		elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
+			# Start fade to normal to menu
 			loading_screen_animation_player.play("MenuFadeToNormal")
 			
+		# Mouse actions works now again
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
+# Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
 var timer = 0.0
 func _process(delta):

@@ -115,7 +115,7 @@ func _physics_process(_delta):
 			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 				emit_signal("player_collided", collision.get_collider())		
 
-
+# Method handles key inputs
 func _input(event):
 	if event.is_action_pressed("e"):
 		print("Pressed e")
@@ -123,9 +123,11 @@ func _input(event):
 			print("interacted")
 			emit_signal("player_interact")
 
+# Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
 	player_can_interact = value
 
+# Method to get activate or disable state of possibility of interaction
 func get_player_can_interact():
 	return player_can_interact
 
@@ -308,20 +310,24 @@ func reset_key(track_idx):
 	var newAnimation = animation_player.get_animation("WalkDown")
 	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
 	_set_key(track_idx, newValue)
-	
+
+# Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
 	animation_tree.active = state
 
+# Method to get activate or disable state of player movment animation 
 func get_movment_animation():
 	return animation_tree.active
 
+# Method to set the spawn_position and view_direction of the current player
 func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
 	position = spawn_position
 	animation_tree.active = true
-	
+
+# Method to setup the current player in the new scene with all information of the template player in the scene about camera, ...
 func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	# Setup camera
 	var scene_camera = scene_player.get_node("Camera2D")

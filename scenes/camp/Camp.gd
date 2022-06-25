@@ -26,7 +26,9 @@ func _ready():
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 
+# Method to setup the player with all informations
 func setup_player():
+	# Setup player node with all settings like camera, ...
 	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
 	
 	# Set position
@@ -41,6 +43,7 @@ func setup_player():
 	Utils.get_current_player().connect("player_collided", self, "collision_detected")
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
+# Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
 

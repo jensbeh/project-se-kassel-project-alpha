@@ -1,8 +1,8 @@
 extends Node
 
-
+# Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print(scene)
+	print("reimported " + scene.name)
 	
 	# Set lights with script to lightsObject
 	var lightsObject = scene.find_node("lights")
@@ -10,8 +10,6 @@ func post_import(scene):
 		for child in lightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				print(sprite_positon)
-				
 				var light = Light2D.new()
 				light.texture = load("res://assets/light.png")
 				light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
@@ -23,7 +21,5 @@ func post_import(scene):
 				
 				lightsObject.add_child(light)
 				light.set_owner(scene)
-				print("added light")
-
-	print("End")
+				
 	return scene
