@@ -5916,7 +5916,6 @@
   </object>
   <object id="3010" name="player_spawn_from_grassland" type="area" x="1056" y="201" width="48" height="23">
    <properties>
-    <property name="from" value="grassland"/>
     <property name="spawn_area_id" value="ps_camp-from-grassland"/>
    </properties>
   </object>

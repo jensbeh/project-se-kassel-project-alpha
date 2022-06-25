@@ -19417,7 +19417,6 @@
  <objectgroup id="65" name="playerSpawns">
   <object id="5593" name="player_spawn_from_camp" type="area" x="-32" y="752" width="48" height="23">
    <properties>
-    <property name="from" value="camp"/>
     <property name="spawn_area_id" value="ps_grassland-from-camp"/>
    </properties>
   </object>
