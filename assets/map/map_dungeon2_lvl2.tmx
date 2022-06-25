@@ -230,8 +230,8 @@
 128,128,128,128,128,128,130,108,6,7,6,6,59,60,101,0,
 149,149,149,149,149,149,149,150,106,108,6,6,6,6,59,60,
 18,20,18,18,18,18,19,6,127,130,107,108,6,6,6,6,
-0,0,0,0,0,0,81,18,148,149,149,150,6,6,6,6,
-60,60,60,60,101,0,0,0,81,18,19,6,28,6,106,107,
+0,0,0,0,0,0,81,19,148,149,149,150,6,6,6,6,
+60,60,60,60,101,0,0,59,60,18,19,6,28,6,106,107,
 6,6,6,6,59,42,101,0,0,0,81,19,28,6,148,110,
 107,107,108,6,6,28,59,60,101,0,0,81,19,6,7,148,
 128,128,130,107,108,7,28,7,59,101,0,0,81,19,6,6,
@@ -888,11 +888,31 @@
    </data>
   </layer>
  </group>
- <objectgroup id="9" name="objects">
-  <object id="1" name="player_spawn" type="area" x="620" y="-496" width="24" height="16"/>
-  <object id="2" name="enter_level" type="area" x="220" y="-80" width="24" height="16">
+ <objectgroup id="11" name="playerSpawns">
+  <object id="11" name="player_spawn_from_dungeon2-lvl1" type="area" x="620" y="-489" width="24" height="16">
    <properties>
-    <property name="next_level" value="3"/>
+    <property name="spawn_area_id" value="ps_dungeon2-lvl2-from-dungeon2-lvl1"/>
+   </properties>
+  </object>
+  <object id="12" name="player_spawn_from_dungeon2-lvl3" type="area" x="220" y="-69" width="24" height="16">
+   <properties>
+    <property name="spawn_area_id" value="ps_dungeon2-lvl2-from-dungeon2-lvl3"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="12" name="changeScenes">
+  <object id="13" name="changeScene dungeon2-lvl1" type="area" x="620" y="-496" width="24" height="16">
+   <properties>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn"/>
+    <property name="to_spawn_area_id" value="ps_dungeon2-lvl1-from-dungeon2-lvl2"/>
+   </properties>
+  </object>
+  <object id="14" name="changeScene dungeon2-lvl3" type="area" x="220" y="-80" width="24" height="16">
+   <properties>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl3.tscn"/>
+    <property name="to_spawn_area_id" value="ps_dungeon2-lvl3-from-dungeon2-lvl2"/>
    </properties>
   </object>
  </objectgroup>

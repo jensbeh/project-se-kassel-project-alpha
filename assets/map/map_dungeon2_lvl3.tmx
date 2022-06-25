@@ -942,11 +942,31 @@
    </data>
   </layer>
  </group>
- <objectgroup id="10" name="objects">
-  <object id="1" name="player_spawn" type="area" x="1084" y="16" width="24" height="16"/>
-  <object id="2" name="enter_level" type="area" x="524" y="-176" width="24" height="16">
+ <objectgroup id="11" name="playerSpawns">
+  <object id="11" name="player_spawn_from_dungeon2-lvl2" type="area" x="1084" y="23" width="24" height="16">
    <properties>
-    <property name="next_level" value="4"/>
+    <property name="spawn_area_id" value="ps_dungeon2-lvl3-from-dungeon2-lvl2"/>
+   </properties>
+  </object>
+  <object id="12" name="player_spawn_from_dungeon2-lvl4" type="area" x="524" y="-165" width="24" height="16">
+   <properties>
+    <property name="spawn_area_id" value="ps_dungeon2-lvl3-from-dungeon2-lvl4"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="12" name="changeScenes">
+  <object id="13" name="changeScene dungeon2-lvl2" type="area" x="1084" y="16" width="24" height="16">
+   <properties>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl2.tscn"/>
+    <property name="to_spawn_area_id" value="ps_dungeon2-lvl2-from-dungeon2-lvl3"/>
+   </properties>
+  </object>
+  <object id="14" name="changeScene dungeon2-lvl4" type="area" x="524" y="-176" width="24" height="16">
+   <properties>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn"/>
+    <property name="to_spawn_area_id" value="ps_dungeon2-lvl4-from-dungeon2-lvl3"/>
    </properties>
   </object>
  </objectgroup>

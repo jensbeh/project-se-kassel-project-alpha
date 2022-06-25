@@ -196,7 +196,11 @@
    <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
- <tile id="102" probability="0.001"/>
+ <tile id="102" probability="0.001">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="3" width="16" height="12"/>
+  </objectgroup>
+ </tile>
  <tile id="103" probability="0.001"/>
  <tile id="108" probability="0.2"/>
  <tile id="109" probability="0.2"/>
@@ -378,7 +382,11 @@
    <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
- <tile id="216" probability="0.001"/>
+ <tile id="216" probability="0.001">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="3" width="16" height="12"/>
+  </objectgroup>
+ </tile>
  <tile id="217" probability="0.001"/>
  <tile id="233" probability="0.2"/>
  <tile id="234" probability="0.01"/>
@@ -565,7 +573,11 @@
    <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
- <tile id="330" probability="0.001"/>
+ <tile id="330" probability="0.001">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="3" width="16" height="12"/>
+  </objectgroup>
+ </tile>
  <tile id="331" probability="0.001"/>
  <tile id="349" probability="0.02"/>
  <tile id="356">
@@ -743,7 +755,11 @@
    <object id="4" x="4" y="0" width="11" height="3"/>
   </objectgroup>
  </tile>
- <tile id="444" probability="0.001"/>
+ <tile id="444" probability="0.001">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="3" width="16" height="12"/>
+  </objectgroup>
+ </tile>
  <tile id="445" probability="0.001"/>
  <wangsets>
   <wangset name="light grass" type="corner" tile="45">
