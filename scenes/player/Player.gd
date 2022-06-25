@@ -49,6 +49,9 @@ var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
 var movement
 
+# Interaction
+var player_can_interact
+
 
 func _ready():
 	# Style
@@ -116,7 +119,15 @@ func _physics_process(_delta):
 func _input(event):
 	if event.is_action_pressed("e"):
 		print("Pressed e")
-		emit_signal("player_interact")
+		if player_can_interact:
+			print("interacted")
+			emit_signal("player_interact")
+
+func set_player_can_interact(value):
+	player_can_interact = value
+
+func get_player_can_interact():
+	return player_can_interact
 
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):
@@ -300,6 +311,9 @@ func reset_key(track_idx):
 	
 func set_movment_animation(state: bool):
 	animation_tree.active = state
+
+func get_movment_animation():
+	return animation_tree.active
 
 func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change

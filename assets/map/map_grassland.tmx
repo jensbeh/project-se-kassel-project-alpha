@@ -19415,14 +19415,14 @@
   </objectgroup>
  </group>
  <objectgroup id="65" name="playerSpawns">
-  <object id="5593" name="player_spawn_from_camp" type="area" x="-32" y="752" width="48" height="23">
+  <object id="5593" name="player_spawn_from_camp" type="area" x="768" y="720" width="48" height="23">
    <properties>
     <property name="spawn_area_id" value="ps_grassland-from-camp"/>
    </properties>
   </object>
   <object id="5594" name="player_spawn_from_dungeon1" type="area" x="832" y="675" width="48" height="23">
    <properties>
-    <property name="from" value="dungeon1"/>
+    <property name="spawn_area_id" value="ps_grassland-from-dungeon1"/>
    </properties>
   </object>
   <object id="5595" name="player_spawn_from_dungeon2" type="area" x="352" y="-205" width="48" height="23">
@@ -19444,13 +19444,16 @@
  <objectgroup id="9" name="changeScenes">
   <object id="586" name="changeScene camp" type="area" x="-48" y="784" width="80" height="32">
    <properties>
-    <property name="change_scene_to" value="camp"/>
+    <property name="need_to_press_button_for_change" type="bool" value="false"/>
+    <property name="next_scene_path" value="res://scenes/camp/Camp.tscn"/>
     <property name="to_spawn_area_id" value="ps_camp-from-grassland"/>
    </properties>
   </object>
   <object id="2486" name="changeScene dungeon1" type="area" x="852" y="656" width="8" height="17">
    <properties>
-    <property name="change_scene_to" value="dungeon1"/>
+    <property name="need_to_press_button_for_change" type="bool" value="false"/>
+    <property name="next_scene_path" value="res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn"/>
+    <property name="to_spawn_area_id" value="ps_dungeon1-lvl1-from-grassland"/>
    </properties>
   </object>
   <object id="2487" name="changeScene dungeon2" type="area" x="372" y="-224" width="8" height="17">

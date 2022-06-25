@@ -5931,7 +5931,8 @@
  <objectgroup id="632" name="changeScenes">
   <object id="68" name="changeScene grassland" type="area" x="1040" y="160" width="80" height="32">
    <properties>
-    <property name="change_scene_to" value="grassland"/>
+    <property name="need_to_press_button_for_change" type="bool" value="false"/>
+    <property name="next_scene_path" value="res://scenes/grassland/Grassland.tscn"/>
     <property name="to_spawn_area_id" value="ps_grassland-from-camp"/>
    </properties>
   </object>

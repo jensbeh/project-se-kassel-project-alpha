@@ -1,5 +1,9 @@
 extends Node2D
 
+# Variables
+var player_in_change_scene_area = false
+var current_area : Area2D = null
+
 # Variables - Data passed from scene before
 var init_transition_data = null
 
@@ -24,18 +28,7 @@ func setup_player():
 	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
 	
 	# Set position
-	if init_transition_data.is_type(TransitionData.GameArea):
-		var player_spawn_area = null
-		for child in find_node("playerSpawns").get_children():
-			if "player_spawn" in child.name:
-				if child.has_meta("spawn_area_id"):
-					if child.get_meta("spawn_area_id") == init_transition_data.get_spawn_area_id():
-						player_spawn_area = child
-						break
-
-		var player_position = Vector2(player_spawn_area.position.x + 5, player_spawn_area.position.y)
-		var view_direction = Vector2(0,-1)
-		Utils.get_current_player().set_spawn(player_position, view_direction)
+	Utils.calculate_and_set_player_spawn(self, init_transition_data)
 		
 	# Replace template player in scene with current_player
 	find_node("Player").get_parent().remove_child(find_node("Player"))
@@ -49,22 +42,33 @@ func setup_player():
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
 
+# Method to handle collision detetcion dependent of the collision object type
+func interaction_detected():
+	if player_in_change_scene_area:
+		var next_scene_path = current_area.get_meta("next_scene_path")
+		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
+		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
+		Utils.get_scene_manager().transition_to_scene(transition_data)
+
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		var change_scene_to = changeSceneArea.get_meta("change_scene_to")
-		if change_scene_to == "camp":
-			print("-> Change scene \"GRASSLAND\" to \""  + str(change_scene_to) + "\"")
-			
-			var transition_data = TransitionData.GameArea.new("res://scenes/camp/Camp.tscn", changeSceneArea.get_meta("to_spawn_area_id"))
+		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
+			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
+			print("-> Change scene \"GRASSLAND\" to \""  + str(next_scene_path) + "\"")
+			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
 			Utils.get_scene_manager().transition_to_scene(transition_data)
-
+		else:
+			player_in_change_scene_area = true
+			current_area = changeSceneArea
 
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
-
+		current_area = null
+		player_in_change_scene_area = false
+		
 # Method which is called when a body has entered a stairArea
 func body_entered_stair_area(body, stairArea):
 	if body.name == "Player":

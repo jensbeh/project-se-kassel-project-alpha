@@ -20,10 +20,12 @@ class GameArea:
 	var transition_type = Constants.TransitionType.GAME_SCENE
 	var scene_path = null
 	var spawn_area_id = null
+	var view_direction = null
 	
-	func _init(next_scene_path: String, desired_spawn_area_id: String):
+	func _init(next_scene_path: String, desired_spawn_area_id: String, new_view_direction: Vector2):
 		scene_path = next_scene_path
 		spawn_area_id = desired_spawn_area_id
+		view_direction = new_view_direction
 		
 	func get_scene_path():
 		return scene_path
@@ -33,6 +35,9 @@ class GameArea:
 		
 	func get_spawn_area_id():
 		return spawn_area_id
+		
+	func get_view_direction():
+		return view_direction
 		
 	func is_type(type): return type == GameArea
 	func get_type(): return GameArea

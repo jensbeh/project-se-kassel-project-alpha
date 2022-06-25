@@ -21,6 +21,11 @@ func transition_to_scene(transition_data):
 	
 	# Can't click any button now
 	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
+	# Disabel movment & interaction of player
+	if Utils.get_current_player() != null:
+		Utils.get_current_player().set_movement(false)
+		Utils.get_current_player().set_movment_animation(false)
+		Utils.get_current_player().set_player_can_interact(false)
 	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
@@ -60,6 +65,7 @@ func _on_load_scene_done():
 	current_scene.call_deferred("add_child", scene)
 	
 func pass_data_to_scene(scene):
+	print(scene)
 	if current_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
 		scene.set_transition_data(current_transition_data)
 	
@@ -68,13 +74,18 @@ func finish_transition():
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
-			# Set player scale/movment ability/shadow to normal if coming from menu
+			# Set player scale/movment ability/movment animation/shadow/interaction back to normal
 			if Utils.get_current_player().scale != Vector2(Constants.PLAYER_TRANSFORM_SCALE, Constants.PLAYER_TRANSFORM_SCALE):
 				Utils.get_current_player().scale = Vector2(Constants.PLAYER_TRANSFORM_SCALE, Constants.PLAYER_TRANSFORM_SCALE)
 			if Utils.get_current_player().get_movement() == false:
 				Utils.get_current_player().set_movement(true)
+			if Utils.get_current_player().get_movment_animation() == false:
+				Utils.get_current_player().set_movment_animation(true)
 			if Utils.get_current_player().get_visibility("Shadow") == true:
 				Utils.get_current_player().set_visibility("Shadow", false)
+			if Utils.get_current_player().get_player_can_interact() == false:
+				Utils.get_current_player().set_player_can_interact(true)
+
 			
 			# start fade out
 			loading_screen_animation_player.play("GameFadeToNormal")
