@@ -334,7 +334,7 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	var player_position = Vector2(1064,232)
+	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
 	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
