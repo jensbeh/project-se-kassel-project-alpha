@@ -1,27 +1,24 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
-[ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
-[ext_resource path="res://scenes/player/Player.gd" type="Script" id=3]
-[ext_resource path="res://assets/player/hair/bob .png" type="Texture" id=4]
-[ext_resource path="res://assets/player/clothes/skirt.png" type="Texture" id=5]
-[ext_resource path="res://assets/player/characters/char1.png" type="Texture" id=6]
-[ext_resource path="res://assets/player/face/eyes.png" type="Texture" id=7]
-[ext_resource path="res://assets/player/face/lipstick .png" type="Texture" id=8]
-[ext_resource path="res://assets/player/face/blush_all.png" type="Texture" id=9]
-[ext_resource path="res://assets/player/clothes/shoes.png" type="Texture" id=10]
-[ext_resource path="res://assets/player/acc/mask_clown_blue.png" type="Texture" id=11]
-[ext_resource path="res://assets/player/acc/glasses.png" type="Texture" id=12]
-[ext_resource path="res://assets/player/acc/earring_emerald.png" type="Texture" id=13]
-[ext_resource path="res://assets/player/acc/hat_cowboy.png" type="Texture" id=14]
-[ext_resource path="res://assets/player/acc/beard.png" type="Texture" id=15]
-[ext_resource path="res://assets/light.png" type="Texture" id=16]
-[ext_resource path="res://scenes/dungeons/animated_dungeon_lights.gd" type="Script" id=17]
+[ext_resource path="res://scenes/character_screens/CharacterScreen.gd" type="Script" id=1]
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 7, 6 )
+[sub_resource type="StyleBoxFlat" id=12]
+bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.333333, 0.27451, 0.27451, 0 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Animation" id=2]
 resource_name = "IdleDown"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -180,7 +177,7 @@ tracks/12/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 resource_name = "IdleLeft"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -339,7 +336,7 @@ tracks/12/keys = {
 "values": [ 24 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=4]
 resource_name = "IdleRight"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -498,7 +495,7 @@ tracks/12/keys = {
 "values": [ 16 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=5]
 resource_name = "IdleUp"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -657,7 +654,7 @@ tracks/12/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=6]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -816,7 +813,7 @@ tracks/12/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=7]
 resource_name = "WalkDown"
 length = 0.7
 loop = true
@@ -977,7 +974,7 @@ tracks/12/keys = {
 "values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=8]
 resource_name = "WalkLeft"
 length = 0.7
 loop = true
@@ -1138,7 +1135,7 @@ tracks/12/keys = {
 "values": [ 25, 26, 27, 28, 29, 30, 31, 24 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=9]
 resource_name = "WalkRight"
 length = 0.7
 loop = true
@@ -1460,264 +1457,111 @@ tracks/12/keys = {
 "values": [ 9, 10, 11, 12, 13, 14, 15, 8 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=13]
-animation = "IdleLeft"
+[sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
-[sub_resource type="AnimationNodeAnimation" id=14]
-animation = "IdleRight"
+[node name="CharacterScreen" type="Node2D"]
+script = ExtResource( 1 )
 
-[sub_resource type="AnimationNodeAnimation" id=25]
-animation = "IdleUp"
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 3.0
+margin_right = 1922.0
+margin_bottom = 1088.0
+texture = ExtResource( 3 )
+expand = true
 
-[sub_resource type="AnimationNodeAnimation" id=26]
-animation = "IdleDown"
+[node name="Create Character" type="Button" parent="."]
+margin_left = 1262.0
+margin_top = 710.0
+margin_right = 1411.0
+margin_bottom = 735.0
+rect_scale = Vector2( 2.5, 2.5 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
+custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
+text = "Create New Character"
 
-[sub_resource type="AnimationNodeAnimation" id=35]
-animation = "IdleLeft"
+[node name="Back" type="Button" parent="."]
+margin_left = 1265.0
+margin_top = 865.0
+margin_right = 1414.0
+margin_bottom = 890.0
+rect_scale = Vector2( 2.5, 2.5 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
+custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
+text = "Back to Main Menu"
 
-[sub_resource type="AnimationNodeAnimation" id=36]
-animation = "IdleLeft"
+[node name="ScrollContainer2" type="ScrollContainer" parent="."]
+margin_left = 187.0
+margin_top = 77.0
+margin_right = 1043.0
+margin_bottom = 985.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/bg = SubResource( 12 )
 
-[sub_resource type="AnimationNodeAnimation" id=37]
-animation = "IdleRight"
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer2"]
+margin_right = 856.0
+margin_bottom = 908.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_bottom = 20
 
-[sub_resource type="AnimationNodeAnimation" id=38]
-animation = "IdleRight"
+[node name="ScrollContainer" type="ScrollContainer" parent="ScrollContainer2/MarginContainer"]
+margin_top = 20.0
+margin_right = 836.0
+margin_bottom = 888.0
+custom_styles/bg = SubResource( 1 )
 
-[sub_resource type="AnimationNodeBlendSpace2D" id=17]
-blend_point_0/node = SubResource( 13 )
-blend_point_0/pos = Vector2( -1, 0 )
-blend_point_1/node = SubResource( 14 )
-blend_point_1/pos = Vector2( 1, 0 )
-blend_point_2/node = SubResource( 25 )
-blend_point_2/pos = Vector2( 0, -1 )
-blend_point_3/node = SubResource( 26 )
-blend_point_3/pos = Vector2( 0, 0.99 )
-blend_point_4/node = SubResource( 35 )
-blend_point_4/pos = Vector2( -1, 0.95 )
-blend_point_5/node = SubResource( 36 )
-blend_point_5/pos = Vector2( -1, -0.95 )
-blend_point_6/node = SubResource( 37 )
-blend_point_6/pos = Vector2( 1, 0.95 )
-blend_point_7/node = SubResource( 38 )
-blend_point_7/pos = Vector2( 1, -0.95 )
-snap = Vector2( 0.01, 0.01 )
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer2/MarginContainer/ScrollContainer"]
+margin_right = 836.0
+margin_bottom = 868.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 30
+custom_constants/margin_top = 30
+custom_constants/margin_left = 30
+custom_constants/margin_bottom = 30
 
-[sub_resource type="AnimationNodeAnimation" id=27]
-animation = "WalkDown"
+[node name="CharacterList" type="VBoxContainer" parent="ScrollContainer2/MarginContainer/ScrollContainer/MarginContainer"]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 806.0
+margin_bottom = 838.0
+rect_min_size = Vector2( 601, 808 )
+custom_constants/separation = 60
 
-[sub_resource type="AnimationNodeAnimation" id=28]
-animation = "WalkUp"
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 123, 6 )
 
-[sub_resource type="AnimationNodeAnimation" id=29]
-animation = "WalkRight"
+[node name="Player" parent="Node2D" instance=ExtResource( 2 )]
+position = Vector2( 1219, 356 )
+scale = Vector2( 12, 12 )
 
-[sub_resource type="AnimationNodeAnimation" id=30]
-animation = "WalkLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=31]
-animation = "WalkLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=32]
-animation = "WalkLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=33]
-animation = "WalkRight"
-
-[sub_resource type="AnimationNodeAnimation" id=34]
-animation = "WalkRight"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id=22]
-blend_point_0/node = SubResource( 27 )
-blend_point_0/pos = Vector2( 0, 1 )
-blend_point_1/node = SubResource( 28 )
-blend_point_1/pos = Vector2( 0, -1 )
-blend_point_2/node = SubResource( 29 )
-blend_point_2/pos = Vector2( 1, 0 )
-blend_point_3/node = SubResource( 30 )
-blend_point_3/pos = Vector2( -1, 0 )
-blend_point_4/node = SubResource( 31 )
-blend_point_4/pos = Vector2( -1, 1 )
-blend_point_5/node = SubResource( 32 )
-blend_point_5/pos = Vector2( -1, -1 )
-blend_point_6/node = SubResource( 33 )
-blend_point_6/pos = Vector2( 1, -1 )
-blend_point_7/node = SubResource( 34 )
-blend_point_7/pos = Vector2( 1, 1 )
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=23]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=24]
-
-[sub_resource type="AnimationNodeStateMachine" id=2]
-states/Idle/node = SubResource( 17 )
-states/Idle/position = Vector2( 240, 73 )
-states/Walk/node = SubResource( 22 )
-states/Walk/position = Vector2( 431, 73 )
-transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ) ]
-start_node = "Idle"
-graph_offset = Vector2( -161.044, 0 )
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=3]
-
-[node name="Player" type="KinematicBody2D"]
-scale = Vector2( 0.9, 0.9 )
-script = ExtResource( 3 )
-
-[node name="Shadow" type="Sprite" parent="."]
-texture = ExtResource( 1 )
-centered = false
-
-[node name="Body" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 6 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
-
-[node name="Shoes" type="Sprite" parent="."]
-position = Vector2( -8, -12.5 )
-scale = Vector2( 1, 0.875 )
-texture = ExtResource( 10 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 80
-vframes = 49
-
-[node name="Pants" type="Sprite" parent="."]
-position = Vector2( -8, -13 )
-scale = Vector2( 1, 0.875 )
-texture = ExtResource( 5 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 80
-vframes = 49
-
-[node name="Clothes" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 2 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 80
-vframes = 49
-
-[node name="Blush" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 9 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 40
-vframes = 49
-
-[node name="Lipstick" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 8 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 40
-vframes = 49
-
-[node name="Beard" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 15 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 112
-vframes = 49
-
-[node name="Eyes" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 7 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 112
-vframes = 49
-
-[node name="Earring" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 13 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
-
-[node name="Hair" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
-texture = ExtResource( 4 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 112
-vframes = 49
-
-[node name="Mask" type="Sprite" parent="."]
-visible = false
-position = Vector2( -8, -16 )
-texture = ExtResource( 11 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
-
-[node name="Glasses" type="Sprite" parent="."]
-visible = false
-position = Vector2( -8, -12.5 )
-scale = Vector2( 1, 0.875 )
-texture = ExtResource( 12 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 80
-vframes = 49
-
-[node name="Hat" type="Sprite" parent="."]
-visible = false
-position = Vector2( -8, -16 )
-texture = ExtResource( 14 )
-centered = false
-offset = Vector2( 0, -4 )
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 8, 7 )
-shape = SubResource( 1 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/IdleDown = SubResource( 4 )
-anims/IdleLeft = SubResource( 5 )
-anims/IdleRight = SubResource( 6 )
-anims/IdleUp = SubResource( 7 )
-anims/RESET = SubResource( 8 )
-anims/WalkDown = SubResource( 9 )
-anims/WalkLeft = SubResource( 11 )
-anims/WalkRight = SubResource( 12 )
+[node name="AnimationPlayer" parent="Node2D/Player" index="15"]
+anims/IdleDown = SubResource( 2 )
+anims/IdleLeft = SubResource( 3 )
+anims/IdleRight = SubResource( 4 )
+anims/IdleUp = SubResource( 5 )
+anims/RESET = SubResource( 6 )
+anims/WalkDown = SubResource( 7 )
+anims/WalkLeft = SubResource( 8 )
+anims/WalkRight = SubResource( 9 )
 anims/WalkUp = SubResource( 10 )
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 2 )
-anim_player = NodePath("../AnimationPlayer")
-parameters/playback = SubResource( 3 )
-parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
-parameters/Walk/blend_position = Vector2( -0.380349, 0.202312 )
+[node name="AnimationTree" parent="Node2D/Player" index="16"]
+parameters/playback = SubResource( 11 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 8, 8 )
-current = true
-zoom = Vector2( 0.3, 0.3 )
+[node name="Camera2D" parent="Node2D/Player" index="17"]
+current = false
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2( 8, 8 )
-cast_to = Vector2( 0, 8 )
+[node name="Light2D" parent="Node2D/Player" index="19"]
+enabled = false
 
-[node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 8, 8 )
-texture = ExtResource( 16 )
-texture_scale = 0.2
-energy = 0.8
-mode = 2
-script = ExtResource( 17 )
+[connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+
+[editable path="Node2D/Player"]

@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 # Signals
 signal player_collided(collision)
+signal player_interact
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -47,6 +48,9 @@ var curr_hat: int = 0 #0-4, 1
 var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
 var movement
+
+# Interaction
+var player_can_interact
 
 
 func _ready():
@@ -111,12 +115,31 @@ func _physics_process(_delta):
 			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 				emit_signal("player_collided", collision.get_collider())		
 
+# Method handles key inputs
+func _input(event):
+	if event.is_action_pressed("e"):
+		print("Pressed e")
+		if player_can_interact:
+			print("interacted")
+			emit_signal("player_interact")
+
+# Method to activate or disable the possibility of interaction
+func set_player_can_interact(value):
+	player_can_interact = value
+
+# Method to get activate or disable state of possibility of interaction
+func get_player_can_interact():
+	return player_can_interact
+
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):
 	current_walk_speed *= factor
 
 func set_movement(value):
 	movement = value
+
+func get_movement():
+	return movement
 
 # Method to reset the player walk speed to const
 func reset_speed():
@@ -153,6 +176,38 @@ func set_visibility(sprite, visibility):
 			glassesSprite.visible = visibility
 		"Shadow":
 			shadow.visible = visibility
+			
+# Gets the Visibility of a given Sprite
+func get_visibility(sprite):
+	match sprite:
+		"Body":
+			return bodySprite.visible
+		"Shoes":
+			return shoesSprite.visible
+		"Pants":
+			return pantsSprite.visible
+		"Clothes":
+			return clothesSprite.visible
+		"Blush":
+			return blushSprite.visible
+		"Lipstick":
+			return lipstickSprite.visible
+		"Beard":
+			return beardSprite.visible
+		"Eyes":
+			return eyesSprite.visible
+		"Hair":
+			return hairSprite.visible
+		"Mask":
+			return maskSprite.visible
+		"Hat":
+			return hatSprite.visible
+		"Earrings":
+			return earringSprite.visible
+		"Glasses":
+			return glassesSprite.visible
+		"Shadow":
+			return shadow.visible
 
 
 # Sets the current texture
@@ -255,5 +310,41 @@ func reset_key(track_idx):
 	var newAnimation = animation_player.get_animation("WalkDown")
 	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
 	_set_key(track_idx, newValue)
+
+# Method to activate or disable the player movment animation 
+func set_movment_animation(state: bool):
+	animation_tree.active = state
+
+# Method to get activate or disable state of player movment animation 
+func get_movment_animation():
+	return animation_tree.active
+
+# Method to set the spawn_position and view_direction of the current player
+func set_spawn(spawn_position: Vector2, view_direction: Vector2):
+	animation_tree.active = false # Otherwise player_view_direction won't change
+	animation_tree.set("parameters/Idle/blend_position", view_direction)
+	animation_tree.set("parameters/Walk/blend_position", view_direction)
+	position = spawn_position
+	animation_tree.active = true
+
+# Method to setup the current player in the new scene with all information of the template player in the scene about camera, ...
+func setup_player_in_new_scene(scene_player: KinematicBody2D):
+	# Setup camera
+	var scene_camera = scene_player.get_node("Camera2D")
+	var _new_camera = get_node("Camera2D")
 	
+	# Set camera zoom level
+	_new_camera.zoom = scene_camera.zoom
 	
+	# Set camera limits
+	_new_camera.limit_bottom = scene_camera.limit_bottom
+	_new_camera.limit_left = scene_camera.limit_left
+	_new_camera.limit_right = scene_camera.limit_right
+	_new_camera.limit_top = scene_camera.limit_top
+	_new_camera.current = true
+	scene_camera.current = false
+	
+	# Setup light
+	var scene_light = scene_player.get_node("Light2D")
+	var _new_light = get_node("Light2D")
+	_new_light.enabled = scene_light.enabled
