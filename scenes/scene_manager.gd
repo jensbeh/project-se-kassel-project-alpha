@@ -4,7 +4,6 @@ extends Node2D
 var thread
 var current_transition_data = null
 
-
 # Nodes CurrentScreen
 onready var current_scene = $CurrentScene
 # Nodes LoadingScreen
@@ -49,19 +48,21 @@ func _load_scene_in_background():
 		var err = loader.poll()
 		
 		if err == ERR_FILE_EOF: # Finished loading.
-			call_deferred("_on_load_scene_done");
-			return loader.get_resource(); # Return the ressource with the scene
-
+#			var resource = thread.wait_to_finish()
+			var resource = loader.get_resource()
+			var scene = resource.instance()
+			pass_data_to_scene(scene)
+			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
+			if current_scene.get_child(0).find_node("CanvasModulate") != null:
+				current_scene.get_child(0).remove_child(current_scene.get_child(0).find_node("CanvasModulate"))
+			
+			call_deferred("_on_load_scene_done", scene)
+			break
+			
 # Method is called when thread is done and the scene is loaded - here the scene will be instancing with all information and will be added to current_scene
-func _on_load_scene_done():
+func _on_load_scene_done(scene):
 	# Get scene and pass init data
-	var resource = thread.wait_to_finish()
-	var scene = resource.instance();
-	pass_data_to_scene(scene)
-	
-	# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
-	if current_scene.get_child(0).find_node("CanvasModulate") != null:
-		current_scene.get_child(0).remove_child(current_scene.get_child(0).find_node("CanvasModulate"))
+	thread.wait_to_finish()
 
 	# Add scene to current_scene
 	current_scene.get_child(0).queue_free()
@@ -69,7 +70,6 @@ func _on_load_scene_done():
 	
 # Method to pass the transition_data to the new scene 
 func pass_data_to_scene(scene):
-	print(scene)
 	if current_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
 		scene.set_transition_data(current_transition_data)
 

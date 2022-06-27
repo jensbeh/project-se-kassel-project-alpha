@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/MainMenuScreen.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/SceneManager.gd" type="Script" id=2]
+[ext_resource path="res://scenes/scene_manager.gd" type="Script" id=2]
 [ext_resource path="res://assets/tilesets/Village Animated Decorations.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=15]
@@ -295,7 +295,7 @@ visible = false
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 10 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
