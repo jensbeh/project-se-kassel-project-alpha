@@ -16,7 +16,6 @@
  <tileset firstgid="6455" source="../tilesets/small-trees-treetrunks.tsx"/>
  <tileset firstgid="6459" source="../tilesets/animated_decorations.tsx"/>
  <tileset firstgid="6479" source="../tilesets/animated_smoke.tsx"/>
- <group id="9" name="Level 1"/>
  <group id="973" name="ground">
   <layer id="88" name="dirt" width="128" height="96">
    <data encoding="csv">
