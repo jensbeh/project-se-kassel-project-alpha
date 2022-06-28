@@ -4,6 +4,9 @@ extends Node
 func post_import(scene):
 	print("reimported " + scene.name)
 	
+	# Setup map - performace optimisation
+	iterate_over_nodes(scene)
+	
 	# Setup all doors with animation
 	var doorsObject = scene.find_node("doors")
 	for child in doorsObject.get_children():
@@ -65,3 +68,13 @@ func post_import(scene):
 			animationPlayer.set_owner(scene)
 			
 	return scene
+
+# Method to iterate over all nodes and sets specific properties
+func iterate_over_nodes(node):
+	for child in node.get_children():
+		if child.get_child_count() > 0:
+			iterate_over_nodes(child)
+		else:
+			if child is TileMap:
+				child.cell_quadrant_size = 1
+				child.cell_y_sort = false

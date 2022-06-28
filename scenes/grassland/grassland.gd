@@ -1,19 +1,27 @@
 extends Node2D
 
 # Variables
+var thread
 var player_in_change_scene_area = false
 var current_area : Area2D = null
 
 # Variables - Data passed from scene before
 var init_transition_data = null
 
+# Nodes
+onready var changeScenesObject = get_node("map_grassland/changeScenes")
+onready var stairsObject = get_node("map_grassland/ground/stairs")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Setup scene in background
+	thread = Thread.new()
+	thread.start(self, "_setup_scene_in_background")
+
+# Method to setup this scene with a thread in background
+func _setup_scene_in_background():
 	# Setup player
 	setup_player()
-	
-	# Setup scene with properties
-	setup_scene()
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
@@ -21,19 +29,27 @@ func _ready():
 	# Setup stair areas
 	setup_stair_areas()
 	
+	call_deferred("_on_setup_scene_done")
+	
+# Method is called when thread is done and the scene is setup
+func _on_setup_scene_done():
+	thread.wait_to_finish()
+	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 
 # Method to setup the player with all informations
 func setup_player():
+	var scene_player = find_node("Player")
+	
 	# Setup player node with all settings like camera, ...
-	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
+	Utils.get_current_player().setup_player_in_new_scene(scene_player)
 	
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
-		
+	
 	# Replace template player in scene with current_player
-	find_node("Player").get_parent().remove_child(find_node("Player"))
+	scene_player.get_parent().remove_child(scene_player)
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
@@ -84,41 +100,8 @@ func body_exited_stair_area(body, stairArea):
 		# reset player speed
 		Utils.get_current_player().reset_speed()
 
-# Setup the scene with all importent properties on start
-func setup_scene():
-	find_node("dirt lvl0").cell_quadrant_size = 1
-	find_node("dirt lvl0").cell_y_sort = false
-	find_node("ground lvl0").cell_quadrant_size = 1
-	find_node("ground lvl0").cell_y_sort = false
-	find_node("decoration lvl0").cell_quadrant_size = 1
-	find_node("decoration lvl0").cell_y_sort = false
-	
-	find_node("dirt lvl1").cell_quadrant_size = 1
-	find_node("dirt lvl1").cell_y_sort = false
-	find_node("ground lvl1").cell_quadrant_size = 1
-	find_node("ground lvl1").cell_y_sort = false
-	
-	find_node("dirt lvl2").cell_quadrant_size = 1
-	find_node("dirt lvl2").cell_y_sort = false
-	find_node("ground lvl2").cell_quadrant_size = 1
-	find_node("ground lvl2").cell_y_sort = false
-	
-	find_node("dirt lvl3").cell_quadrant_size = 1
-	find_node("dirt lvl3").cell_y_sort = false
-	find_node("ground lvl3").cell_quadrant_size = 1
-	find_node("ground lvl3").cell_y_sort = false
-	find_node("bridge lvl3").cell_quadrant_size = 1
-	find_node("bridge lvl3").cell_y_sort = false
-	
-	find_node("dirt lvl4").cell_quadrant_size = 1
-	find_node("dirt lvl4").cell_y_sort = false
-	find_node("ground lvl4").cell_quadrant_size = 1
-	find_node("ground lvl4").cell_y_sort = false
-
-
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
-	var changeScenesObject = get_node("map_grassland/changeScenes")
 	for child in changeScenesObject.get_children():
 		if "changeScene" in child.name:
 			# connect Area2D with functions to handle body action
@@ -127,7 +110,6 @@ func setup_change_scene_areas():
 
 # Setup all stair objectes/Area2D's on start
 func setup_stair_areas():
-	var stairsObject = get_node("map_grassland/ground/stairs")
 	for stair in stairsObject.get_children():
 		if "stairs" in stair.name:
 			# connect Area2D with functions to handle body action

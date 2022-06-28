@@ -22,8 +22,10 @@ func _ready():
 
 # Method to setup the player with all informations
 func setup_player():
+	var scene_player = find_node("Player")
+	
 	# Setup player node with all settings like camera, ...
-	Utils.get_current_player().setup_player_in_new_scene(find_node("Player"))
+	Utils.get_current_player().setup_player_in_new_scene(scene_player)
 	
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
@@ -33,10 +35,10 @@ func setup_player():
 	light.enabled = true
 	
 	# Replace template player in scene with current_player
-	find_node("Player").get_parent().remove_child(find_node("Player"))
+	scene_player.get_parent().remove_child(scene_player)
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
-
+	
 	# Connect signals
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
