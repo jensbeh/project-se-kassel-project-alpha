@@ -2,6 +2,7 @@ extends Node2D
 
 # Variables
 var thread
+var previouse_scene_path = ""
 var current_transition_data = null
 
 # Nodes CurrentScreen
@@ -17,6 +18,11 @@ func _ready():
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
+	# Set previouse scene path to return to it if necessary
+	if current_transition_data != null: # In menu (after start) it is null
+		previouse_scene_path = current_transition_data.get_scene_path()
+	
+	# Set new and current transition_data
 	current_transition_data = transition_data
 	
 	# Mouse actions will be stopped until transition is done
@@ -102,6 +108,9 @@ func finish_transition():
 		# Mouse actions works now again
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+# Method to return the previouse_scene_path
+func get_previouse_scene_path():
+	return previouse_scene_path
 
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
