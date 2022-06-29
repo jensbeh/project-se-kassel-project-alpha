@@ -20,8 +20,5 @@ parameters/playback = SubResource( 1 )
 [node name="Camera2D" parent="map_camp/playerlayer/Player" index="17"]
 limit_top = 186
 
-[node name="Light2D" parent="map_camp/playerlayer/Player" index="19"]
-enabled = false
-
 [editable path="map_camp"]
 [editable path="map_camp/playerlayer/Player"]

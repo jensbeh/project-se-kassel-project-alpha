@@ -119,6 +119,7 @@ func finish_transition():
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
 				
+				
 			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
 			
@@ -132,6 +133,10 @@ func finish_transition():
 # Method to return the previouse_scene_path
 func get_previouse_scene_path():
 	return previouse_scene_path
+	
+# Method to return the is_day_night_cycle_in_scene value
+func get_is_day_night_cycle_in_scene():
+	return is_day_night_cycle_in_scene
 	
 # Method to update the previouse_scene_path
 func update_previouse_scene_path():

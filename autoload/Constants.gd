@@ -2,8 +2,8 @@ extends Node
 
 
 const PLAYER_WALK_SPEED = 70
-
 const PLAYER_TRANSFORM_SCALE = 0.9
+const PLAYER_MAX_LIGHT_ENERGY = 0.8
 
 enum TransitionType {
 	GAME_SCENE,

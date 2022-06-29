@@ -348,3 +348,9 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	var scene_light = scene_player.get_node("Light2D")
 	var _new_light = get_node("Light2D")
 	_new_light.enabled = scene_light.enabled
+
+func set_light_energy(energy):
+	$Light2D.energy = energy
+	
+func get_light_energy():
+	return $Light2D.energy
