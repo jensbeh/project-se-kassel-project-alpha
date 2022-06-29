@@ -1,6 +1,8 @@
 extends Node2D
 
 # Variables
+var is_day_night_cycle_in_scene = false # Default on startup -> Menu
+var current_scene_type = Constants.SceneType.MENU # Default on startup -> Menu
 var thread
 var previouse_scene_path = ""
 var current_transition_data = null
@@ -10,16 +12,24 @@ onready var current_scene = $CurrentScene
 # Nodes LoadingScreen
 onready var black_screen = $LoadingScreen/BlackScreen
 onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlackScreen
+# Node DayNight Cycle
+onready var day_night_canvas_modulate = $DayNightCanvasModulate
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set size of fade screen
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
 
+	# Day/Night-cycle invisible on startup -> Menu
+	day_night_canvas_modulate.visible = false
+
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
 	# Update previouse scene path to return to it if necessary
 	update_previouse_scene_path()
+	
+	# Update current_scene_type from the new scene like MENU, CAMP, ...
+	current_scene_type = Utils.update_current_scene_type(transition_data)
 	
 	# Set new and current transition_data
 	current_transition_data = transition_data
@@ -41,6 +51,9 @@ func transition_to_scene(transition_data):
 
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
+	# Day/Night-cycle invisible in loading screen
+	day_night_canvas_modulate.visible = false
+	
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
 
@@ -80,7 +93,16 @@ func pass_data_to_scene(scene):
 
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
-	print(previouse_scene_path)
+	# Set visible day/night-cycle
+	if day_night_canvas_modulate != null:
+		is_day_night_cycle_in_scene = Utils.get_scene_day_night_cycle(current_scene_type)
+		if is_day_night_cycle_in_scene == true:
+			print("day/night-cycle visible")
+			day_night_canvas_modulate.visible = true
+		else:
+			print("day/night-cycle invisible")
+			day_night_canvas_modulate.visible = false
+	
 	if current_transition_data != null: # In menu it is null
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
@@ -96,8 +118,7 @@ func finish_transition():
 				Utils.get_current_player().set_visibility("Shadow", false)
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
-
-			
+				
 			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
 			

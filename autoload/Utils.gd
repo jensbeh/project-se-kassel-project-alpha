@@ -46,3 +46,35 @@ func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 		
 	# Set the player_position and the view_direction to the current_player
 	current_player.set_spawn(player_position, view_direction)
+	
+	
+func update_current_scene_type(transition_data):
+	# Menu
+	if Constants.MENU_FOLDER in transition_data.get_scene_path():
+		print("Menu state")
+		return Constants.SceneType.MENU
+	
+	# Camp
+	if Constants.CAMP_FOLDER in transition_data.get_scene_path():
+		print("Camp state")
+		return Constants.SceneType.CAMP
+	
+	# Grassland
+	elif Constants.GRASSLAND_FOLDER in transition_data.get_scene_path():
+		print("Grassland state")
+		return Constants.SceneType.GRASSLAND
+	
+	# Dungeons
+	elif Constants.DUNGEONS_FOLDER in transition_data.get_scene_path():
+		print("Dungeons state")
+		return Constants.SceneType.DUNGEON
+		
+func get_scene_day_night_cycle(scene_type):
+	# Day/Night-cycle visible
+	if scene_type == Constants.SceneType.CAMP or scene_type == Constants.SceneType.GRASSLAND:
+		return true
+	
+	# Day/Night-cycle invisible
+	else:
+		return false
+	
