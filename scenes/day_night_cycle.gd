@@ -6,14 +6,14 @@ const SUNSET_COLOR = Color("ff8f53")
 const NIGHT_COLOR = Color("212121")
 const SUNRISE_COLOR = Color("ff8f53")
 
-const COMPLETE_DAY_TIME = 8.0 # 24 std -> 20min = 1200s
+const COMPLETE_DAY_TIME = 1200.0 # 24 std -> 20min = 1200s
 # Times in sum == COMPLETE_DAY_TIME
 const DAY_TIME = COMPLETE_DAY_TIME / 2 # 12 std -> 10min = 600s
 const SUNSET_TIME = COMPLETE_DAY_TIME / 12 # 2 std ->  1.666min = 100s
 const NIGHT_TIME = COMPLETE_DAY_TIME / 3 # 8 std ->  6.6666min = 400s
 const SUNRISE_TIME = COMPLETE_DAY_TIME / 12 # 2 std ->  1.666min = 100s
 
-var current_time = 0.0
+var current_time = 800.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -1708,7 +1708,7 @@ parameters/Walk/blend_position = Vector2( -0.380349, 0.202312 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 8, 8 )
 current = true
-zoom = Vector2( 0.3, 0.3 )
+zoom = Vector2( 0.25, 0.25 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2( 8, 8 )
