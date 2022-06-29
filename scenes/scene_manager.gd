@@ -18,9 +18,8 @@ func _ready():
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
-	# Set previouse scene path to return to it if necessary
-	if current_transition_data != null: # In menu (after start) it is null
-		previouse_scene_path = current_transition_data.get_scene_path()
+	# Update previouse scene path to return to it if necessary
+	update_previouse_scene_path()
 	
 	# Set new and current transition_data
 	current_transition_data = transition_data
@@ -81,6 +80,7 @@ func pass_data_to_scene(scene):
 
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
+	print(previouse_scene_path)
 	if current_transition_data != null: # In menu it is null
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
@@ -111,6 +111,13 @@ func finish_transition():
 # Method to return the previouse_scene_path
 func get_previouse_scene_path():
 	return previouse_scene_path
+	
+# Method to update the previouse_scene_path
+func update_previouse_scene_path():
+	if current_transition_data != null: # In menu (after start) it is null
+		previouse_scene_path = current_transition_data.get_scene_path()
+	else:
+		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
 
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
