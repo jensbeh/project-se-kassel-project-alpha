@@ -101,6 +101,9 @@ quality/intended_usage/framebuffer_allocation.mobile=1
 threads/thread_model=2
 quality/reflections/texture_array_reflections=false
 quality/reflections/high_quality_ggx=false
+batching/options/use_batching=false
+batching/options/use_batching_in_editor=false
+batching/lights/max_join_items=1
 quality/depth/hdr=false
 
 [tiled_importer]
