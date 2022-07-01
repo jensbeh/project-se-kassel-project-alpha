@@ -7,6 +7,24 @@ func post_import(scene):
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
 	
+	var npcPathes = scene.find_node("npcPathes")
+	var pathes = []
+	for child in npcPathes.get_children():
+		var path = child.get_child(0)
+		var curve = Curve2D.new()
+		for point in path.get_polygon():
+			curve.add_point(point)
+		child.remove_child(path)
+		var newPath = Path2D.new()
+		newPath.set_curve(curve)
+		newPath.name = child.name
+		newPath.position = child.position
+		pathes.append(newPath)
+		npcPathes.remove_child(child)
+	for path in pathes:
+		npcPathes.add_child(path)
+		path.set_owner(scene)
+	
 	return scene
 
 # Method to iterate over all nodes and sets specific properties
