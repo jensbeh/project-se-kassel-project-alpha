@@ -13,17 +13,17 @@ func post_import(scene):
 		for child in lightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var light = Light2D.new()
-				light.texture = load("res://assets/light.png")
-				light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
-				light.texture_scale = 0.2
-				light.energy = 0.8
-				light.color = Color("64ffde7e")
-				
-				light.set_script(load("res://scenes/animated_light.gd"))
-				
-				lightsObject.add_child(light)
-				light.set_owner(scene)
+#				var light = Light2D.new()
+#				light.texture = load("res://assets/light.png")
+#				light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
+#				light.texture_scale = 0.2
+#				light.energy = 0.8
+#				light.color = Color("64ffde7e")
+#
+#				light.set_script(load("res://scenes/animated_light.gd"))
+#
+#				lightsObject.add_child(light)
+#				light.set_owner(scene)
 				
 	return scene
 

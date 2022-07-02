@@ -13,7 +13,7 @@ const SUNSET_TIME = COMPLETE_DAY_TIME / 12 # 2 std ->  1.666min = 100s
 const NIGHT_TIME = COMPLETE_DAY_TIME / 3 # 8 std ->  6.6666min = 400s
 const SUNRISE_TIME = COMPLETE_DAY_TIME / 12 # 2 std ->  1.666min = 100s
 
-var current_time = 800.0
+var current_time = 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

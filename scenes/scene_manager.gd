@@ -145,6 +145,9 @@ func update_previouse_scene_path():
 	else:
 		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
 
+func get_current_scene():
+	return current_scene.get_child(0)
+
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
 var timer = 0.0
