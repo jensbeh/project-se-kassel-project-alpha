@@ -1,15 +1,10 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scenes/light/CustomLight.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/scene_manager.gd" type="Script" id=2]
 [ext_resource path="res://assets/tilesets/Village Animated Decorations.png" type="Texture" id=3]
-[ext_resource path="res://scenes/day_night_cycle.gd" type="Script" id=4]
 [ext_resource path="res://scenes/menu/MainMenuScreen.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/light/light_manager.gd" type="Script" id=6]
 [ext_resource path="res://shader/night_sceen_shader.gdshader" type="Shader" id=7]
-[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=8]
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=23]
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 3 )
@@ -297,17 +292,6 @@ script = ExtResource( 2 )
 
 [node name="MainMenuScreen" parent="CurrentScene" instance=ExtResource( 5 )]
 
-[node name="Player" parent="." instance=ExtResource( 8 )]
-position = Vector2( 560, 464 )
-movement = true
-
-[node name="AnimationTree" parent="Player" index="16"]
-parameters/playback = SubResource( 23 )
-
-[node name="Camera2D" parent="Player" index="17"]
-position = Vector2( 8.88885, 1.52588e-05 )
-zoom = Vector2( 0.5, 0.5 )
-
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 
 [node name="BlackScreen" type="ColorRect" parent="LoadingScreen"]
@@ -332,14 +316,9 @@ anims/MenuFadeToBlack = SubResource( 19 )
 anims/MenuFadeToNormal = SubResource( 20 )
 anims/RESET = SubResource( 2 )
 
-[node name="DayNightCanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-color = Color( 0.101961, 0.00392157, 0.00392157, 1 )
-script = ExtResource( 4 )
+[node name="DayNightCycleCanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="NightScreen" type="ColorRect" parent="CanvasLayer"]
+[node name="NightScreen" type="ColorRect" parent="DayNightCycleCanvasLayer"]
 material = SubResource( 22 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -348,50 +327,3 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
-
-[node name="CustomLight" parent="." instance=ExtResource( 1 )]
-position = Vector2( 744, 352 )
-
-[node name="CustomLight2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 896, 296 )
-
-[node name="CustomLight3" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1032, 280 )
-
-[node name="CustomLight4" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1112, 208 )
-
-[node name="CustomLight5" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1168, 200 )
-
-[node name="CustomLight6" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1384, 224 )
-
-[node name="CustomLight7" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1296, 384 )
-
-[node name="CustomLight8" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1152, 488 )
-
-[node name="CustomLight9" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1016, 440 )
-
-[node name="CustomLight10" parent="." instance=ExtResource( 1 )]
-position = Vector2( 872, 512 )
-
-[node name="CustomLight11" parent="." instance=ExtResource( 1 )]
-position = Vector2( 808, 512 )
-
-[node name="CustomLight12" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1192, 600 )
-
-[node name="CustomLight13" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1232, 600 )
-
-[node name="CustomLight14" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1496, 552 )
-
-[node name="CustomLight15" parent="." instance=ExtResource( 1 )]
-position = Vector2( 1168, 360 )
-
-[editable path="Player"]

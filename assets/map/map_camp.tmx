@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1105" nextobjectid="3035">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1105" nextobjectid="3049">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -2614,7 +2614,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,6141,6142,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6463,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -2650,7 +2650,7 @@
 0,0,6176,6177,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,6213,0,0,6141,6142,6143,6213,0,
 0,0,0,0,0,0,0,0,0,0,6139,0,0,0,6139,0,
-0,0,0,0,0,0,0,0,0,0,6151,0,6463,0,6151,0,
+0,0,0,0,0,0,0,0,0,0,6151,0,0,0,6151,0,
 0,0,0,0,0,0,0,0,0,0,6163,0,0,0,6163,0,
 0,0,0,0,0,0,0,0,0,0,0,6152,0,6152,0,0,
 6213,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -4803,6 +4803,9 @@
    <object id="3029" gid="6459" x="800" y="624" width="16" height="16"/>
    <object id="3030" gid="6459" x="1536" y="688" width="16" height="16"/>
    <object id="3034" gid="6459" x="1776" y="896" width="16" height="16"/>
+   <object id="3038" gid="6459" x="1120" y="624" width="16" height="16"/>
+   <object id="3046" gid="6463" x="752" y="1168" width="16" height="16"/>
+   <object id="3047" gid="6463" x="1216" y="1168" width="16" height="16"/>
   </objectgroup>
  </group>
  <group id="974" name="playerlayer"/>
@@ -5893,12 +5896,12 @@
    <object id="2966" gid="6453" x="1744" y="560" width="16" height="16"/>
   </objectgroup>
   <objectgroup id="1102" name="higher_lights">
-   <object id="3011" type="light" gid="6776" x="1038" y="768" width="16" height="16"/>
-   <object id="3016" type="light" gid="6776" x="962" y="768" width="16" height="16"/>
-   <object id="3017" type="light" gid="6776" x="1358" y="416" width="16" height="16"/>
-   <object id="3018" type="light" gid="6776" x="1298" y="416" width="16" height="16"/>
-   <object id="3032" type="light" gid="6776" x="1403" y="864" width="16" height="16"/>
-   <object id="3033" type="light" gid="6776" x="1429" y="864" width="16" height="16"/>
+   <object id="3011" gid="6776" x="1038" y="768" width="16" height="16"/>
+   <object id="3016" gid="6776" x="962" y="768" width="16" height="16"/>
+   <object id="3017" gid="6776" x="1358" y="416" width="16" height="16"/>
+   <object id="3018" gid="6776" x="1298" y="416" width="16" height="16"/>
+   <object id="3032" gid="6776" x="1403" y="864" width="16" height="16"/>
+   <object id="3033" gid="6776" x="1429" y="864" width="16" height="16"/>
   </objectgroup>
  </group>
  <objectgroup id="1101" name="playerSpawns">

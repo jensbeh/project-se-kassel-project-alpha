@@ -45,13 +45,14 @@ void fragment() {
 		float shading_value = 0.0;
 		
 		// Calcuate shading value
-		shading_value = (1.0 - dist) * strength * light_strength_modifier;
+		shading_value = (1.0 - dist) * strength;
 		
+		// Blend between pixels / lights
 		shading_value = clamp(shading_value, 0.0, 1.0);
-		if(shading_value > min_shading_value) {
-			min_shading_value = shading_value;
-			light_color = texelFetch(light_data, ivec2(i, 1), 0);
+		if(shading_value > 0.0 && min_shading_value >= 0.0) {
+			min_shading_value = max(min_shading_value + shading_value, shading_value + min_shading_value);
 		}
+		light_color = texelFetch(light_data, ivec2(i, 1), 0);
 	}
 	
 	// mix darkness with light based on light level

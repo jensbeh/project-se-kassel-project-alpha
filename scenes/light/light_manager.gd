@@ -18,21 +18,21 @@ func _physics_process(delta):
 	update_shader()
 	var t = Transform2D(0, Vector2())
 	# Use camera for the correct position of the current screen to show correct light positions
-	var camera = Utils.get_scene_manager().find_node("Camera2D")
-	if camera != null:
+#	var camera = Utils.get_scene_manager().find_node("Camera2D")
+#	if camera != null:
+#			var canvas_transform = camera.get_canvas_transform()
+#			var top_left = -canvas_transform.origin / canvas_transform.get_scale()
+#			t = Transform2D(0, top_left * (1 / camera.zoom.x))
+	if Utils.get_scene_manager().get_is_day_night_cycle_in_scene() == true:
+		var camera = Utils.get_current_player().get_node("Camera2D")
+		if camera != null:
 			var canvas_transform = camera.get_canvas_transform()
 			var top_left = -canvas_transform.origin / canvas_transform.get_scale()
 			t = Transform2D(0, top_left * (1 / camera.zoom.x))
-#	if Utils.get_scene_manager().get_is_day_night_cycle_in_scene() == true:
-#		var camera = Utils.get_current_player().get_node("Camera2D")
-#		if camera != null:
-#			var canvas_transform = camera.get_canvas_transform()
-#			var top_left = -canvas_transform.origin / canvas_transform.get_scale()
-#			t = Transform2D(0, top_left)
-#			print(t)
 
-	# Set zoom factor in shader for correct scaling
-	material.set_shader_param("camera_zoom_factor", camera.zoom.x)
+		# Set zoom factor in shader for correct scaling
+		material.set_shader_param("camera_zoom_factor", camera.zoom.x)
+		
 	# Set global transformation in shader for correct pixels and map size
 	material.set_shader_param("global_transform", t)
 

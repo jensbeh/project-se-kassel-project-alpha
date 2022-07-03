@@ -78,6 +78,6 @@ func _process(delta):
 func update_lights(light_value):
 	if Utils.get_scene_manager().get_is_day_night_cycle_in_scene() == true:
 		# Set player light
-		Utils.get_current_player().set_light_energy(light_value)
-
+#		Utils.get_current_player().set_light_energy(light_value)
+		pass
 		# Set scene lights

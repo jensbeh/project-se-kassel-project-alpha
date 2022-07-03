@@ -13,7 +13,7 @@ onready var current_scene = $CurrentScene
 onready var black_screen = $LoadingScreen/BlackScreen
 onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlackScreen
 # Node DayNight Cycle
-onready var day_night_canvas_modulate = $DayNightCanvasModulate
+onready var night_screen = $DayNightCycleCanvasLayer/NightScreen
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,7 +21,7 @@ func _ready():
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
 
 	# Day/Night-cycle invisible on startup -> Menu
-	day_night_canvas_modulate.visible = false
+	night_screen.visible = false
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
@@ -52,7 +52,7 @@ func transition_to_scene(transition_data):
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
 	# Day/Night-cycle invisible in loading screen
-	day_night_canvas_modulate.visible = false
+	night_screen.visible = false
 	
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
@@ -94,14 +94,14 @@ func pass_data_to_scene(scene):
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
 	# Set visible day/night-cycle
-	if day_night_canvas_modulate != null:
+	if night_screen != null:
 		is_day_night_cycle_in_scene = Utils.get_scene_day_night_cycle(current_scene_type)
 		if is_day_night_cycle_in_scene == true:
 			print("day/night-cycle visible")
-			day_night_canvas_modulate.visible = true
+			night_screen.visible = true
 		else:
 			print("day/night-cycle invisible")
-			day_night_canvas_modulate.visible = false
+			night_screen.visible = false
 	
 	if current_transition_data != null: # In menu it is null
 		# When finished setting up new scene fade back to normal
