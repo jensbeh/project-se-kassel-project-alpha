@@ -50,7 +50,7 @@ func update_shader():
 						light_position.x, light_position.y, \
 						light.strength, light.radius))
 				# Save light color in second pixel row
-				image.set_pixel(i, 1, light.get_color())
+				image.set_pixel(i, 1, light.color)
 				
 			# Set torch, ... light position
 			else:
@@ -59,7 +59,7 @@ func update_shader():
 						light_position.x, light_position.y, \
 						light.strength, light.radius))
 				# Save light color in second pixel row
-				image.set_pixel(i, 1, light.get_color())
+				image.set_pixel(i, 1, light.color)
 	image.unlock()
 	
 	# Make texture from the image because only texture can be set in shader

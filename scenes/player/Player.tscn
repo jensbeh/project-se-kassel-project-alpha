@@ -1715,5 +1715,4 @@ cast_to = Vector2( 0, 8 )
 
 [node name="CustomLight" parent="." instance=ExtResource( 16 )]
 position = Vector2( 6.88889, 4.66667 )
-color_typ = "player"
 radius = 64

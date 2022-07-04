@@ -24,14 +24,8 @@ void fragment() {
 	// floor() the world_position so that it matches the native resolution
 	// Set the current pixel position
 	vec2 pixel_position = floor(world_position);
-	
 	float min_shading_value = 0.0; // 0.0 = dark; 1.0 = light
-	
-	vec4 m_light_value; // 0.0 = dark; 1.0 = light
 	vec4 light_color = default_light_color;
-	
-	float min_dist;
-	int current_i;
 	
 	// Iterate over every light
 	for(int i = 0; i < lights_count; i++) {
@@ -53,39 +47,21 @@ void fragment() {
 		// Calcuate shading value
 		shading_value = (1.0 - dist) * strength;
 		
-		light_color = texelFetch(light_data, ivec2(i, 1), 0);
-		
 		// Blend shading between pixels / lights
 		shading_value = clamp(shading_value, 0.0, 1.0);
 		if(shading_value > 0.0 && min_shading_value >= 0.0) {
 			min_shading_value = max(min_shading_value + shading_value, shading_value + min_shading_value);
-			m_light_value = mix(m_light_value, light_color, min_shading_value);
 		}
 		
-		// Blend color between pixels / lights
-//		m_light_value = soft_light(m_light_value, light_color);
-
-		
-		
-
-		
-		if (dist < min_dist || min_dist == 0.0) {
-			min_dist = dist;
-			current_i = i;
-		}
+		light_color = texelFetch(light_data, ivec2(i, 1), 0);
 	}
 	
-	
-	
 	// mix darkness with light based on light level
-	vec4 ambient_color = mix(night_screen_color, m_light_value, min_shading_value);
+	vec4 ambient_color = mix(night_screen_color, light_color, min_shading_value);
 
 	// get screen color for this pixel
 	vec4 screen_color = texture(SCREEN_TEXTURE, SCREEN_UV);
 	
 	// apply multiply blend mode
 	COLOR = screen_color * ambient_color;
-	
-
 }
-
