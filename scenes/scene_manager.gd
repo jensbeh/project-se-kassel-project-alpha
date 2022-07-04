@@ -4,7 +4,6 @@ extends Node2D
 signal scene_type_updated
 
 # Variables
-var is_day_night_cycle_in_scene = false # Default on startup -> Menu
 var current_scene_type = Constants.SceneType.MENU # Default on startup -> Menu
 var thread
 var previouse_scene_path = ""
@@ -130,19 +129,12 @@ func get_previouse_scene_path():
 func get_current_scene_type():
 	return current_scene_type
 	
-# Method to return the is_day_night_cycle_in_scene value
-func get_is_day_night_cycle_in_scene():
-	return is_day_night_cycle_in_scene
-	
 # Method to update the previouse_scene_path
 func update_previouse_scene_path():
 	if current_transition_data != null: # In menu (after start) it is null
 		previouse_scene_path = current_transition_data.get_scene_path()
 	else:
 		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
-
-func get_current_scene():
-	return current_scene.get_child(0)
 
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0

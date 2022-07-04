@@ -334,11 +334,9 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-#	var player_position = Vector2(1128,616) # Camp spawn
-	var player_position = Vector2(857,684) # Grassland - Dungeon1 spawn
+	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
-#	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
-	var transition_data = TransitionData.GamePosition.new("res://scenes/grassland/Grassland.tscn", player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 		

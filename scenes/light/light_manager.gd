@@ -3,7 +3,7 @@ extends ColorRect
 # Manages the current lights and informations for the shader
 
 # Variables
-var is_day_night_cycle : bool = false
+var is_day_night_cycle : bool = false # Default on startup -> Menu
 var image = Image.new()
 var texture = ImageTexture.new()
 
