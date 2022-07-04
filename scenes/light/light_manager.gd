@@ -47,22 +47,19 @@ func update_shader():
 			if light.get_parent() is KinematicBody2D:
 				var light_position = light.position + light.get_parent().position
 				image.set_pixel(i, 0, Color( \
-						light_position.x +1, light_position.y, \
+						light_position.x, light_position.y, \
 						light.strength, light.radius))
-
 				# Save light color in second pixel row
-				image.set_pixel(i, 1, light.color)
+				image.set_pixel(i, 1, light.get_color())
 				
 			# Set torch, ... light position
 			else:
 				var light_position = light.position
-
 				image.set_pixel(i, 0, Color( \
-						light_position.x +1, light_position.y, \
+						light_position.x, light_position.y, \
 						light.strength, light.radius))
-
 				# Save light color in second pixel row
-				image.set_pixel(i, 1, light.color)
+				image.set_pixel(i, 1, light.get_color())
 	image.unlock()
 	
 	# Make texture from the image because only texture can be set in shader

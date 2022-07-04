@@ -14,6 +14,8 @@ func post_import(scene):
 			if child is Sprite:
 				var sprite_positon = child.position
 				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				custom_light.color_typ = "fire"
+				custom_light.radius = 64
 				custom_light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
 				
 				lightsObject.add_child(custom_light)

@@ -21,8 +21,5 @@ parameters/playback = SubResource( 1 )
 zoom = Vector2( 0.2, 0.2 )
 limit_top = 186
 
-[node name="CustomLight" parent="map_camp/playerlayer/Player" index="19"]
-color_typ = "player"
-
 [editable path="map_camp"]
 [editable path="map_camp/playerlayer/Player"]

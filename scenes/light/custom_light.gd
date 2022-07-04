@@ -3,14 +3,14 @@ class_name CustomLight
 
 # Variables
 export (String, "fire", "player") var color_typ = "fire"
-export var radius = 64
+export var radius = 20
 
-var fire_color = Color("#64ffde7e")
-var player_color = Color("#ffffff")
+var fire_color = Color("#00ff00") #64ffde7e
+var player_color = Color("#0000ff")
 var color = fire_color
 
-var max_radius = 64 * 1.04 # 104% of radius
-var min_radius = 64 * 0.96 # 96% of radius
+var max_radius = radius * 1.04 # 104% of radius
+var min_radius = radius * 0.96 # 96% of radius
 
 var max_strength = 0.7
 var strength = 0.5
@@ -21,6 +21,8 @@ var value = 0.0
 const MAX_VALUE = 500
 
 func _ready():
+	max_radius = radius * 1.04 # 104% of radius
+	min_radius = radius * 0.96 # 96% of radius
 	randomize()
 	value = randi() % MAX_VALUE
 	
@@ -28,10 +30,10 @@ func _ready():
 	noise.period = 120
 	
 	# Setup color
-	if color_typ == "fire":
+	if "fire" in color_typ:
 		color = fire_color
 		
-	elif color_typ == "player":
+	elif "player" in color_typ:
 		color = player_color
 	
 func _physics_process(_delta):
@@ -48,3 +50,6 @@ func _physics_process(_delta):
 	radius = abs(noise.get_noise_1d(value)) * radius + min_radius
 	if radius > max_radius:
 		radius = max_radius
+		
+func get_color():
+	return color

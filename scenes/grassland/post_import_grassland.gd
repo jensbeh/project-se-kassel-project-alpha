@@ -7,6 +7,20 @@ func post_import(scene):
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
 	
+	# Set lights with script to lightsObject
+	var lightsObject = scene.find_node("lights")
+	if lightsObject != null and lightsObject.get_children().size() > 0:
+		for child in lightsObject.get_children():
+			if child is Sprite:
+				var sprite_positon = child.position
+				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				custom_light.color_typ = "fire"
+				custom_light.radius = 64
+				custom_light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
+				
+				lightsObject.add_child(custom_light)
+				custom_light.set_owner(scene)
+				
 	return scene
 
 # Method to iterate over all nodes and sets specific properties
