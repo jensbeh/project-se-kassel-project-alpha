@@ -2,39 +2,34 @@ extends ColorRect
 
 # Manages the current lights and informations for the shader
 
+# Variables
+var is_day_night_cycle : bool = false
 var image = Image.new()
 var texture = ImageTexture.new()
 
-var night_screen_color = Color("212121")
 
 func _ready():
 	# Create image to store light informations in pixels
 	# First pixel row for light stuff like positions, strength, radius
 	# Second pixel row for light color
+	
+	Utils.get_scene_manager().connect("scene_type_updated", self, "update_shader_color")
+	
 	image.create(128, 2, false, Image.FORMAT_RGBAH)
-	material.set_shader_param("night_screen_color", night_screen_color)
+	material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 
-func _physics_process(delta):
+
+func _physics_process(_delta):
 	update_shader()
 	var t = Transform2D(0, Vector2())
 	# Use camera for the correct position of the current screen to show correct light positions
-#	var camera = Utils.get_scene_manager().find_node("Camera2D")
-#	if camera != null:
-#			var canvas_transform = camera.get_canvas_transform()
-#			var top_left = -canvas_transform.origin / canvas_transform.get_scale()
-#			t = Transform2D(0, top_left * (1 / camera.zoom.x))
-	if Utils.get_scene_manager().get_is_day_night_cycle_in_scene() == true:
-		var camera = Utils.get_current_player().get_node("Camera2D")
-		if camera != null:
-			var canvas_transform = camera.get_canvas_transform()
-			var top_left = -canvas_transform.origin / canvas_transform.get_scale()
-			t = Transform2D(0, top_left * (1 / camera.zoom.x))
-
-		# Set zoom factor in shader for correct scaling
-		material.set_shader_param("camera_zoom_factor", camera.zoom.x)
-		
+	t = update_shader_transformation()
 	# Set global transformation in shader for correct pixels and map size
 	material.set_shader_param("global_transform", t)
+	
+	if is_day_night_cycle:
+		material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
+
 
 func update_shader():
 	# Get all custom_lights in the current scene
@@ -76,3 +71,37 @@ func update_shader():
 	# Set count of lights and texture to shader
 	material.set_shader_param("lights_count", lights.size())
 	material.set_shader_param("light_data", texture)
+
+
+func update_shader_transformation():
+	if Utils.get_current_player() != null:
+		var camera = Utils.get_current_player().get_node("Camera2D")
+		var canvas_transform = camera.get_canvas_transform()
+		var top_left = -canvas_transform.origin / canvas_transform.get_scale()
+		var t = Transform2D(0, top_left * (1 / camera.zoom.x))
+
+		# Set zoom factor in shader for correct scaling
+		material.set_shader_param("camera_zoom_factor", camera.zoom.x)
+		
+		return t
+
+
+func update_shader_color():
+	match Utils.get_scene_manager().get_current_scene_type():
+		Constants.SceneType.MENU:
+			print("LIGHT MANAGER SCENE TYPE CHANGED ----> MENU")
+			is_day_night_cycle = false
+			material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
+			
+		Constants.SceneType.CAMP:
+			print("LIGHT MANAGER SCENE TYPE CHANGED ----> CAMP")
+			is_day_night_cycle = true
+			
+		Constants.SceneType.GRASSLAND:
+			print("LIGHT MANAGER SCENE TYPE CHANGED ----> GRASSLAND")
+			is_day_night_cycle = true
+			
+		Constants.SceneType.DUNGEON:
+			print("LIGHT MANAGER SCENE TYPE CHANGED ----> DUNGEON")
+			is_day_night_cycle = false
+			material.set_shader_param("night_screen_color", Constants.DUNGEON_COLOR)

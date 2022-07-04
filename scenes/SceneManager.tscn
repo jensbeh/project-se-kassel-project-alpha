@@ -6,6 +6,15 @@
 [ext_resource path="res://scenes/light/light_manager.gd" type="Script" id=6]
 [ext_resource path="res://shader/night_sceen_shader.gdshader" type="Shader" id=7]
 
+[sub_resource type="ShaderMaterial" id=22]
+shader = ExtResource( 7 )
+shader_param/global_transform = null
+shader_param/lights_count = 0
+shader_param/camera_zoom_factor = 1.0
+shader_param/night_screen_color = Color( 0.13, 0.13, 0.13, 1 )
+shader_param/default_light_color = null
+shader_param/light_strength_modifier = 1.0
+
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 16, 16, 16 )
@@ -276,21 +285,24 @@ tracks/0/keys = {
 "values": [ Color( 0, 0, 0, 0 ) ]
 }
 
-[sub_resource type="ShaderMaterial" id=22]
-shader = ExtResource( 7 )
-shader_param/global_transform = null
-shader_param/lights_count = 0
-shader_param/camera_zoom_factor = 1.0
-shader_param/night_screen_color = Color( 0.13, 0.13, 0.13, 1 )
-shader_param/default_light_color = null
-shader_param/light_strength_modifier = 1.0
-
 [node name="SceneManager" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="CurrentScene" type="Node2D" parent="."]
 
 [node name="MainMenuScreen" parent="CurrentScene" instance=ExtResource( 5 )]
+
+[node name="DarknessLightsCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DarknessLightsScreen" type="ColorRect" parent="DarknessLightsCanvasLayer"]
+material = SubResource( 22 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 
@@ -306,6 +318,7 @@ visible = false
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 10 )
+frame = 1
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
@@ -315,15 +328,3 @@ anims/GameFadeToNormal = SubResource( 3 )
 anims/MenuFadeToBlack = SubResource( 19 )
 anims/MenuFadeToNormal = SubResource( 20 )
 anims/RESET = SubResource( 2 )
-
-[node name="DayNightCycleCanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="NightScreen" type="ColorRect" parent="DayNightCycleCanvasLayer"]
-material = SubResource( 22 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": true
-}

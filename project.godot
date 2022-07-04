@@ -35,6 +35,7 @@ config/icon="res://icon.png"
 
 Utils="*res://autoload/Utils.gd"
 Constants="*res://autoload/Constants.gd"
+DayNightCycle="*res://autoload/day_night_cycle.gd"
 
 [display]
 

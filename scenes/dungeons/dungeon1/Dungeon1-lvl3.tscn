@@ -7,7 +7,6 @@
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [node name="Dungeon1-lvl3" type="Node2D"]
-position = Vector2( 528, 440 )
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -24,9 +23,6 @@ position = Vector2( 784, 8 )
 
 [node name="AnimationTree" parent="map_dungeon1_lvl3/playerlayer/Player" index="16"]
 parameters/playback = SubResource( 1 )
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0, 0, 0, 1 )
 
 [editable path="map_dungeon1_lvl3"]
 [editable path="map_dungeon1_lvl3/playerlayer/Player"]

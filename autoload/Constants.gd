@@ -1,15 +1,17 @@
 extends Node
 
-
+# Player
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
 const PLAYER_MAX_LIGHT_ENERGY = 0.8
 
+# Transition
 enum TransitionType {
 	GAME_SCENE,
 	MENU_SCENE
 }
 
+# Scene info
 enum SceneType {
 	MENU,
 	CAMP,
@@ -17,6 +19,14 @@ enum SceneType {
 	DUNGEON
 }
 
+# Darkness lights environment
+const DAY_COLOR = Color("ffffff")
+const SUNSET_COLOR = Color("ff8f53")
+const NIGHT_COLOR = Color("212121")
+const SUNRISE_COLOR = Color("ff8f53")
+const DUNGEON_COLOR = Color("000000")
+
+# Pathes
 const MENU_FOLDER = "res://scenes/menu/"
 const CAMP_FOLDER = "res://scenes/camp/"
 const GRASSLAND_FOLDER = "res://scenes/grassland/"

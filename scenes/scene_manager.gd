@@ -1,5 +1,8 @@
 extends Node2D
 
+# Signals
+signal scene_type_updated
+
 # Variables
 var is_day_night_cycle_in_scene = false # Default on startup -> Menu
 var current_scene_type = Constants.SceneType.MENU # Default on startup -> Menu
@@ -13,24 +16,15 @@ onready var current_scene = $CurrentScene
 onready var black_screen = $LoadingScreen/BlackScreen
 onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlackScreen
 # Node DayNight Cycle
-onready var night_screen = $DayNightCycleCanvasLayer/NightScreen
+onready var darkness_lights_screen = $DarknessLightsCanvasLayer/DarknessLightsScreen
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set size of fade screen
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
 
-	# Day/Night-cycle invisible on startup -> Menu
-	night_screen.visible = false
-
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
-	# Update previouse scene path to return to it if necessary
-	update_previouse_scene_path()
-	
-	# Update current_scene_type from the new scene like MENU, CAMP, ...
-	current_scene_type = Utils.update_current_scene_type(transition_data)
-	
 	# Set new and current transition_data
 	current_transition_data = transition_data
 	
@@ -51,9 +45,6 @@ func transition_to_scene(transition_data):
 
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
-	# Day/Night-cycle invisible in loading screen
-	night_screen.visible = false
-	
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
 
@@ -93,17 +84,13 @@ func pass_data_to_scene(scene):
 
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
-	# Set visible day/night-cycle
-	if night_screen != null:
-		is_day_night_cycle_in_scene = Utils.get_scene_day_night_cycle(current_scene_type)
-		if is_day_night_cycle_in_scene == true:
-			print("day/night-cycle visible")
-			night_screen.visible = true
-		else:
-			print("day/night-cycle invisible")
-			night_screen.visible = false
+	# Update previouse scene path to return to it if necessary
+	update_previouse_scene_path()
 	
 	if current_transition_data != null: # In menu it is null
+		# Update current_scene_type from the new scene like MENU, CAMP, ...
+		update_scene_type(current_transition_data)
+		
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
@@ -130,9 +117,18 @@ func finish_transition():
 		# Mouse actions works now again
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+# Method to update the current_scene_type and emits a signal
+func update_scene_type(new_transition_data):
+	current_scene_type = Utils.update_current_scene_type(new_transition_data)
+	emit_signal("scene_type_updated")
+
 # Method to return the previouse_scene_path
 func get_previouse_scene_path():
 	return previouse_scene_path
+
+# Method to return the current_scene_type
+func get_current_scene_type():
+	return current_scene_type
 	
 # Method to return the is_day_night_cycle_in_scene value
 func get_is_day_night_cycle_in_scene():

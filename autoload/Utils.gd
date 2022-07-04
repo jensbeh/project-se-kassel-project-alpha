@@ -1,5 +1,6 @@
 extends Node
 
+# Variables
 var current_player : KinematicBody2D = null # Must be used in game scenes
 
 func _ready():
@@ -68,13 +69,3 @@ func update_current_scene_type(transition_data):
 	elif Constants.DUNGEONS_FOLDER in transition_data.get_scene_path():
 		print("Dungeons state")
 		return Constants.SceneType.DUNGEON
-		
-func get_scene_day_night_cycle(scene_type):
-	# Day/Night-cycle visible
-	if scene_type == Constants.SceneType.CAMP or scene_type == Constants.SceneType.GRASSLAND:
-		return true
-	
-	# Day/Night-cycle invisible
-	else:
-		return false
-	
