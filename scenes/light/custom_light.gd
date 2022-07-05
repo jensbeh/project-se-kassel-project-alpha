@@ -26,6 +26,12 @@ func _ready():
 	# Setup noise
 	noise.period = 120
 	
+	DayNightCycle.connect("change_to_daytime", self, "hide_light")
+	DayNightCycle.connect("change_to_sunset", self, "show_light")
+	
+	visible = !DayNightCycle.is_daytime
+
+
 func _physics_process(_delta):
 	value += 1.0
 	if (value > MAX_VALUE):
@@ -40,3 +46,12 @@ func _physics_process(_delta):
 	radius = abs(noise.get_noise_1d(value)) * radius + min_radius
 	if radius > max_radius:
 		radius = max_radius
+
+
+func hide_light():
+	print("HIDE LIGHT")
+	visible = false
+	
+func show_light():
+	print("SHOW LIGHT")
+	visible = true
