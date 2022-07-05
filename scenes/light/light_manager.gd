@@ -93,23 +93,23 @@ func update_shader_color():
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> MENU")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
-			update_lights()
+			update_lights(false)
 			
 		Constants.SceneType.CAMP:
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> CAMP")
 			is_day_night_cycle = true
-			update_lights()
+			update_lights(true)
 			
 		Constants.SceneType.GRASSLAND:
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> GRASSLAND")
 			is_day_night_cycle = true
-			update_lights()
+			update_lights(true)
 			
 		Constants.SceneType.DUNGEON:
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> DUNGEON")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DUNGEON_COLOR)
-			update_lights()
+			update_lights(true)
 
 
 # Method returns true if day night cycle is enabled otherwise false
@@ -118,16 +118,24 @@ func get_is_day_night_cycle():
 
 
 # Method to update all lights to be visible or not
-func update_lights():
-	var lights = get_tree().get_nodes_in_group("lights")
-	for light in lights:
-		if DayNightCycle.is_daytime and is_day_night_cycle:
+func update_lights(show_lights):
+	if show_lights:
+		var lights = get_tree().get_nodes_in_group("lights")
+		for light in lights:
+			# Depends on day_night_cycle
+			if is_day_night_cycle: 
+				if DayNightCycle.is_daytime:
+					light.hide_light()
+				elif !DayNightCycle.is_daytime:
+					light.show_light()
+			# If no day_night_cycle -> show directly
+			else:
+				light.show_light()
+	else:
+		var lights = get_tree().get_nodes_in_group("lights")
+		for light in lights:
 			light.hide_light()
-		elif !DayNightCycle.is_daytime and is_day_night_cycle:
-			light.show_light()
-		elif !is_day_night_cycle:
-			light.hide_light()
-			
+
 # Method to update all lights to be NOT visible -> signal from day_night_cycle_script
 func change_to_daytime():
 	var lights = get_tree().get_nodes_in_group("lights")

@@ -25,6 +25,7 @@ var is_sunrise : bool = false
 # Time
 var current_hour = 0
 var current_minute = 0
+var previouse_current_minute = 0
 
 # Constants
 const COMPLETE_DAY_TIME = 1200.0 # 24h -> 20min = 1200s
@@ -55,8 +56,11 @@ func _process(delta):
 	# Reset current_time on new day	
 	if current_time >= COMPLETE_DAY_TIME:
 		current_time = 0
-		
-	print(str(current_hour) + ":" + str(current_minute))
+	
+	# Calls stuff every 1min (ingame time)
+	if current_minute != previouse_current_minute:
+		previouse_current_minute = current_minute
+		print(str(current_hour) + ":" + str(current_minute))
 	
 	# Daytime
 	if current_time <= DAY_TIME:
