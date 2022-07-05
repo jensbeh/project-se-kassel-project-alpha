@@ -1554,9 +1554,6 @@ parameters/playback = SubResource( 1 )
 limit_left = -4335
 limit_bottom = 794
 
-[node name="Light2D" parent="map_grassland/playerlayer/Player" index="19"]
-enabled = false
-
 [editable path="map_grassland"]
 [editable path="map_grassland/npclayer/roan"]
 [editable path="map_grassland/npclayer/roan/DialogueBox"]

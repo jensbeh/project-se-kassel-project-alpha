@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://scenes/character_screens/CharacterScreen.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menu/character_screens/CharacterScreen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=3]
 
@@ -1557,9 +1557,6 @@ parameters/playback = SubResource( 11 )
 
 [node name="Camera2D" parent="Node2D/Player" index="17"]
 current = false
-
-[node name="Light2D" parent="Node2D/Player" index="19"]
-enabled = false
 
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]

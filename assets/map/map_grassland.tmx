@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="68" nextobjectid="5605">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="67" nextobjectid="5641">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/trees-treetrunks.tsx"/>
  <tileset firstgid="461" source="../tilesets/small-trees-treetrunks.tsx"/>
@@ -12,6 +12,7 @@
  <tileset firstgid="3663" source="../tilesets/roofs.tsx"/>
  <tileset firstgid="4995" source="../tilesets/animated_smoke.tsx"/>
  <tileset firstgid="5019" source="../tilesets/nature.tsx"/>
+ <tileset firstgid="5187" source="../tilesets/animated_decorations.tsx"/>
  <group id="4" name="ground">
   <group id="51" name="lvl0">
    <layer id="28" name="dirt lvl0" width="30" height="20">
@@ -7122,7 +7123,7 @@
 0,0,0,0,0,0,0,0,0,0,0,2697,0,0,0,0,
 0,0,0,0,2707,2635,2636,2637,0,0,0,0,0,0,0,0,
 0,0,0,0,2633,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,2645,0,2737,0,0,0,0,0,0,0,0,0,
+0,0,0,0,2645,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,2657,0,0,0,0,0,0,0,0,0,0,0
 </chunk>
      <chunk x="-176" y="-32" width="16" height="16">
@@ -7514,7 +7515,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 2635,2636,2637,0,2713,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,2737,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,2708,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -18607,6 +18608,46 @@
    <object id="5524" gid="464" x="-2176" y="64" width="16" height="16"/>
    <object id="5525" x="-1760" y="96" width="16" height="16"/>
    <object id="5526" x="-2176" y="48" width="16" height="16"/>
+  </objectgroup>
+  <objectgroup id="66" name="lights">
+   <object id="5603" gid="5187" x="-51" y="752" width="16" height="16"/>
+   <object id="5604" x="-47" y="736" width="8" height="14"/>
+   <object id="5605" gid="5187" x="3" y="569" width="16" height="16"/>
+   <object id="5606" x="7" y="553" width="8" height="14"/>
+   <object id="5607" gid="5187" x="450" y="383" width="16" height="16"/>
+   <object id="5608" x="454" y="367" width="8" height="14"/>
+   <object id="5609" gid="5187" x="-94" y="348" width="16" height="16"/>
+   <object id="5610" x="-90" y="332" width="8" height="14"/>
+   <object id="5611" gid="5187" x="-1117" y="135" width="16" height="16"/>
+   <object id="5612" x="-1113" y="119" width="8" height="14"/>
+   <object id="5613" gid="5187" x="-2051" y="100" width="16" height="16"/>
+   <object id="5614" x="-2047" y="84" width="8" height="14"/>
+   <object id="5615" gid="5187" x="-1995" y="189" width="16" height="16"/>
+   <object id="5616" x="-1991" y="173" width="8" height="14"/>
+   <object id="5617" gid="5187" x="-1861" y="162" width="16" height="16"/>
+   <object id="5618" x="-1857" y="146" width="8" height="14"/>
+   <object id="5619" gid="5187" x="-2446" y="341" width="16" height="16"/>
+   <object id="5620" x="-2442" y="325" width="8" height="14"/>
+   <object id="5621" gid="5187" x="606" y="-965" width="16" height="16"/>
+   <object id="5622" x="610" y="-981" width="8" height="14"/>
+   <object id="5623" gid="5187" x="818" y="-297" width="16" height="16"/>
+   <object id="5624" x="822" y="-313" width="8" height="14"/>
+   <object id="5625" gid="5187" x="877" y="-76" width="16" height="16"/>
+   <object id="5626" x="881" y="-92" width="8" height="14"/>
+   <object id="5627" gid="5187" x="1449" y="-201" width="16" height="16"/>
+   <object id="5628" x="1453" y="-217" width="8" height="14"/>
+   <object id="5629" gid="5187" x="1348" y="-259" width="16" height="16"/>
+   <object id="5630" x="1352" y="-275" width="8" height="14"/>
+   <object id="5631" gid="5191" x="1296" y="-80" width="16" height="16"/>
+   <object id="5632" x="1297" y="-94" width="14" height="13"/>
+   <object id="5633" gid="5191" x="1632" y="-528" width="16" height="16"/>
+   <object id="5634" x="1633" y="-542" width="14" height="13"/>
+   <object id="5635" gid="5187" x="1187" y="-680" width="16" height="16"/>
+   <object id="5636" x="1191" y="-696" width="8" height="14"/>
+   <object id="5637" gid="5187" x="1326" y="-729" width="16" height="16"/>
+   <object id="5638" x="1330" y="-745" width="8" height="14"/>
+   <object id="5639" gid="5187" x="914" y="-675" width="16" height="16"/>
+   <object id="5640" x="918" y="-691" width="8" height="14"/>
   </objectgroup>
  </group>
  <group id="67" name="npclayer"/>

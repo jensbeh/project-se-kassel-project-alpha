@@ -10624,11 +10624,8 @@ visible = true
 parameters/playback = SubResource( 1 )
 
 [node name="Camera2D" parent="map_camp/playerlayer/Player" index="17"]
+zoom = Vector2( 0.2, 0.2 )
 limit_top = 186
-
-[node name="Light2D" parent="map_camp/playerlayer/Player" index="19"]
-position = Vector2( 0, -71.1111 )
-enabled = false
 
 [editable path="map_camp"]
 [editable path="map_camp/npclayer/clarke"]

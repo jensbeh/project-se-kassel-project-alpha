@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -15,8 +15,7 @@
 [ext_resource path="res://assets/player/acc/earring_emerald.png" type="Texture" id=13]
 [ext_resource path="res://assets/player/acc/hat_cowboy.png" type="Texture" id=14]
 [ext_resource path="res://assets/player/acc/beard.png" type="Texture" id=15]
-[ext_resource path="res://assets/light.png" type="Texture" id=16]
-[ext_resource path="res://scenes/dungeons/animated_dungeon_lights.gd" type="Script" id=17]
+[ext_resource path="res://scenes/light/CustomLight.tscn" type="PackedScene" id=16]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
@@ -1708,16 +1707,12 @@ parameters/Walk/blend_position = Vector2( -0.380349, 0.202312 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 8, 8 )
 current = true
-zoom = Vector2( 0.3, 0.3 )
+zoom = Vector2( 0.25, 0.25 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2( 8, 8 )
 cast_to = Vector2( 0, 8 )
 
-[node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 8, 8 )
-texture = ExtResource( 16 )
-texture_scale = 0.2
-energy = 0.8
-mode = 2
-script = ExtResource( 17 )
+[node name="CustomLight" parent="." instance=ExtResource( 16 )]
+position = Vector2( 6.88889, 4.66667 )
+radius = 64
