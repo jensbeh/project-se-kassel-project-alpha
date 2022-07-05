@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/menu/character_screens/character_screen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=3]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
@@ -1459,6 +1460,25 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
+[sub_resource type="DynamicFont" id=13]
+size = 28
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 1, 0.00784314, 0.00784314, 1 )
+
+[sub_resource type="DynamicFont" id=14]
+size = 24
+font_data = ExtResource( 4 )
+
+[sub_resource type="Theme" id=15]
+Button/colors/font_color = Color( 0, 0, 0, 1 )
+Button/colors/font_color_focus = Color( 0, 0, 0, 1 )
+Button/constants/hseparation = 2
+Button/fonts/font = SubResource( 13 )
+Button/styles/normal = SubResource( 16 )
+Label/fonts/font = SubResource( 14 )
+
 [node name="CharacterScreen" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -1474,6 +1494,8 @@ margin_left = 1262.0
 margin_top = 710.0
 margin_right = 1411.0
 margin_bottom = 735.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -1486,6 +1508,8 @@ margin_left = 1265.0
 margin_top = 865.0
 margin_right = 1414.0
 margin_bottom = 890.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -1558,7 +1582,19 @@ parameters/playback = SubResource( 11 )
 [node name="Camera2D" parent="Node2D/Player" index="17"]
 current = false
 
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+visible = true
+margin_left = 870.0
+margin_top = 463.0
+margin_right = 1126.0
+margin_bottom = 597.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource( 15 )
+window_title = ""
+
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
 
 [editable path="Node2D/Player"]
