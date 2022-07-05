@@ -10237,6 +10237,7 @@ texture = ExtResource( 14 )
 
 [node name="Shoes" parent="map_camp/npclayer/clarke" index="2"]
 texture = SubResource( 81 )
+frame = 40
 
 [node name="Pants" parent="map_camp/npclayer/clarke" index="3"]
 visible = false
@@ -10245,6 +10246,7 @@ texture = ExtResource( 5 )
 [node name="Clothes" parent="map_camp/npclayer/clarke" index="4"]
 position = Vector2( -8, -15.9999 )
 texture = SubResource( 82 )
+frame = 48
 
 [node name="Blush" parent="map_camp/npclayer/clarke" index="5"]
 texture = SubResource( 83 )
@@ -10257,6 +10259,7 @@ visible = false
 
 [node name="Eyes" parent="map_camp/npclayer/clarke" index="8"]
 texture = SubResource( 85 )
+frame = 16
 
 [node name="Earring" parent="map_camp/npclayer/clarke" index="9"]
 visible = true
@@ -10264,6 +10267,13 @@ texture = SubResource( 86 )
 
 [node name="Hair" parent="map_camp/npclayer/clarke" index="10"]
 texture = SubResource( 87 )
+frame = 8
+
+[node name="CollisionShape2D" parent="map_camp/npclayer/clarke" index="14"]
+visible = false
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/clarke" index="15"]
+visible = false
 
 [node name="InteractionArea" parent="map_camp/npclayer/clarke/interactionZone NPC" index="0"]
 position = Vector2( 8, 6 )

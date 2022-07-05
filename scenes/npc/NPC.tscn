@@ -47,7 +47,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ 40 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -71,7 +71,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ 48 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -119,7 +119,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ 16 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -143,7 +143,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 0 ]
+"values": [ 8 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -206,7 +206,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 240 ]
+"values": [ 280 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -230,7 +230,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 240 ]
+"values": [ 288 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -278,7 +278,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 336 ]
+"values": [ 352 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -302,7 +302,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 336 ]
+"values": [ 344 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -365,7 +365,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 160 ]
+"values": [ 200 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -389,7 +389,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 160 ]
+"values": [ 208 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -437,7 +437,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 224 ]
+"values": [ 240 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -461,7 +461,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 224 ]
+"values": [ 232 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -524,7 +524,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 80 ]
+"values": [ 120 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -548,7 +548,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 80 ]
+"values": [ 128 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -596,7 +596,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 112 ]
+"values": [ 128 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -620,7 +620,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 112 ]
+"values": [ 120 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -683,7 +683,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ 48 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Hair:frame")
@@ -695,7 +695,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ 8 ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("Pants:frame")
@@ -719,7 +719,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ 40 ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("Beard:frame")
@@ -791,7 +791,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ 16 ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("Blush:frame")
@@ -844,7 +844,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
+"values": [ 41, 42, 43, 44, 45, 46, 47, 40 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -868,7 +868,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
+"values": [ 49, 50, 51, 52, 53, 54, 55, 48 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -916,7 +916,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
+"values": [ 17, 18, 19, 20, 21, 22, 23, 16 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -940,7 +940,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
+"values": [ 9, 10, 11, 12, 13, 14, 15, 8 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -1005,7 +1005,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 241, 242, 243, 244, 245, 246, 247, 240 ]
+"values": [ 281, 282, 283, 284, 285, 286, 287, 280 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -1029,7 +1029,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 241, 242, 243, 244, 245, 246, 247, 240 ]
+"values": [ 289, 290, 291, 292, 293, 294, 295, 288 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -1077,7 +1077,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 337, 338, 339, 340, 341, 342, 343, 336 ]
+"values": [ 353, 354, 355, 356, 357, 358, 359, 352 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1101,7 +1101,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 337, 338, 339, 340, 341, 342, 343, 336 ]
+"values": [ 345, 346, 347, 348, 349, 350, 351, 344 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -1166,7 +1166,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 161, 162, 163, 164, 165, 166, 167, 160 ]
+"values": [ 201, 202, 203, 204, 205, 206, 207, 200 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -1190,7 +1190,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 161, 162, 163, 164, 165, 166, 167, 160 ]
+"values": [ 209, 210, 211, 212, 213, 214, 215, 208 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -1238,7 +1238,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 225, 226, 227, 228, 229, 230, 231, 224 ]
+"values": [ 241, 242, 243, 244, 245, 246, 247, 240 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1262,7 +1262,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 225, 226, 227, 228, 229, 230, 231, 224 ]
+"values": [ 233, 234, 235, 236, 237, 238, 239, 232 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -1327,7 +1327,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 81, 82, 83, 84, 85, 86, 87, 80 ]
+"values": [ 121, 122, 123, 124, 125, 126, 127, 120 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Pants:frame")
@@ -1351,7 +1351,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 81, 82, 83, 84, 85, 86, 87, 80 ]
+"values": [ 129, 130, 131, 132, 133, 134, 135, 128 ]
 }
 tracks/4/type = "value"
 tracks/4/path = NodePath("Blush:frame")
@@ -1399,7 +1399,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 113, 114, 115, 116, 117, 118, 119, 112 ]
+"values": [ 129, 130, 131, 132, 133, 134, 135, 128 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Earring:frame")
@@ -1423,7 +1423,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 113, 114, 115, 116, 117, 118, 119, 112 ]
+"values": [ 121, 122, 123, 124, 125, 126, 127, 120 ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("Mask:frame")
@@ -1587,6 +1587,7 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 80
 vframes = 49
+frame = 40
 
 [node name="Pants" type="Sprite" parent="."]
 position = Vector2( -8, -13 )
@@ -1604,6 +1605,7 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 80
 vframes = 49
+frame = 48
 
 [node name="Blush" type="Sprite" parent="."]
 position = Vector2( -8, -16 )
@@ -1636,6 +1638,7 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 112
 vframes = 49
+frame = 16
 
 [node name="Earring" type="Sprite" parent="."]
 visible = false
@@ -1654,6 +1657,7 @@ centered = false
 offset = Vector2( 0, -4 )
 hframes = 112
 vframes = 49
+frame = 8
 
 [node name="Mask" type="Sprite" parent="."]
 visible = false

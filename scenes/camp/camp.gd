@@ -2,7 +2,6 @@ extends Node2D
 
 # Variables
 var thread
-var player_in_buying_zone : bool = false
 var player_in_change_scene_area = false
 var current_area : Area2D = null
 
@@ -12,7 +11,6 @@ var init_transition_data = null
 # Nodes
 onready var changeScenesObject = get_node("map_camp/changeScenes")
 onready var doorsObject = get_node("map_camp/ground/Buildings/doors")
-onready var buyingZoneObject = get_node("map_camp/ground/Buildings/buyingZones")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,8 +27,6 @@ func _setup_scene_in_background():
 	setup_change_scene_areas()
 	# setup all door areas to handle action
 	setup_door_areas()
-	# setup all market buyingZone areas to handle action
-	setup_market_buying_zone_areas()
 	
 	call_deferred("_on_setup_scene_done")
 
@@ -70,28 +66,12 @@ func collision_detected(collision):
 	
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
-	if player_in_buying_zone:
-		pass
-	
-	elif player_in_change_scene_area:
+	if player_in_change_scene_area:
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
 		Utils.get_scene_manager().transition_to_scene(transition_data)
 		
-# Method which is called when a body has entered a buyingZoneArea
-func body_entered_buying_zone(body, buyingZoneArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" ENTERED buying zone \"" + buyingZoneArea.name + "\"")
-		player_in_buying_zone = true
-		current_area = buyingZoneArea
-		
-# Method which is called when a body has exited a buyingZoneArea
-func body_exited_buying_zone(body, buyingZoneArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED buying zone \"" + buyingZoneArea.name + "\"")
-		player_in_buying_zone = false
-		current_area = null
 		
 # Method which is called when a body has entered a doorArea
 func body_entered_door(body, doorArea):
@@ -143,10 +123,3 @@ func setup_door_areas():
 			# connect Area2D with functions to handle body action
 			door.connect("body_entered", self, "body_entered_door", [door])
 			door.connect("body_exited", self, "body_exited_door", [door])
-
-# Setup all buyingZone objectes/Area2D's on start
-func setup_market_buying_zone_areas():
-	for buyingZoneArea2D in buyingZoneObject.get_children():
-		# connect Area2D with functions to handle body action
-		buyingZoneArea2D.connect("body_entered", self, "body_entered_buying_zone", [buyingZoneArea2D])
-		buyingZoneArea2D.connect("body_exited", self, "body_exited_buying_zone", [buyingZoneArea2D])
