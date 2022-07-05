@@ -5,12 +5,22 @@ class_name CustomLight
 export(Color, RGBA) var color = Color("#64ffde7e")
 export var radius = 20
 
+# Constants
+const MAX_LIGHT_STRENGTH = 0.7
+const LIGHT_STRENGTH = 0.5
+const MIN_LIGHT_STRENGTH = 0.4
+
+
+# Light radius
 var max_radius = radius * 1.04 # 104% of radius
 var min_radius = radius * 0.96 # 96% of radius
 
-var max_strength = 0.7
-var strength = 0.5
-var min_strength = 0.4
+# Light strength
+var max_strength = MAX_LIGHT_STRENGTH
+var strength = LIGHT_STRENGTH
+var min_strength = MIN_LIGHT_STRENGTH
+
+
 
 # Noise
 var noise = OpenSimplexNoise.new()
@@ -30,9 +40,9 @@ func _ready():
 	if Utils.get_scene_manager().is_day_night_cycle():
 		DayNightCycle.connect("change_to_daytime", self, "hide_light")
 		DayNightCycle.connect("change_to_sunset", self, "show_light")
-		visible = !DayNightCycle.is_daytime
+		show_light()
 	else:
-		visible = true
+		hide_light()
 
 
 func _physics_process(_delta):
@@ -53,9 +63,13 @@ func _physics_process(_delta):
 # Method to hide the light
 func hide_light():
 	print("HIDE LIGHT")
-	visible = false
+	max_strength = 0.0
+	strength = 0.0
+	min_strength = 0.0
 
 # Method to show the light
 func show_light():
 	print("SHOW LIGHT")
-	visible = true
+	max_strength = MAX_LIGHT_STRENGTH
+	strength = LIGHT_STRENGTH
+	min_strength = MIN_LIGHT_STRENGTH
