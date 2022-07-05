@@ -22,16 +22,16 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
-var save_settings = {
+var save_setting = {
 		language = Utils.get_language()
 	}
 
 
 func save_settings():
-	save_settings.language = Utils.get_language()
+	save_setting.language = Utils.get_language()
 	var save_game = File.new()
 	save_game.open(SAVE_PATH + "settings" + SAVE_FILE_EXTENSION, File.WRITE)
-	save_game.store_line(to_json(save_settings))
+	save_game.store_line(to_json(save_setting))
 	save_game.close()
 
 
@@ -53,10 +53,10 @@ func _on_OptionButton_item_selected(index):
 		Utils.set_language("de")
 		_ready()
 
-
 func _on_Back_pressed():
 	Utils.get_scene_manager().get_child(0).get_node("SettingScreen").queue_free()
-	if Utils.get_scene_manager().get_child(0).get_node("GameMenu") != null:
+	print(Utils.get_scene_manager().get_child(0).get_child(1))
+	if (Utils.get_scene_manager().get_child(0).get_child(1)) != null and Utils.get_scene_manager().get_child(0).get_child_count() == 3:
 		Utils.get_scene_manager().get_child(0).get_node("GameMenu")._ready()
 	save_settings()
 	

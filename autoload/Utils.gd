@@ -30,12 +30,6 @@ func set_language(lang):
 func get_language():
 	return language
 
-func set_prev_scene(scene):
-	prev_scene = scene
-
-func get_prev_scene():
-	return prev_scene
-
 # Method to calculate the new player_position and view_direction with the transition_data and sets the spawn of the current player
 func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 	var player_position = Vector2(0,0)
