@@ -63,7 +63,7 @@ size_flags_vertical = 3
 custom_fonts/normal_font = SubResource( 4 )
 
 [node name="Skip" type="Polygon2D" parent="."]
-position = Vector2( 1604.96, 960 )
+position = Vector2( 1584, 960 )
 scale = Vector2( 0.0292968, 0.104769 )
 color = Color( 0.713726, 0.694118, 0.694118, 1 )
 polygon = PoolVector2Array( 896, -55.8843, 1920, -55.8843, 2944, 126.363, 1920, 308.609, 896, 308.609, 896, 126.363 )

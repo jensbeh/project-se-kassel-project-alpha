@@ -14,8 +14,11 @@ func post_import(scene):
 		var curve = Curve2D.new()
 		for point in path.get_polygon():
 			curve.add_point(point)
-		child.remove_child(path)
 		var newPath = Path2D.new()
+		if child.has_meta("is_circle"):
+			var meta = child.get_meta("is_circle")
+			newPath.set_meta("is_circle", meta)
+		child.remove_child(path)
 		newPath.set_curve(curve)
 		newPath.name = child.name
 		newPath.position = child.position

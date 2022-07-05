@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1108" nextobjectid="3015">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1108" nextobjectid="3017">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -4796,14 +4796,26 @@
  </group>
  <group id="1102" name="npclayer"/>
  <objectgroup id="1103" name="npcPathes">
-  <object id="3011" name="npc1_Path" x="824.667" y="1188">
-   <polyline points="0,0 169.333,-12.6667 157.333,-92 187.333,-165.333 164,-244.667 192.667,-324.667 190.667,-410.667 158.667,-511.333 327.333,-536"/>
+  <object id="3011" name="clarke_Path" x="824.667" y="1188">
+   <properties>
+    <property name="is_circle" type="bool" value="false"/>
+   </properties>
+   <polyline points="-0.25,-1 87.9165,-4.33335 172.333,-12.1667 154.083,-51.5834 156.666,-90 176.583,-128.167 184.583,-165.333 167.291,-208.5 164,-244.667 176.084,-285.917 196.667,-324.667 196.417,-367.917 182.667,-407.917 165.917,-459.625 165.667,-511.833 231.25,-531.667 327.583,-531"/>
   </object>
   <object id="3012" name="steven_Path" x="1863.5" y="854.5">
-   <polyline points="-111.5,3 -164,8 -192,-21 -309.5,-79.5 -372.5,-126.5 -468,-186 -584.5,-187 -549,-333 -560.5,-333 -610.5,-283 -768.5,-275 -916.5,-241.5"/>
+   <properties>
+    <property name="is_circle" type="bool" value="false"/>
+   </properties>
+   <polyline points="-109.75,3.5 -161.75,6.75 -192,-21 -310,-76.75 -341.25,-105.25 -370.75,-129.25 -470.25,-182.75 -535.75,-182.25 -584.5,-187 -578.091,-229.68 -551.25,-262.375 -546,-338.75 -567,-338.75 -583.75,-294.375 -615.25,-294.25 -679.75,-278.5 -775.5,-278.5 -871.75,-272 -935.75,-239.25"/>
   </object>
-  <object id="3014" name="npc3_Path" x="1346.67" y="438">
-   <polyline points="-14.9167,78.5 2.33333,72 0.0833333,19.5 -13,-38 -53.5833,-67.25 -110,-63.3333 -148.667,-101.333 -206.667,-120.667 -254.667,-167.333 -264,-206 -269.333,-250.667"/>
+  <object id="3015" name="murphy_Path" x="1073.5" y="115">
+   <properties>
+    <property name="is_circle" type="bool" value="false"/>
+   </properties>
+   <polyline points="324.685,-6.33367 129.688,-81.2899 -158.943,-37.4888 5.31489,-17.3356 4.89727,79.7879 4.35033,120.468 14.6848,157.122 62.8666,204.697 126.503,221.485 164.079,258.394 214.132,261.205 253.079,279.545 273.253,342.5 275.503,395 255.344,402.227"/>
+  </object>
+  <object id="3016" name="octavia_Path" x="1367.82" y="772">
+   <polyline points="-4,10.25 -3.875,29.9545 47.2727,68.1818 50.0985,90.3333 50.2538,108.523 49.6591,156.136 8.81818,156.205 8.68182,133.125"/>
   </object>
  </objectgroup>
  <group id="974" name="playerlayer"/>
