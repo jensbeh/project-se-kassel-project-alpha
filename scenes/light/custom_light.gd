@@ -52,14 +52,12 @@ func _physics_process(_delta):
 
 # Method to hide the light
 func hide_light():
-	print("HIDE LIGHT")
 	max_strength = 0.0
 	strength = 0.0
 	min_strength = 0.0
 
 # Method to show the light
 func show_light():
-	print("SHOW LIGHT")
 	max_strength = MAX_LIGHT_STRENGTH
 	strength = LIGHT_STRENGTH
 	min_strength = MIN_LIGHT_STRENGTH
