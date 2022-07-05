@@ -12,6 +12,9 @@ func _ready():
 	# Update shader color depending on scene type
 	Utils.get_scene_manager().connect("scene_type_updated", self, "update_shader_color")
 	
+	DayNightCycle.connect("change_to_daytime", self, "change_to_daytime")
+	DayNightCycle.connect("change_to_sunset", self, "change_to_sunset")
+	
 	# Create image to store light informations in pixels
 	# First pixel row for light stuff like positions, strength, radius
 	# Second pixel row for light color
@@ -90,20 +93,51 @@ func update_shader_color():
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> MENU")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
+			update_lights()
 			
 		Constants.SceneType.CAMP:
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> CAMP")
 			is_day_night_cycle = true
+			update_lights()
 			
 		Constants.SceneType.GRASSLAND:
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> GRASSLAND")
 			is_day_night_cycle = true
+			update_lights()
 			
 		Constants.SceneType.DUNGEON:
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> DUNGEON")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DUNGEON_COLOR)
+			update_lights()
+
 
 # Method returns true if day night cycle is enabled otherwise false
 func get_is_day_night_cycle():
 	return is_day_night_cycle
+
+
+# Method to update all lights to be visible or not
+func update_lights():
+	var lights = get_tree().get_nodes_in_group("lights")
+	for light in lights:
+		if DayNightCycle.is_daytime and is_day_night_cycle:
+			light.hide_light()
+		elif !DayNightCycle.is_daytime and is_day_night_cycle:
+			light.show_light()
+		elif !is_day_night_cycle:
+			light.hide_light()
+			
+# Method to update all lights to be NOT visible -> signal from day_night_cycle_script
+func change_to_daytime():
+	var lights = get_tree().get_nodes_in_group("lights")
+	for light in lights:
+		if is_day_night_cycle:
+			light.hide_light()
+
+# Method to update all lights to be visible -> signal from day_night_cycle_script
+func change_to_sunset():
+	var lights = get_tree().get_nodes_in_group("lights")
+	for light in lights:
+		if is_day_night_cycle:
+			light.show_light()

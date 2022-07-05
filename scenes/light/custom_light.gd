@@ -20,8 +20,6 @@ var max_strength = MAX_LIGHT_STRENGTH
 var strength = LIGHT_STRENGTH
 var min_strength = MIN_LIGHT_STRENGTH
 
-
-
 # Noise
 var noise = OpenSimplexNoise.new()
 var value = 0.0
@@ -35,14 +33,6 @@ func _ready():
 	
 	# Setup noise
 	noise.period = 120
-	
-	# Set connection to DayNightCycle to set visibility of lights on day when day_night_cycle is enabled
-	if Utils.get_scene_manager().is_day_night_cycle():
-		DayNightCycle.connect("change_to_daytime", self, "hide_light")
-		DayNightCycle.connect("change_to_sunset", self, "show_light")
-		show_light()
-	else:
-		hide_light()
 
 
 func _physics_process(_delta):
