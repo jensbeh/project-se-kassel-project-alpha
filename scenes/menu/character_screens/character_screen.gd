@@ -1,7 +1,9 @@
-extends Node2D ## TODO: load character with mouse click, Bug: syncronize mouse click and keyboard
+extends Node2D
 
 const SAVE_PATH = "user://character/"
 const SAVE_FILE_EXTENSION = ".json"
+var delete_id
+var delete_container
 
 var selected_character = 0
 var style2 = StyleBoxFlat.new()
@@ -23,6 +25,9 @@ var eyes
 var hair
 
 func _ready():
+	get_node("Back").set_text(tr("BACK_TO_MAIN_MENU"))
+	get_node("Create Character").set_text(tr("CREATE_NEW_CHARACTER"))
+	
 	# Create Selected Style
 	style2.set_bg_color(Color(0.6, 0.6, 0.6, 1))
 	style1.set_bg_color(Color(0.4, 0.4, 0.4, 1))
@@ -71,7 +76,7 @@ func _ready():
 				eyes = child
 			"Hair":
 				hair = child
-				
+	
 	Utils.get_player().set_visibility("Shadow", true)
 	call_deferred("load_character")
 	
@@ -105,10 +110,19 @@ func load_data():
 
 # click for delete this character
 func on_delete_click(id, container):
+	find_node("ConfirmationDialog").set_text(tr("DELETECHARAC") + "\"" + data_list[selected_character].name + "\" ?")
+	find_node("ConfirmationDialog").get_cancel().set_text(tr("CANCLE"))
+	find_node("ConfirmationDialog").get_ok().set_text(tr("DELETE"))
+	find_node("ConfirmationDialog").popup()
+	delete_id = id
+	delete_container = container
+
+
+func delete_character():
 	var dir = Directory.new()
-	if dir.file_exists(SAVE_PATH + id + SAVE_FILE_EXTENSION):
-		dir.remove(SAVE_PATH + id + SAVE_FILE_EXTENSION)
-	list.remove_child(container)
+	if dir.file_exists(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION):
+		dir.remove(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION)
+	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
 		if selected_character != 0: 
@@ -123,11 +137,14 @@ func on_delete_click(id, container):
 	else:
 		selected_character = 0
 		Utils.get_player().visible = false
+	delete_id = null
+	delete_container = null
 
 
 # click on play button to enter camp
 func on_play_click():
 	start_game()
+
 
 # create Character Item to Choose
 func create_item(charac_name, charac_level, charac_gold, character_id):
@@ -183,7 +200,7 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	hboxbutton.add_child(delete_button)
 	hboxc.add_child(hboxbutton)
 	mcontainer.add_child(hboxc)
-	mcontainer.set_script(load(Constants.CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH))
+	mcontainer.set_script(load("res://scenes/menu/character_screens/CharacterScreenContainerScript.gd"))
 	mcontainer.connect("gui_input", mcontainer, "_on_MarginContainer_gui_input")
 	mcontainer.connect("click", self, "on_click", [mcontainer.get_instance_id()])
 	mcontainer.connect("double_click", self, "on_double_click")
@@ -206,12 +223,12 @@ func change_menu_color():
 
 
 func _on_Back_pressed():
-	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
+	var transition_data = TransitionData.Menu.new("res://scenes/menu/MainMenuScreen.tscn")
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
-	var transition_data = TransitionData.Menu.new(Constants.CREATE_CHARACTER_SCREEN_PATH)
+	var transition_data = TransitionData.Menu.new("res://scenes/menu/character_screens/CreateCharacter.tscn")
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
@@ -339,4 +356,8 @@ func start_game():
 	
 	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
-		
+
+
+func _on_ConfirmationDialog_confirmed():
+	delete_character()
+

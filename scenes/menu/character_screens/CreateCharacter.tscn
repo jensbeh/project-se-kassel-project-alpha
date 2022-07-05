@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scenes/menu/character_screens/CreateCharacter.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menu/character_screens/create_character.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=4]

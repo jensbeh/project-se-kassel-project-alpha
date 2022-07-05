@@ -122,6 +122,10 @@ func _input(event):
 		if player_can_interact:
 			print("interacted")
 			emit_signal("player_interact")
+	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(0).get_child_count() < 2:
+		set_movement(false)
+		set_movment_animation(false)
+		Utils.get_scene_manager().get_child(0).add_child(load("res://scenes/menu/GameMenu.tscn").instance())
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
