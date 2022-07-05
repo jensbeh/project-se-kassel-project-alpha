@@ -6,6 +6,8 @@ func _ready():
 	get_node("Back to Main Menu").set_text(tr("BACK_TO_MAIN_MENU"))
 	get_node("Back to Game").set_text(tr("BACK_TO_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))
+	Utils.get_current_player().set_movement(false)
+	Utils.get_current_player().set_movment_animation(false)
 
 
 func _on_Back_to_Game_pressed():
@@ -15,7 +17,7 @@ func _on_Back_to_Game_pressed():
 
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().get_child(0).add_child(load("res://scenes/menu/SettingScreen.tscn").instance())###
+	Utils.get_scene_manager().get_child(0).add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
 
 
 func _on_Back_to_Main_Menu_pressed():

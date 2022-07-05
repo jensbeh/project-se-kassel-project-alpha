@@ -110,9 +110,17 @@ func load_data():
 
 # click for delete this character
 func on_delete_click(id, container):
-	find_node("ConfirmationDialog").set_text(tr("DELETECHARAC") + "\"" + data_list[selected_character].name + "\" ?")
+	find_node("ConfirmationDialog").set_text(" " + tr("DELETECHARAC") + " " + "\n" + " \"" + data_list[selected_character].name + "\" ? ")
+	var style1 = StyleBoxFlat.new()
+	style1.set_bg_color(Color(1, 0, 0))
+	var style2 = StyleBoxFlat.new()
+	style2.set_bg_color(Color(0.6, 0.6, 0.6))
+	find_node("ConfirmationDialog").get_cancel().add_stylebox_override("normal", style2)
+	find_node("ConfirmationDialog").get_ok().add_stylebox_override("normal", style1)
 	find_node("ConfirmationDialog").get_cancel().set_text(tr("CANCLE"))
+	
 	find_node("ConfirmationDialog").get_ok().set_text(tr("DELETE"))
+	
 	find_node("ConfirmationDialog").popup()
 	delete_id = id
 	delete_container = container

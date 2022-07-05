@@ -1,6 +1,9 @@
 extends Node2D
 
-var language
+var lang
+var save_setting = {
+		language = "en"
+	}
 
 func _ready():
 	# Say SceneManager that new_scene is ready
@@ -12,11 +15,15 @@ func _ready():
 		var settings = {}
 		settings = parse_json(save_settings.get_line())
 		save_settings.close()
-		language = settings.language
+		lang = settings.language
 	else:
-		language = "en"
-	Utils.set_language(language)
-	TranslationServer.set_locale(language)
+		var save_game = File.new()
+		save_game.open("user://settings.json", File.WRITE)
+		save_game.store_line(to_json(save_setting))
+		save_game.close()
+		lang = "en"
+	Utils.set_language(lang)
+	TranslationServer.set_locale(lang)
 	# sets the text
 	get_node("Start Game").set_text(tr("START_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))

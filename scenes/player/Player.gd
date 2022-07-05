@@ -126,6 +126,10 @@ func _input(event):
 		set_movement(false)
 		set_movment_animation(false)
 		Utils.get_scene_manager().get_child(0).add_child(load("res://scenes/menu/GameMenu.tscn").instance())
+	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_child(0).get_child_count() == 2:
+		set_movement(true)
+		set_movment_animation(true)
+		Utils.get_scene_manager().get_child(0).get_child(1).queue_free()
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
