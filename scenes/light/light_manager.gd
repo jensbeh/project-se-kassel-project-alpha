@@ -9,12 +9,12 @@ var texture = ImageTexture.new()
 
 
 func _ready():
+	# Update shader color depending on scene type
+	Utils.get_scene_manager().connect("scene_type_updated", self, "update_shader_color")
+	
 	# Create image to store light informations in pixels
 	# First pixel row for light stuff like positions, strength, radius
 	# Second pixel row for light color
-	
-	Utils.get_scene_manager().connect("scene_type_updated", self, "update_shader_color")
-	
 	image.create(128, 2, false, Image.FORMAT_RGBAH)
 	material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 
@@ -27,10 +27,11 @@ func _physics_process(_delta):
 	# Set global transformation in shader for correct pixels and map size
 	material.set_shader_param("global_transform", t)
 	
+	# Set current screen color when day night cycle is enabled depending on the current time
 	if is_day_night_cycle:
 		material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
 
-
+# Method to set all lights (with all informations) to the shader
 func update_shader():
 	# Get all custom_lights in the current scene
 	var lights = get_tree().get_nodes_in_group("lights")
@@ -69,7 +70,7 @@ func update_shader():
 	material.set_shader_param("lights_count", lights.size())
 	material.set_shader_param("light_data", texture)
 
-
+# Method to set the current camera zoom factor so that the transformation of the shader is correct
 func update_shader_transformation():
 	if Utils.get_current_player() != null:
 		var camera = Utils.get_current_player().get_node("Camera2D")
@@ -82,7 +83,7 @@ func update_shader_transformation():
 		
 		return t
 
-
+# Method to set the current shader color depending on the day night cycle
 func update_shader_color():
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.MENU:
@@ -102,3 +103,7 @@ func update_shader_color():
 			print("LIGHT MANAGER SCENE TYPE CHANGED ----> DUNGEON")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DUNGEON_COLOR)
+
+# Method returns true if day night cycle is enabled otherwise false
+func get_is_day_night_cycle():
+	return is_day_night_cycle

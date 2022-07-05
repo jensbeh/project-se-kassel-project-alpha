@@ -26,10 +26,13 @@ func _ready():
 	# Setup noise
 	noise.period = 120
 	
-	DayNightCycle.connect("change_to_daytime", self, "hide_light")
-	DayNightCycle.connect("change_to_sunset", self, "show_light")
-	
-	visible = !DayNightCycle.is_daytime
+	# Set connection to DayNightCycle to set visibility of lights on day when day_night_cycle is enabled
+	if Utils.get_scene_manager().is_day_night_cycle():
+		DayNightCycle.connect("change_to_daytime", self, "hide_light")
+		DayNightCycle.connect("change_to_sunset", self, "show_light")
+		visible = !DayNightCycle.is_daytime
+	else:
+		visible = true
 
 
 func _physics_process(_delta):
@@ -47,11 +50,12 @@ func _physics_process(_delta):
 	if radius > max_radius:
 		radius = max_radius
 
-
+# Method to hide the light
 func hide_light():
 	print("HIDE LIGHT")
 	visible = false
-	
+
+# Method to show the light
 func show_light():
 	print("SHOW LIGHT")
 	visible = true

@@ -136,6 +136,10 @@ func update_previouse_scene_path():
 	else:
 		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
 
+# Method returns true if day night cycle is enabled otherwise false FROM light_manager
+func is_day_night_cycle():
+	return darkness_lights_screen.get_is_day_night_cycle()
+	
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
 var timer = 0.0
