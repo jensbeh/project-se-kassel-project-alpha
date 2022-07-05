@@ -5,7 +5,6 @@
 [ext_resource path="res://scenes/dungeons/dungeons.gd" type="Script" id=3]
 
 [node name="Dungeon3-lvl1" type="Node2D"]
-position = Vector2( 840, 768 )
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -19,8 +18,5 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="Player" parent="map_dungeon3_lvl1/playerlayer" index="0" instance=ExtResource( 1 )]
 position = Vector2( 432, -200 )
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0, 0, 0, 1 )
 
 [editable path="map_dungeon3_lvl1"]

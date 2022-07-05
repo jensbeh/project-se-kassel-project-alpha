@@ -1,7 +1,12 @@
 extends Node2D
 
+# Signals
+signal scene_type_updated
+
 # Variables
+var current_scene_type = Constants.SceneType.MENU # Default on startup -> Menu
 var thread
+var previouse_scene_path = ""
 var current_transition_data = null
 
 # Nodes CurrentScreen
@@ -9,6 +14,8 @@ onready var current_scene = $CurrentScene
 # Nodes LoadingScreen
 onready var black_screen = $LoadingScreen/BlackScreen
 onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlackScreen
+# Node DayNight Cycle
+onready var darkness_lights_screen = $DarknessLightsCanvasLayer/DarknessLightsScreen
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,6 +24,7 @@ func _ready():
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
+	# Set new and current transition_data
 	current_transition_data = transition_data
 	
 	# Mouse actions will be stopped until transition is done
@@ -75,7 +83,13 @@ func pass_data_to_scene(scene):
 
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
+	# Update previouse scene path to return to it if necessary
+	update_previouse_scene_path()
+	
 	if current_transition_data != null: # In menu it is null
+		# Update current_scene_type from the new scene like MENU, CAMP, ...
+		update_scene_type(current_transition_data)
+		
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
@@ -90,8 +104,8 @@ func finish_transition():
 				Utils.get_current_player().set_visibility("Shadow", false)
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
-
-			
+				
+				
 			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
 			
@@ -102,7 +116,30 @@ func finish_transition():
 		# Mouse actions works now again
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+# Method to update the current_scene_type and emits a signal
+func update_scene_type(new_transition_data):
+	current_scene_type = Utils.update_current_scene_type(new_transition_data)
+	emit_signal("scene_type_updated")
 
+# Method to return the previouse_scene_path
+func get_previouse_scene_path():
+	return previouse_scene_path
+
+# Method to return the current_scene_type
+func get_current_scene_type():
+	return current_scene_type
+	
+# Method to update the previouse_scene_path
+func update_previouse_scene_path():
+	if current_transition_data != null: # In menu (after start) it is null
+		previouse_scene_path = current_transition_data.get_scene_path()
+	else:
+		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
+
+# Method returns true if day night cycle is enabled otherwise false FROM light_manager
+func is_day_night_cycle():
+	return darkness_lights_screen.get_is_day_night_cycle()
+	
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
 var timer = 0.0

@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Position2D",
+"class": "CustomLight",
+"language": "GDScript",
+"path": "res://scenes/light/custom_light.gd"
+}, {
 "base": "Reference",
 "class": "TransitionData",
 "language": "GDScript",
 "path": "res://scenes/transition_data.gd"
 } ]
 _global_script_class_icons={
+"CustomLight": "",
 "TransitionData": ""
 }
 
@@ -29,6 +35,7 @@ config/icon="res://icon.png"
 
 Utils="*res://autoload/Utils.gd"
 Constants="*res://autoload/Constants.gd"
+DayNightCycle="*res://autoload/day_night_cycle.gd"
 
 [display]
 
@@ -95,12 +102,15 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-quality/intended_usage/framebuffer_allocation=1
-quality/intended_usage/framebuffer_allocation.mobile=1
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
 2d/snapping/use_gpu_pixel_snap=true
 threads/thread_model=2
 quality/reflections/texture_array_reflections=false
 quality/reflections/high_quality_ggx=false
+batching/options/use_batching=false
+batching/options/use_batching_in_editor=false
+batching/lights/max_join_items=1
 quality/depth/hdr=false
 
 [tiled_importer]

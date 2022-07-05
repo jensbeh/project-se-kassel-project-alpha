@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/light/custom_light.gd" type="Script" id=1]
+
+[node name="CustomLight" type="Position2D" groups=["lights"]]
+script = ExtResource( 1 )

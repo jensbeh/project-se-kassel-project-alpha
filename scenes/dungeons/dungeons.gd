@@ -30,10 +30,6 @@ func setup_player():
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
 	
-	# Set light
-	var light = Utils.get_current_player().get_node("Light2D")
-	light.enabled = true
-	
 	# Replace template player in scene with current_player
 	scene_player.get_parent().remove_child(scene_player)
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())

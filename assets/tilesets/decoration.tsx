@@ -418,12 +418,12 @@
  </tile>
  <tile id="127">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="6" y="0" width="4" height="11"/>
+   <object id="1" x="6" y="0" width="4" height="16"/>
   </objectgroup>
  </tile>
  <tile id="128">
   <objectgroup draworder="index" id="2">
-   <object id="1" x="6" y="0" width="4" height="11"/>
+   <object id="1" x="6" y="0" width="4" height="16"/>
   </objectgroup>
  </tile>
  <tile id="132">
