@@ -10237,7 +10237,6 @@ texture = ExtResource( 14 )
 
 [node name="Shoes" parent="map_camp/npclayer/clarke" index="2"]
 texture = SubResource( 81 )
-frame = 40
 
 [node name="Pants" parent="map_camp/npclayer/clarke" index="3"]
 visible = false
@@ -10246,7 +10245,6 @@ texture = ExtResource( 5 )
 [node name="Clothes" parent="map_camp/npclayer/clarke" index="4"]
 position = Vector2( -8, -15.9999 )
 texture = SubResource( 82 )
-frame = 48
 
 [node name="Blush" parent="map_camp/npclayer/clarke" index="5"]
 texture = SubResource( 83 )
@@ -10259,7 +10257,6 @@ visible = false
 
 [node name="Eyes" parent="map_camp/npclayer/clarke" index="8"]
 texture = SubResource( 85 )
-frame = 16
 
 [node name="Earring" parent="map_camp/npclayer/clarke" index="9"]
 visible = true
@@ -10267,7 +10264,6 @@ texture = SubResource( 86 )
 
 [node name="Hair" parent="map_camp/npclayer/clarke" index="10"]
 texture = SubResource( 87 )
-frame = 8
 
 [node name="CollisionShape2D" parent="map_camp/npclayer/clarke" index="14"]
 visible = false
@@ -10351,6 +10347,9 @@ anims/RESET = SubResource( 33 )
 [node name="lea" parent="map_camp/npclayer" index="2" instance=ExtResource( 4 )]
 position = Vector2( 1216, 515 )
 
+[node name="Shoes" parent="map_camp/npclayer/lea" index="2"]
+frame = 0
+
 [node name="Pants" parent="map_camp/npclayer/lea" index="3"]
 visible = false
 texture = ExtResource( 5 )
@@ -10366,15 +10365,11 @@ visible = false
 [node name="Beard" parent="map_camp/npclayer/lea" index="7"]
 visible = false
 
-[node name="Eyes" parent="map_camp/npclayer/lea" index="8"]
-frame = 16
-
 [node name="Earring" parent="map_camp/npclayer/lea" index="9"]
 visible = true
 
 [node name="Hair" parent="map_camp/npclayer/lea" index="10"]
 texture = ExtResource( 21 )
-frame = 8
 
 [node name="InteractionArea" parent="map_camp/npclayer/lea/interactionZone NPC" index="0"]
 position = Vector2( 8, 18.0625 )
@@ -10400,8 +10395,14 @@ anims/RESET = SubResource( 44 )
 [node name="steven" parent="map_camp/npclayer" index="3" instance=ExtResource( 4 )]
 position = Vector2( 1744, 856 )
 
+[node name="Shoes" parent="map_camp/npclayer/steven" index="2"]
+frame = 0
+
 [node name="Pants" parent="map_camp/npclayer/steven" index="3"]
 texture = ExtResource( 5 )
+
+[node name="Clothes" parent="map_camp/npclayer/steven" index="4"]
+frame = 0
 
 [node name="Blush" parent="map_camp/npclayer/steven" index="5"]
 visible = false
@@ -10409,8 +10410,12 @@ visible = false
 [node name="Beard" parent="map_camp/npclayer/steven" index="7"]
 visible = false
 
+[node name="Eyes" parent="map_camp/npclayer/steven" index="8"]
+frame = 0
+
 [node name="Hair" parent="map_camp/npclayer/steven" index="10"]
 texture = ExtResource( 6 )
+frame = 0
 
 [node name="InteractionArea" parent="map_camp/npclayer/steven/interactionZone NPC" index="0"]
 position = Vector2( 8, 5.875 )
@@ -10432,12 +10437,16 @@ parameters/playback = SubResource( 12 )
 [node name="sam" parent="map_camp/npclayer" index="4" instance=ExtResource( 4 )]
 position = Vector2( 896, 579 )
 
+[node name="Shoes" parent="map_camp/npclayer/sam" index="2"]
+frame = 0
+
 [node name="Pants" parent="map_camp/npclayer/sam" index="3"]
 texture = ExtResource( 19 )
 frame = 16
 
 [node name="Clothes" parent="map_camp/npclayer/sam" index="4"]
 texture = ExtResource( 17 )
+frame = 0
 
 [node name="Blush" parent="map_camp/npclayer/sam" index="5"]
 visible = false
@@ -10448,12 +10457,8 @@ visible = false
 [node name="Beard" parent="map_camp/npclayer/sam" index="7"]
 visible = false
 
-[node name="Eyes" parent="map_camp/npclayer/sam" index="8"]
-frame = 16
-
 [node name="Hair" parent="map_camp/npclayer/sam" index="10"]
 texture = ExtResource( 9 )
-frame = 8
 
 [node name="InteractionArea" parent="map_camp/npclayer/sam/interactionZone NPC" index="0"]
 position = Vector2( 8, 18 )
@@ -10478,6 +10483,9 @@ anims/RESET = SubResource( 55 )
 
 [node name="bella" parent="map_camp/npclayer" index="5" instance=ExtResource( 4 )]
 position = Vector2( 1074, 531 )
+
+[node name="Shoes" parent="map_camp/npclayer/bella" index="2"]
+frame = 0
 
 [node name="Pants" parent="map_camp/npclayer/bella" index="3"]
 frame = 56
@@ -10529,9 +10537,6 @@ position = Vector2( 1328, 512 )
 [node name="Body" parent="map_camp/npclayer/murphy" index="1"]
 texture = ExtResource( 13 )
 
-[node name="Shoes" parent="map_camp/npclayer/murphy" index="2"]
-frame = 40
-
 [node name="Pants" parent="map_camp/npclayer/murphy" index="3"]
 texture = ExtResource( 19 )
 frame = 72
@@ -10554,6 +10559,7 @@ frame = 24
 
 [node name="Hair" parent="map_camp/npclayer/murphy" index="10"]
 texture = ExtResource( 10 )
+frame = 0
 
 [node name="InteractionArea" parent="map_camp/npclayer/murphy/interactionZone NPC" index="0"]
 position = Vector2( 8, 5.875 )
@@ -10578,12 +10584,16 @@ anims/RESET = SubResource( 66 )
 [node name="octavia" parent="map_camp/npclayer" index="7" instance=ExtResource( 4 )]
 position = Vector2( 1360, 784 )
 
+[node name="Shoes" parent="map_camp/npclayer/octavia" index="2"]
+frame = 0
+
 [node name="Pants" parent="map_camp/npclayer/octavia" index="3"]
 visible = false
 texture = ExtResource( 5 )
 
 [node name="Clothes" parent="map_camp/npclayer/octavia" index="4"]
 texture = ExtResource( 18 )
+frame = 0
 
 [node name="Blush" parent="map_camp/npclayer/octavia" index="5"]
 visible = false
@@ -10591,8 +10601,12 @@ visible = false
 [node name="Beard" parent="map_camp/npclayer/octavia" index="7"]
 visible = false
 
+[node name="Eyes" parent="map_camp/npclayer/octavia" index="8"]
+frame = 0
+
 [node name="Hair" parent="map_camp/npclayer/octavia" index="10"]
 texture = ExtResource( 11 )
+frame = 0
 
 [node name="InteractionArea" parent="map_camp/npclayer/octavia/interactionZone NPC" index="0"]
 position = Vector2( 8, 5.875 )

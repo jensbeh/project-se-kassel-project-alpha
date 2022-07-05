@@ -17,6 +17,12 @@ onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
 
+
+# inventar
+# stehenbleiben -> 50sec = 1h 
+# starre character drehen sich zu player oder random jede stunde mit 30% whrs
+# stehen bleiben / verschwinden -> abhängig von zeit
+# sprache
 func _ready():
 	path_exists = (self.get_parent().get_parent().find_node(self.name + "_Path") != null)
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
