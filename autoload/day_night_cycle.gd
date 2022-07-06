@@ -136,3 +136,8 @@ func change_to_night():
 func change_to_sunrise():
 	print("TO SUNRISE")
 	emit_signal("change_to_sunrise")
+	
+# Getter for Ingame Time
+func get_current_time():
+	return current_time
+	return current_minute

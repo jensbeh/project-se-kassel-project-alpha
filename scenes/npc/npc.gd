@@ -12,6 +12,9 @@ var stop = false
 var walk_speed = 30
 var circle = false
 var path_exists
+var target = null
+var time = 0.0
+var turn = randi() % 60
 
 onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
@@ -40,9 +43,13 @@ func _ready():
 			circle = path_1.get_meta("is_circle")
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
+	time += delta
+	if time >= turn:
+		time = 0
+
 	if path_exists:
-		var target = patrol_points[patrol_index]
+		target = patrol_points[patrol_index]
 		if position.distance_to(target) < 1:
 			if circle:
 				if patrol_index < patrol_points.size() -1 and !stop:
@@ -61,25 +68,38 @@ func _physics_process(_delta):
 					target = patrol_points[patrol_index]
 				if patrol_index == 0 and wayback:
 					wayback = false
-		if !stop:
-			velocity = (target - position).normalized() * walk_speed
-		else:
-			velocity = (Utils.get_current_player().position - self.position)
+
+	if !stop and target != null:
+		velocity = (target - position).normalized() * walk_speed
+	elif stop:
+		velocity = (Utils.get_current_player().position - self.position)
+	else:
+		if DayNightCycle.get_current_time() > 1100 and DayNightCycle.get_current_time() < 3000:
+			self.visible = false
+		elif time == 0.0:
+			self.visible = true
+			var direction = (randi() % 3) + 1
+			if direction == 1:
+				velocity = Vector2(0,1)
+			if direction == 2:
+				velocity = Vector2(1,0)
+			if direction == 3:
+				velocity = Vector2(-1,0)
+
+	if stop or target == null:
+		animation_tree.active = false
 			
-		if stop:
-			animation_tree.active = false
-			
-		if velocity != Vector2.ZERO and !stop:
-			animation_tree.set("parameters/Idle/blend_position", velocity)
-			animation_tree.set("parameters/Walk/blend_position", velocity)
-			animation_state.travel("Walk")
-		else:
-			animation_tree.active = true
-			animation_tree.set("parameters/Idle/blend_position", velocity)
-			animation_state.travel("Idle")
-			
-		if !stop:
-			velocity = move_and_slide(velocity)
+	if velocity != Vector2.ZERO and !stop and target != null:
+		animation_tree.set("parameters/Idle/blend_position", velocity)
+		animation_tree.set("parameters/Walk/blend_position", velocity)
+		animation_state.travel("Walk")
+	else:
+		animation_tree.active = true
+		animation_tree.set("parameters/Idle/blend_position", velocity)
+		animation_state.travel("Idle")
+
+	if !stop and target != null:
+		velocity = move_and_slide(velocity)
 
 
 func _on_interactionZone_NPC_body_entered(body):
