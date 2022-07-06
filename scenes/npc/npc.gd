@@ -14,7 +14,7 @@ var circle = false
 var path_exists
 var target = null
 var time = 0.0
-var turn = randi() % 60
+var turn = (randi() % 41) +10
 var stay
 
 onready var animation_tree = $AnimationTree
@@ -23,10 +23,9 @@ onready var animation_state = animation_tree.get("parameters/playback")
 
 
 # inventar
-# stehenbleiben -> 50sec = 1h 
-# stehen bleiben -> abhängig von zeit
 # sprache
 func _ready():
+	time = DayNightCycle.get_current_minute()
 	path_exists = (self.get_parent().get_parent().find_node(self.name + "_Path") != null)
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 	if path_exists:

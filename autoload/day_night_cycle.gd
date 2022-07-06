@@ -140,4 +140,6 @@ func change_to_sunrise():
 # Getter for Ingame Time
 func get_current_time():
 	return current_time
+
+func get_current_minute():
 	return current_minute
