@@ -1493,9 +1493,9 @@ texture = ExtResource( 3 )
 expand = true
 
 [node name="Create Character" type="Button" parent="."]
-margin_left = 1286.5
+margin_left = 1280.0
 margin_top = 710.0
-margin_right = 1435.5
+margin_right = 1460.0
 margin_bottom = 735.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1504,12 +1504,11 @@ custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
 custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
-text = "Create New Character"
 
 [node name="Back" type="Button" parent="."]
-margin_left = 1287.0
+margin_left = 1280.0
 margin_top = 865.0
-margin_right = 1436.0
+margin_right = 1460.0
 margin_bottom = 890.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1518,7 +1517,6 @@ custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
 custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
-text = "Back to Main Menu"
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="."]
 margin_left = 187.0
