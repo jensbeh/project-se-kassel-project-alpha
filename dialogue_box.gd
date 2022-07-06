@@ -36,7 +36,7 @@ func _process(_delta):
 		else:
 			$Text.visible_characters = len($Text.text)
 
-
+# open dialog text
 func getDialog():
 	var f = File.new()
 	if f.file_exists(dialogPath):
@@ -49,6 +49,7 @@ func getDialog():
 
 
 func nextPhrase():
+	# at end of dialog
 	if phraseNum >= len(dialog):
 		$DialogueBox.visible = false
 		$HSeparator.visible = false
@@ -58,6 +59,12 @@ func nextPhrase():
 		phraseNum = 0
 		finished = false
 		Utils.get_current_player().set_player_can_interact(true)
+		Utils.get_current_player().set_movement(true)
+		Utils.get_current_player().set_movment_animation(true)
+		# reset npc interaction state
+		for npc in self.get_parent().get_parent().get_children():
+			npc.set_interacted(false)
+	# show text
 	else:
 		finished = false
 		$Name.bbcode_text = dialog[phraseNum].name + ":"
@@ -76,3 +83,4 @@ func _on_Button_pressed():
 		nextPhrase()
 	else:
 		$Text.visible_characters = len($Text.text)
+	
