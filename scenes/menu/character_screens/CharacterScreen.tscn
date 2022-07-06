@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/menu/character_screens/character_screen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
@@ -1460,6 +1460,16 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
+[sub_resource type="StyleBoxFlat" id=15]
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 3.0
+expand_margin_right = 3.0
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
 [sub_resource type="DynamicFont" id=13]
 size = 28
 extra_spacing_top = 10
@@ -1468,6 +1478,8 @@ font_data = ExtResource( 4 )
 
 [sub_resource type="Theme" id=14]
 default_font = SubResource( 13 )
+Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
+Button/styles/hover = SubResource( 15 )
 Label/fonts/font = null
 
 [node name="CharacterScreen" type="Node2D"]
@@ -1481,9 +1493,9 @@ texture = ExtResource( 3 )
 expand = true
 
 [node name="Create Character" type="Button" parent="."]
-margin_left = 1262.0
+margin_left = 1286.5
 margin_top = 710.0
-margin_right = 1411.0
+margin_right = 1435.5
 margin_bottom = 735.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1495,9 +1507,9 @@ custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 text = "Create New Character"
 
 [node name="Back" type="Button" parent="."]
-margin_left = 1265.0
+margin_left = 1287.0
 margin_top = 865.0
-margin_right = 1414.0
+margin_right = 1436.0
 margin_bottom = 890.0
 grow_horizontal = 2
 grow_vertical = 2

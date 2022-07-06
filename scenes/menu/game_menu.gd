@@ -6,8 +6,6 @@ func _ready():
 	get_node("Back to Main Menu").set_text(tr("BACK_TO_MAIN_MENU"))
 	get_node("Back to Game").set_text(tr("BACK_TO_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))
-	Utils.get_current_player().set_movement(false)
-	Utils.get_current_player().set_movment_animation(false)
 
 
 func _on_Back_to_Game_pressed():
