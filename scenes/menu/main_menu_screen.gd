@@ -32,11 +32,11 @@ func _ready():
 
 
 func _on_Start_Game_pressed():
-	var transition_data = TransitionData.Menu.new("res://scenes/menu/character_screens/CharacterScreen.tscn")
+	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
+	Utils.get_scene_manager().add_child(load(Constants.SETTINGS_PATH).instance())
 
 func _on_Exit_to_Desktop_pressed():
 	get_tree().quit()

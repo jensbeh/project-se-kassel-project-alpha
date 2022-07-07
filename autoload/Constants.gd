@@ -36,6 +36,8 @@ const MAIN_MENU_PATH = "res://scenes/menu/MainMenuScreen.tscn"
 const CHARACTER_SCREEN_PATH = "res://scenes/menu/character_screens/CharacterScreen.tscn"
 const CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH = "res://scenes/menu/character_screens/CharacterScreenContainerScript.gd"
 const CREATE_CHARACTER_SCREEN_PATH = "res://scenes/menu/character_screens/CreateCharacter.tscn"
+const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
+const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

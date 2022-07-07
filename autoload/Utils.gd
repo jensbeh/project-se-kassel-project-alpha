@@ -3,7 +3,6 @@ extends Node
 # Variables
 var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
-var prev_scene
 
 func _ready():
 	pass

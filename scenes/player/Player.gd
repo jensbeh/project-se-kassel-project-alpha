@@ -122,10 +122,12 @@ func _input(event):
 		if player_can_interact:
 			print("interacted")
 			emit_signal("player_interact")
+	# open game menu with "esc"
 	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child_count() < 4:
 		set_movement(false)
 		set_movment_animation(false)
-		Utils.get_scene_manager().add_child(load("res://scenes/menu/GameMenu.tscn").instance())
+		Utils.get_scene_manager().add_child(load(Constants.GAME_MENU_PATH).instance())
+	# close game menu with "esc" when game menu is open
 	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_child_count() == 4:
 		set_movement(true)
 		set_movment_animation(true)

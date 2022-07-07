@@ -8,6 +8,7 @@ func _ready():
 	get_node("Settings").set_text(tr("SETTINGS"))
 
 
+# close game menu and set playermovemnt true
 func _on_Back_to_Game_pressed():
 	Utils.get_scene_manager().get_child(3).queue_free()
 	Utils.get_current_player().set_movement(true)
@@ -15,12 +16,12 @@ func _on_Back_to_Game_pressed():
 
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
+	Utils.get_scene_manager().add_child(load(Constants.SETTINGS_PATH).instance())
 
-
+# close game and go to main menu
 func _on_Back_to_Main_Menu_pressed():
-	var transition_data = TransitionData.Menu.new("res://scenes/menu/MainMenuScreen.tscn")
-	Utils.get_scene_manager().get_child(0).get_child(1).queue_free()
+	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
+	Utils.get_scene_manager().get_child(3).queue_free()
 	Utils.set_current_player(null)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 

@@ -160,7 +160,7 @@ func save_data():
 
 
 func _on_Back_pressed():
-	var transition_data = TransitionData.Menu.new("res://scenes/menu/character_screens/CharacterScreen.tscn")
+	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
@@ -504,5 +504,5 @@ func start_game():
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
-	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
