@@ -53,9 +53,9 @@ func _on_OptionButton_item_selected(index):
 	save_settings()
 
 func _on_Back_pressed():
-	Utils.get_scene_manager().get_child(0).get_node("SettingScreen").queue_free()
-	if (Utils.get_scene_manager().get_child(0).get_child(1)) != null and Utils.get_scene_manager().get_child(0).get_child_count() == 3:
-		Utils.get_scene_manager().get_child(0).get_node("GameMenu")._ready()
-	if (Utils.get_scene_manager().get_child(0).get_child(1)) != null and Utils.get_scene_manager().get_child(0).get_child_count() == 2:
+	Utils.get_scene_manager().get_node("SettingScreen").queue_free()
+	if (Utils.get_scene_manager().get_child(3)) != null and Utils.get_scene_manager().get_child_count() == 5:
+		Utils.get_scene_manager().get_node("GameMenu")._ready()
+	if (Utils.get_scene_manager().get_child(3)) != null and Utils.get_scene_manager().get_child_count() == 4:
 		Utils.get_scene_manager().get_child(0).get_node("MainMenuScreen")._ready()
 	

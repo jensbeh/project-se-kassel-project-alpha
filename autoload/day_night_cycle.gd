@@ -13,7 +13,7 @@ signal change_to_night
 signal change_to_sunrise
 
 # Variables
-var current_time = 0.0
+var current_time = 700.0
 var lights_visible = false # when night; day == false
 var screen_color : Color
 

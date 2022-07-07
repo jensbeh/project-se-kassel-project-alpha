@@ -9,13 +9,13 @@ func _ready():
 
 
 func _on_Back_to_Game_pressed():
-	Utils.get_scene_manager().get_child(0).get_child(1).queue_free()
+	Utils.get_scene_manager().get_child(3).queue_free()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
 
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().get_child(0).add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
+	Utils.get_scene_manager().add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
 
 
 func _on_Back_to_Main_Menu_pressed():

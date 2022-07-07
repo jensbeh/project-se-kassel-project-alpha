@@ -36,7 +36,7 @@ func _on_Start_Game_pressed():
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().get_child(0).add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
+	Utils.get_scene_manager().add_child(load("res://scenes/menu/SettingScreen.tscn").instance())
 
 func _on_Exit_to_Desktop_pressed():
 	get_tree().quit()
