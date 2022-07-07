@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/menu/character_screens/character_screen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
@@ -1461,6 +1461,18 @@ tracks/12/keys = {
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
 [sub_resource type="StyleBoxFlat" id=15]
+bg_color = Color( 0.772549, 0.733333, 0.733333, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 3.0
+expand_margin_right = 3.0
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 0.54902, 0.54902, 0.54902, 1 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -1480,6 +1492,7 @@ font_data = ExtResource( 4 )
 default_font = SubResource( 13 )
 Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
 Button/styles/hover = SubResource( 15 )
+Button/styles/pressed = SubResource( 16 )
 Label/fonts/font = null
 
 [node name="CharacterScreen" type="Node2D"]
@@ -1560,7 +1573,7 @@ rect_min_size = Vector2( 601, 808 )
 custom_constants/separation = 60
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 123, 6 )
+position = Vector2( 191, 24 )
 
 [node name="Player" parent="Node2D" instance=ExtResource( 2 )]
 position = Vector2( 1219, 356 )

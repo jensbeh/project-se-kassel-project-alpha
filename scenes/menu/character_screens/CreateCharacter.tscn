@@ -869,7 +869,7 @@ custom_fonts/font = SubResource( 9 )
 text = "→"
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 131, 56 )
+position = Vector2( 160, 56 )
 
 [node name="Player" parent="Node2D" instance=ExtResource( 2 )]
 position = Vector2( 1219, 356 )
