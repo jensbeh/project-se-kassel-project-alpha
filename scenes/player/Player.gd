@@ -126,7 +126,7 @@ func _input(event):
 		set_movement(false)
 		set_movment_animation(false)
 		Utils.get_scene_manager().add_child(load("res://scenes/menu/GameMenu.tscn").instance())
-	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_child(0).get_child_count() == 4:
+	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_child_count() == 4:
 		set_movement(true)
 		set_movment_animation(true)
 		Utils.get_scene_manager().get_child(3).queue_free()
