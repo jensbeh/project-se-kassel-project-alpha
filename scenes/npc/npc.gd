@@ -27,7 +27,7 @@ onready var animation_state = animation_tree.get("parameters/playback")
 # sprache
 func _ready():
 	# syncronize time
-	time = DayNightCycle.get_current_minute()
+	time = DayNightCycle.current_minute
 	# connect player interaction
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 	# get npc path
@@ -52,9 +52,9 @@ func _physics_process(delta):
 		time = 0
 	# npc follow path
 	if path_exists:
-		turn = 50
+		turn = DayNightCycle.ONE_HOUR
 		target = patrol_points[patrol_index]
-		if position.distance_to(target) < 1 and time < 46:
+		if position.distance_to(target) < 1 and time < turn*0.92:
 			if circle:
 				if patrol_index < patrol_points.size() -1 and !stop:
 					patrol_index = patrol_index + 1
@@ -65,7 +65,7 @@ func _physics_process(delta):
 				if patrol_index < patrol_points.size() -1 and !wayback and !stop:
 					patrol_index = patrol_index + 1
 					target = patrol_points[patrol_index]
-				if !wayback and patrol_index == patrol_points.size() -1 and time < 3:
+				if !wayback and patrol_index == patrol_points.size() -1 and time < turn*0.08:
 					wayback = true
 				if patrol_index > 0 and wayback and !stop:
 					patrol_index = patrol_index - 1
@@ -79,11 +79,6 @@ func _physics_process(delta):
 	elif stop:
 		velocity = (Utils.get_current_player().position - self.position)
 	else:
-		# store npc not visible at night
-		if DayNightCycle.get_current_time() > 700 and DayNightCycle.get_current_time() < 1100:
-			self.visible = false
-		else:
-			self.visible = true
 		# npcs turn random
 		if time == 0.0:
 			var direction = (randi() % 3) + 1
@@ -95,7 +90,7 @@ func _physics_process(delta):
 				velocity = Vector2(-1,0)
 	# npc stay sometimes
 	if path_exists:
-		if patrol_index == patrol_points.size() -1 and time >= 3 or position.distance_to(target) < 1 and time >= 46:
+		if patrol_index == patrol_points.size() -1 and time >= turn*0.08 or position.distance_to(target) < 1 and time >= turn*0.92:
 			stay = true
 		else:
 			stay = false
@@ -120,16 +115,12 @@ func _on_interactionZone_NPC_body_entered(body):
 	if body == Utils.get_current_player():
 		player_in_interacting_zone = true
 		stop = true
-		if self.visible == false:
-			self.visible = true
 
 # when player leave npc zone, npc can walk again
 func _on_interactionZone_NPC_body_exited(body):
 	if body == Utils.get_current_player():
 		player_in_interacting_zone = false
 		stop = false
-		if DayNightCycle.get_current_time() > 1100 and DayNightCycle.get_current_time() < 3000:
-			self.visible = false
 
 # when player interact with npc with "e"
 func interaction_detected():
