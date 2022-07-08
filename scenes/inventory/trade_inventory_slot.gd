@@ -6,7 +6,7 @@ func get_drag_data(_pos):
 	# check if slot != null
 	var data = {}
 	data["origin_node"] = self
-	data["origin_panel"] = "Trade Inventory"
+	data["origin_panel"] = "TradeInventory"
 	data["origin_item_id"] = MerchantData.inv_data[slot]["Item"]
 	data["origin_slot"] = slot
 	data["origin_texture"] = texture
@@ -50,7 +50,7 @@ func drop_data(_pos, data):
 		MerchantData.inv_data[target_slot]["Item"] = data["target_item_id"]
 	
 	# update the texture of the origin
-	if data["origin_panel"] == "Trade Inventory" and data["target_item_id"] == null:
+	if data["origin_panel"] == "TradeInventory" and data["target_item_id"] == null:
 		var default_texture = load("res://assets/Icon_Items/Empty Slot.png")
 		data["origin_node"].texture = default_texture
 	else:

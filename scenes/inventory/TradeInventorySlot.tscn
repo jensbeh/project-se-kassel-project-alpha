@@ -7,6 +7,8 @@
 margin_right = 64.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 2 )
+expand = true
 
 [node name="Icon" type="TextureRect" parent="."]
 anchor_right = 1.0
@@ -15,6 +17,5 @@ margin_left = 4.0
 margin_top = 4.0
 margin_right = -4.0
 margin_bottom = -4.0
-texture = ExtResource( 2 )
 expand = true
 script = ExtResource( 1 )

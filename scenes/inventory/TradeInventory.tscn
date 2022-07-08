@@ -36,9 +36,14 @@ margin_right = 990.0
 margin_bottom = 540.0
 custom_constants/separation = 20
 
+[node name="Inventory" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
+margin_top = 0.0
+margin_bottom = 540.0
+
 [node name="Background" type="NinePatchRect" parent="ColorRect/MarginContainer/HBoxContainer"]
 self_modulate = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
-margin_right = 480.0
+margin_left = 500.0
+margin_right = 980.0
 margin_bottom = 540.0
 rect_min_size = Vector2( 480, 540 )
 texture = ExtResource( 3 )
@@ -118,14 +123,5 @@ size_flags_vertical = 3
 custom_constants/vseparation = 12
 custom_constants/hseparation = 12
 columns = 6
-
-[node name="Inventory" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 500.0
-margin_top = 0.0
-margin_right = 980.0
-margin_bottom = 540.0
-rect_min_size = Vector2( 480, 540 )
 
 [connection signal="pressed" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Exit/Button" to="." method="_on_Button_pressed"]

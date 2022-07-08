@@ -28,7 +28,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="DynamicFont" id=5]
-size = 24
+size = 36
 font_data = ExtResource( 2 )
 
 [node name="DialogueBox" type="CanvasLayer"]
@@ -91,15 +91,11 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 0 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 0 )
 
 [node name="Trade" type="Button" parent="."]
-margin_left = 1352.0
-margin_top = 928.0
-margin_right = 1464.0
-margin_bottom = 1008.0
-custom_colors/font_color_disabled = Color( 0, 0, 0, 0 )
-custom_colors/font_color_focus = Color( 0, 0, 0, 0 )
-custom_colors/font_color = Color( 0, 0, 0, 0 )
-custom_colors/font_color_hover = Color( 0, 0, 0, 0 )
-custom_colors/font_color_pressed = Color( 0, 0, 0, 0 )
+visible = false
+margin_left = 1425.0
+margin_top = 936.0
+margin_right = 1537.0
+margin_bottom = 1016.0
 custom_fonts/font = SubResource( 5 )
 
 [node name="Timer" type="Timer" parent="."]

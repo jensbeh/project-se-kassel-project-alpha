@@ -48,6 +48,7 @@ func _on_OptionButton_item_selected(index):
 	else:
 		TranslationServer.set_locale('de')
 		Utils.set_language("de")
+	TranslationServer.set_locale(Utils.get_language())
 	_ready()
 	save_settings()
 
