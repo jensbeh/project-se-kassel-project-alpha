@@ -43,8 +43,23 @@ var eyes
 var hair
 var shadow
 
-
 func _ready():
+	find_node("Name").set_text(tr("CHARACTER_NAME"))
+	find_node("Skincolor").set_text(tr("SKINCOLOR"))
+	find_node("Hair").set_text(tr("HAIR"))
+	find_node("Haircolor").set_text(tr("HAIR_COLOR"))
+	find_node("Shoes").set_text(tr("SHOES"))
+	find_node("Eyes").set_text(tr("EYES"))
+	find_node("Torso").set_text(tr("TORSO"))
+	find_node("Torsocolor").set_text(tr("TORSO_COLOR"))
+	find_node("Legs").set_text(tr("LEGS"))
+	find_node("Legcolor").set_text(tr("LEGS_COLOR"))
+	find_node("Beard").set_text(tr("BEARD"))
+	find_node("Make-Up").set_text(tr("MAKE_UP"))
+	find_node("Create Character").set_text(tr("CREATE_CHARACTER"))
+	find_node("Back").set_text(tr("BACK_TO_CHARACTER_CHOICE"))
+	find_node("LineEdit").set_placeholder("ENTER_NAME_HERE")
+	
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(0))
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinCount.set_text(str(0))
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(0))
@@ -489,5 +504,5 @@ func start_game():
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
-	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)

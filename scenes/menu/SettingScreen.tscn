@@ -1,0 +1,164 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=1]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scenes/menu/setting_screen.gd" type="Script" id=3]
+[ext_resource path="res://assets/slider_icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/slider_icon_selected.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="DynamicFont" id=6]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 28
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 28
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 24
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=10]
+default_font = SubResource( 9 )
+Label/fonts/font = null
+
+[sub_resource type="DynamicFont" id=11]
+size = 24
+font_data = ExtResource( 2 )
+
+[node name="SettingScreen" type="CanvasLayer"]
+script = ExtResource( 3 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 484.0
+margin_top = 186.0
+margin_right = 1452.0
+margin_bottom = 858.0
+custom_styles/panel = SubResource( 8 )
+
+[node name="Back" type="Button" parent="."]
+margin_left = 144.0
+margin_top = 64.0
+margin_right = 248.0
+margin_bottom = 120.0
+custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
+custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
+custom_fonts/font = SubResource( 6 )
+text = "Back"
+
+[node name="Settings" type="Label" parent="."]
+margin_left = 845.0
+margin_top = 218.0
+margin_right = 1077.0
+margin_bottom = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 1 )
+text = "Settings"
+
+[node name="Volume" type="Label" parent="."]
+margin_left = 600.0
+margin_top = 394.0
+margin_right = 719.0
+margin_bottom = 482.0
+grow_horizontal = 0
+grow_vertical = 0
+custom_fonts/font = SubResource( 2 )
+text = "Volume"
+
+[node name="Music" type="Label" parent="."]
+margin_left = 637.0
+margin_top = 483.0
+margin_right = 749.0
+margin_bottom = 579.0
+custom_fonts/font = SubResource( 3 )
+text = "Music"
+
+[node name="Sounds" type="Label" parent="."]
+margin_left = 617.0
+margin_top = 579.0
+margin_right = 737.0
+margin_bottom = 633.0
+custom_fonts/font = SubResource( 4 )
+text = "Sounds"
+
+[node name="Language" type="Label" parent="."]
+margin_left = 565.0
+margin_top = 762.0
+margin_right = 717.0
+margin_bottom = 800.0
+custom_fonts/font = SubResource( 5 )
+text = "Language"
+
+[node name="Musicslieder" type="HSlider" parent="."]
+margin_left = 909.0
+margin_top = 465.0
+margin_right = 1357.0
+margin_bottom = 537.0
+custom_icons/grabber_highlight = ExtResource( 5 )
+custom_icons/grabber = ExtResource( 4 )
+
+[node name="Soundslider" type="HSlider" parent="."]
+margin_left = 909.0
+margin_top = 560.0
+margin_right = 1357.0
+margin_bottom = 632.0
+custom_icons/grabber_highlight = ExtResource( 5 )
+custom_icons/grabber = ExtResource( 4 )
+
+[node name="OptionButton" type="OptionButton" parent="."]
+margin_left = 912.0
+margin_top = 754.0
+margin_right = 1136.0
+margin_bottom = 810.0
+theme = SubResource( 10 )
+custom_fonts/font = SubResource( 11 )
+text = "English"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 525.0
+margin_top = 643.0
+margin_right = 1421.0
+margin_bottom = 707.0
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 525.0
+margin_top = 291.0
+margin_right = 1421.0
+margin_bottom = 355.0
+
+[connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+[connection signal="value_changed" from="Musicslieder" to="." method="_on_Musicslieder_value_changed"]
+[connection signal="value_changed" from="Soundslider" to="." method="_on_Soundslider_value_changed"]
+[connection signal="item_selected" from="OptionButton" to="." method="_on_OptionButton_item_selected"]

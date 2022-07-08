@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scenes/menu/character_screens/CharacterScreen.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menu/character_screens/character_screen.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=3]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
@@ -1459,6 +1460,41 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
+[sub_resource type="StyleBoxFlat" id=15]
+bg_color = Color( 0.772549, 0.733333, 0.733333, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 3.0
+expand_margin_right = 3.0
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 0.54902, 0.54902, 0.54902, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 3.0
+expand_margin_right = 3.0
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="DynamicFont" id=13]
+size = 28
+extra_spacing_top = 10
+extra_spacing_bottom = 10
+font_data = ExtResource( 4 )
+
+[sub_resource type="Theme" id=14]
+default_font = SubResource( 13 )
+Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
+Button/styles/hover = SubResource( 15 )
+Button/styles/pressed = SubResource( 16 )
+Label/fonts/font = null
+
 [node name="CharacterScreen" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -1470,28 +1506,30 @@ texture = ExtResource( 3 )
 expand = true
 
 [node name="Create Character" type="Button" parent="."]
-margin_left = 1262.0
+margin_left = 1280.0
 margin_top = 710.0
-margin_right = 1411.0
+margin_right = 1460.0
 margin_bottom = 735.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
 custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
-text = "Create New Character"
 
 [node name="Back" type="Button" parent="."]
-margin_left = 1265.0
+margin_left = 1280.0
 margin_top = 865.0
-margin_right = 1414.0
+margin_right = 1460.0
 margin_bottom = 890.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
 custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
-text = "Back to Main Menu"
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="."]
 margin_left = 187.0
@@ -1535,7 +1573,7 @@ rect_min_size = Vector2( 601, 808 )
 custom_constants/separation = 60
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 123, 6 )
+position = Vector2( 191, 24 )
 
 [node name="Player" parent="Node2D" instance=ExtResource( 2 )]
 position = Vector2( 1219, 356 )
@@ -1558,7 +1596,19 @@ parameters/playback = SubResource( 11 )
 [node name="Camera2D" parent="Node2D/Player" index="17"]
 current = false
 
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+visible = true
+margin_left = 870.0
+margin_top = 463.0
+margin_right = 1126.0
+margin_bottom = 597.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource( 14 )
+window_title = ""
+
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
 
 [editable path="Node2D/Player"]
