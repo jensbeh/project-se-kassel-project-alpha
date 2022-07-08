@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scenes/menu/character_screens/CreateCharacter.gd" type="Script" id=1]
+[ext_resource path="res://scenes/menu/character_screens/create_character.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=4]
@@ -102,10 +102,12 @@ texture = ExtResource( 4 )
 expand = true
 
 [node name="Create Character" type="Button" parent="."]
-margin_left = 1271.0
+margin_left = 1286.0
 margin_top = 775.0
-margin_right = 1420.0
+margin_right = 1435.0
 margin_bottom = 800.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -114,10 +116,12 @@ custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 text = "Create Character"
 
 [node name="Back" type="Button" parent="."]
-margin_left = 1247.0
+margin_left = 1221.5
 margin_top = 904.0
-margin_right = 1417.0
+margin_right = 1422.5
 margin_bottom = 929.0
+grow_horizontal = 2
+grow_vertical = 2
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -865,7 +869,7 @@ custom_fonts/font = SubResource( 9 )
 text = "→"
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 131, 56 )
+position = Vector2( 160, 56 )
 
 [node name="Player" parent="Node2D" instance=ExtResource( 2 )]
 position = Vector2( 1219, 356 )

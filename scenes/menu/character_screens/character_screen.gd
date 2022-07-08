@@ -1,7 +1,9 @@
-extends Node2D ## TODO: load character with mouse click, Bug: syncronize mouse click and keyboard
+extends Node2D
 
 const SAVE_PATH = "user://character/"
 const SAVE_FILE_EXTENSION = ".json"
+var delete_id
+var delete_container
 
 var selected_character = 0
 var style2 = StyleBoxFlat.new()
@@ -23,6 +25,9 @@ var eyes
 var hair
 
 func _ready():
+	get_node("Back").set_text(tr("BACK_TO_MAIN_MENU"))
+	get_node("Create Character").set_text(tr("CREATE_NEW_CHARACTER"))
+	
 	# Create Selected Style
 	style2.set_bg_color(Color(0.6, 0.6, 0.6, 1))
 	style1.set_bg_color(Color(0.4, 0.4, 0.4, 1))
@@ -71,7 +76,7 @@ func _ready():
 				eyes = child
 			"Hair":
 				hair = child
-				
+	
 	Utils.get_player().set_visibility("Shadow", true)
 	call_deferred("load_character")
 	
@@ -105,10 +110,39 @@ func load_data():
 
 # click for delete this character
 func on_delete_click(id, container):
+	find_node("ConfirmationDialog").set_text(" " + tr("DELETECHARAC") + " " + "\n" + " \"" + data_list[selected_character].name + "\" ? ")
+	var styleup1 = StyleBoxFlat.new()
+	styleup1.set_bg_color(Color(1, 0, 0))
+	styleup1.set_corner_radius_all(5)
+	var hover = StyleBoxFlat.new()
+	hover.set_bg_color(Color(0.956863, 0.25098, 0.25098))
+	hover.set_corner_radius_all(5)
+	hover.set_expand_margin_all(3)
+	var pressed = StyleBoxFlat.new()
+	pressed.set_bg_color(Color(0.722656, 0.03952, 0.03952))
+	pressed.set_corner_radius_all(5)
+	pressed.set_expand_margin_all(3)
+	var styleup2 = StyleBoxFlat.new()
+	styleup2.set_corner_radius_all(5)
+	styleup2.set_bg_color(Color(0.6, 0.6, 0.6))
+	find_node("ConfirmationDialog").get_cancel().add_stylebox_override("normal", styleup2)
+	find_node("ConfirmationDialog").get_ok().add_stylebox_override("normal", styleup1)
+	find_node("ConfirmationDialog").get_ok().add_stylebox_override("hover", hover)
+	find_node("ConfirmationDialog").get_ok().add_stylebox_override("pressed", pressed)
+	find_node("ConfirmationDialog").get_cancel().set_text(tr("CANCLE"))
+	
+	find_node("ConfirmationDialog").get_ok().set_text(tr("DELETE"))
+	
+	find_node("ConfirmationDialog").popup()
+	delete_id = id
+	delete_container = container
+
+
+func delete_character():
 	var dir = Directory.new()
-	if dir.file_exists(SAVE_PATH + id + SAVE_FILE_EXTENSION):
-		dir.remove(SAVE_PATH + id + SAVE_FILE_EXTENSION)
-	list.remove_child(container)
+	if dir.file_exists(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION):
+		dir.remove(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION)
+	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
 		if selected_character != 0: 
@@ -123,11 +157,14 @@ func on_delete_click(id, container):
 	else:
 		selected_character = 0
 		Utils.get_player().visible = false
+	delete_id = null
+	delete_container = null
 
 
 # click on play button to enter camp
 func on_play_click():
 	start_game()
+
 
 # create Character Item to Choose
 func create_item(charac_name, charac_level, charac_gold, character_id):
@@ -337,6 +374,10 @@ func start_game():
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
-	var transition_data = TransitionData.GamePosition.new("res://scenes/camp/Camp.tscn", player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
-		
+
+
+func _on_ConfirmationDialog_confirmed():
+	delete_character()
+
