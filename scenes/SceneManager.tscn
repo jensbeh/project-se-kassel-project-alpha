@@ -1,6 +1,5 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://scenes/inventory/Inventory.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/scene_manager.gd" type="Script" id=2]
 [ext_resource path="res://assets/tilesets/Village Animated Decorations.png" type="Texture" id=3]
 [ext_resource path="res://scenes/menu/MainMenuScreen.tscn" type="PackedScene" id=5]
@@ -332,6 +331,3 @@ anims/MenuFadeToNormal = SubResource( 20 )
 anims/RESET = SubResource( 2 )
 
 [node name="UI" type="CanvasLayer" parent="."]
-
-[node name="Inventory" parent="UI" instance=ExtResource( 1 )]
-visible = false

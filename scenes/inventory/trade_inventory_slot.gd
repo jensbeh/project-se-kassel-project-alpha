@@ -7,7 +7,7 @@ func get_drag_data(_pos):
 	var data = {}
 	data["origin_node"] = self
 	data["origin_panel"] = "Trade Inventory"
-	data["origin_item_id"] = PlayerData.inv_data[slot]["Item"]
+	data["origin_item_id"] = MerchantData.inv_data[slot]["Item"]
 	data["origin_slot"] = slot
 	data["origin_texture"] = texture
 	
@@ -29,13 +29,13 @@ func get_drag_data(_pos):
 func can_drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
 	# move item
-	if PlayerData.inv_data[target_slot]["Item"] == null:
+	if MerchantData.inv_data[target_slot]["Item"] == null:
 		data["target_item_id"] = null
 		data["target_texture"] = null
 		return true
 	# swap item
 	else:
-		data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
+		data["target_item_id"] = MerchantData.inv_data[target_slot]["Item"]
 		data["target_texture"] = texture
 		return true
 

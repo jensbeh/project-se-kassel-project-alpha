@@ -14,7 +14,8 @@ func _ready():
 	$Button.visible = false
 	$Name.visible = false
 	$Text.visible = false
-	$Trade.text = tr("TRADE")
+	$Trade.set_text(tr("TRADE"))
+	$Trade.visible = false
 	dialogPath = "res://assets/dialogue/"+ get_parent().name + ".json"
 
 func start():
@@ -98,7 +99,5 @@ func close_dialog():
 
 func _on_Trade_pressed():
 	close_dialog()
-	# show inventory
-	Utils.get_scene_manager().get_child(3).get_child(0).visible =  true
 	# show trade inventory
-	Utils.get_scene_manager().add_child(load("res://scenes/npc/TradeInventory.tscn").instance())
+	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY).instance())

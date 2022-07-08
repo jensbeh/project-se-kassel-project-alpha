@@ -104,7 +104,7 @@ esc={
 
 [locale]
 
-translations=PoolStringArray( "res://assets/text.de.translation", "res://assets/text.en.translation" )
+translations=PoolStringArray( "res://assets/language/Languages.de.translation", "res://assets/language/Languages.en.translation" )
 locale_filter=[ 1, [ "de", "en" ] ]
 
 [physics]
