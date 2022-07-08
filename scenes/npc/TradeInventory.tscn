@@ -1,0 +1,126 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scenes/npc/trade_inventory.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=3]
+size = 28
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.498039, 0.478431, 0.478431, 0.376471 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="TradeInventory" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="Background" type="NinePatchRect" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -340.0
+margin_right = 460.0
+margin_bottom = 200.0
+
+[node name="TitleBox" type="HBoxContainer" parent="Background"]
+margin_left = 15.0
+margin_top = 10.0
+margin_right = 432.0
+margin_bottom = 98.0
+rect_min_size = Vector2( 0, 80 )
+
+[node name="Control" type="Control" parent="Background/TitleBox"]
+margin_right = 42.0
+margin_bottom = 88.0
+size_flags_horizontal = 3
+
+[node name="Title" type="TextureRect" parent="Background/TitleBox"]
+margin_left = 46.0
+margin_right = 371.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 325, 0 )
+
+[node name="Titlename" type="Label" parent="Background/TitleBox/Title"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 3 )
+text = "Inventory"
+align = 1
+valign = 1
+
+[node name="Exit" type="Control" parent="Background/TitleBox"]
+margin_left = 375.0
+margin_right = 417.0
+margin_bottom = 88.0
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="Background/TitleBox/Exit"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -58.0
+margin_top = 16.0
+margin_right = -8.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+text = "Close"
+expand_icon = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Background"]
+margin_left = 15.0
+margin_top = 74.0
+margin_right = 432.0
+margin_bottom = 570.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="Background/ScrollContainer"]
+margin_right = 417.0
+margin_bottom = 496.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 2 )
+custom_styles/tab_fg = SubResource( 4 )
+custom_styles/tab_bg = SubResource( 5 )
+custom_styles/panel = SubResource( 6 )
+tab_align = 0
+
+[node name="Buy" type="GridContainer" parent="Background/ScrollContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 12
+custom_constants/hseparation = 12
+columns = 5
+
+[node name="Sell" type="GridContainer" parent="Background/ScrollContainer/TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 47.0
+margin_right = -4.0
+margin_bottom = -4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 12
+custom_constants/hseparation = 12
+columns = 5
+
+[connection signal="pressed" from="Background/TitleBox/Exit/Button" to="." method="_on_Button_pressed"]

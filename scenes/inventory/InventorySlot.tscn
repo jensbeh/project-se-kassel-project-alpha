@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/inventory/InventorySlot.gd" type="Script" id=1]
+[ext_resource path="res://assets/Icon_Items/Empty Slot.png" type="Texture" id=2]
+
+[node name="Inv1" type="TextureRect"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture = ExtResource( 2 )
+expand = true
+
+[node name="Icon" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+expand = true
+script = ExtResource( 1 )

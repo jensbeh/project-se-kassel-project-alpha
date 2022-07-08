@@ -2,20 +2,20 @@ extends CanvasLayer
 
 var dialogPath = null
 var textSpeed = 0.05
-
 var dialog
-
+var trade = false
 var phraseNum = 0
 var finished = false
 
 func _ready():
-	self.get_parent().connect("interacted", self, "start")
+	var _error = get_parent().connect("interacted", self, "start")
 	$DialogueBox.visible = false
 	$HSeparator.visible = false
 	$Button.visible = false
 	$Name.visible = false
 	$Text.visible = false
-	dialogPath = "res://assets/dialogue/"+ self.get_parent().name + ".json"
+	$Trade.text = tr("TRADE")
+	dialogPath = "res://assets/dialogue/"+ get_parent().name + ".json"
 
 func start():
 	$DialogueBox.visible = true
@@ -51,19 +51,8 @@ func getDialog():
 func nextPhrase():
 	# at end of dialog
 	if phraseNum >= len(dialog):
-		$DialogueBox.visible = false
-		$HSeparator.visible = false
-		$Button.visible = false
-		$Name.visible = false
-		$Text.visible = false
-		phraseNum = 0
-		finished = false
-		Utils.get_current_player().set_player_can_interact(true)
-		Utils.get_current_player().set_movement(true)
-		Utils.get_current_player().set_movment_animation(true)
-		# reset npc interaction state
-		for npc in self.get_parent().get_parent().get_children():
-			npc.set_interacted(false)
+		trade = false
+		close_dialog()
 	# show text
 	else:
 		finished = false
@@ -76,11 +65,40 @@ func nextPhrase():
 			yield($Timer, "timeout")
 		finished = true
 		phraseNum += 1
+	
+	if phraseNum >= len(dialog):
+		if get_parent().name in ["bella", "sam", "lea"]:
+			$Trade.visible = true
+			trade = true
 
 
 func _on_Button_pressed():
 	if finished:
 		nextPhrase()
+		trade = false
 	else:
 		$Text.visible_characters = len($Text.text)
-	
+
+func close_dialog():
+	$DialogueBox.visible = false
+	$HSeparator.visible = false
+	$Button.visible = false
+	$Name.visible = false
+	$Text.visible = false
+	$Trade.visible = false
+	phraseNum = 0
+	finished = false
+	if !trade:
+		Utils.get_current_player().set_player_can_interact(true)
+		Utils.get_current_player().set_movement(true)
+		Utils.get_current_player().set_movment_animation(true)
+		# reset npc interaction state
+		for npc in get_parent().get_parent().get_children():
+			npc.set_interacted(false)
+
+func _on_Trade_pressed():
+	close_dialog()
+	# show inventory
+	Utils.get_scene_manager().get_child(3).get_child(0).visible =  true
+	# show trade inventory
+	Utils.get_scene_manager().add_child(load("res://scenes/npc/TradeInventory.tscn").instance())

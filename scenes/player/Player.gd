@@ -122,6 +122,15 @@ func _input(event):
 		if player_can_interact:
 			print("interacted")
 			emit_signal("player_interact")
+		if Utils.get_scene_manager().find_node("Inventory").visible == true:
+			Utils.get_scene_manager().find_node("Inventory").visible = false
+			Utils.get_scene_manager().get_node("TradeInventory").queue_free()
+			Utils.get_current_player().set_player_can_interact(true)
+			Utils.get_current_player().set_movement(true)
+			Utils.get_current_player().set_movment_animation(true)
+			# reset npc interaction state
+			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+				npc.set_interacted(false)
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
