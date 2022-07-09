@@ -76,7 +76,7 @@ func _physics_process(delta):
 	# npc walk / direction
 	if !stop and target != null:
 		velocity = (target - position).normalized() * walk_speed
-	elif stop:
+	elif stop and Utils.get_current_player() != null:
 		velocity = (Utils.get_current_player().position - self.position)
 	else:
 		# npcs turn random

@@ -13,6 +13,9 @@ func _ready():
 			var icon_texture = load("res://Assets/Icon_Items/" + item_name + ".png")
 			inv_slot_new.get_node("Icon").set_texture(icon_texture)
 		gridcontainer.add_child(inv_slot_new, true)
+	
+	$Background/MarginContainer/VBox/TitleBox/Title/Titlename.text = tr("INVENTORY")
+	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + Utils.get_current_player().get_gold()
 
 
 # close the inventory

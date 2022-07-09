@@ -55,8 +55,8 @@ func _on_OptionButton_item_selected(index):
 # close settings and resetup the scene
 func _on_Back_pressed():
 	Utils.get_scene_manager().get_node("SettingScreen").queue_free()
-	if (Utils.get_scene_manager().get_child(3).get_node("GameMenu") != null):
+	if (Utils.get_scene_manager().get_child(3).get_node_or_null("GameMenu") != null):
 		Utils.get_scene_manager().get_child(3).get_node("GameMenu")._ready()
-	if (Utils.get_scene_manager().get_child(0).get_node("MainMenuScreen")) != null:
+	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
 		Utils.get_scene_manager().get_child(0).get_node("MainMenuScreen")._ready()
 	

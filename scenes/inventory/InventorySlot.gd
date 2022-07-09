@@ -57,5 +57,5 @@ func drop_data(_pos, data):
 		data["origin_node"].texture = data["target_texture"]
 		
 	# update the texture and data of the target
-	PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
+	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 	texture = data["origin_texture"]

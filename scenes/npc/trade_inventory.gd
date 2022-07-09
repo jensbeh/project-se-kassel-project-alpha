@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 var inv_slot = preload("res://scenes/inventory/TradeInventorySlot.tscn")
 
@@ -29,4 +29,12 @@ func _on_Button_pressed():
 
 
 func set_name(npc_name):
-	find_node("Titlename").text = npc_name
+	if npc_name == "sam":
+		npc_name = "Sam"
+	elif npc_name == "lea":
+		npc_name = "Lea"
+	elif npc_name == "heinz":
+		npc_name = "Heinz"
+	else:
+		npc_name = "Bella"
+	$ColorRect/MarginContainer/HBoxContainer/Background.find_node("Titlename").text = npc_name + "´s " + tr("INVENTORY")

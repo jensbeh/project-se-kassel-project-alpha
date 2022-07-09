@@ -9,7 +9,7 @@
 size = 36
 font_data = ExtResource( 1 )
 
-[node name="TradeInventory" type="CanvasLayer"]
+[node name="TradeInventory" type="Control"]
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -41,7 +41,7 @@ margin_top = 0.0
 margin_bottom = 540.0
 
 [node name="Background" type="NinePatchRect" parent="ColorRect/MarginContainer/HBoxContainer"]
-self_modulate = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
+self_modulate = Color( 0.333333, 0.27451, 0.27451, 0.490196 )
 margin_left = 500.0
 margin_right = 980.0
 margin_bottom = 540.0
@@ -86,6 +86,8 @@ rect_min_size = Vector2( 325, 0 )
 [node name="Titlename" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Title"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
 custom_fonts/font = SubResource( 1 )
 text = "Inventory"
 align = 1

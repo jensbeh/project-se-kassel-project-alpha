@@ -52,6 +52,7 @@ var movement
 # Interaction
 var player_can_interact
 
+var gold
 
 func _ready():
 	# Style
@@ -361,3 +362,9 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	_new_camera.limit_top = scene_camera.limit_top
 	_new_camera.current = true
 	scene_camera.current = false
+
+func get_gold():
+	return gold
+	
+func set_gold(new_gold_value):
+	gold = new_gold_value

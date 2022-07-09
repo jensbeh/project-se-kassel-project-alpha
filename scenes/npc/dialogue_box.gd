@@ -14,8 +14,6 @@ func _ready():
 	$Button.visible = false
 	$Name.visible = false
 	$Text.visible = false
-	$Trade.text = (tr("TRADE"))
-	dialogPath = "res://assets/dialogue/"+ get_parent().name + ".json"
 
 func start():
 	$DialogueBox.visible = true
@@ -24,6 +22,9 @@ func start():
 	$Name.visible = true
 	$Text.visible = true
 	$Timer.wait_time = textSpeed
+	$Trade.text = (tr("TRADE"))
+	var lang = TranslationServer.get_locale()
+	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
 	dialog = getDialog()
 	nextPhrase()
 
@@ -67,7 +68,7 @@ func nextPhrase():
 		phraseNum += 1
 	
 	if phraseNum >= len(dialog):
-		if get_parent().name in ["bella", "sam", "lea"]:
+		if get_parent().name in ["bella", "sam", "lea", "heinz"]:
 			$Trade.visible = true
 			trade = true
 
