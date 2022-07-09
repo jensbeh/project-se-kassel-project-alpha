@@ -123,6 +123,7 @@ func _input(event):
 		if player_can_interact:
 			print("interacted")
 			emit_signal("player_interact")
+		# remove the trade inventory
 		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null:
 			Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
 			Utils.get_current_player().set_player_can_interact(true)

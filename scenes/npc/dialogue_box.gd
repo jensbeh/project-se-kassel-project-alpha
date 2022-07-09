@@ -23,6 +23,7 @@ func start():
 	$Text.visible = true
 	$Timer.wait_time = textSpeed
 	$Trade.text = (tr("TRADE"))
+	# get language
 	var lang = TranslationServer.get_locale()
 	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
 	dialog = getDialog()

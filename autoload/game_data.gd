@@ -2,6 +2,7 @@ extends Node
 
 var item_data = {}
 
+# load the item data
 func _ready():
 	var item_data_file = File.new()
 	item_data_file.open("res://assets/data/ItemData.json", File.READ)

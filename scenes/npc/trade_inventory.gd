@@ -28,6 +28,7 @@ func _on_Button_pressed():
 		npc.set_interacted(false)
 
 
+# sets the correct name of the npc
 func set_name(npc_name):
 	if npc_name == "sam":
 		npc_name = "Sam"

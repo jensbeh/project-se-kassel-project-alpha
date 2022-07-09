@@ -4,7 +4,7 @@ var inv_slot = preload("res://scenes/inventory/InventorySlot.tscn")
 
 onready var gridcontainer = get_node("Background/MarginContainer/VBox/ScrollContainer/GridContainer")
 
-
+# load player inventory
 func _ready():
 	for i in PlayerData.inv_data.keys():
 		var inv_slot_new = inv_slot.instance()
@@ -14,6 +14,7 @@ func _ready():
 			inv_slot_new.get_node("Icon").set_texture(icon_texture)
 		gridcontainer.add_child(inv_slot_new, true)
 	
+	# sets the name and the gold from the player
 	$Background/MarginContainer/VBox/TitleBox/Title/Titlename.text = tr("INVENTORY")
 	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + Utils.get_current_player().get_gold()
 
