@@ -2,9 +2,10 @@ extends Node
 
 var inv_data = {}
 
-# load the inventory items form the merchant
+# Load the inventory items form the merchant
 func _ready():
 	var item_data_file = File.new()
+	# Data file changes for diffrent merchants
 	item_data_file.open("res://assets/data/merchant_inv_data.json", File.READ)
 	var item_data_json = JSON.parse(item_data_file.get_as_text())
 	item_data_file.close()

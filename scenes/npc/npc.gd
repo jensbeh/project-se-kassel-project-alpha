@@ -23,14 +23,12 @@ onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
 
 
-# inventar
-# sprache
 func _ready():
-	# syncronize time
+	# Syncronize time
 	time = DayNightCycle.current_minute
-	# connect player interaction
+	# Connect player interaction
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
-	# get npc path
+	# Get npc path
 	path_exists = (self.get_parent().get_parent().find_node(self.name + "_Path") != null)
 	if path_exists:
 		path_1 = self.get_parent().get_parent().find_node(self.name + "_Path")
@@ -50,7 +48,7 @@ func _physics_process(delta):
 	time += delta
 	if time >= turn:
 		time = 0
-	# npc follow path
+	# NPC follow path
 	if path_exists:
 		turn = DayNightCycle.ONE_HOUR
 		target = patrol_points[patrol_index]
@@ -73,13 +71,13 @@ func _physics_process(delta):
 				if patrol_index == 0 and wayback:
 					wayback = false
 	
-	# npc walk / direction
+	# NPC walk / direction
 	if !stop and target != null:
 		velocity = (target - position).normalized() * walk_speed
 	elif stop and Utils.get_current_player() != null:
 		velocity = (Utils.get_current_player().position - self.position)
 	else:
-		# npcs turn random
+		# NPCs turn random
 		if time == 0.0:
 			var direction = (randi() % 3) + 1
 			if direction == 1:
@@ -88,16 +86,16 @@ func _physics_process(delta):
 				velocity = Vector2(1,0)
 			if direction == 3:
 				velocity = Vector2(-1,0)
-	# npc stay sometimes
+	# NPC stay sometimes
 	if path_exists:
 		if patrol_index == patrol_points.size() -1 and time >= turn*0.08 or position.distance_to(target) < 1 and time >= turn*0.92:
 			stay = true
 		else:
 			stay = false
-	# npc turn animation
+	# NPC turn animation
 	if stop or target == null or stay:
 		animation_tree.active = false
-	# npc animation
+	# NPC animation
 	if velocity != Vector2.ZERO and !stop and target != null and !stay:
 		animation_tree.set("parameters/Idle/blend_position", velocity)
 		animation_tree.set("parameters/Walk/blend_position", velocity)
@@ -106,26 +104,26 @@ func _physics_process(delta):
 		animation_tree.active = true
 		animation_tree.set("parameters/Idle/blend_position", velocity)
 		animation_state.travel("Idle")
-	# npc walk
+	# NPC walk
 	if !stop and target != null and !stay:
 		velocity = move_and_slide(velocity)
 
-# when player enter npc zone, npc has to stay
+# When player enter npc zone, npc has to stay
 func _on_interactionZone_NPC_body_entered(body):
 	if body == Utils.get_current_player():
 		player_in_interacting_zone = true
 		stop = true
 
-# when player leave npc zone, npc can walk again
+# When player leave npc zone, npc can walk again
 func _on_interactionZone_NPC_body_exited(body):
 	if body == Utils.get_current_player():
 		player_in_interacting_zone = false
 		stop = false
 
-# when player interact with npc with "e"
+# When player interact with npc with "e"
 func interaction_detected():
 	if player_in_interacting_zone:
-		# proof if some interactions in process
+		# Proof if some interactions in process
 		for npc in self.get_parent().get_children():
 			if npc != self and npc.get_interaction():
 				interacted = true
@@ -136,20 +134,20 @@ func interaction_detected():
 			Utils.get_current_player().set_movement(false)
 			Utils.get_current_player().set_movment_animation(false)
 
-# when npc enters stairs to slow down
+# When npc enters stairs to slow down
 func _on_interactionZone_NPC_area_entered(area):
 	if area.get_parent().name == "stairs":
-		walk_speed *= 0.6
+		walk_speed = Constants.STAIRS_SPEED
 
-# when npc exited stairs to speed up
+# When npc exited stairs to speed up
 func _on_interactionZone_NPC_area_exited(area):
 	if area.get_parent().name == "stairs":
-		walk_speed = 30
+		walk_speed = Constants.NORMAL_SPEED
 
-# to get interaction state
+# To get interaction state
 func get_interaction():
 	return interacted
 
-# to set npc is interacting state
+# To set npc is interacting state
 func set_interacted(interaction):
 	interacted = interaction

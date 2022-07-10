@@ -18,10 +18,10 @@
 [ext_resource path="res://scenes/npc/DialogueBox.tscn" type="PackedScene" id=16]
 
 [sub_resource type="RectangleShape2D" id=25]
-extents = Vector2( 7, 9 )
+extents = Vector2( 7, 10 )
 
 [sub_resource type="RectangleShape2D" id=26]
-extents = Vector2( 16, 14.875 )
+extents = Vector2( 16, 16 )
 
 [sub_resource type="Animation" id=27]
 resource_name = "IdleDown"
@@ -1690,13 +1690,13 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 8, 3 )
+position = Vector2( 8, 2 )
 shape = SubResource( 25 )
 
 [node name="interactionZone NPC" type="Area2D" parent="."]
 
 [node name="InteractionArea" type="CollisionShape2D" parent="interactionZone NPC"]
-position = Vector2( 8, 6.875 )
+position = Vector2( 8, 5.875 )
 shape = SubResource( 26 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

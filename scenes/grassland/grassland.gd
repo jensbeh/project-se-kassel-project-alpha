@@ -92,7 +92,7 @@ func body_exited_change_scene_area(body, changeSceneArea):
 func body_entered_stair_area(body, _stairArea):
 	if body.name == "Player":
 		# reduce player speed
-		Utils.get_current_player().set_speed(0.6)
+		Utils.get_current_player().set_speed(Constants.PLAYER_STAIR_SPEED_FACTOR)
 
 # Method which is called when a body has exited a stairArea
 func body_exited_stair_area(body, _stairArea):

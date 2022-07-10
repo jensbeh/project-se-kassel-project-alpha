@@ -10,21 +10,21 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 	# Sets the Langauge
 	var save_settings = File.new()
-	if save_settings.file_exists("user://settings.json"):
-		save_settings.open("user://settings.json", File.READ)
+	if save_settings.file_exists(Constants.SETTINGS):
+		save_settings.open(Constants.SETTINGS, File.READ)
 		var settings = {}
 		settings = parse_json(save_settings.get_line())
 		save_settings.close()
 		lang = settings.language
 	else:
 		var save_game = File.new()
-		save_game.open("user://settings.json", File.WRITE)
+		save_game.open(Constants.SETTINGS, File.WRITE)
 		save_game.store_line(to_json(save_setting))
 		save_game.close()
 		lang = "en"
 	Utils.set_language(lang)
 	TranslationServer.set_locale(lang)
-	# sets the text
+	# Sets the text
 	get_node("Start Game").set_text(tr("START_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))
 	get_node("Exit to Desktop").set_text(tr("EXIT_TO_DESKTOP"))

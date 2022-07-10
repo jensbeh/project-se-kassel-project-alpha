@@ -23,7 +23,7 @@ func start():
 	$Text.visible = true
 	$Timer.wait_time = textSpeed
 	$Trade.text = (tr("TRADE"))
-	# get language
+	# Get language
 	var lang = TranslationServer.get_locale()
 	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
 	dialog = getDialog()
@@ -38,7 +38,7 @@ func _process(_delta):
 		else:
 			$Text.visible_characters = len($Text.text)
 
-# open dialog text
+# Open dialog text
 func getDialog():
 	var f = File.new()
 	if f.file_exists(dialogPath):
@@ -51,11 +51,11 @@ func getDialog():
 
 
 func nextPhrase():
-	# at end of dialog
+	# At the end of the dialog
 	if phraseNum >= len(dialog):
 		trade = false
 		close_dialog()
-	# show text
+	# Show text
 	else:
 		finished = false
 		$Name.bbcode_text = dialog[phraseNum].name + ":"
@@ -100,6 +100,6 @@ func close_dialog():
 
 func _on_Trade_pressed():
 	close_dialog()
-	# show trade inventory
+	# Show trade inventory
 	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY).instance())
 	Utils.get_scene_manager().get_child(3).get_node("TradeInventory").set_name(get_parent().name)

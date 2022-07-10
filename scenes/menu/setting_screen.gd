@@ -18,6 +18,7 @@ func _ready():
 		get_node("OptionButton").select(0)
 	else:
 		get_node("OptionButton").select(1)
+	set_layer(2)
 
 
 var save_setting = {
@@ -52,7 +53,7 @@ func _on_OptionButton_item_selected(index):
 	_ready()
 	save_settings()
 
-# close settings and resetup the scene
+# Close settings and resetup the scene
 func _on_Back_pressed():
 	Utils.get_scene_manager().get_node("SettingScreen").queue_free()
 	if (Utils.get_scene_manager().get_child(3).get_node_or_null("GameMenu") != null):
