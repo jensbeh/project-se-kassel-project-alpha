@@ -45,7 +45,6 @@ const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
 const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
 const SAVE_SETTINGS_PATH = "user://settings.json"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
-
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 
 
