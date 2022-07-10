@@ -43,13 +43,10 @@ const CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH = "res://scenes/menu/character_scre
 const CREATE_CHARACTER_SCREEN_PATH = "res://scenes/menu/character_screens/CreateCharacter.tscn"
 const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
 const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
-const SETTINGS = "user://settings.json"
-const TRADE_INVENTORY = "res://scenes/inventory/TradeInventory.tscn"
-const TRADE_INVENTORY_SLOT = "res://scenes/inventory/TradeInventorySlot.tscn"
-const INVENTORY = "res://scenes/inventory/Inventory.tscn"
-const INVENTORY_SLOT = "res://scenes/inventory/InventorySlot.tscn"
+const SAVE_SETTINGS_PATH = "user://settings.json"
+const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 
-const ITEM_DATA = "res://assets/data/ItemData.json"
+const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 
 
 # Called when the node enters the scene tree for the first time.

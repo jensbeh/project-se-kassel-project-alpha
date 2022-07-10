@@ -101,5 +101,5 @@ func close_dialog():
 func _on_Trade_pressed():
 	close_dialog()
 	# Show trade inventory
-	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY).instance())
+	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
 	Utils.get_scene_manager().get_child(3).get_node("TradeInventory").set_name(get_parent().name)

@@ -137,12 +137,12 @@ func interaction_detected():
 # When npc enters stairs to slow down
 func _on_interactionZone_NPC_area_entered(area):
 	if area.get_parent().name == "stairs":
-		walk_speed = Constants.STAIRS_SPEED
+		walk_speed = Constants.NPC_STAIRS_SPEED
 
 # When npc exited stairs to speed up
 func _on_interactionZone_NPC_area_exited(area):
 	if area.get_parent().name == "stairs":
-		walk_speed = Constants.NORMAL_SPEED
+		walk_speed = Constants.NPC_NORMAL_SPEED
 
 # To get interaction state
 func get_interaction():
