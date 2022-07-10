@@ -18,6 +18,7 @@ func _ready():
 		get_node("OptionButton").select(0)
 	else:
 		get_node("OptionButton").select(1)
+	set_layer(2)
 
 
 var save_setting = {
@@ -45,18 +46,18 @@ func _on_OptionButton_item_selected(index):
 	if index == 0:
 		TranslationServer.set_locale('en')
 		Utils.set_language("en")
-		_ready()
 	else:
 		TranslationServer.set_locale('de')
 		Utils.set_language("de")
-		_ready()
+	TranslationServer.set_locale(Utils.get_language())
+	_ready()
 	save_settings()
 
-# close settings and resetup the scene
+# Close settings and resetup the scene
 func _on_Back_pressed():
 	Utils.get_scene_manager().get_node("SettingScreen").queue_free()
-	if (Utils.get_scene_manager().get_child(3)) != null and Utils.get_scene_manager().get_child_count() == 5:
-		Utils.get_scene_manager().get_node("GameMenu")._ready()
-	if (Utils.get_scene_manager().get_child(3)) != null and Utils.get_scene_manager().get_child_count() == 4:
+	if (Utils.get_scene_manager().get_child(3).get_node_or_null("GameMenu") != null):
+		Utils.get_scene_manager().get_child(3).get_node("GameMenu")._ready()
+	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
 		Utils.get_scene_manager().get_child(0).get_node("MainMenuScreen")._ready()
 	

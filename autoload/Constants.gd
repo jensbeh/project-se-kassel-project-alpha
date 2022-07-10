@@ -4,6 +4,7 @@ extends Node
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
 const PLAYER_MAX_LIGHT_ENERGY = 0.8
+const PLAYER_STAIR_SPEED_FACTOR = 0.6
 
 # Transition
 enum TransitionType {
@@ -26,6 +27,10 @@ const NIGHT_COLOR = Color("212121")
 const SUNRISE_COLOR = Color("ff8f53")
 const DUNGEON_COLOR = Color("000000")
 
+# NPC Walk Speed
+const NPC_NORMAL_SPEED = 30
+const NPC_STAIRS_SPEED = NPC_NORMAL_SPEED*0.6
+
 # Pathes
 const MENU_FOLDER = "res://scenes/menu/"
 const CAMP_FOLDER = "res://scenes/camp/"
@@ -38,6 +43,10 @@ const CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH = "res://scenes/menu/character_scre
 const CREATE_CHARACTER_SCREEN_PATH = "res://scenes/menu/character_screens/CreateCharacter.tscn"
 const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
 const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
+const SAVE_SETTINGS_PATH = "user://settings.json"
+const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
+const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

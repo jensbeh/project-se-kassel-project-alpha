@@ -1,0 +1,38 @@
+{
+  "10001": {
+    "Name": "Good Health Flask",
+    "Category": "Potion",
+    "Type": "",
+    "EquipmentSlot": "",
+    "Attack": null,
+    "Defense": null,
+    "Block": null,
+    "PotionHealth": 100,
+    "PotionMana": null,
+    "FoodSatiation": null
+  },
+  "10002": {
+    "Name": "Health Flask",
+    "Category": "Potion",
+    "Type": "",
+    "EquipmentSlot": "",
+    "Attack": null,
+    "Defense": null,
+    "Block": null,
+    "PotionHealth": 50,
+    "PotionMana": null,
+    "FoodSatiation": null
+  },
+  "10003": {
+    "Name": "Mana Flask",
+    "Category": "Potion",
+    "Type": "",
+    "EquipmentSlot": "",
+    "Attack": null,
+    "Defense": null,
+    "Block": null,
+    "PotionHealth": null,
+    "PotionMana": 50,
+    "FoodSatiation": null
+  },
+}

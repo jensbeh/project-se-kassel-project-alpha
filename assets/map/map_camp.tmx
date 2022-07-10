@@ -4863,6 +4863,30 @@
    <object id="3128" x="1665" y="-270" width="14" height="13"/>
   </objectgroup>
  </group>
+ <group id="1102" name="npclayer"/>
+ <objectgroup id="1103" name="npcPathes">
+  <object id="3011" name="clarke_Path" x="824.667" y="1188">
+   <properties>
+    <property name="is_circle" type="bool" value="false"/>
+   </properties>
+   <polyline points="-0.25,-1 87.9165,-4.33335 172.333,-12.1667 154.083,-51.5834 156.666,-90 176.583,-128.167 184.583,-165.333 167.291,-208.5 164,-244.667 176.084,-285.917 196.667,-324.667 196.417,-367.917 182.667,-407.917 165.917,-459.625 165.667,-511.833 231.25,-531.667 327.583,-531"/>
+  </object>
+  <object id="3012" name="steven_Path" x="1863.5" y="854.5">
+   <properties>
+    <property name="is_circle" type="bool" value="false"/>
+   </properties>
+   <polyline points="-109.75,3.5 -161.75,6.75 -192,-21 -310,-76.75 -341.25,-105.25 -370.75,-129.25 -470.25,-182.75 -535.75,-182.25 -584.5,-187 -583.909,-235.498 -557.068,-268.193 -546,-338.75 -567,-338.75 -583.75,-294.375 -615.25,-294.25 -679.75,-278.5 -775.5,-278.5 -871.75,-272 -935.75,-239.25"/>
+  </object>
+  <object id="3015" name="murphy_Path" x="1073.5" y="115">
+   <properties>
+    <property name="is_circle" type="bool" value="false"/>
+   </properties>
+   <polyline points="324.685,-6.33367 129.688,-81.2899 -158.943,-37.4888 5.31489,-17.3356 4.89727,79.7879 4.35033,120.468 14.6848,157.122 62.8666,204.697 126.503,221.485 164.079,258.394 214.132,261.205 253.079,279.545 273.253,342.5 275.503,395 255.344,402.227"/>
+  </object>
+  <object id="3016" name="octavia_Path" x="1367.82" y="772">
+   <polyline points="-4,10.25 -3.875,29.9545 47.2727,68.1818 50.0985,90.3333 50.2538,108.523 49.6591,156.136 8.81818,156.205 8.68182,133.125"/>
+  </object>
+ </objectgroup>
  <group id="974" name="playerlayer"/>
  <group id="972" name="higher">
   <layer id="1093" name="decorations layer1" width="128" height="96">

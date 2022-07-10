@@ -12,8 +12,8 @@ func _ready():
 	# Update shader color depending on scene type
 	Utils.get_scene_manager().connect("scene_type_updated", self, "update_shader_color")
 	
-	DayNightCycle.connect("change_to_daytime", self, "change_to_daytime")
-	DayNightCycle.connect("change_to_sunset", self, "change_to_sunset")
+	var _error1 = DayNightCycle.connect("change_to_daytime", self, "change_to_daytime")
+	var _error2 = DayNightCycle.connect("change_to_sunset", self, "change_to_sunset")
 	
 	# Create image to store light informations in pixels
 	# First pixel row for light stuff like positions, strength, radius

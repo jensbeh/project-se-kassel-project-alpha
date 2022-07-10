@@ -36,6 +36,9 @@ config/icon="res://icon.png"
 Utils="*res://autoload/Utils.gd"
 Constants="*res://autoload/Constants.gd"
 DayNightCycle="*res://autoload/day_night_cycle.gd"
+GameData="*res://autoload/game_data.gd"
+MerchantData="*res://autoload/merchant_data.gd"
+PlayerData="*res://autoload/player_data.gd"
 
 [display]
 
@@ -102,6 +105,7 @@ esc={
 [locale]
 
 translations=PoolStringArray( "res://assets/language/Languages.de.translation", "res://assets/language/Languages.en.translation" )
+locale_filter=[ 1, [ "de", "en" ] ]
 
 [physics]
 

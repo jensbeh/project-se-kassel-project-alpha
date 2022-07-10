@@ -307,18 +307,16 @@ __meta__ = {
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 
 [node name="BlackScreen" type="ColorRect" parent="LoadingScreen"]
-visible = false
 margin_right = 1920.0
 margin_bottom = 1080.0
 mouse_filter = 2
 color = Color( 0, 0, 0, 0 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="LoadingScreen"]
-visible = false
+self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 10 )
-frame = 3
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
@@ -328,3 +326,5 @@ anims/GameFadeToNormal = SubResource( 3 )
 anims/MenuFadeToBlack = SubResource( 19 )
 anims/MenuFadeToNormal = SubResource( 20 )
 anims/RESET = SubResource( 2 )
+
+[node name="UI" type="CanvasLayer" parent="."]
