@@ -9,14 +9,14 @@ var finished = false
 
 func _ready():
 	var _error = get_parent().connect("interacted", self, "start")
-	$DialogueBox.visible = false
+	$TextureRect.visible = false
 	$HSeparator.visible = false
 	$Button.visible = false
 	$Name.visible = false
 	$Text.visible = false
 
 func start():
-	$DialogueBox.visible = true
+	$TextureRect.visible = true
 	$HSeparator.visible = true
 	$Button.visible = true
 	$Name.visible = true
@@ -82,7 +82,7 @@ func _on_Button_pressed():
 		$Text.visible_characters = len($Text.text)
 
 func close_dialog():
-	$DialogueBox.visible = false
+	$TextureRect.visible = false
 	$HSeparator.visible = false
 	$Button.visible = false
 	$Name.visible = false

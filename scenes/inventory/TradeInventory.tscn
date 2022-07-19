@@ -15,8 +15,9 @@ font_data = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 460.0
 margin_top = 200.0
-margin_right = 1000.0
+margin_right = 1460.0
 margin_bottom = 780.0
 color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
 
@@ -130,9 +131,9 @@ custom_constants/hseparation = 12
 columns = 6
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
-margin_left = 510.0
+margin_left = 970.0
 margin_top = 220.0
-margin_right = 990.0
+margin_right = 1450.0
 margin_bottom = 760.0
 rect_min_size = Vector2( 480, 540 )
 size_flags_horizontal = 3
