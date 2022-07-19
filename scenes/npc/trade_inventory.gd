@@ -18,14 +18,16 @@ func _ready():
 
 
 # Close trade inventory
-func _on_Button_pressed():
-	Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
-	Utils.get_current_player().set_player_can_interact(true)
-	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
-	# Reset npc interaction state
-	for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
-		npc.set_interacted(false)
+func _on_Button_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
+			Utils.get_current_player().set_player_can_interact(true)
+			Utils.get_current_player().set_movement(true)
+			Utils.get_current_player().set_movment_animation(true)
+			# Reset npc interaction state
+			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+				npc.set_interacted(false)
 
 
 # Sets the correct name of the npc
@@ -39,3 +41,4 @@ func set_name(npc_name):
 	else:
 		npc_name = "Bella"
 	$ColorRect/MarginContainer/HBoxContainer/Background.find_node("Titlename").text = npc_name + "´s " + tr("INVENTORY")
+

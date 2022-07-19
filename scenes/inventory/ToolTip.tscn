@@ -1,0 +1,161 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/panel_background.png" type="Texture" id=2]
+[ext_resource path="res://scenes/inventory/tooltip.gd" type="Script" id=3]
+[ext_resource path="res://assets/border_grey.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 21
+font_data = ExtResource( 1 )
+
+[node name="ToolTip" type="Popup"]
+visible = true
+margin_right = -1620.0
+margin_bottom = -880.0
+rect_min_size = Vector2( 300, 200 )
+mouse_filter = 2
+script = ExtResource( 3 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+self_modulate = Color( 0.470588, 0.478431, 0.454902, 0.627451 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+patch_margin_left = 15
+patch_margin_top = 15
+patch_margin_right = 15
+patch_margin_bottom = 15
+
+[node name="Margin" type="MarginContainer" parent="NinePatchRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="NinePatchRect/Margin"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 280.0
+margin_bottom = 194.0
+mouse_filter = 2
+
+[node name="ItemName" type="Label" parent="NinePatchRect/Margin/VBox"]
+margin_right = 260.0
+margin_bottom = 29.0
+custom_colors/font_color = Color( 0.701961, 0.886275, 0.615686, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "ItemName"
+align = 1
+
+[node name="Stats1" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
+margin_top = 33.0
+margin_right = 260.0
+margin_bottom = 58.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats1"]
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats1"]
+margin_left = 15.0
+margin_right = 15.0
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Stats2" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
+margin_top = 62.0
+margin_right = 260.0
+margin_bottom = 87.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats2"]
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats2"]
+margin_left = 15.0
+margin_right = 15.0
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Stats3" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
+margin_top = 91.0
+margin_right = 260.0
+margin_bottom = 116.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats3"]
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats3"]
+margin_left = 15.0
+margin_right = 15.0
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Stats4" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
+margin_top = 120.0
+margin_right = 260.0
+margin_bottom = 145.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats4"]
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats4"]
+margin_left = 15.0
+margin_right = 15.0
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Stats5" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
+margin_top = 149.0
+margin_right = 260.0
+margin_bottom = 174.0
+mouse_filter = 2
+custom_constants/separation = 15
+
+[node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats5"]
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats5"]
+margin_left = 15.0
+margin_right = 15.0
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="foreground" type="NinePatchRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0.627451 )
+margin_right = 300.0
+margin_bottom = 200.0
+texture = ExtResource( 4 )
+patch_margin_left = 15
+patch_margin_top = 15
+patch_margin_right = 15
+patch_margin_bottom = 15

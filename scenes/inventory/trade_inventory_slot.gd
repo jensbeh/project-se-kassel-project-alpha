@@ -1,5 +1,7 @@
 extends TextureRect
 
+onready var tool_tip = preload("res://scenes/inventory/ToolTip.tscn")
+
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
@@ -60,3 +62,19 @@ func drop_data(_pos, data):
 	# Update the texture and data of the target
 	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 	texture = data["origin_texture"]
+
+func _on_Icon_mouse_entered():
+	var tool_tip_instance = tool_tip.instance()
+	tool_tip_instance.origin = "TradeInventory"
+	tool_tip_instance.slot = get_parent().get_name()
+	
+	tool_tip_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(64,64)
+	
+	add_child(tool_tip_instance)
+	yield(get_tree().create_timer(0.35), "timeout")
+	if has_node("ToolTip") and get_node("ToolTip").valid:
+		get_node("ToolTip").show()
+
+
+func _on_Icon_mouse_exited():
+	get_node("ToolTip").free()
