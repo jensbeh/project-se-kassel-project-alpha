@@ -46,6 +46,8 @@ const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
 const SAVE_SETTINGS_PATH = "user://settings.json"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
+const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
+const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
 
 
 # Called when the node enters the scene tree for the first time.

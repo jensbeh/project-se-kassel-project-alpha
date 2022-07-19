@@ -11,6 +11,7 @@ var init_transition_data = null
 # Nodes
 onready var changeScenesObject = get_node("map_grassland/changeScenes")
 onready var stairsObject = get_node("map_grassland/ground/stairs")
+onready var navigation = $map_grassland/navigation
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
