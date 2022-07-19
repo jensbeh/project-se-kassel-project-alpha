@@ -63,10 +63,11 @@ margin_right = 1712.0
 margin_bottom = 776.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_colors/default_color = Color( 0, 0, 0, 1 )
 custom_fonts/normal_font = SubResource( 3 )
 
 [node name="HSeparator" type="HSeparator" parent="."]
-modulate = Color( 0.694118, 0.690196, 0.811765, 1 )
+modulate = Color( 0.215686, 0.215686, 0.270588, 1 )
 margin_left = 208.0
 margin_top = 704.0
 margin_right = 1712.0
@@ -79,12 +80,13 @@ margin_right = 1712.0
 margin_bottom = 1008.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_colors/default_color = Color( 0, 0, 0, 1 )
 custom_fonts/normal_font = SubResource( 4 )
 
 [node name="Skip" type="Polygon2D" parent="."]
 position = Vector2( 1584, 960 )
 scale = Vector2( 0.0292968, 0.104769 )
-color = Color( 0.694118, 0.690196, 0.811765, 1 )
+color = Color( 0.509804, 0.505882, 0.592157, 1 )
 polygon = PoolVector2Array( 896, -55.8843, 1920, -55.8843, 2944, 126.363, 1920, 308.609, 896, 308.609, 896, 126.363 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Skip"]
@@ -112,6 +114,9 @@ margin_top = 949.0
 margin_right = 1616.0
 margin_bottom = 1021.0
 rect_scale = Vector2( 0.8, 0.8 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
 custom_styles/pressed = SubResource( 7 )

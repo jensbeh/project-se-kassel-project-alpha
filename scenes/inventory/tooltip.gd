@@ -4,7 +4,9 @@ var origin = ""
 var slot = ""
 var valid = false
 
+
 func _ready():
+	# check origin and if valid
 	var item_id
 	if origin == "Inventory":
 		if PlayerData.inv_data[slot]["Item"] != null:
@@ -15,6 +17,7 @@ func _ready():
 			item_id = str(MerchantData.inv_data[slot]["Item"])
 			valid = true
 	
+	# get data and create tooltip
 	if valid:
 		get_node("NinePatchRect/Margin/VBox/ItemName").set_text(GameData.item_data[item_id]["Name"])
 		var item_stat = 1

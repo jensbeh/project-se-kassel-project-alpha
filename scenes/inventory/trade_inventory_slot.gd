@@ -63,6 +63,8 @@ func drop_data(_pos, data):
 	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 	texture = data["origin_texture"]
 
+
+# ToolTips
 func _on_Icon_mouse_entered():
 	var tool_tip_instance = tool_tip.instance()
 	tool_tip_instance.origin = "TradeInventory"
