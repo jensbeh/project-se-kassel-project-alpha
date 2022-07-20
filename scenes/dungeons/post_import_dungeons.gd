@@ -2,7 +2,7 @@ extends Node
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print("reimported " + scene.name)
+	print("reimporte " + scene.name + "...")
 	
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
@@ -19,7 +19,8 @@ func post_import(scene):
 				
 				lightsObject.add_child(custom_light)
 				custom_light.set_owner(scene)
-				
+	
+	print("reimported " + scene.name + "!")
 	return scene
 
 # Method to iterate over all nodes and sets specific properties

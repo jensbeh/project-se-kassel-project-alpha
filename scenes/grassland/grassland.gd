@@ -11,13 +11,32 @@ var init_transition_data = null
 # Nodes
 onready var changeScenesObject = get_node("map_grassland/changeScenes")
 onready var stairsObject = get_node("map_grassland/ground/stairs")
-onready var navigation = $map_grassland/navigation
+onready var navigation = $map_grassland/Navigation2D
+onready var navigationTileMap = $map_grassland/Navigation2D/NavigationTileMap
+onready var mobsLayer = $map_grassland/entitylayer/mobslayer
+onready var batSpawnArea2D = $map_grassland/mobSpawns/batSpawning/
+onready var batSpawnAreaPolygon = $map_grassland/mobSpawns/batSpawning/CollisionPolygon2D
+
+# Mobs
+var bat = preload("res://scenes/mobs/Bat.tscn")
+
+# Mob Spawning Areas
+var batSpawnArea
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup scene in background
 	thread = Thread.new()
 	thread.start(self, "_setup_scene_in_background")
+	
+	# Generate spawning areas
+	batSpawnArea = Utils.generate_mob_spawn_area_from_polygon(batSpawnArea2D.position, batSpawnAreaPolygon.polygon)
+	
+	# Spawn mobs
+	for i in range(1):
+		var batInstance = bat.instance()
+		batInstance.init(navigation, batSpawnArea)
+		mobsLayer.add_child(batInstance)
 
 # Method to setup this scene with a thread in background
 func _setup_scene_in_background():

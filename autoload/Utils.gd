@@ -76,3 +76,75 @@ func update_current_scene_type(transition_data):
 	elif Constants.DUNGEONS_FOLDER in transition_data.get_scene_path():
 		print("Dungeons state")
 		return Constants.SceneType.DUNGEON
+
+
+func generate_mob_spawn_area_from_polygon(area_world_position, polygon) -> Dictionary:
+	var triangle_points = Geometry.triangulate_polygon(polygon)
+	var triangles_count = triangle_points.size() / 3
+	
+	var triangles = {} # 0 : complete_polygon_area; i >= 1 : [A, B, C, area, probability]
+	var complete_polygon_area = 0.0
+	
+	# Create triangle vectors, areas
+	for i in range(triangles_count):
+		# Get triangle corners from triangle_points with position in world
+		var A : Vector2 = area_world_position + polygon[triangle_points[3 * i + 0]]
+		var B : Vector2 = area_world_position + polygon[triangle_points[3 * i + 1]]
+		var C : Vector2 = area_world_position + polygon[triangle_points[3 * i + 2]]
+		var area = calculate_triangle_area(A, B, C)
+		complete_polygon_area += area
+		triangles[i + 1] = [A, B, C, area]
+	
+	# Calculate the area probability for each triangle
+	for triangle in triangles.values():
+		triangle.append(triangle[3] / complete_polygon_area)
+		
+	triangles[0] = complete_polygon_area
+	return triangles
+	
+# Method to calculate the area of a triangle with vectors
+func calculate_triangle_area(A, B, C) -> float:
+	var AB : Vector2 = B - A
+	var AC : Vector2 = C - A
+	var AxB : float = AC.x * AB.y - AB.x * AC.y
+	return 0.5 * abs(AxB)
+	
+
+func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, collision_radius) -> Vector2:
+	# Get weighted random triangle
+	var complete_polygon_area = area_info[0] # complete_polygon_area
+	var remaining_distance = randf() * complete_polygon_area
+	var selected_triangle = null
+	for i in range(1, area_info.size()): # without complete_polygon_area
+		remaining_distance -= area_info[i][3]
+		if remaining_distance < 0:
+			selected_triangle = i
+			break
+	
+	# Get random position in triangle
+	var A = area_info[selected_triangle][0]
+	var B = area_info[selected_triangle][1]
+	var C = area_info[selected_triangle][2]
+	var r1 = randf()
+	var r2 = randf()
+	var randX = (1 - sqrt(r1)) * A.x + (sqrt(r1) * (1 - r2)) * B.x + (sqrt(r1) * r2) * C.x
+	var randY = (1 - sqrt(r1)) * A.y + (sqrt(r1) * (1 - r2)) * B.y + (sqrt(r1) * r2) * C.y
+	
+	var position = Vector2(randX, randY)
+	
+	# Check if position is valid
+	var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
+	var cellBottom = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY + collision_radius) / 16)))
+	var cellBottomRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	var cellRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor(randY / 16)))
+	var cellTopRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellTop = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
+	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	if cell != -1 and cellBottom != -1 and cellBottomRight != -1 and cellRight != -1 and cellTopRight != -1 and cellTop != -1 and cellTopLeft != -1 and cellLeft != -1 and cellBottomLeft != -1:
+		# Position is perfect
+		return position
+	else:
+		# Position is blocked by collision, ... - get new one
+		return generate_position_in_mob_area(area_info, navigation_tile_map, collision_radius)

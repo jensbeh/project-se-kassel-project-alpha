@@ -6,17 +6,21 @@ var navTilemap = TileMap.new()
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print("reimported " + scene.name)
+	print("reimporte " + scene.name + "...")
 	
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
 	
 	# Add navigation tilemap
-	navTilemap.tile_set = load("res://assets/map/map_grassland.tmx::5194")
+	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195
+	# Also in every TileMap all TileSets are stored
+	var dirtLvl0TileMap : TileMap = scene.find_node("dirt lvl0")
+	navTilemap.tile_set = dirtLvl0TileMap.tile_set
 	navTilemap.cell_quadrant_size = 1
 	navTilemap.cell_y_sort = false
 	navTilemap.cell_clip_uv = true
 	navTilemap.cell_size = Vector2(16,16)
+	navTilemap.name = "NavigationTileMap"
 	
 	# merge all tilemaps and collisionshapes from "ground" together
 	iterate_over_collisionshapes_and_tilemaps(scene.find_node("ground"))
@@ -24,9 +28,8 @@ func post_import(scene):
 	# Setup Navigation2D
 	var navigation : Node2D = scene.find_node("navigation")
 	var navigation2d = Navigation2D.new()
-	navigation2d.name = "navigation"
 	navigation.replace_by(navigation2d, true)
-	scene.find_node("navigation").add_child(navTilemap)
+	scene.find_node("Navigation2D").add_child(navTilemap)
 	navTilemap.set_owner(scene)
 	
 	
@@ -80,7 +83,8 @@ func post_import(scene):
 				
 				lightsObject.add_child(custom_light)
 				custom_light.set_owner(scene)
-				
+	
+	print("reimported " + scene.name + "!")
 	return scene
 
 # Method to iterate over all nodes and sets specific properties
@@ -100,7 +104,6 @@ func iterate_over_collisionshapes_and_tilemaps(node):
 			iterate_over_collisionshapes_and_tilemaps(child)
 		else:
 			if child is TileMap:
-				print(child.name)
 				for cellPos in child.get_used_cells():
 					navTilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
 			
