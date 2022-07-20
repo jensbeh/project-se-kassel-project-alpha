@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/mobs/BatJ.png" type="Texture" id=1]
 [ext_resource path="res://scenes/mobs/bat.gd" type="Script" id=2]
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -31,6 +32,9 @@ height = 0.0
 [sub_resource type="CircleShape2D" id=8]
 radius = 96.0
 
+[sub_resource type="CircleShape2D" id=9]
+radius = 40.0
+
 [node name="Bat" type="KinematicBody2D" groups=["Enemy"]]
 script = ExtResource( 2 )
 
@@ -38,7 +42,7 @@ script = ExtResource( 2 )
 position = Vector2( 0, -5 )
 frames = SubResource( 4 )
 animation = "animation"
-frame = 1
+frame = 2
 playing = true
 
 [node name="Collision" type="CollisionShape2D" parent="."]
@@ -52,8 +56,16 @@ position = Vector2( 0, -3 )
 [node name="DetectionShape" parent="PlayerDetectionZone" index="0"]
 shape = SubResource( 8 )
 
+[node name="PlayerAttackZone" parent="." instance=ExtResource( 4 )]
+position = Vector2( 0, -3 )
+
+[node name="CollisionPolygon2D" parent="PlayerAttackZone" index="0"]
+shape = SubResource( 9 )
+
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
 
 [editable path="PlayerDetectionZone"]
+[editable path="PlayerAttackZone"]

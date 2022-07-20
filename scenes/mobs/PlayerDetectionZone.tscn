@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://scenes/mobs/PlayerDetectionZone.gd" type="Script" id=1]
+[ext_resource path="res://scenes/mobs/player_detection_zone.gd" type="Script" id=1]
 
 [node name="PlayerDetectionZone" type="Area2D"]
 script = ExtResource( 1 )

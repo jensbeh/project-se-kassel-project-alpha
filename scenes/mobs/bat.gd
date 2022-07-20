@@ -37,6 +37,7 @@ var max_ideling_time
 onready var mobSprite = $AnimatedSprite
 onready var collision = $Collision
 onready var playerDetectionZone = $PlayerDetectionZone
+onready var playerAttackZone = $PlayerAttackZone
 onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
@@ -50,10 +51,12 @@ func _ready():
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
 	position = spawn_position
 
-	# Set init max_ideling_time for IDLING
+	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
-	max_ideling_time = rng.randi_range(3, 10)
-	print("max_ideling_time: " + str(max_ideling_time))
+	max_ideling_time = rng.randi_range(0, 8)
+	
+	# Setup sprite
+	mobSprite.flip_h = rng.randi_range(0,1)
 
 func init(init_navigation, init_batSpawnArea):
 	navigation = init_navigation
@@ -109,7 +112,12 @@ func move_to_player(delta):
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
-			
+		
+		# check if mob can attack
+		if playerAttackZone.mob_can_attack:
+#			print("ATTACK")
+			pass
+		
 		# update sprite direction
 		mobSprite.flip_h = velocity.x > 0
 		
@@ -174,7 +182,6 @@ func update_behaviour(new_behaviour):
 			# Set new max_ideling_time for IDLING
 			rng.randomize()
 			max_ideling_time = rng.randi_range(3, 10)
-			print("max_ideling_time: " + str(max_ideling_time))
 			
 			print("IDLING")
 			behaviourState = IDLING

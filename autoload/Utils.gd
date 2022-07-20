@@ -3,6 +3,7 @@ extends Node
 # Variables
 var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
+var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready():
 	pass
@@ -148,3 +149,13 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 	else:
 		# Position is blocked by collision, ... - get new one
 		return generate_position_in_mob_area(area_info, navigation_tile_map, collision_radius)
+
+
+func n_random_numbers_with_max_sum(n, sum) -> Array:
+	var result : Array = []
+	var part = sum / n
+	for _i in range(n):
+		rng.randomize()
+		var num = rng.randi_range(part / 1.5, part)
+		result.append(num)
+	return result

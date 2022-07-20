@@ -9,19 +9,12 @@ var current_area : Area2D = null
 var init_transition_data = null
 
 # Nodes
-onready var changeScenesObject = get_node("map_grassland/changeScenes")
-onready var stairsObject = get_node("map_grassland/ground/stairs")
+onready var changeScenesObject = $map_grassland/changeScenes
+onready var stairsObject = $map_grassland/ground/stairs
 onready var navigation = $map_grassland/Navigation2D
 onready var navigationTileMap = $map_grassland/Navigation2D/NavigationTileMap
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
-onready var batSpawnArea2D = $map_grassland/mobSpawns/batSpawning/
-onready var batSpawnAreaPolygon = $map_grassland/mobSpawns/batSpawning/CollisionPolygon2D
-
-# Mobs
-var bat = preload("res://scenes/mobs/Bat.tscn")
-
-# Mob Spawning Areas
-var batSpawnArea
+onready var mobSpawns = $map_grassland/mobSpawns
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,14 +22,8 @@ func _ready():
 	thread = Thread.new()
 	thread.start(self, "_setup_scene_in_background")
 	
-	# Generate spawning areas
-	batSpawnArea = Utils.generate_mob_spawn_area_from_polygon(batSpawnArea2D.position, batSpawnAreaPolygon.polygon)
-	
-	# Spawn mobs
-	for i in range(1):
-		var batInstance = bat.instance()
-		batInstance.init(navigation, batSpawnArea)
-		mobsLayer.add_child(batInstance)
+	spawn_mobs()
+
 
 # Method to setup this scene with a thread in background
 func _setup_scene_in_background():
@@ -80,6 +67,36 @@ func setup_player():
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
+
+
+func spawn_mobs():
+	for area in mobSpawns.get_children():
+		var biome : String = area.get_meta("biome")
+		var max_mobs = area.get_meta("max_mobs")
+		
+		# Get biome data from json
+		var file = File.new()
+		file.open("res://assets/biomes/"+ biome + ".json", File.READ)
+		var biome_json = parse_json(file.get_as_text())
+		var biome_mobs : Array = biome_json["data"]["mobs"]
+		var biome_mobs_count = biome_mobs.size()
+		
+		# Generate spawning areas
+		var spawnArea = Utils.generate_mob_spawn_area_from_polygon(area.position, area.get_child(0).polygon)
+		
+		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, max_mobs)
+		# Iterate over diffent mobs classes
+		for i_mob in range(biome_mobs.size()):
+			# Load and spawn mobs
+			var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
+			if mobScene != null:
+				for _num in range(mob_count_breakdown[i_mob]):
+					var mob_instance = mobScene.instance()
+					mob_instance.init(navigation, spawnArea)
+					mobsLayer.add_child(mob_instance)
+			else:
+				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+
 
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
