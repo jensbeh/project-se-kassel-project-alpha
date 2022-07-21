@@ -7,6 +7,7 @@ var damage = 15
 # Variables
 enum {
 	IDLING,
+	SEARCHING,
 	WANDERING,
 	HUNTING,
 	ATTACKING
@@ -19,6 +20,9 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
 var update_path_time = 0.0
 var max_update_path_time = 0.4
+var max_searching_radius
+var min_searching_radius
+var start_searching_position
 
 # Constants
 const HUNTING_SPEED = 100
@@ -34,6 +38,8 @@ var path : PoolVector2Array = []
 var navigation_tile_map
 var ideling_time = 0.0
 var max_ideling_time
+var searching_time = 0.0
+var max_searching_time
 
 # Nodes
 onready var mobSprite = $AnimatedSprite
@@ -55,6 +61,10 @@ func _ready():
 	
 	# Setup sprite
 	mobSprite.flip_h = rng.randi_range(0,1)
+	
+	# Setup searching variables
+	max_searching_radius = playerDetectionZone.get_child(0).shape.radius
+	min_searching_radius = max_searching_radius / 3
 
 # Method to init variables, typically called after instancing
 func init(init_batSpawnArea, new_navigation_tile_map):
@@ -69,7 +79,7 @@ func _physics_process(delta):
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
 			search_player()
 			
-			# After 5 Sec change to WANDERING
+			# After some time change to WANDERING
 			ideling_time += delta
 			if ideling_time > max_ideling_time:
 				ideling_time = 0.0
@@ -102,8 +112,27 @@ func _physics_process(delta):
 					move_to_player(delta)
 			else:
 				# Lose player
-				update_behaviour(IDLING)
+				update_behaviour(SEARCHING)
 
+		SEARCHING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow searching path
+				if path.size() > 0:
+					move_to_position(delta)
+					
+					# After some time change to WANDERING (also to return to mob area)
+					searching_time += delta
+					if searching_time > max_searching_time:
+						searching_time = 0.0
+						update_behaviour(WANDERING)
+				else:
+					# Case if pathend is reached, need new path for searching
+					mob_need_path = true
+			
+			
+			# Mob is doing nothing, just standing and searching for player
+			search_player()
 
 		ATTACKING:
 			# check if mob can attack
@@ -183,7 +212,7 @@ func update_behaviour(new_behaviour):
 #			print("IDLING")
 			behaviourState = IDLING
 			mob_need_path = false
-			
+
 		WANDERING:
 			speed = WANDERING_SPEED
 			
@@ -211,6 +240,24 @@ func update_behaviour(new_behaviour):
 			behaviourState = HUNTING
 			mob_need_path = true
 
+		SEARCHING:
+			# Set variables
+			speed = WANDERING_SPEED
+			
+			# start_searching_position -> last eye contact to player
+			if path.size() > 0:
+				start_searching_position = path[-1] 
+			else:
+				start_searching_position = global_position
+				
+			# Set new max_searching_time for SEARCHING
+			rng.randomize()
+			max_searching_time = rng.randi_range(6, 12)
+			
+#			print("SEARCHING")
+			behaviourState = SEARCHING
+			mob_need_path = false
+
 		ATTACKING:
 			if behaviourState != ATTACKING:
 				# Reset path in case player is seen but e.g. state is wandering
@@ -235,6 +282,10 @@ func get_target_position():
 	# Return next wandering position
 	elif behaviourState == WANDERING:
 		return Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
+			
+	# Return next searching position
+	elif behaviourState == SEARCHING:
+		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
 		
 
 # Method is called from pathfinding_service to set new path to mob

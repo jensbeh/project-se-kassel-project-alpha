@@ -159,3 +159,31 @@ func n_random_numbers_with_max_sum(n, sum) -> Array:
 		var num = rng.randi_range(part / 1.5, part)
 		result.append(num)
 	return result
+
+
+func generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
+	# Get random position in circle
+	rng.randomize()
+	var theta = rng.randi_range(0, 2 * PI)
+	var radius = rng.randi_range(min_radius, max_radius)
+	var randX = mob_global_position.x + (radius * cos(theta))
+	var randY = mob_global_position.y + (radius * sin(theta))
+	
+	var position = Vector2(randX, randY)
+	
+	# Check if position is valid
+	var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
+	var cellBottom = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY + collision_radius) / 16)))
+	var cellBottomRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	var cellRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor(randY / 16)))
+	var cellTopRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellTop = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
+	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	if cell != -1 and cellBottom != -1 and cellBottomRight != -1 and cellRight != -1 and cellTopRight != -1 and cellTop != -1 and cellTopLeft != -1 and cellLeft != -1 and cellBottomLeft != -1:
+		# Position is perfect
+		return position
+	else:
+		# Position is blocked by collision, ... - get new one
+		return generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius)
