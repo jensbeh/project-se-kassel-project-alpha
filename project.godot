@@ -102,6 +102,13 @@ esc={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Environment"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemies colliding with the player"
+2d_physics/layer_4="Enemies colliding NOT with the player"
+
 [locale]
 
 translations=PoolStringArray( "res://assets/language/Languages.de.translation", "res://assets/language/Languages.en.translation" )

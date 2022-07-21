@@ -101,6 +101,11 @@ func _physics_process(delta):
 			if path.size() > 0:
 				move_to_player(delta)
 
+		ATTACKING:
+			# check if mob can attack
+			if !playerAttackZone.mob_can_attack:
+				update_behaviour(HUNTING)
+
 
 func move_to_player(delta):
 	# Remove point when reach with little radius -> take next one
@@ -115,8 +120,7 @@ func move_to_player(delta):
 		
 		# check if mob can attack
 		if playerAttackZone.mob_can_attack:
-#			print("ATTACK")
-			pass
+			update_behaviour(ATTACKING)
 		
 		# update sprite direction
 		mobSprite.flip_h = velocity.x > 0
@@ -202,3 +206,13 @@ func update_behaviour(new_behaviour):
 				line2D.points = []
 			print("HUNTING")
 			behaviourState = HUNTING
+
+		ATTACKING:
+			if behaviourState != ATTACKING:
+				# Reset path in case player is seen but e.g. state is wandering
+				path.resize(0)
+				
+				# Update line path
+				line2D.points = []
+			print("ATTACKING")
+			behaviourState = ATTACKING
