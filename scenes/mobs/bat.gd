@@ -16,6 +16,9 @@ var behaviourState = IDLING
 var collision_radius
 var batSpawnArea
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
+var mob_need_path = false
+var update_path_time = 0.0
+var max_update_path_time = 0.4
 
 # Constants
 const HUNTING_SPEED = 100
@@ -28,7 +31,6 @@ var speed = WANDERING_SPEED
 var player_threshold = 16
 var wandering_threshold = 5
 var path : PoolVector2Array = []
-var navigation : Navigation2D = null
 var navigation_tile_map
 var ideling_time = 0.0
 var max_ideling_time
@@ -42,12 +44,8 @@ onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Wait for owner to be ready
-#	yield(get_tree(), "idle_frame")
-
 	# Set spawn_position
 	collision_radius = collision.shape.radius
-	navigation_tile_map = navigation.get_child(0)
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
 	position = spawn_position
 
@@ -58,15 +56,16 @@ func _ready():
 	# Setup sprite
 	mobSprite.flip_h = rng.randi_range(0,1)
 
-func init(init_navigation, init_batSpawnArea):
-	navigation = init_navigation
+# Method to init variables, typically called after instancing
+func init(init_batSpawnArea, new_navigation_tile_map):
 	batSpawnArea = init_batSpawnArea
-
+	navigation_tile_map = new_navigation_tile_map
 
 func _physics_process(delta):
-	# Handle behaviourState
+	# Handle behaviour
 	match behaviourState:
 		IDLING:
+			# Mob is doing nothing, just standing and searching for player
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
 			search_player()
 			
@@ -76,30 +75,35 @@ func _physics_process(delta):
 				ideling_time = 0.0
 				update_behaviour(WANDERING)
 				
-
 		WANDERING:
-			# Generate wandering path
-			if path.size() == 0:
-				gernerate_wandering_path()
-			# Follow path
-			if path.size() > 0:
-				move_to_position(delta)
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow wandering path
+				if path.size() > 0:
+					move_to_position(delta)
+				else:
+					# Case if pathend is reached, need new path
+					update_behaviour(IDLING)
 				
 			# Check if player is nearby (needs to be at the end of WANDERING)
 			search_player()
 
 		HUNTING:
+			# Update path generation timer
+			update_path_time += delta
+			if update_path_time > max_update_path_time:
+				update_path_time = 0.0
+				mob_need_path = true
 			# Check if player is nearby
-			if path.size() == 0:
-				var player = playerDetectionZone.player
-				if player != null:
-					generate_path(player.global_position)
-				else:
-					# Lose player
-					update_behaviour(IDLING)
-			# Follow path
-			if path.size() > 0:
-				move_to_player(delta)
+			var player = playerDetectionZone.player
+			if player != null:
+				# Follow path
+				if path.size() > 0:
+					move_to_player(delta)
+			else:
+				# Lose player
+				update_behaviour(IDLING)
+
 
 		ATTACKING:
 			# check if mob can attack
@@ -111,6 +115,9 @@ func move_to_player(delta):
 	# Remove point when reach with little radius -> take next one
 	if global_position.distance_to(path[0]) < player_threshold:
 		path.remove(0)
+		
+		# Update line
+		line2D.points = path
 	else:
 		# Move Bat
 		# Hunting player
@@ -137,6 +144,9 @@ func move_to_position(delta):
 	# Stop motion when reached position
 	if global_position.distance_to(path[0]) < wandering_threshold:
 		path.remove(0)
+		
+		# Update line
+		line2D.points = path
 	else:
 		# Move Bat
 		var direction = global_position.direction_to(path[0])
@@ -150,31 +160,14 @@ func move_to_position(delta):
 		line2D.global_position = Vector2(0,0)
 		
 	if path.size() == 0:
-		update_behaviour(IDLING)
 		line2D.points = []
-
-func generate_path(player_pos):
-	# Get new path to player position
-	path = navigation.get_simple_path(global_position, player_pos, false)
-	
-	# Update line path
-	line2D.points = path
 
 func search_player():
 	if playerDetectionZone.mob_can_see_player():
 		# Player in detection zone of this mob
 		update_behaviour(HUNTING)
-		
 
-func gernerate_wandering_path():
-	var wandering_pos = Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
-	
-	# Get new path to player position
-	path = navigation.get_simple_path(global_position, wandering_pos, false)
-	
-	# Update line path
-	line2D.points = path
-	
+
 func update_behaviour(new_behaviour):
 	# Reset timer
 	if ideling_time != 0.0:
@@ -187,13 +180,23 @@ func update_behaviour(new_behaviour):
 			rng.randomize()
 			max_ideling_time = rng.randi_range(3, 10)
 			
-			print("IDLING")
+#			print("IDLING")
 			behaviourState = IDLING
+			mob_need_path = false
 			
 		WANDERING:
 			speed = WANDERING_SPEED
-			print("WANDERING")
+			
+			if behaviourState != WANDERING:
+				# Reset path in case player is seen but e.g. state is wandering
+				path.resize(0)
+				
+				# Update line path
+				line2D.points = []
+			
+#			print("WANDERING")
 			behaviourState = WANDERING
+			mob_need_path = true
 
 		HUNTING:
 			speed = HUNTING_SPEED
@@ -204,8 +207,9 @@ func update_behaviour(new_behaviour):
 				
 				# Update line path
 				line2D.points = []
-			print("HUNTING")
+#			print("HUNTING")
 			behaviourState = HUNTING
+			mob_need_path = true
 
 		ATTACKING:
 			if behaviourState != ATTACKING:
@@ -214,5 +218,30 @@ func update_behaviour(new_behaviour):
 				
 				# Update line path
 				line2D.points = []
-			print("ATTACKING")
+#			print("ATTACKING")
 			behaviourState = ATTACKING
+			mob_need_path = false
+
+# Method returns next target position to pathfinding_service
+func get_target_position():
+	# Return player hunting position if player is still existing
+	if behaviourState == HUNTING:
+		var player = playerDetectionZone.player
+		if player != null:
+			return playerDetectionZone.player.global_position
+		else:
+			return null
+	
+	# Return next wandering position
+	elif behaviourState == WANDERING:
+		return Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
+		
+
+# Method is called from pathfinding_service to set new path to mob
+func update_path(new_path):
+	# Update mob path
+	path = new_path
+	mob_need_path = false
+	
+	# Update line path
+	line2D.points = path

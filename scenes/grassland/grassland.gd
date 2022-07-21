@@ -21,8 +21,6 @@ func _ready():
 	# Setup scene in background
 	thread = Thread.new()
 	thread.start(self, "_setup_scene_in_background")
-	
-	spawn_mobs()
 
 
 # Method to setup this scene with a thread in background
@@ -35,6 +33,14 @@ func _setup_scene_in_background():
 	
 	# Setup stair areas
 	setup_stair_areas()
+	
+	
+	# Setup pathfinding
+	PathfindingService.init(navigation)
+	
+	# Spawn all mobs
+	spawn_mobs()
+	
 	
 	call_deferred("_on_setup_scene_done")
 	
@@ -92,7 +98,7 @@ func spawn_mobs():
 			if mobScene != null:
 				for _num in range(mob_count_breakdown[i_mob]):
 					var mob_instance = mobScene.instance()
-					mob_instance.init(navigation, spawnArea)
+					mob_instance.init(spawnArea, navigationTileMap)
 					mobsLayer.add_child(mob_instance)
 			else:
 				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")

@@ -39,6 +39,7 @@ DayNightCycle="*res://autoload/day_night_cycle.gd"
 GameData="*res://autoload/game_data.gd"
 MerchantData="*res://autoload/merchant_data.gd"
 PlayerData="*res://autoload/player_data.gd"
+PathfindingService="*res://autoload/pathfinding_service.gd"
 
 [display]
 
