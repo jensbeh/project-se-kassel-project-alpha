@@ -47,7 +47,6 @@ func _ready():
 				hair = child
 	load_character()
 
-
 func load_character():
 	var player = find_node("Player")
 	# set the clothes ...

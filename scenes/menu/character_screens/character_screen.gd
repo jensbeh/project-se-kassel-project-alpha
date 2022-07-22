@@ -378,6 +378,7 @@ func start_game():
 	var view_direction = Vector2(0,1)
 	var data = data_list[selected_character]
 	Utils.get_current_player().set_max_health(data.maxLP)
+	Utils.get_current_player().set_attack(data.attack)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
 	Utils.get_current_player().set_data(data)

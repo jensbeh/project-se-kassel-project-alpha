@@ -69,7 +69,8 @@ func drop_data(_pos, data):
 		PlayerData.equipment_data["Item"] = data["origin_item_id"]
 		texture = data["origin_texture"]
 		PlayerData.equipment_data["Stack"] = data["origin_stack"]
-
+		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
+		Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
 
 # ToolTips
 func _on_Icon_mouse_entered():

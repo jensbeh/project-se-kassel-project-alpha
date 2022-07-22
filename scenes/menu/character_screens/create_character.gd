@@ -120,6 +120,7 @@ var save_game_data = {
 	"name": charac_name,
 	"level": "1",
 	"maxLP": "100",
+	"attack": "0",
 	"currentHP": "100",
 	"gold": "100",
 	"skincolor": curr_body,
@@ -539,6 +540,7 @@ func start_game():
 	create_player_inventory()
 	
 	Utils.get_current_player().set_gold(save_game_data.gold)
+	Utils.get_current_player().set_data(save_game_data)
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -550,6 +552,7 @@ func create_player_inventory():
 	save_player.close()
 	# sets lp
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
+	Utils.get_current_player().set_attack(save_game_data.attack)
 	# set player data
 	PlayerData.set_path(uuid)
 	PlayerData._ready()
