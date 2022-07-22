@@ -4,7 +4,7 @@ var tool_tip = load(Constants.TOOLTIP)
 
 # Get information about drag item
 func get_drag_data(_pos):
-	if PlayerData.equipment_data != null:
+	if PlayerData.equipment_data["Item"] != null:
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -47,13 +47,14 @@ func can_drop_data(_pos, data):
 		return false
 
 func drop_data(_pos, data):
+	var origin_slot = data["origin_node"].get_parent().get_name()
 	if data["origin_node"] == self:
 		pass
 	else:
 		# Update the data of the origin
 		if data["origin_panel"] == "Inventory":
-			PlayerData.equipment_data["Item"] = data["target_item_id"]
-			PlayerData.equipment_data["Stack"] = data["target_stack"]
+			PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
+			PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 		
 		# Update the texture and label of the origin
 		if data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
