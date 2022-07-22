@@ -1,13 +1,13 @@
 {
   "10001": {
     "Name": "Good Health Flask",
-    "Category": "Potion",
+    "Category": "Weapon",
     "Type": "",
-    "EquipmentSlot": "",
-    "Attack": null,
+    "EquipmentSlot": "Weapon",
+    "Attack": 10,
     "Defense": null,
     "Block": null,
-    "PotionHealth": 100,
+    "PotionHealth": null,
     "PotionMana": null,
     "FoodSatiation": null,
 	"Stackable": true

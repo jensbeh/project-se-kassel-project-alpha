@@ -119,4 +119,8 @@
 		"Item": null,
 		"Stack": null
 	},
+	"Weapon":{
+		"Item": 10001,
+		"Stack": 1
+	},
 }

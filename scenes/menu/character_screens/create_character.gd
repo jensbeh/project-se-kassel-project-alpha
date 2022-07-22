@@ -177,6 +177,7 @@ var save_inventory = {
 	"Inv28": {"Item": null,"Stack": null},
 	"Inv29": {"Item": null,"Stack": null},
 	"Inv30": {"Item": null,"Stack": null},
+	"Weapon": {"Item": null,"Stack": null},
 }
 
 # save the player data
@@ -547,5 +548,8 @@ func create_player_inventory():
 	save_player.open("res://assets/data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
+	# sets lp
+	Utils.get_current_player().set_max_health(save_game_data.maxLP)
+	# set player data
 	PlayerData.set_path(uuid)
 	PlayerData._ready()

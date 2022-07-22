@@ -12,7 +12,11 @@ func _ready():
 		if PlayerData.inv_data[slot]["Item"] != null:
 			item_id = str(PlayerData.inv_data[slot]["Item"])
 			valid = true
-	else:# add later characterSheeet yet merchant
+	elif origin == "CharacterInterface":
+		if PlayerData.equipment_data["Item"] != null:
+			item_id = str(PlayerData.equipment_data["Item"])
+			valid = true
+	else:# merchant
 		if MerchantData.inv_data[slot]["Item"] != null:
 			item_id = str(MerchantData.inv_data[slot]["Item"])
 			valid = true

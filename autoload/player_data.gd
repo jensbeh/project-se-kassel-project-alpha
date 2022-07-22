@@ -1,6 +1,12 @@
 extends Node
 
 var inv_data = {}
+var equipment_data = {
+	"Weapon": {
+		"Item": null,
+		"Stack": null,
+	},
+}
 var path = "res://assets/data/inv_data_file.json"
 
 # Load the inventar items form the player
@@ -9,8 +15,10 @@ func _ready():
 	# Data file change for diffrent characters
 	item_data_file.open(path, File.READ)
 	var item_data_json = JSON.parse(item_data_file.get_as_text())
+	var eq_data_json = JSON.parse(item_data_file.get_as_text())
 	item_data_file.close()
 	inv_data = item_data_json.result
+	equipment_data = eq_data_json.result["Weapon"]
 
 
 func set_path(new_path):

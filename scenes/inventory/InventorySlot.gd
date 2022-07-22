@@ -44,13 +44,16 @@ func can_drop_data(_pos, data):
 		if Input.is_action_pressed("secondary") or data["origin_stack"] == 0:
 			return false
 		else:
-			data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
-			data["target_texture"] = texture
-			data["target_stack"] = PlayerData.inv_data[target_slot]["Stack"]
-			if data["target_stack"] == Constants.MAX_STACK_SIZE or data["target_stack"] == 0:
-				return false
+			if data["origin_panel"] != "CharacterInterface" or GameData.item_data[str(data["target_item_id"])]["Category"] == "Weapon":
+				data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
+				data["target_texture"] = texture
+				data["target_stack"] = PlayerData.inv_data[target_slot]["Stack"]
+				if data["target_stack"] == Constants.MAX_STACK_SIZE or data["target_stack"] == 0:
+					return false
+				else:
+					return true
 			else:
-				return true
+				return false
 
 
 func drop_data(_pos, data):
@@ -86,10 +89,12 @@ func drop_data(_pos, data):
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-			else:
+			elif data["origin_panel"] == "TradeInventory":
 				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-			
+			else:
+				PlayerData.equipment_data["Item"] = data["target_item_id"]
+				PlayerData.equipment_data["Stack"] = data["target_stack"]
 			# Update the texture and label of the origin
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
@@ -105,7 +110,7 @@ func drop_data(_pos, data):
 				data["origin_node"].texture = data["target_texture"]
 				if data["target_stack"] != null and data["target_stack"] > 1:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
-				else:#if data["origin_panel"] == "Inventory": because character sheet has no stack
+				elif data["origin_panel"] == "Inventory" or data["origin_panel"] == "TradeInventory":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 				
 			# Update the texture, label and data of the target
@@ -151,16 +156,17 @@ func SplitStack(split_amount, data):
 	show_hide_stack_label(data)
 
 func show_hide_stack_label(data):
-	if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
-	data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
-		data["origin_node"].get_parent().get_node("TextureRect").visible = true
-	else:
-		data["origin_node"].get_parent().get_node("TextureRect").visible = false
-	if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
-	get_parent().get_node("TextureRect/Stack").get_text() != null):
-		get_parent().get_node("TextureRect").visible = true
-	else:
-		get_parent().get_node("TextureRect").visible = false
+	if data["origin_panel"] != "CharacterInterface":
+		if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+		data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
+			data["origin_node"].get_parent().get_node("TextureRect").visible = true
+		else:
+			data["origin_node"].get_parent().get_node("TextureRect").visible = false
+		if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+		get_parent().get_node("TextureRect/Stack").get_text() != null):
+			get_parent().get_node("TextureRect").visible = true
+		else:
+			get_parent().get_node("TextureRect").visible = false
 
 # ToolTips
 func _on_Icon_mouse_entered():

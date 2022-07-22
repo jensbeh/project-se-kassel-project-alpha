@@ -52,7 +52,10 @@ var movement
 # Interaction
 var player_can_interact
 
+# player stats and values
 var gold
+var attack = 0
+var max_health
 
 func _ready():
 	# Style
@@ -147,10 +150,13 @@ func _input(event):
 	if event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
+		set_player_can_interact(false)
 		Utils.get_scene_manager().get_child(3).add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
 	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null:
 		set_movement(true)
 		set_movment_animation(true)
+		set_player_can_interact(true)
+		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
 		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
 
 # Method to activate or disable the possibility of interaction
@@ -379,3 +385,15 @@ func get_gold():
 	
 func set_gold(new_gold_value):
 	gold = new_gold_value
+	
+func get_max_health():
+	return max_health
+	
+func set_max_health(new_max_health):
+	max_health = new_max_health
+
+func get_attack():
+	return attack
+	
+func set_attack(new_attack_value):
+	attack = new_attack_value

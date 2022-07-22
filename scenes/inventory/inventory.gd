@@ -8,16 +8,17 @@ onready var gridcontainer = get_node("Background/MarginContainer/VBox/ScrollCont
 func _ready():
 	for i in PlayerData.inv_data.keys():
 		var inv_slot_new = inv_slot.instance()
-		if PlayerData.inv_data[i]["Item"] != null:
-			var item_name = GameData.item_data[str(PlayerData.inv_data[i]["Item"])]["Name"]
-			var icon_texture = load("res://Assets/Icon_Items/" + item_name + ".png")
-			inv_slot_new.get_node("Icon").set_texture(icon_texture)
-			var item_stack = PlayerData.inv_data[i]["Stack"]
-			if item_stack != null and item_stack > 1:
-				inv_slot_new.get_node("TextureRect/Stack").set_text(str(item_stack))
-				inv_slot_new.get_node("TextureRect").visible = true
-		gridcontainer.add_child(inv_slot_new, true)
-	
+		if i != "Item" and i != "Stack":
+			if PlayerData.inv_data[i]["Item"] != null:
+				var item_name = GameData.item_data[str(PlayerData.inv_data[i]["Item"])]["Name"]
+				var icon_texture = load("res://Assets/Icon_Items/" + item_name + ".png")
+				inv_slot_new.get_node("Icon").set_texture(icon_texture)
+				var item_stack = PlayerData.inv_data[i]["Stack"]
+				if item_stack != null and item_stack > 1:
+					inv_slot_new.get_node("TextureRect/Stack").set_text(str(item_stack))
+					inv_slot_new.get_node("TextureRect").visible = true
+			gridcontainer.add_child(inv_slot_new, true)
+	gridcontainer.remove_child(gridcontainer.get_child(gridcontainer.get_child_count()-1))
 	# Sets the name and the gold from the player
 	$Background/MarginContainer/VBox/TitleBox/Title/Titlename.text = tr("INVENTORY")
 	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + Utils.get_current_player().get_gold()

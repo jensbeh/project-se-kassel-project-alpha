@@ -105,7 +105,7 @@ func drop_data(_pos, data):
 				data["origin_node"].texture = data["target_texture"]
 				if data["target_stack"] != null and data["target_stack"] > 1:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
-				else:#if data["origin_panel"] == "Inventory": because character sheet has no stack
+				else:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 				
 			# Update the texture, label and data of the target
