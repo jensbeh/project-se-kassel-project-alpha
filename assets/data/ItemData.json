@@ -9,7 +9,8 @@
     "Block": null,
     "PotionHealth": 100,
     "PotionMana": null,
-    "FoodSatiation": null
+    "FoodSatiation": null,
+	"Stackable": true
   },
   "10002": {
     "Name": "Health Flask",
@@ -21,7 +22,8 @@
     "Block": null,
     "PotionHealth": 50,
     "PotionMana": null,
-    "FoodSatiation": null
+    "FoodSatiation": null,
+	"Stackable": true
   },
   "10003": {
     "Name": "Mana Flask",
@@ -33,6 +35,7 @@
     "Block": null,
     "PotionHealth": null,
     "PotionMana": 50,
-    "FoodSatiation": null
+    "FoodSatiation": null,
+	"Stackable": true
   },
 }

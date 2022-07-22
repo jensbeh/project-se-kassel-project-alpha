@@ -47,6 +47,14 @@ const SAVE_SETTINGS_PATH = "user://settings.json"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 
+# inventory
+const MAX_STACK_SIZE = 999
+const TRADE_INV_SLOT = "res://scenes/inventory/TradeInventorySlot.tscn"
+const INV_SLOT = "res://scenes/inventory/InventorySlot.tscn"
+const TOOLTIP = "res://scenes/inventory/ToolTip.tscn"
+const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
+const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

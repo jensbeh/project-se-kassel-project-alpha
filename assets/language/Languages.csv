@@ -31,3 +31,9 @@ CANCLE,Cancle,Abbrechen
 DELETE,Delete,Löschen
 TRADE,Trade,Handel
 INVENTORY,Inventory,Inventar
+Attack,Attack,Angriff
+Defense,Defense,Verteidigung
+Block,Block,Parieren
+Health,Health,Leben
+Mana,Mana,Mana
+Satiation,Satiation,Sättigung

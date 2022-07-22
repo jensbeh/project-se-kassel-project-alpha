@@ -132,6 +132,8 @@ func _input(event):
 			# Reset npc interaction state
 			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
 				npc.set_interacted(false)
+			PlayerData.save_inventory()
+			MerchantData.save_merchant_inventory()
 	# Open game menu with "esc"
 	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
 		set_movement(false)
@@ -142,6 +144,14 @@ func _input(event):
 		set_movement(true)
 		set_movment_animation(true)
 		Utils.get_scene_manager().get_child(3).get_node("GameMenu").queue_free()
+	if event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
+		set_movement(false)
+		set_movment_animation(false)
+		Utils.get_scene_manager().get_child(3).add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null:
+		set_movement(true)
+		set_movment_animation(true)
+		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):

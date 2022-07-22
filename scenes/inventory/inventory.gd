@@ -1,6 +1,6 @@
 extends Control
 
-var inv_slot = preload("res://scenes/inventory/InventorySlot.tscn")
+var inv_slot = load(Constants.INV_SLOT)
 
 onready var gridcontainer = get_node("Background/MarginContainer/VBox/ScrollContainer/GridContainer")
 
@@ -12,6 +12,10 @@ func _ready():
 			var item_name = GameData.item_data[str(PlayerData.inv_data[i]["Item"])]["Name"]
 			var icon_texture = load("res://Assets/Icon_Items/" + item_name + ".png")
 			inv_slot_new.get_node("Icon").set_texture(icon_texture)
+			var item_stack = PlayerData.inv_data[i]["Stack"]
+			if item_stack != null and item_stack > 1:
+				inv_slot_new.get_node("TextureRect/Stack").set_text(str(item_stack))
+				inv_slot_new.get_node("TextureRect").visible = true
 		gridcontainer.add_child(inv_slot_new, true)
 	
 	# Sets the name and the gold from the player
@@ -33,3 +37,4 @@ func _on_Button_gui_input(event):
 					npc.set_interacted(false)
 			else:
 				Utils.get_scene_manager().get_child(3).get_node("Inventory").queue_free()
+			PlayerData.save_inventory()

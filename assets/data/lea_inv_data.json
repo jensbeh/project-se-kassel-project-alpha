@@ -12,8 +12,8 @@
 		"Stack": 999
 	},
 	"Inv4": {
-		"Item": null,
-		"Stack": null
+		"Item": 10003,
+		"Stack": 0
 	},
 	"Inv5": {
 		"Item": null,

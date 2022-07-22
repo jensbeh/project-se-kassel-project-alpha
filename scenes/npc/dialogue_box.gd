@@ -22,7 +22,6 @@ func start():
 	$Name.visible = true
 	$Text.visible = true
 	$Timer.wait_time = textSpeed
-	$Trade.text = (tr("TRADE"))
 	# Get language
 	var lang = TranslationServer.get_locale()
 	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
@@ -99,6 +98,9 @@ func close_dialog():
 			npc.set_interacted(false)
 
 func _on_Trade_pressed():
+	MerchantData.set_path(get_parent().name)
+	MerchantData._ready()
+	PlayerData._ready()
 	close_dialog()
 	# Show trade inventory
 	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY_PATH).instance())

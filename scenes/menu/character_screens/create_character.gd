@@ -146,6 +146,38 @@ var save_game_data = {
 	"id" : uuid
 }
 
+var save_inventory = {
+	"Inv1": {"Item": null,"Stack": null},
+	"Inv2": {"Item": null,"Stack": null},
+	"Inv3": {"Item": null,"Stack": null},
+	"Inv4": {"Item": null,"Stack": null},
+	"Inv5": {"Item": null,"Stack": null},
+	"Inv6": {"Item": null,"Stack": null},
+	"Inv7": {"Item": null,"Stack": null},
+	"Inv8": {"Item": null,"Stack": null},
+	"Inv9": {"Item": null,"Stack": null},
+	"Inv10": {"Item": null,"Stack": null},
+	"Inv11": {"Item": null,"Stack": null},
+	"Inv12": {"Item": null,"Stack": null},
+	"Inv13": {"Item": null,"Stack": null},
+	"Inv14": {"Item": null,"Stack": null},
+	"Inv15": {"Item": null,"Stack": null},
+	"Inv16": {"Item": null,"Stack": null},
+	"Inv17": {"Item": null,"Stack": null},
+	"Inv18": {"Item": null,"Stack": null},
+	"Inv19": {"Item": null,"Stack": null},
+	"Inv20": {"Item": null,"Stack": null},
+	"Inv21": {"Item": null,"Stack": null},
+	"Inv22": {"Item": null,"Stack": null},
+	"Inv23": {"Item": null,"Stack": null},
+	"Inv24": {"Item": null,"Stack": null},
+	"Inv25": {"Item": null,"Stack": null},
+	"Inv26": {"Item": null,"Stack": null},
+	"Inv27": {"Item": null,"Stack": null},
+	"Inv28": {"Item": null,"Stack": null},
+	"Inv29": {"Item": null,"Stack": null},
+	"Inv30": {"Item": null,"Stack": null},
+}
 
 # save the player data
 func save_data():
@@ -503,6 +535,17 @@ func start_game():
 	Utils.set_current_player(Utils.get_player())
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
+	create_player_inventory()
+	
+	Utils.get_current_player().set_gold(save_game_data.gold)
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
+
+func create_player_inventory():
+	var save_player = File.new()
+	save_player.open("res://assets/data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.store_line(to_json(save_inventory))
+	save_player.close()
+	PlayerData.set_path(uuid)
+	PlayerData._ready()

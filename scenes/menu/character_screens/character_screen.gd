@@ -142,6 +142,9 @@ func delete_character():
 	var dir = Directory.new()
 	if dir.file_exists(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION):
 		dir.remove(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION)
+	# remove inventory data
+	if dir.file_exists("res://assets/data/" + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
+		dir.remove("res://assets/data/" + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -373,6 +376,9 @@ func start_game():
 	Utils.set_current_player(Utils.get_player())
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
+	var data = data_list[selected_character]
+	PlayerData.set_path(data.id)
+	PlayerData._ready()
 	
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)
 	

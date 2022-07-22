@@ -8,8 +8,8 @@
 		"Stack": 90
 	},
 	"Inv3": {
-		"Item": 10003,
-		"Stack": 999
+		"Item": null,
+		"Stack": null
 	},
 	"Inv4": {
 		"Item": null,
