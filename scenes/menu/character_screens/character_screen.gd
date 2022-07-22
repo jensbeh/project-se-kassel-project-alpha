@@ -380,6 +380,7 @@ func start_game():
 	Utils.get_current_player().set_max_health(data.maxLP)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
+	Utils.get_current_player().set_data(data)
 	
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)
 	

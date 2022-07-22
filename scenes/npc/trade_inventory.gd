@@ -6,13 +6,14 @@ onready var gridcontainer = get_node("ColorRect/MarginContainer/HBoxContainer/Ba
 
 
 func _ready():
-	for i in MerchantData.inv_data.keys():
+	for i in range(1,31):
 		var inv_slot_new = inv_slot.instance()
-		if MerchantData.inv_data[i]["Item"] != null:
-			var item_name = GameData.item_data[str(MerchantData.inv_data[i]["Item"])]["Name"]
+		var slot = "Inv" + str(i)
+		if MerchantData.inv_data[slot]["Item"] != null:
+			var item_name = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Name"]
 			var icon_texture = load("res://Assets/Icon_Items/" + item_name + ".png")
 			inv_slot_new.get_node("Icon").set_texture(icon_texture)
-			var item_stack = MerchantData.inv_data[i]["Stack"]
+			var item_stack = MerchantData.inv_data[slot]["Stack"]
 			if item_stack != null and item_stack > 1:
 				inv_slot_new.get_node("TextureRect/Stack").set_text(str(item_stack))
 				inv_slot_new.get_node("TextureRect").visible = true

@@ -56,6 +56,7 @@ var player_can_interact
 var gold
 var attack = 0
 var max_health
+var data
 
 func _ready():
 	# Style
@@ -156,7 +157,8 @@ func _input(event):
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
-		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
+		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
+		PlayerData.save_inventory()
 		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
 
 # Method to activate or disable the possibility of interaction
@@ -397,3 +399,9 @@ func get_attack():
 	
 func set_attack(new_attack_value):
 	attack = new_attack_value
+
+func set_data(new_data):
+	data = new_data
+	
+func get_data():
+	return data
