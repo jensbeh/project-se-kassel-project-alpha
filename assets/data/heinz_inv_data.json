@@ -1,51 +1,51 @@
 {
 	"Inv1": {
-		"Item": 10001,
-		"Stack": 90
+		"Item": 10002,
+		"Stack": 0
 	},
 	"Inv2": {
-		"Item": 10002,
-		"Stack": 90
+		"Item": 10004,
+		"Stack": 0
 	},
 	"Inv3": {
-		"Item": null,
-		"Stack": null
+		"Item": 10003,
+		"Stack": 0
 	},
 	"Inv4": {
-		"Item": null,
-		"Stack": null
+		"Item": 10013,
+		"Stack": 0
 	},
 	"Inv5": {
-		"Item": null,
-		"Stack": null
+		"Item": 10014,
+		"Stack": 0
 	},
 	"Inv6": {
-		"Item": null,
-		"Stack": null
+		"Item": 10015,
+		"Stack": 0
 	},
 	"Inv7": {
-		"Item": null,
-		"Stack": null
+		"Item": 10016,
+		"Stack": 0
 	},
 	"Inv8": {
-		"Item": null,
-		"Stack": null
+		"Item": 10026,
+		"Stack": 0
 	},
 	"Inv9": {
-		"Item": null,
-		"Stack": null
+		"Item": 10027,
+		"Stack": 0
 	},
 	"Inv10": {
-		"Item": null,
-		"Stack": null
+		"Item": 10028,
+		"Stack": 0
 	},
 	"Inv11": {
-		"Item": null,
-		"Stack": null
+		"Item": 10030,
+		"Stack": 0
 	},
 	"Inv12": {
-		"Item": null,
-		"Stack": null
+		"Item": 10029,
+		"Stack": 0
 	},
 	"Inv13": {
 		"Item": null,
