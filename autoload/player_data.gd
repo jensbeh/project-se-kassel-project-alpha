@@ -22,7 +22,7 @@ func _ready():
 
 
 func set_path(new_path):
-	path = "res://assets/data/" + new_path + "_inv_data.json"
+	path = "user://data/" + new_path + "_inv_data.json"
 	
 func save_inventory():
 	var item_data_file = File.new()

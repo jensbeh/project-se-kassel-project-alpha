@@ -10,20 +10,30 @@ func get_drag_data(_pos):
 		data["origin_panel"] = "CharacterInterface"
 		data["origin_item_id"] = PlayerData.equipment_data["Item"]
 		data["origin_slot"] = GameData.item_data[str(PlayerData.equipment_data["Item"])]
-		data["origin_texture"] = texture
+		data["origin_texture"] = get_child(0).texture
+		data["origin_frame"] = get_child(0).frame
 		data["origin_stackable"] = false
 		data["origin_stack"] = 1
 		
 		# Texture wich will drag
-		var drag_texture = TextureRect.new()
-		drag_texture.expand = true
-		drag_texture.texture = texture
-		drag_texture.rect_size = Vector2(100,100)
+		var drag_texture = Sprite.new()
+		if GameData.item_data[str(PlayerData.equipment_data["Item"])]["Texture"] == "item_icons_1":
+			drag_texture.set_scale(Vector2(2.5,2.5))
+			drag_texture.set_hframes(16)
+			drag_texture.set_vframes(27)
+			drag_texture.texture = get_child(0).texture
+			drag_texture.frame = get_child(0).frame
+		else:
+			drag_texture.set_scale(Vector2(4.5,4.5))
+			drag_texture.set_hframes(13)
+			drag_texture.set_vframes(15)
+			drag_texture.texture = get_child(0).texture
+			drag_texture.frame = get_child(0).frame
 		
 		# Pos on mouse while drag
 		var control = Control.new()
 		control.add_child(drag_texture)
-		drag_texture.rect_position = -0.5 * drag_texture.rect_size
+		drag_texture.position = -0.5 * drag_texture.scale
 		set_drag_preview(control)
 		
 		return data
@@ -40,7 +50,8 @@ func can_drop_data(_pos, data):
 		# Swap item
 		else:
 			data["target_item_id"] = PlayerData.equipment_data["Item"]
-			data["target_texture"] = texture
+			data["target_texture"] = get_child(0).texture
+			data["target_frame"] = get_child(0).frame
 			data["target_stack"] = PlayerData.equipment_data["Stack"]
 			return true
 	else:
@@ -58,19 +69,46 @@ func drop_data(_pos, data):
 		
 		# Update the texture and label of the origin
 		if data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
-			data["origin_node"].texture = null
+			data["origin_node"].get_child(0).texture = null
 			data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 		else:
-			data["origin_node"].texture = data["target_texture"]
+			data["origin_node"].get_child(0).texture = data["target_texture"]
+			data["origin_node"].get_child(0).frame = data["target_frame"]
+			verify_origin_texture(data)
 			if data["target_stack"] != null and data["target_stack"] > 1:
 				data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 			
 		# Update the texture, label and data of the target
 		PlayerData.equipment_data["Item"] = data["origin_item_id"]
-		texture = data["origin_texture"]
+		get_child(0).texture = data["origin_texture"]
+		get_child(0).frame = data["origin_frame"]
+		verify_target_texture(data)
 		PlayerData.equipment_data["Stack"] = data["origin_stack"]
 		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
 		Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
+
+func verify_origin_texture(data):
+	if data["target_item_id"] != null:
+		if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+			get_child(0).set_scale(Vector2(2.5,2.5))
+			get_child(0).set_hframes(16)
+			get_child(0).set_vframes(27)
+		else:
+			get_child(0).set_scale(Vector2(4.5,4.5))
+			get_child(0).set_hframes(13)
+			get_child(0).set_vframes(15)
+	
+	
+func verify_target_texture(data):
+	if data["origin_item_id"] != null:
+		if GameData.item_data[str(data["origin_item_id"])]["Texture"] == "item_icons_1":
+			get_child(0).set_scale(Vector2(2.5,2.5))
+			get_child(0).set_hframes(16)
+			get_child(0).set_vframes(27)
+		else:
+			get_child(0).set_scale(Vector2(4.5,4.5))
+			get_child(0).set_hframes(13)
+			get_child(0).set_vframes(15)
 
 # ToolTips
 func _on_Icon_mouse_entered():
@@ -87,4 +125,3 @@ func _on_Icon_mouse_entered():
 
 func _on_Icon_mouse_exited():
 	get_node("ToolTip").free()
-

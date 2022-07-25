@@ -12,20 +12,29 @@ func get_drag_data(_pos):
 		data["origin_panel"] = "TradeInventory"
 		data["origin_item_id"] = MerchantData.inv_data[slot]["Item"]
 		data["origin_slot"] = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]
-		data["origin_texture"] = texture
+		data["origin_texture"] = get_child(0).texture
+		data["origin_frame"] = get_child(0).frame
 		data["origin_stackable"] = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Stackable"]
 		data["origin_stack"] = MerchantData.inv_data[slot]["Stack"]
 	
-		# Texture wich will drag
-		var drag_texture = TextureRect.new()
-		drag_texture.expand = true
-		drag_texture.texture = texture
-		drag_texture.rect_size = Vector2(100,100)
+		var drag_texture = Sprite.new()
+		if GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"] == "item_icons_1":
+			drag_texture.set_scale(Vector2(1.5,1.5))
+			drag_texture.set_hframes(16)
+			drag_texture.set_vframes(27)
+			drag_texture.texture = get_child(0).texture
+			drag_texture.frame = get_child(0).frame
+		else:
+			drag_texture.set_scale(Vector2(2.5,2.5))
+			drag_texture.set_hframes(13)
+			drag_texture.set_vframes(15)
+			drag_texture.texture = get_child(0).texture
+			drag_texture.frame = get_child(0).frame
 		
 		# Pos on mouse while drag
 		var control = Control.new()
 		control.add_child(drag_texture)
-		drag_texture.rect_position = -0.5 * drag_texture.rect_size
+		drag_texture.position = -0.5 * drag_texture.scale
 		set_drag_preview(control)
 		
 		return data
@@ -33,6 +42,7 @@ func get_drag_data(_pos):
 # Check if we can drop an item to this slot
 func can_drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
+	var player_gold = int(Utils.get_current_player().get_gold())
 	# Move item
 	if MerchantData.inv_data[target_slot]["Item"] == null:
 		data["target_item_id"] = null
@@ -45,17 +55,31 @@ func can_drop_data(_pos, data):
 			return false
 		else:
 			data["target_item_id"] = MerchantData.inv_data[target_slot]["Item"]
-			data["target_texture"] = texture
+			data["target_texture"] = get_child(0).texture
+			data["target_frame"] = get_child(0).frame
 			data["target_stack"] = MerchantData.inv_data[target_slot]["Stack"]
 			if data["target_stack"] == Constants.MAX_STACK_SIZE or data["target_stack"] == 0:
 				return false
 			else:
-				return true
+				if data["target_stack"] == Constants.MAX_STACK_SIZE or data["target_stack"] == 0:
+					return false
+				else:
+					if data["origin_panel"] == "Inventory":
+						if int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * int(
+							data["target_stack"]) <= player_gold + int(GameData.item_data[str(
+								data["origin_item_id"])]["Worth"]) * int(data["origin_stack"]):
+							return true
+						else:
+							return false
+					else:
+						return true
 
 
 func drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
 	var origin_slot = data["origin_node"].get_parent().get_name()
+	var player_gold = int(Utils.get_current_player().get_gold())
+	var valid = true
 	if data["origin_node"] == self:
 		pass
 	else:
@@ -66,70 +90,98 @@ func drop_data(_pos, data):
 			add_child(split_popup_instance)
 			get_node("ItemSplitPopup").show()
 		elif data["origin_stack"] != 0:
-			# Update the data of the origin
-			if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "TradeInventory"):
-				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-					MerchantData.inv_data[origin_slot]["Item"] = null
-					MerchantData.inv_data[origin_slot]["Stack"] = null
+			# paying
+			if data["origin_panel"] == "Inventory":
+				if data["target_item_id"] != null:
+					if int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * int(
+						data["target_stack"]) <= player_gold + int(GameData.item_data[str(
+							data["origin_item_id"])]["Worth"]) * int(data["origin_stack"]):
+						Utils.get_current_player().set_gold(player_gold + ((int(GameData.item_data[str(
+							data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) - 
+							(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
+						valid = true
+					else:
+						valid =  false
 				else:
-					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
-					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "Inventory"):
-				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-					PlayerData.inv_data[origin_slot]["Item"] = null
-					PlayerData.inv_data[origin_slot]["Stack"] = null
+					Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
+					valid = true
+				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+					"Gold: " + str(Utils.get_current_player().get_gold()))
+			if valid:
+				# Update the data of the origin
+				if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
+				data["origin_panel"] == "TradeInventory"):
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						MerchantData.inv_data[origin_slot]["Item"] = null
+						MerchantData.inv_data[origin_slot]["Stack"] = null
+					else:
+						MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"]))
+				elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
+				data["origin_panel"] == "Inventory"):
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						PlayerData.inv_data[origin_slot]["Item"] = null
+						PlayerData.inv_data[origin_slot]["Stack"] = null
+					else:
+						PlayerData.inv_data[origin_slot]["Stack"] = (PlayerData.inv_data[origin_slot]["Stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"]))
+				elif data["origin_panel"] == "TradeInventory":
+					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
+					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 				else:
-					PlayerData.inv_data[origin_slot]["Stack"] = (PlayerData.inv_data[origin_slot]["Stack"] - 
-					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-			elif data["origin_panel"] == "TradeInventory":
-				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
-				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-			else:
-				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
-				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-				
-			# Update the texture of the origin
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
-				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-					data["origin_node"].texture = null
+					PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
+					PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
+					
+				# Update the texture of the origin
+				if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						data["origin_node"].get_child(0).texture = null
+						data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+					else:
+						data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"])))
+				elif data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
+					data["origin_node"].get_child(0).texture = null
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 				else:
-					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
-					(Constants.MAX_STACK_SIZE - data["target_stack"])))
-			elif data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
-				data["origin_node"].texture = null
-				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
-			else:
-				data["origin_node"].texture = data["target_texture"]
-				if data["target_stack"] != null and data["target_stack"] > 1:
-					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
+					data["origin_node"].get_child(0).texture = data["target_texture"]
+					data["origin_node"].get_child(0).frame = data["target_frame"]
+					verify_origin_texture(data)
+					if data["target_stack"] != null and data["target_stack"] > 1:
+						data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
+					else:
+						data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+					
+				# Update the texture, label and data of the target
+				if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+					if data["target_stack"] != 0:
+						var new_stack = data["target_stack"] + data["origin_stack"]
+						if new_stack > Constants.MAX_STACK_SIZE:
+							new_stack = Constants.MAX_STACK_SIZE
+						MerchantData.inv_data[target_slot]["Stack"] = new_stack
+						get_node("../TextureRect/Stack").set_text(str(new_stack))
 				else:
-					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
-				
-			# Update the texture, label and data of the target
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
-				if data["target_stack"] != 0:
-					var new_stack = data["target_stack"] + data["origin_stack"]
-					if new_stack > Constants.MAX_STACK_SIZE:
-						new_stack = Constants.MAX_STACK_SIZE
-					MerchantData.inv_data[target_slot]["Stack"] = new_stack
-					get_node("../TextureRect/Stack").set_text(str(new_stack))
-			else:
-				MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
-				texture = data["origin_texture"]
-				MerchantData.inv_data[target_slot]["Stack"] = data["origin_stack"]
-				if data["origin_stack"] != null and data["origin_stack"] > 1:
-					get_node("../TextureRect/Stack").set_text(str(data["origin_stack"]))
-				else:
-					get_node("../TextureRect/Stack").set_text("")
+					MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
+					get_child(0).texture = data["origin_texture"]
+					get_child(0).frame = data["origin_frame"]
+					verify_target_texture(data)
+					MerchantData.inv_data[target_slot]["Stack"] = data["origin_stack"]
+					if data["origin_stack"] != null and data["origin_stack"] > 1:
+						get_node("../TextureRect/Stack").set_text(str(data["origin_stack"]))
+					else:
+						get_node("../TextureRect/Stack").set_text("")
 
-			show_hide_stack_label(data)
+				show_hide_stack_label(data)
 
 func SplitStack(split_amount, data):
 	var target_slot = get_parent().get_name()
 	var origin_slot = data["origin_node"].get_parent().get_name()
+	var player_gold = int(Utils.get_current_player().get_gold())
+	# paying in case of buying and selling
+	if data["origin_panel"] == "Inventory":
+		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))
+		Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+			"Gold: " + str(Utils.get_current_player().get_gold()))
 	
 	if MerchantData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "TradeInventory":
 		MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
@@ -137,7 +189,9 @@ func SplitStack(split_amount, data):
 		PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 	MerchantData.inv_data[target_slot]["Stack"] = split_amount
-	texture = data["origin_texture"]
+	get_child(0).texture = data["origin_texture"]
+	get_child(0).frame = data["origin_frame"]
+	verify_target_texture(data)
 	# origin
 	if data["origin_stack"] - split_amount > 1:
 		data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
@@ -163,6 +217,29 @@ func show_hide_stack_label(data):
 	else:
 		get_parent().get_node("TextureRect").visible = false
 
+func verify_origin_texture(data):
+	if data["target_item_id"] != null:
+		if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+			get_child(0).set_scale(Vector2(1.5,1.5))
+			get_child(0).set_hframes(16)
+			get_child(0).set_vframes(27)
+		else:
+			get_child(0).set_scale(Vector2(2.5,2.5))
+			get_child(0).set_hframes(13)
+			get_child(0).set_vframes(15)
+	
+	
+func verify_target_texture(data):
+	if data["origin_item_id"] != null:
+		if GameData.item_data[str(data["origin_item_id"])]["Texture"] == "item_icons_1":
+			get_child(0).set_scale(Vector2(1.5,1.5))
+			get_child(0).set_hframes(16)
+			get_child(0).set_vframes(27)
+		else:
+			get_child(0).set_scale(Vector2(2.5,2.5))
+			get_child(0).set_hframes(13)
+			get_child(0).set_vframes(15)
+
 # ToolTips
 func _on_Icon_mouse_entered():
 	var tool_tip_instance = tool_tip.instance()
@@ -178,3 +255,4 @@ func _on_Icon_mouse_entered():
 
 func _on_Icon_mouse_exited():
 	get_node("ToolTip").free()
+

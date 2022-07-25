@@ -26,6 +26,13 @@ margin_bottom = -4.0
 expand = true
 script = ExtResource( 1 )
 
+[node name="Sprite" type="Sprite" parent="Icon"]
+position = Vector2( 28, 28 )
+scale = Vector2( 1.5, 1.5 )
+hframes = 16
+vframes = 27
+frame = 16
+
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
