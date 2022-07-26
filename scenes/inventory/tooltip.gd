@@ -23,7 +23,7 @@ func _ready():
 	
 	# get data and create tooltip
 	if valid:
-		get_node("NinePatchRect/Margin/VBox/ItemName").set_text(GameData.item_data[item_id]["Name"])##TODO translate
+		get_node("NinePatchRect/Margin/VBox/ItemName").set_text(tr(GameData.item_data[item_id]["Name"]))
 		var item_stat = 1
 		for i in range(GameData.item_stats.size()):
 			var stat_name = GameData.item_stats[i]
