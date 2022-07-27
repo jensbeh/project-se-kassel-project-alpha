@@ -12,6 +12,7 @@ var mob_list : Array
 var mobs_to_remove : Array
 var check_spawn_despawn_timer = 0.0
 var max_check_spawn_despawn_time = 15.0
+var spawning_areas = {}
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -49,6 +50,9 @@ func _setup_scene_in_background():
 	# Setup pathfinding
 	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
 	
+	# Setup spawning areas
+	setup_spawning_areas()
+	
 	# Spawn all mobs
 	spawn_mobs()
 	
@@ -67,6 +71,11 @@ func _on_setup_scene_done():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to set transition_data which contains stuff about the player and the transition
+func set_transition_data(transition_data):
+	init_transition_data = transition_data
+
+
 func _physics_process(delta):
 	check_spawn_despawn_timer += delta
 	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
@@ -74,6 +83,7 @@ func _physics_process(delta):
 		print("-------------------------> REMOVE MOBS")
 		remove_mobs(mobs_to_remove)
 		spawn_mobs()
+
 
 # Method to setup the player with all informations
 func setup_player():
@@ -94,10 +104,26 @@ func setup_player():
 	Utils.get_current_player().connect("player_collided", self, "collision_detected")
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
-# Method to set transition_data which contains stuff about the player and the transition
-func set_transition_data(transition_data):
-	init_transition_data = transition_data
 
+func setup_spawning_areas():
+	for area in mobSpawns.get_children():
+		var biome : String = area.get_meta("biome")
+		var max_mobs = area.get_meta("max_mobs")
+		
+		# Get biome data from json
+		var file = File.new()
+		file.open("res://assets/biomes/"+ biome + ".json", File.READ)
+		var biome_json = parse_json(file.get_as_text())
+		var biome_mobs : Array = biome_json["data"]["mobs"]
+		var biome_mobs_count = biome_mobs.size()
+		var current_mobs_count = 0
+		# Generate spawning areas
+		var spawnArea = Utils.generate_mob_spawn_area_from_polygon(area.position, area.get_child(0).polygon)
+		
+		# Save spawning area
+		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
+		
+		print(spawning_areas)
 
 func spawn_mobs():
 	# Spawn area mobs
@@ -197,6 +223,9 @@ func remove_mobs(mobs : Array):
 			if mob.is_in_group("Ambient Mob"):
 				current_ambient_mobs -= 1
 				print("removed ambient mob: " + str(current_ambient_mobs))
+			elif mob.is_in_group("Enemy"):
+				spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
+				print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
 			mob.get_parent().remove_child(mob)
 			mob.queue_free()
 			mob_list.remove(mob_list.find(mob))
@@ -247,30 +276,35 @@ func spawn_ambient_mobs():
 
 
 func spawn_area_mobs():
-	for area in mobSpawns.get_children():
-		var biome : String = area.get_meta("biome")
-		var max_mobs = area.get_meta("max_mobs")
+# e.g. spawning_areas[spawnArea] = {
+#								"biome": "forest",
+#								"max_mobs": 15,
+#								"current_mobs_count": 0,
+#								"biome_mobs": [Bat],
+#								"biome_mobs_count": 1
+#								}
+	
+	for current_area in spawning_areas.keys():
+		var biome_mobs_count = spawning_areas[current_area]["biome_mobs_count"]
+		var max_mobs = spawning_areas[current_area]["max_mobs"]
+		var biome_mobs = spawning_areas[current_area]["biome_mobs"]
+		spawning_areas[current_area]["current_mobs_count"]
 		
-		# Get biome data from json
-		var file = File.new()
-		file.open("res://assets/biomes/"+ biome + ".json", File.READ)
-		var biome_json = parse_json(file.get_as_text())
-		var biome_mobs : Array = biome_json["data"]["mobs"]
-		var biome_mobs_count = biome_mobs.size()
+		var spawn_mobs_counter = max_mobs - spawning_areas[current_area]["current_mobs_count"]
 		
-		# Generate spawning areas
-		var spawnArea = Utils.generate_mob_spawn_area_from_polygon(area.position, area.get_child(0).polygon)
-		
-		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, max_mobs)
+		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, spawn_mobs_counter)
+		print("mob_count_breakdown: " + str(mob_count_breakdown))
 		# Iterate over diffent mobs classes
 		for i_mob in range(biome_mobs.size()):
 			# Load and spawn mobs
 			var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
 			if mobScene != null:
-				for _num in range(1):
+				for _num in range(mob_count_breakdown[i_mob]):
 					var mob_instance = mobScene.instance()
-					mob_instance.init(spawnArea, mobsNavigationTileMap)
+					mob_instance.init(current_area, mobsNavigationTileMap)
 					mobsLayer.add_child(mob_instance)
 					mob_list.append(mob_instance)
+					spawning_areas[current_area]["current_mobs_count"] += 1
+					print(spawning_areas[current_area]["current_mobs_count"])
 			else:
 				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")

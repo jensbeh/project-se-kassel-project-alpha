@@ -16,7 +16,7 @@ enum {
 var velocity = Vector2(0, 0)
 var behaviourState = IDLING
 var collision_radius
-var batSpawnArea
+var spawnArea
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
 var update_path_time = 0.0
@@ -53,7 +53,7 @@ onready var line2D = $Line2D
 func _ready():
 	# Set spawn_position
 	collision_radius = collision.shape.radius
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius)
 	position = spawn_position
 
 	# Set init max_ideling_time for startstate IDLING
@@ -68,8 +68,8 @@ func _ready():
 	min_searching_radius = max_searching_radius / 3
 
 # Method to init variables, typically called after instancing
-func init(init_batSpawnArea, new_navigation_tile_map):
-	batSpawnArea = init_batSpawnArea
+func init(init_spawnArea, new_navigation_tile_map):
+	spawnArea = init_spawnArea
 	navigation_tile_map = new_navigation_tile_map
 
 func _physics_process(delta):
@@ -282,7 +282,7 @@ func get_target_position():
 	
 	# Return next wandering position
 	elif behaviourState == WANDERING:
-		return Utils.generate_position_in_mob_area(batSpawnArea, navigation_tile_map, collision_radius)
+		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius)
 			
 	# Return next searching position
 	elif behaviourState == SEARCHING:
