@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="74" nextobjectid="5659">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="76" nextobjectid="5659">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/trees-treetrunks.tsx"/>
  <tileset firstgid="461" source="../tilesets/small-trees-treetrunks.tsx"/>
@@ -24,7 +24,7 @@
  <objectgroup id="72" name="mobSpawns">
   <object id="5651" name="batSpawning" type="area" x="912" y="112">
    <properties>
-    <property name="biome" propertytype="biomes as jsonfile" value="forest"/>
+    <property name="biome" value="forest"/>
     <property name="max_mobs" type="int" value="15"/>
    </properties>
    <polygon points="0,0 -144,48 -272,160 -368,288 -384,400 -416,544 -352,592 -224,576 -176,480 -96,448 48,432 112,304 160,192 144,80 48,16"/>
@@ -19477,6 +19477,8 @@
    <object id="5586" gid="468" x="-2176" y="48" width="16" height="16"/>
   </objectgroup>
  </group>
+ <group id="74" name="ambientMobs navigation"/>
+ <group id="75" name="ambientMobsLayer"/>
  <objectgroup id="65" name="playerSpawns">
   <object id="5593" name="player_spawn_from_camp" type="area" x="-32" y="757" width="48" height="23">
    <properties>

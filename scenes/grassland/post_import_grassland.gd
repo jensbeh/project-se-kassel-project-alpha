@@ -1,7 +1,8 @@
 extends Node
 
 
-var navTilemap = TileMap.new()
+var compressed_tilemap = TileMap.new()
+var mobs_nav_tilemap = TileMap.new()
 
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
@@ -11,26 +12,80 @@ func post_import(scene):
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
 	
-	# Add navigation tilemap
+	# Compress all tilemaps to one
+	compress_tilemaps(scene)
+	
+	# Add navigation tilemap for mobs
 	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195
 	# Also in every TileMap all TileSets are stored
 	var dirtLvl0TileMap : TileMap = scene.find_node("dirt lvl0")
-	navTilemap.tile_set = dirtLvl0TileMap.tile_set
-	navTilemap.cell_quadrant_size = 1
-	navTilemap.cell_y_sort = false
-	navTilemap.cell_clip_uv = true
-	navTilemap.cell_size = Vector2(16,16)
-	navTilemap.name = "NavigationTileMap"
+	mobs_nav_tilemap = compressed_tilemap
+	mobs_nav_tilemap.tile_set = dirtLvl0TileMap.tile_set
+	mobs_nav_tilemap.cell_quadrant_size = 1
+	mobs_nav_tilemap.cell_y_sort = false
+	mobs_nav_tilemap.cell_clip_uv = true
+	mobs_nav_tilemap.cell_size = Vector2(16,16)
+	mobs_nav_tilemap.name = "NavigationTileMap"
+	
 	
 	# merge all tilemaps and collisionshapes from "ground" together
-	iterate_over_collisionshapes_and_tilemaps(scene.find_node("ground"))
+	remove_collisionshapes_from_tilemap(mobs_nav_tilemap, scene.find_node("ground"))
 	
-	# Setup Navigation2D
+	# Setup Navigation2D for mobs
 	var navigation : Node2D = scene.find_node("navigation")
-	var navigation2d = Navigation2D.new()
-	navigation.replace_by(navigation2d, true)
-	scene.find_node("Navigation2D").add_child(navTilemap)
-	navTilemap.set_owner(scene)
+	var mobs_navigation2d = Navigation2D.new()
+	mobs_navigation2d.name = "mobs_navigation2d"
+	navigation.replace_by(mobs_navigation2d, true)
+	scene.find_node("mobs_navigation2d").add_child(mobs_nav_tilemap)
+	mobs_nav_tilemap.set_owner(scene)
+	
+	
+	
+	# Setup Navigation2D for ambient mobs
+	var ambient_mobs_navigation : Node2D = scene.find_node("ambientMobs navigation")
+	var ambient_mobs_navigation2d = Navigation2D.new()
+	ambient_mobs_navigation2d.name = "ambient_mobs_navigation2d"
+	ambient_mobs_navigation.replace_by(ambient_mobs_navigation2d, true)
+	
+	# Add navigation polygon for ambient mobs
+	var navigation_polygon_instance = NavigationPolygonInstance.new()
+	var navigation_polygon = NavigationPolygon.new()
+	
+	var tile_polygon = PoolVector2Array()
+	var rec = compressed_tilemap.get_used_rect()
+
+	var topleft = rec.position * 16
+	var topright = Vector2(rec.end.x, rec.position.y) * 16
+	var bottomleft = Vector2(rec.position.x, rec.end.y) * 16
+	var bottomright = Vector2(rec.end.x, rec.end.y) * 16
+	tile_polygon.append(topleft)
+	tile_polygon.append(topright)
+	tile_polygon.append(bottomright)
+	tile_polygon.append(bottomleft)
+	navigation_polygon.add_outline(tile_polygon)
+	
+#	var used_tiles_in_compressed_tilemap = compressed_tilemap.get_used_cells()
+#	var a = [used_tiles_in_compressed_tilemap[0], used_tiles_in_compressed_tilemap[1]]
+#	for cellPos in used_tiles_in_compressed_tilemap:
+#		var tile_polygon = PoolVector2Array()
+#		var polygon_offset = compressed_tilemap.map_to_world(cellPos)
+#		var topleft = polygon_offset
+#		var topright = Vector2(polygon_offset.x + 16, polygon_offset.y)
+#		var bottomleft = Vector2(polygon_offset.x, polygon_offset.y + 16)
+#		var bottomright = Vector2(polygon_offset.x + 16, polygon_offset.y + 16)
+#
+#		tile_polygon.append(topleft)
+#		tile_polygon.append(topright)
+#		tile_polygon.append(bottomright)
+#		tile_polygon.append(bottomleft)
+#		navigation_polygon.add_outline(tile_polygon)
+
+
+	navigation_polygon.make_polygons_from_outlines()
+	
+	navigation_polygon_instance.navpoly = navigation_polygon
+	ambient_mobs_navigation2d.add_child(navigation_polygon_instance)
+	navigation_polygon_instance.set_owner(scene)
 	
 	
 	# Setup entitylayer to YSorts
@@ -87,6 +142,7 @@ func post_import(scene):
 	print("reimported " + scene.name + "!")
 	return scene
 
+
 # Method to iterate over all nodes and sets specific properties
 func iterate_over_nodes(node):
 	for child in node.get_children():
@@ -97,20 +153,29 @@ func iterate_over_nodes(node):
 				child.cell_quadrant_size = 1
 				child.cell_y_sort = false
 
-# Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
-func iterate_over_collisionshapes_and_tilemaps(node):
+
+# Method to iterate over all nodes in "scene" and compresses all tilemaps to only one
+func compress_tilemaps(node):
 	for child in node.get_children():
 		if child.get_child_count() > 0:
-			iterate_over_collisionshapes_and_tilemaps(child)
+			compress_tilemaps(child)
 		else:
 			if child is TileMap:
 				for cellPos in child.get_used_cells():
-					navTilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
-			
-			elif child is CollisionShape2D and child.get_parent() is StaticBody2D:
+					compressed_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
+
+
+
+# Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
+func remove_collisionshapes_from_tilemap(tilemap, node_with_collisionshapes):
+	for child in node_with_collisionshapes.get_children():
+		if child.get_child_count() > 0:
+			remove_collisionshapes_from_tilemap(tilemap, child)
+		else:
+			if child is CollisionShape2D and child.get_parent() is StaticBody2D:
 				var xExtentsFactor = 2
 				var yExtentsFactor = 2
 					
 				for x in (child.shape.extents.x * xExtentsFactor):
 					for y in (child.shape.extents.y * yExtentsFactor):
-						navTilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), -1)
+						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), -1)

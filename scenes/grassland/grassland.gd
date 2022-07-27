@@ -11,10 +11,13 @@ var init_transition_data = null
 # Nodes
 onready var changeScenesObject = $map_grassland/changeScenes
 onready var stairsObject = $map_grassland/ground/stairs
-onready var navigation = $map_grassland/Navigation2D
-onready var navigationTileMap = $map_grassland/Navigation2D/NavigationTileMap
+onready var mobsNavigation2d = $map_grassland/mobs_navigation2d
+onready var mobsNavigationTileMap = $map_grassland/mobs_navigation2d/NavigationTileMap
+onready var ambientMobsNavigation2d = $map_grassland/ambient_mobs_navigation2d
+onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_navigation2d/NavigationPolygonInstance
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
+onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,7 +39,7 @@ func _setup_scene_in_background():
 	
 	
 	# Setup pathfinding
-	PathfindingService.init(navigation)
+	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
 	
 	# Spawn all mobs
 	spawn_mobs()
@@ -98,10 +101,24 @@ func spawn_mobs():
 			if mobScene != null:
 				for _num in range(mob_count_breakdown[i_mob]):
 					var mob_instance = mobScene.instance()
-					mob_instance.init(spawnArea, navigationTileMap)
+					mob_instance.init(spawnArea, mobsNavigationTileMap)
 					mobsLayer.add_child(mob_instance)
 			else:
 				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+	
+	# Spawn ambient mobs
+	var polygon = Polygon2D.new()
+	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
+	var ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
+	# Spawn butterflies
+	var mobScene : Resource = load("res://scenes/mobs/Butterfly.tscn")
+	if mobScene != null:
+		for i in range(50):
+			var mob_instance = mobScene.instance()
+			mob_instance.init(ambientMobsSpawnArea)
+			ambientMobsLayer.add_child(mob_instance)
+	else:
+		printerr("\"Butterfly\" scene can't be loaded!")
 
 
 # Method to handle collision detetcion dependent of the collision object type
