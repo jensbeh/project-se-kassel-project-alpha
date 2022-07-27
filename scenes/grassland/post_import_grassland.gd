@@ -63,26 +63,7 @@ func post_import(scene):
 	tile_polygon.append(bottomright)
 	tile_polygon.append(bottomleft)
 	navigation_polygon.add_outline(tile_polygon)
-	
-#	var used_tiles_in_compressed_tilemap = compressed_tilemap.get_used_cells()
-#	var a = [used_tiles_in_compressed_tilemap[0], used_tiles_in_compressed_tilemap[1]]
-#	for cellPos in used_tiles_in_compressed_tilemap:
-#		var tile_polygon = PoolVector2Array()
-#		var polygon_offset = compressed_tilemap.map_to_world(cellPos)
-#		var topleft = polygon_offset
-#		var topright = Vector2(polygon_offset.x + 16, polygon_offset.y)
-#		var bottomleft = Vector2(polygon_offset.x, polygon_offset.y + 16)
-#		var bottomright = Vector2(polygon_offset.x + 16, polygon_offset.y + 16)
-#
-#		tile_polygon.append(topleft)
-#		tile_polygon.append(topright)
-#		tile_polygon.append(bottomright)
-#		tile_polygon.append(bottomleft)
-#		navigation_polygon.add_outline(tile_polygon)
-
-
 	navigation_polygon.make_polygons_from_outlines()
-	
 	navigation_polygon_instance.navpoly = navigation_polygon
 	ambient_mobs_navigation2d.add_child(navigation_polygon_instance)
 	navigation_polygon_instance.set_owner(scene)

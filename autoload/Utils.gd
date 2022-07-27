@@ -42,15 +42,18 @@ func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 	
 	# When transition is with area to spawn on
 	elif init_transition_data.is_type(TransitionData.GameArea):
-		var player_spawn_area = null
+		var player_spawn_area : Area2D = null
 		for child in scene.find_node("playerSpawns").get_children():
 			if "player_spawn" in child.name:
 				if child.has_meta("spawn_area_id"):
 					if child.get_meta("spawn_area_id") == init_transition_data.get_spawn_area_id():
 						player_spawn_area = child
 						break
-
-		player_position = Vector2(player_spawn_area.position.x + 5, player_spawn_area.position.y)
+		var shape : RectangleShape2D = player_spawn_area.get_child(0).shape
+		var top_left = player_spawn_area.position
+		var half_width = int((shape.extents.x * 2) / 2)
+		var half_heigth = int((shape.extents.y * 2) / 2)
+		player_position = Vector2(top_left.x + half_width, top_left.y + half_heigth)
 		view_direction = init_transition_data.get_view_direction()
 		
 	# Set the player_position and the view_direction to the current_player
