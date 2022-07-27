@@ -191,4 +191,21 @@ func generate_position_in_polygon(area_info):
 	var randY = (1 - sqrt(r1)) * A.y + (sqrt(r1) * (1 - r2)) * B.y + (sqrt(r1) * r2) * C.y
 	
 	var position = Vector2(randX, randY)
-	return position
+	# Check if spawn is in camera screen -> if it is then generate new position
+	if not is_position_in_camera_screen(position):
+		return position
+	else:
+		return generate_position_in_polygon(area_info)
+
+
+func is_position_in_camera_screen(position):
+	var camera : Camera2D = Utils.get_current_player().get_node("Camera2D")
+	var canvas_transform = camera.get_canvas_transform()
+	var top_left = -canvas_transform.origin / canvas_transform.get_scale()
+	var size = camera.get_viewport_rect().end * camera.zoom
+	var bottom_right = Vector2(top_left.x + size.x, top_left.y + size.y)
+	
+	if position.x >= top_left.x and position.y >= top_left.y and position.x <= bottom_right.x and position.y <= bottom_right.y:
+		return true
+	else:
+		return false

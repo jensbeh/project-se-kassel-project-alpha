@@ -1,5 +1,8 @@
 extends KinematicBody2D
 
+# Mob specific
+var spawn_time
+
 # Variables
 enum {
 	IDLING,
@@ -34,7 +37,7 @@ onready var line2D = $Line2D
 func _ready():
 	# Set spawn_position
 	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea)
-	position = spawn_position
+	position = spawn_position # Vector2(380,538)
 
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
@@ -46,8 +49,9 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_ambientMobsSpawnArea):
+func init(init_ambientMobsSpawnArea, init_spawn_time):
 	ambientMobsSpawnArea = init_ambientMobsSpawnArea
+	spawn_time = init_spawn_time
 
 func _physics_process(delta):
 	# Handle behaviour

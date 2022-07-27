@@ -20,6 +20,13 @@ enum SceneType {
 	DUNGEON
 }
 
+# Spawn time
+enum SpawnTime {
+	ONLY_DAY,
+	ONLY_NIGHT,
+	ALWAYS
+}
+
 # Darkness lights environment
 const DAY_COLOR = Color("ffffff")
 const SUNSET_COLOR = Color("ff8f53")

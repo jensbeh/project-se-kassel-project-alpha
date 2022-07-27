@@ -1,9 +1,17 @@
 extends Node2D
 
+# Map specific
+var current_ambient_mobs = 0
+var max_ambient_mobs = 50
+
 # Variables
 var thread
 var player_in_change_scene_area = false
 var current_area : Area2D = null
+var mob_list : Array
+var mobs_to_remove : Array
+var check_spawn_despawn_timer = 0.0
+var max_check_spawn_despawn_time = 15.0
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -44,6 +52,10 @@ func _setup_scene_in_background():
 	# Spawn all mobs
 	spawn_mobs()
 	
+	# Connect signals
+	DayNightCycle.connect("change_to_sunrise", self, "on_change_to_sunrise")
+	DayNightCycle.connect("change_to_night", self, "on_change_to_night")
+	
 	
 	call_deferred("_on_setup_scene_done")
 	
@@ -53,6 +65,15 @@ func _on_setup_scene_done():
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+
+
+func _physics_process(delta):
+	check_spawn_despawn_timer += delta
+	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
+		check_spawn_despawn_timer = 0.0
+		print("-------------------------> REMOVE MOBS")
+		remove_mobs(mobs_to_remove)
+		spawn_mobs()
 
 # Method to setup the player with all informations
 func setup_player():
@@ -79,46 +100,11 @@ func set_transition_data(transition_data):
 
 
 func spawn_mobs():
-	for area in mobSpawns.get_children():
-		var biome : String = area.get_meta("biome")
-		var max_mobs = area.get_meta("max_mobs")
-		
-		# Get biome data from json
-		var file = File.new()
-		file.open("res://assets/biomes/"+ biome + ".json", File.READ)
-		var biome_json = parse_json(file.get_as_text())
-		var biome_mobs : Array = biome_json["data"]["mobs"]
-		var biome_mobs_count = biome_mobs.size()
-		
-		# Generate spawning areas
-		var spawnArea = Utils.generate_mob_spawn_area_from_polygon(area.position, area.get_child(0).polygon)
-		
-		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, max_mobs)
-		# Iterate over diffent mobs classes
-		for i_mob in range(biome_mobs.size()):
-			# Load and spawn mobs
-			var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
-			if mobScene != null:
-				for _num in range(mob_count_breakdown[i_mob]):
-					var mob_instance = mobScene.instance()
-					mob_instance.init(spawnArea, mobsNavigationTileMap)
-					mobsLayer.add_child(mob_instance)
-			else:
-				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+	# Spawn area mobs
+	spawn_area_mobs()
 	
 	# Spawn ambient mobs
-	var polygon = Polygon2D.new()
-	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
-	var ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
-	# Spawn butterflies
-	var mobScene : Resource = load("res://scenes/mobs/Butterfly.tscn")
-	if mobScene != null:
-		for i in range(50):
-			var mob_instance = mobScene.instance()
-			mob_instance.init(ambientMobsSpawnArea)
-			ambientMobsLayer.add_child(mob_instance)
-	else:
-		printerr("\"Butterfly\" scene can't be loaded!")
+	spawn_ambient_mobs()
 
 
 # Method to handle collision detetcion dependent of the collision object type
@@ -175,3 +161,116 @@ func setup_stair_areas():
 			# connect Area2D with functions to handle body action
 			stair.connect("body_entered", self, "body_entered_stair_area", [stair])
 			stair.connect("body_exited", self, "body_exited_stair_area", [stair])
+
+func on_change_to_sunrise():
+	# Spawn specific day mobs and remove specific night mobs
+	print("day")
+	# Remove mobs
+	var remove_mobs : Array
+	for mob in mob_list:
+		if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
+			remove_mobs.append(mob)
+	remove_mobs(remove_mobs)
+	
+	# Spawn mobs
+	spawn_mobs()
+
+
+func on_change_to_night():
+	# Spawn specific night mobs and remove specific day mobs
+	print("night")
+	# Remove mobs
+	var remove_mobs : Array
+	for mob in mob_list:
+		if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
+			remove_mobs.append(mob)
+	remove_mobs(remove_mobs)
+	
+	# Spawn mobs
+	spawn_mobs()
+
+
+func remove_mobs(mobs : Array):
+	for mob in mobs:
+		# Remove mob if it is not in camera screen
+		if not Utils.is_position_in_camera_screen(mob.global_position):
+			if mob.is_in_group("Ambient Mob"):
+				current_ambient_mobs -= 1
+				print("removed ambient mob: " + str(current_ambient_mobs))
+			mob.get_parent().remove_child(mob)
+			mob.queue_free()
+			mob_list.remove(mob_list.find(mob))
+			if mob in mobs_to_remove:
+				mobs_to_remove.remove(mobs_to_remove.find(mob))
+			
+			
+		else:
+			# Add mob to list where is will be removed when its not visible in screen anymore
+			if not mob in mobs_to_remove:
+				mobs_to_remove.append(mob)
+
+
+func spawn_ambient_mobs():
+	# Spawn ambient mobs
+	var polygon = Polygon2D.new()
+	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
+	var ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
+	
+	# Check time
+	if DayNightCycle.is_night:
+		# NIGHT
+		# Spawn moths
+		var mobScene : Resource = load("res://scenes/mobs/Moth.tscn")
+		if mobScene != null:
+			while current_ambient_mobs < max_ambient_mobs:
+				var mob_instance = mobScene.instance()
+				mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
+				ambientMobsLayer.add_child(mob_instance)
+				mob_list.append(mob_instance)
+				current_ambient_mobs += 1
+		else:
+			printerr("\"Moth\" scene can't be loaded!")
+
+	else:
+		# DAY
+		# Spawn butterflies
+		var mobScene : Resource = load("res://scenes/mobs/Butterfly.tscn")
+		if mobScene != null:
+			while current_ambient_mobs < max_ambient_mobs:
+				var mob_instance = mobScene.instance()
+				mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_DAY)
+				ambientMobsLayer.add_child(mob_instance)
+				mob_list.append(mob_instance)
+				current_ambient_mobs += 1
+		else:
+			printerr("\"Butterfly\" scene can't be loaded!")
+
+
+func spawn_area_mobs():
+	for area in mobSpawns.get_children():
+		var biome : String = area.get_meta("biome")
+		var max_mobs = area.get_meta("max_mobs")
+		
+		# Get biome data from json
+		var file = File.new()
+		file.open("res://assets/biomes/"+ biome + ".json", File.READ)
+		var biome_json = parse_json(file.get_as_text())
+		var biome_mobs : Array = biome_json["data"]["mobs"]
+		var biome_mobs_count = biome_mobs.size()
+		
+		# Generate spawning areas
+		var spawnArea = Utils.generate_mob_spawn_area_from_polygon(area.position, area.get_child(0).polygon)
+		
+		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, max_mobs)
+		# Iterate over diffent mobs classes
+		for i_mob in range(biome_mobs.size()):
+			# Load and spawn mobs
+			var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
+			if mobScene != null:
+				for _num in range(1):
+					var mob_instance = mobScene.instance()
+					mob_instance.init(spawnArea, mobsNavigationTileMap)
+					mobsLayer.add_child(mob_instance)
+					mob_list.append(mob_instance)
+			else:
+				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")

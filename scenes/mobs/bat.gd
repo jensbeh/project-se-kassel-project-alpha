@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Mob specific
 var health = 100
 var damage = 15
+var spawn_time = Constants.SpawnTime.ALWAYS
 
 # Variables
 enum {
