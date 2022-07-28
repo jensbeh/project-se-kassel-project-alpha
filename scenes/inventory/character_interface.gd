@@ -135,3 +135,4 @@ func _on_Button_gui_input(event):
 			Utils.get_current_player().set_movment_animation(true)
 			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
 			PlayerData.save_inventory()
+			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())

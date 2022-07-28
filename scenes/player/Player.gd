@@ -113,7 +113,7 @@ func _physics_process(_delta):
 	else:
 		animation_state.travel("Idle")
 	
-	if movement:	
+	if movement:
 		velocity = move_and_slide(velocity)
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
@@ -137,6 +137,7 @@ func _input(event):
 			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
 				npc.set_interacted(false)
 			PlayerData.save_inventory()
+			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
 	# Open game menu with "esc"
 	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
@@ -148,17 +149,20 @@ func _input(event):
 		set_movement(true)
 		set_movment_animation(true)
 		Utils.get_scene_manager().get_child(3).get_node("GameMenu").queue_free()
+	# open character inventory with "i"
 	if event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
 		Utils.get_scene_manager().get_child(3).add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+	# close character inventory with "i"
 	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
 		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
 		PlayerData.save_inventory()
+		save_player_data(Utils.get_current_player().get_data())
 		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
 
 # Method to activate or disable the possibility of interaction
@@ -387,21 +391,33 @@ func get_gold():
 	
 func set_gold(new_gold_value):
 	gold = new_gold_value
+	data.gold = new_gold_value
 	
 func get_max_health():
 	return max_health
 	
 func set_max_health(new_max_health):
 	max_health = new_max_health
+	data.maxLP = new_max_health
 
 func get_attack():
 	return attack
 	
 func set_attack(new_attack_value):
 	attack = new_attack_value
+	data.attack = new_attack_value
 
 func set_data(new_data):
 	data = new_data
 	
 func get_data():
 	return data
+	
+func save_player_data(player_data):
+	var dir = Directory.new()
+	if !dir.dir_exists("user://character/"):
+		dir.make_dir("user://character/")
+	var save_game = File.new()
+	save_game.open("user://character/" + player_data.id + ".json", File.WRITE)
+	save_game.store_line(to_json(player_data))
+	save_game.close()

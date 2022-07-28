@@ -45,6 +45,7 @@ func _on_Button_gui_input(event):
 			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
 				npc.set_interacted(false)
 			MerchantData.save_merchant_inventory()
+			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
 
 # Sets the correct name of the npc
 func set_name(npc_name):
