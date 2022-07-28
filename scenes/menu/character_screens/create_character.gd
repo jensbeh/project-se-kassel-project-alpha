@@ -547,7 +547,7 @@ func start_game():
 
 func create_player_inventory():
 	var save_player = File.new()
-	save_player.open("res://assets/data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open("user://data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
 	# sets lp
