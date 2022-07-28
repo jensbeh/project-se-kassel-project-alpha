@@ -11,7 +11,7 @@ func post_import(scene):
 	iterate_over_nodes(scene)
 	
 	# Compress all tilemaps to one
-	compress_tilemaps(scene)
+	compress_tilemaps(scene.find_node("groundlayer"))
 	
 	# Add navigation tilemap for mobs
 	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195

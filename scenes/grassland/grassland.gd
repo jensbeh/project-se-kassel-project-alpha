@@ -57,8 +57,8 @@ func _setup_scene_in_background():
 	spawn_mobs()
 	
 	# Connect signals
-	DayNightCycle.connect("change_to_sunrise", self, "on_change_to_sunrise")
-	DayNightCycle.connect("change_to_night", self, "on_change_to_night")
+	var _error1 = DayNightCycle.connect("change_to_sunrise", self, "on_change_to_sunrise")
+	var _error2 = DayNightCycle.connect("change_to_night", self, "on_change_to_night")
 	
 	
 	call_deferred("_on_setup_scene_done")
@@ -192,7 +192,7 @@ func on_change_to_sunrise():
 	# Spawn specific day mobs and remove specific night mobs
 	print("day")
 	# Remove mobs
-	var remove_mobs : Array
+	var remove_mobs : Array = []
 	for mob in mob_list:
 		if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
 			remove_mobs.append(mob)
@@ -206,7 +206,7 @@ func on_change_to_night():
 	# Spawn specific night mobs and remove specific day mobs
 	print("night")
 	# Remove mobs
-	var remove_mobs : Array
+	var remove_mobs : Array = []
 	for mob in mob_list:
 		if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
 			remove_mobs.append(mob)
@@ -284,16 +284,15 @@ func spawn_area_mobs():
 #								"biome_mobs_count": 1
 #								}
 	
-	for current_area in spawning_areas.keys():
-		var biome_mobs_count = spawning_areas[current_area]["biome_mobs_count"]
-		var max_mobs = spawning_areas[current_area]["max_mobs"]
-		var biome_mobs = spawning_areas[current_area]["biome_mobs"]
-		spawning_areas[current_area]["current_mobs_count"]
+	for current_spawn_area in spawning_areas.keys():
+		var biome_mobs_count = spawning_areas[current_spawn_area]["biome_mobs_count"]
+		var max_mobs = spawning_areas[current_spawn_area]["max_mobs"]
+		var biome_mobs = spawning_areas[current_spawn_area]["biome_mobs"]
 		
-		var spawn_mobs_counter = max_mobs - spawning_areas[current_area]["current_mobs_count"]
+		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
 		
 		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, spawn_mobs_counter)
-		print("mob_count_breakdown: " + str(mob_count_breakdown))
+#		print("mob_count_breakdown: " + str(mob_count_breakdown))
 		# Iterate over diffent mobs classes
 		for i_mob in range(biome_mobs.size()):
 			# Load and spawn mobs
@@ -301,10 +300,10 @@ func spawn_area_mobs():
 			if mobScene != null:
 				for _num in range(mob_count_breakdown[i_mob]):
 					var mob_instance = mobScene.instance()
-					mob_instance.init(current_area, mobsNavigationTileMap)
+					mob_instance.init(current_spawn_area, mobsNavigationTileMap)
 					mobsLayer.add_child(mob_instance)
 					mob_list.append(mob_instance)
-					spawning_areas[current_area]["current_mobs_count"] += 1
-					print(spawning_areas[current_area]["current_mobs_count"])
+					spawning_areas[current_spawn_area]["current_mobs_count"] += 1
+#					print(spawning_areas[current_spawn_area]["current_mobs_count"])
 			else:
 				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")

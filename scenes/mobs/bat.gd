@@ -11,7 +11,7 @@ enum {
 	SEARCHING,
 	WANDERING,
 	HUNTING,
-	ATTACKING
+#	ATTACKING
 }
 var velocity = Vector2(0, 0)
 var behaviourState = IDLING
@@ -52,10 +52,11 @@ onready var line2D = $Line2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set spawn_position
+#	print("start ready")
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius)
 	position = spawn_position
-
+#	print(position)
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
 	max_ideling_time = rng.randi_range(0, 8)
@@ -66,6 +67,11 @@ func _ready():
 	# Setup searching variables
 	max_searching_radius = playerDetectionZone.get_child(0).shape.radius
 	min_searching_radius = max_searching_radius / 3
+	
+#	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
+#	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
+	
+#	print("end ready")
 
 # Method to init variables, typically called after instancing
 func init(init_spawnArea, new_navigation_tile_map):
@@ -135,10 +141,10 @@ func _physics_process(delta):
 			# Mob is doing nothing, just standing and searching for player
 			search_player()
 
-		ATTACKING:
-			# check if mob can attack
-			if !playerAttackZone.mob_can_attack:
-				update_behaviour(HUNTING)
+#		ATTACKING:
+#			# check if mob can attack
+#			if !playerAttackZone.mob_can_attack:
+#				update_behaviour(HUNTING)
 
 
 func move_to_player(delta):
@@ -154,10 +160,6 @@ func move_to_player(delta):
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
-		
-		# check if mob can attack
-		if playerAttackZone.mob_can_attack:
-			update_behaviour(ATTACKING)
 		
 		# update sprite direction
 		mobSprite.flip_h = velocity.x > 0
@@ -259,16 +261,16 @@ func update_behaviour(new_behaviour):
 			behaviourState = SEARCHING
 			mob_need_path = false
 
-		ATTACKING:
-			if behaviourState != ATTACKING:
-				# Reset path in case player is seen but e.g. state is wandering
-				path.resize(0)
-				
-				# Update line path
-				line2D.points = []
-#			print("ATTACKING")
-			behaviourState = ATTACKING
-			mob_need_path = false
+#		ATTACKING:
+#			if behaviourState != ATTACKING:
+#				# Reset path in case player is seen but e.g. state is wandering
+#				path.resize(0)
+#
+#				# Update line path
+#				line2D.points = []
+##			print("ATTACKING")
+#			behaviourState = ATTACKING
+#			mob_need_path = false
 
 # Method returns next target position to pathfinding_service
 func get_target_position():
@@ -297,3 +299,10 @@ func update_path(new_path):
 	
 	# Update line path
 	line2D.points = path
+
+#
+#func on_player_entered_attack_zone():
+#	update_behaviour(ATTACKING)
+#
+#func on_player_exited_attack_zone():
+#	update_behaviour(HUNTING)

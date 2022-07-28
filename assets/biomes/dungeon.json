@@ -1,0 +1,8 @@
+{
+	"name": "Dungeon",
+	"data": {
+		"mobs": [
+			"Bat",
+		]
+	}
+}
