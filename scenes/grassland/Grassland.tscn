@@ -1559,6 +1559,10 @@ position = Vector2( 184, 570 )
 [node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="16"]
 parameters/playback = SubResource( 15 )
 
+[node name="Camera2D" parent="map_grassland/entitylayer/playerlayer/Player" index="17"]
+limit_left = -4335
+limit_top = 794
+
 [node name="ambient_mobs_navigation2d" parent="map_grassland" index="7"]
 visible = false
 

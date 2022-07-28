@@ -31,6 +31,7 @@ script = ExtResource( 2 )
 position = Vector2( 0, -5 )
 frames = SubResource( 12 )
 animation = "animation"
+frame = 1
 playing = true
 
 [node name="Collision" type="CollisionShape2D" parent="."]
@@ -39,5 +40,6 @@ shape = SubResource( 7 )
 disabled = true
 
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
