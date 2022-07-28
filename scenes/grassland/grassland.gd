@@ -123,7 +123,7 @@ func setup_spawning_areas():
 		# Save spawning area
 		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
 		
-		print(spawning_areas)
+#		print(spawning_areas)
 
 func spawn_mobs():
 	# Spawn area mobs

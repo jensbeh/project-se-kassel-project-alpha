@@ -85,7 +85,7 @@ func move_to_position(delta):
 		# Update line
 		line2D.points = path
 	else:
-		# Move Bat
+		# Move mob
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)

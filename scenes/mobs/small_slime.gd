@@ -26,8 +26,8 @@ var min_searching_radius
 var start_searching_position
 
 # Constants
-const HUNTING_SPEED = 100
-const WANDERING_SPEED = 50
+const HUNTING_SPEED = 50
+const WANDERING_SPEED = 25
 
 # Mob movment
 var acceleration = 350
@@ -43,7 +43,10 @@ var searching_time = 0.0
 var max_searching_time
 
 # Nodes
-onready var mobSprite = $AnimatedSprite
+onready var mobSprite = $Sprite
+onready var animationPlayer = $AnimationPlayer
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 onready var collision = $Collision
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var playerAttackZone = $PlayerAttackZone
@@ -72,6 +75,12 @@ func _ready():
 #	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
 	
 #	print("end ready")
+
+	# Animation
+	animationTree.active = true
+	animationTree.set("parameters/IDLE/blend_position", velocity)
+	animationTree.set("parameters/WALK/blend_position", velocity)
+
 
 # Method to init variables, typically called after instancing
 func init(init_spawnArea, new_navigation_tile_map):
@@ -215,6 +224,7 @@ func update_behaviour(new_behaviour):
 #			print("IDLING")
 			behaviourState = IDLING
 			mob_need_path = false
+			animationState.travel("IDLE")
 
 		WANDERING:
 			speed = WANDERING_SPEED
@@ -229,6 +239,9 @@ func update_behaviour(new_behaviour):
 #			print("WANDERING")
 			behaviourState = WANDERING
 			mob_need_path = true
+			animationTree.set("parameters/IDLE/blend_position", velocity)
+			animationTree.set("parameters/WALK/blend_position", velocity)
+			animationState.travel("WALK")
 
 		HUNTING:
 			speed = HUNTING_SPEED
@@ -242,6 +255,7 @@ func update_behaviour(new_behaviour):
 #			print("HUNTING")
 			behaviourState = HUNTING
 			mob_need_path = true
+			animationState.travel("WALK")
 
 		SEARCHING:
 			# Set variables
@@ -260,6 +274,7 @@ func update_behaviour(new_behaviour):
 #			print("SEARCHING")
 			behaviourState = SEARCHING
 			mob_need_path = false
+			animationState.travel("WALK")
 
 #		ATTACKING:
 #			if behaviourState != ATTACKING:

@@ -26,7 +26,7 @@ func post_import(scene):
 	mobs_nav_tilemap.cell_clip_uv = true
 	mobs_nav_tilemap.cell_size = Vector2(16,16)
 	mobs_nav_tilemap.name = "NavigationTileMap"
-	
+	mobs_nav_tilemap.visible = false
 	
 	# merge all tilemaps and collisionshapes from "ground" together
 	remove_collisionshapes_from_tilemap(mobs_nav_tilemap, scene.find_node("ground"))
@@ -35,6 +35,7 @@ func post_import(scene):
 	var navigation : Node2D = scene.find_node("navigation")
 	var mobs_navigation2d = Navigation2D.new()
 	mobs_navigation2d.name = "mobs_navigation2d"
+	mobs_navigation2d.visible = false
 	navigation.replace_by(mobs_navigation2d, true)
 	scene.find_node("mobs_navigation2d").add_child(mobs_nav_tilemap)
 	mobs_nav_tilemap.set_owner(scene)
