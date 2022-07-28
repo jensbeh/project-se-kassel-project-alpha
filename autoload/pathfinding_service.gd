@@ -79,7 +79,8 @@ func generate_pathes(mobs_dic : Dictionary):
 
 
 func send_path_to_mob(mob, new_path):
-	mob.call_deferred("update_path", new_path)
+	if mob != null: # Because scene could be change and/or mob is despawned meanwhile
+		mob.call_deferred("update_path", new_path)
 
 
 func task_finished():

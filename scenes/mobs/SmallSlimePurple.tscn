@@ -299,8 +299,8 @@ height = 0.0
 [sub_resource type="CircleShape2D" id=8]
 radius = 96.0
 
-[sub_resource type="CircleShape2D" id=9]
-radius = 24.1868
+[sub_resource type="CircleShape2D" id=40]
+radius = 24.0
 
 [node name="SmallSlimePurple" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 8
@@ -344,8 +344,8 @@ shape = SubResource( 8 )
 [node name="PlayerAttackZone" parent="." instance=ExtResource( 4 )]
 position = Vector2( 0, -3 )
 
-[node name="CollisionPolygon2D" parent="PlayerAttackZone" index="0"]
-shape = SubResource( 9 )
+[node name="AttackShape" parent="PlayerAttackZone" index="0"]
+shape = SubResource( 40 )
 
 [node name="Line2D" type="Line2D" parent="."]
 visible = false

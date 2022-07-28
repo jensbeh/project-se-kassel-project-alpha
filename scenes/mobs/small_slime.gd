@@ -49,7 +49,9 @@ onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var collision = $Collision
 onready var playerDetectionZone = $PlayerDetectionZone
+onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
 onready var playerAttackZone = $PlayerAttackZone
+onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
 onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
@@ -68,7 +70,7 @@ func _ready():
 	mobSprite.flip_h = rng.randi_range(0,1)
 	
 	# Setup searching variables
-	max_searching_radius = playerDetectionZone.get_child(0).shape.radius
+	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius / 3
 	
 #	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
