@@ -4,6 +4,9 @@
 		"mobs": [
 			"Bat",
 			"SmallSlimePurple",
+			"SmallSlimeGreen",
+			"SmallSlimeOrange",
+			"SmallSlimeRed",
 		]
 	}
 }
