@@ -546,6 +546,9 @@ func start_game():
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func create_player_inventory():
+	var dir = Directory.new()
+	if !dir.dir_exists("user://data/"):
+		dir.make_dir("user://data/")
 	var save_player = File.new()
 	save_player.open("user://data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
