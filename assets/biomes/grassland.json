@@ -1,0 +1,12 @@
+{
+	"name": "Grassland",
+	"data": {
+		"mobs": [
+			"Bat",
+			"SmallSlimePurple",
+			"SmallSlimeGreen",
+			"SmallSlimeOrange",
+			"SmallSlimeRed",
+		]
+	}
+}

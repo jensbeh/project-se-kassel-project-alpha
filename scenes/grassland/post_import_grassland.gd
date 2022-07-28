@@ -134,6 +134,8 @@ func iterate_over_nodes(node):
 			if child is TileMap:
 				child.cell_quadrant_size = 1
 				child.cell_y_sort = false
+			elif child is CollisionPolygon2D and child.get_parent().get_parent().name == "mobSpawns":
+				child.disabled = true
 
 
 # Method to iterate over all nodes in "scene" and compresses all tilemaps to only one

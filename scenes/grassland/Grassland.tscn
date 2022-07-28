@@ -1480,9 +1480,6 @@ script = ExtResource( 3 )
 
 [node name="map_grassland" parent="." instance=ExtResource( 1 )]
 
-[node name="CollisionPolygon2D" parent="map_grassland/mobSpawns/batSpawning" index="0"]
-polygon = PoolVector2Array( 0, 0, -144, 48, -272, 160, -368, 288, -384, 400, -416, 544, -352, 592, -224, 576, -176, 480, -96, 448, 48, 432, 112, 304, 160, 192, 144, 80, 48.0001, 16 )
-
 [node name="roan" parent="map_grassland/npclayer" index="0" instance=ExtResource( 4 )]
 position = Vector2( -40, 368 )
 
@@ -1563,7 +1560,7 @@ parameters/playback = SubResource( 15 )
 limit_left = -4335
 limit_bottom = 794
 
-[node name="ambient_mobs_navigation2d" parent="map_grassland" index="7"]
+[node name="ambient_mobs_navigation2d" parent="map_grassland" index="6"]
 visible = false
 
 [node name="NavigationPolygonInstance" parent="map_grassland/ambient_mobs_navigation2d" index="0"]

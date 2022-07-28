@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Biomes",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "forest",
+            "dungeon",
+            "grassland",
+            "mountain",
+            "beach"
+        ],
+        "valuesAsFlags": false
+    }
+]

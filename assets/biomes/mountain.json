@@ -1,0 +1,12 @@
+{
+	"name": "Mountain",
+	"data": {
+		"mobs": [
+			"Bat",
+			"SmallSlimePurple",
+			"SmallSlimeGreen",
+			"SmallSlimeOrange",
+			"SmallSlimeRed",
+		]
+	}
+}

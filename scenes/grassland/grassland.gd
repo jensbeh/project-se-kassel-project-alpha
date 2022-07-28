@@ -6,6 +6,7 @@ var max_ambient_mobs = 50
 
 # Variables
 var thread
+var spawn_despawn_thread
 var player_in_change_scene_area = false
 var current_area : Area2D = null
 var mob_list : Array
@@ -13,6 +14,7 @@ var mobs_to_remove : Array
 var check_spawn_despawn_timer = 0.0
 var max_check_spawn_despawn_time = 15.0
 var spawning_areas = {}
+var ambientMobsSpawnArea
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -33,6 +35,7 @@ func _ready():
 	# Setup scene in background
 	thread = Thread.new()
 	thread.start(self, "_setup_scene_in_background")
+	spawn_despawn_thread = Thread.new()
 
 
 # Method to setup this scene with a thread in background
@@ -81,9 +84,18 @@ func _physics_process(delta):
 	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
 		check_spawn_despawn_timer = 0.0
 		print("-------------------------> REMOVE MOBS")
-		remove_mobs(mobs_to_remove)
-		spawn_mobs()
+		spawn_despawn_thread.start(self, "spawn_despawn_in_background", mobs_to_remove)
 
+
+func spawn_despawn_in_background(remove_mobs_list):
+	remove_mobs(remove_mobs_list)
+	spawn_mobs()
+	
+	call_deferred("_on_spawn_despawn_done")
+	
+# Method is called when thread is done and the scene is setup
+func _on_spawn_despawn_done():
+	spawn_despawn_thread.wait_to_finish()
 
 # Method to setup the player with all informations
 func setup_player():
@@ -106,6 +118,7 @@ func setup_player():
 
 
 func setup_spawning_areas():
+	# AreaMobs spawning area
 	for area in mobSpawns.get_children():
 		var biome : String = area.get_meta("biome")
 		var max_mobs = area.get_meta("max_mobs")
@@ -124,6 +137,12 @@ func setup_spawning_areas():
 		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
 		
 #		print(spawning_areas)
+	
+	# AmbientMobs spawning area
+	var polygon = Polygon2D.new()
+	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
+	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
+		
 
 func spawn_mobs():
 	# Spawn area mobs
@@ -196,10 +215,8 @@ func on_change_to_sunrise():
 	for mob in mob_list:
 		if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
 			remove_mobs.append(mob)
-	remove_mobs(remove_mobs)
-	
-	# Spawn mobs
-	spawn_mobs()
+	# Despawn and spawn mobs
+	spawn_despawn_thread.start(self, "spawn_despawn_in_background", remove_mobs)
 
 
 func on_change_to_night():
@@ -210,69 +227,66 @@ func on_change_to_night():
 	for mob in mob_list:
 		if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
 			remove_mobs.append(mob)
-	remove_mobs(remove_mobs)
-	
-	# Spawn mobs
-	spawn_mobs()
+	# Despawn and spawn mobs
+	spawn_despawn_thread.start(self, "spawn_despawn_in_background", remove_mobs)
 
 
 func remove_mobs(mobs : Array):
-	for mob in mobs:
-		# Remove mob if it is not in camera screen
-		if not Utils.is_position_in_camera_screen(mob.global_position):
-			if mob.is_in_group("Ambient Mob"):
-				current_ambient_mobs -= 1
-				print("removed ambient mob: " + str(current_ambient_mobs))
-			elif mob.is_in_group("Enemy"):
-				spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-				print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
-			mob.get_parent().remove_child(mob)
-			mob.queue_free()
-			mob_list.remove(mob_list.find(mob))
-			if mob in mobs_to_remove:
-				mobs_to_remove.remove(mobs_to_remove.find(mob))
-			
-			
-		else:
-			# Add mob to list where is will be removed when its not visible in screen anymore
-			if not mob in mobs_to_remove:
-				mobs_to_remove.append(mob)
+	if mobs.size() > 0:
+		for mob in mobs:
+			# Remove mob if it is not in camera screen
+			if not Utils.is_position_in_camera_screen(mob.global_position):
+				if mob.is_in_group("Ambient Mob"):
+					current_ambient_mobs -= 1
+					print("removed ambient mob: " + str(current_ambient_mobs))
+				elif mob.is_in_group("Enemy"):
+					spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
+					print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
+				mob.get_parent().call_deferred("remove_child", mob)
+				
+				mob.queue_free()
+				mob_list.remove(mob_list.find(mob))
+				if mob in mobs_to_remove:
+					mobs_to_remove.remove(mobs_to_remove.find(mob))
+				
+			else:
+				# Add mob to list where is will be removed when its not visible in screen anymore
+				if not mob in mobs_to_remove:
+					mobs_to_remove.append(mob)
 
 
 func spawn_ambient_mobs():
-	# Spawn ambient mobs
-	var polygon = Polygon2D.new()
-	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
-	var ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
-	
-	# Check time
-	if DayNightCycle.is_night:
-		# NIGHT
-		# Spawn moths
-		var mobScene : Resource = load("res://scenes/mobs/Moth.tscn")
-		if mobScene != null:
-			while current_ambient_mobs < max_ambient_mobs:
-				var mob_instance = mobScene.instance()
-				mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
-				ambientMobsLayer.add_child(mob_instance)
-				mob_list.append(mob_instance)
-				current_ambient_mobs += 1
-		else:
-			printerr("\"Moth\" scene can't be loaded!")
+	# Spawn only if needed
+	if current_ambient_mobs < max_ambient_mobs:
+		# Spawn ambient mobs
+		# Check time
+		if DayNightCycle.is_night:
+			# NIGHT
+			# Spawn moths
+			var mobScene : Resource = load("res://scenes/mobs/Moth.tscn")
+			if mobScene != null:
+				while current_ambient_mobs < max_ambient_mobs:
+					var mob_instance = mobScene.instance()
+					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
+					ambientMobsLayer.call_deferred("add_child", mob_instance)
+					mob_list.append(mob_instance)
+					current_ambient_mobs += 1
+			else:
+				printerr("\"Moth\" scene can't be loaded!")
 
-	else:
-		# DAY
-		# Spawn butterflies
-		var mobScene : Resource = load("res://scenes/mobs/Butterfly.tscn")
-		if mobScene != null:
-			while current_ambient_mobs < max_ambient_mobs:
-				var mob_instance = mobScene.instance()
-				mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_DAY)
-				ambientMobsLayer.add_child(mob_instance)
-				mob_list.append(mob_instance)
-				current_ambient_mobs += 1
 		else:
-			printerr("\"Butterfly\" scene can't be loaded!")
+			# DAY
+			# Spawn butterflies
+			var mobScene : Resource = load("res://scenes/mobs/Butterfly.tscn")
+			if mobScene != null:
+				while current_ambient_mobs < max_ambient_mobs:
+					var mob_instance = mobScene.instance()
+					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_DAY)
+					ambientMobsLayer.call_deferred("add_child", mob_instance)
+					mob_list.append(mob_instance)
+					current_ambient_mobs += 1
+			else:
+				printerr("\"Butterfly\" scene can't be loaded!")
 
 
 func spawn_area_mobs():
@@ -291,19 +305,21 @@ func spawn_area_mobs():
 		
 		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
 		
-		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, spawn_mobs_counter)
-#		print("mob_count_breakdown: " + str(mob_count_breakdown))
-		# Iterate over diffent mobs classes
-		for i_mob in range(biome_mobs.size()):
-			# Load and spawn mobs
-			var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
-			if mobScene != null:
-				for _num in range(mob_count_breakdown[i_mob]):
-					var mob_instance = mobScene.instance()
-					mob_instance.init(current_spawn_area, mobsNavigationTileMap)
-					mobsLayer.add_child(mob_instance)
-					mob_list.append(mob_instance)
-					spawning_areas[current_spawn_area]["current_mobs_count"] += 1
-#					print(spawning_areas[current_spawn_area]["current_mobs_count"])
-			else:
-				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+		# Spawn only if needed
+		if spawn_mobs_counter > 0:
+			var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, spawn_mobs_counter)
+#			print("mob_count_breakdown: " + str(mob_count_breakdown))
+			# Iterate over diffent mobs classes
+			for i_mob in range(biome_mobs.size()):
+				# Load and spawn mobs
+				var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
+				if mobScene != null:
+					for _num in range(mob_count_breakdown[i_mob]):
+						var mob_instance = mobScene.instance()
+						mob_instance.init(current_spawn_area, mobsNavigationTileMap)
+						mobsLayer.call_deferred("add_child", mob_instance)
+						mob_list.append(mob_instance)
+						spawning_areas[current_spawn_area]["current_mobs_count"] += 1
+	#					print(spawning_areas[current_spawn_area]["current_mobs_count"])
+				else:
+					printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
