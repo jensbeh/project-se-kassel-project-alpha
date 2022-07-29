@@ -19528,7 +19528,7 @@
   </object>
  </objectgroup>
  <objectgroup id="55" name="collisions"/>
- <objectgroup id="72" name="mobSpawns" visible="0">
+ <objectgroup id="72" name="mobSpawns">
   <object id="5651" type="area" x="912" y="112">
    <properties>
     <property name="biome" value="forest"/>
@@ -19564,7 +19564,7 @@
    </properties>
    <polygon points="0,0 -48,112 96,192 288,272 336,352 352,384 384,384 400,272 448,192 448,32 288,48 144,0"/>
   </object>
-  <object id="5664" type="area        " x="48" y="-1760">
+  <object id="5664" type="area" x="48" y="-1760">
    <properties>
     <property name="biome" value="forest"/>
     <property name="max_mobs" type="int" value="60"/>

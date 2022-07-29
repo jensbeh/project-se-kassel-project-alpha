@@ -150,15 +150,11 @@ func iterate_over_nodes(node):
 				child.get_parent().monitorable = false
 			
 			elif child is CollisionShape2D and child.get_parent().get_parent().name == "changeScenes":
-				child.disabled = true
-				child.get_parent().set_collision_layer_bit(0, false)
 				child.get_parent().set_collision_mask_bit(0, false)
 				child.get_parent().monitoring = true
 				child.get_parent().monitorable = false
 			
 			elif child is CollisionShape2D and child.get_parent().get_parent().name == "stairs":
-				child.disabled = true
-				child.get_parent().set_collision_layer_bit(0, false)
 				child.get_parent().set_collision_mask_bit(0, false)
 				child.get_parent().monitoring = true
 				child.get_parent().monitorable = false
