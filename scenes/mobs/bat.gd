@@ -86,6 +86,38 @@ func _physics_process(delta):
 		IDLING:
 			# Mob is doing nothing, just standing and searching for player
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
+		
+		WANDERING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow wandering path
+				if path.size() > 0:
+					move_to_position(delta)
+		
+		HUNTING:
+			# Check if player is nearby
+			var player = playerDetectionZone.player
+			if player != null:
+				# Follow path
+				if path.size() > 0:
+					move_to_player(delta)
+		
+		SEARCHING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow searching path
+				if path.size() > 0:
+					move_to_position(delta)
+		
+#		ATTACKING:
+#			# check if mob can attack
+#			if !playerAttackZone.mob_can_attack:
+#				update_behaviour(HUNTING)
+
+func _process(delta):
+		# Handle behaviour
+	match behaviourState:
+		IDLING:
 			search_player()
 			
 			# After some time change to WANDERING
@@ -98,9 +130,7 @@ func _physics_process(delta):
 			if not mob_need_path:
 				# Mob is wandering around and is searching for player
 				# Follow wandering path
-				if path.size() > 0:
-					move_to_position(delta)
-				else:
+				if path.size() == 0:
 					# Case if pathend is reached, need new path
 					update_behaviour(IDLING)
 				
@@ -115,11 +145,7 @@ func _physics_process(delta):
 				mob_need_path = true
 			# Check if player is nearby
 			var player = playerDetectionZone.player
-			if player != null:
-				# Follow path
-				if path.size() > 0:
-					move_to_player(delta)
-			else:
+			if player == null:
 				# Lose player
 				update_behaviour(SEARCHING)
 
@@ -128,8 +154,6 @@ func _physics_process(delta):
 				# Mob is wandering around and is searching for player
 				# Follow searching path
 				if path.size() > 0:
-					move_to_position(delta)
-					
 					# After some time change to WANDERING (also to return to mob area)
 					searching_time += delta
 					if searching_time > max_searching_time:
@@ -142,11 +166,6 @@ func _physics_process(delta):
 			
 			# Mob is doing nothing, just standing and searching for player
 			search_player()
-
-#		ATTACKING:
-#			# check if mob can attack
-#			if !playerAttackZone.mob_can_attack:
-#				update_behaviour(HUNTING)
 
 
 func move_to_player(delta):
@@ -178,23 +197,23 @@ func move_to_position(delta):
 	# Stop motion when reached position
 	if global_position.distance_to(path[0]) < wandering_threshold:
 		path.remove(0)
-		
+
 		# Update line
-		line2D.points = path
+#		line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
-		
+
 		# update sprite direction
 		mobSprite.flip_h = velocity.x > 0
 		
 		# Update line position
-		line2D.global_position = Vector2(0,0)
+#		line2D.global_position = Vector2(0,0)
 		
-	if path.size() == 0:
-		line2D.points = []
+#	if path.size() == 0:
+#		line2D.points = []
 
 func search_player():
 	if playerDetectionZone.mob_can_see_player():

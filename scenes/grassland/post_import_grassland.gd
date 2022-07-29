@@ -134,8 +134,34 @@ func iterate_over_nodes(node):
 			if child is TileMap:
 				child.cell_quadrant_size = 1
 				child.cell_y_sort = false
+			
 			elif child is CollisionPolygon2D and child.get_parent().get_parent().name == "mobSpawns":
 				child.disabled = true
+				child.get_parent().set_collision_layer_bit(0, false)
+				child.get_parent().set_collision_mask_bit(0, false)
+				child.get_parent().monitoring = false
+				child.get_parent().monitorable = false
+			
+			elif child is CollisionShape2D and child.get_parent().get_parent().name == "playerSpawns":
+				child.disabled = true
+				child.get_parent().set_collision_layer_bit(0, false)
+				child.get_parent().set_collision_mask_bit(0, false)
+				child.get_parent().monitoring = false
+				child.get_parent().monitorable = false
+			
+			elif child is CollisionShape2D and child.get_parent().get_parent().name == "changeScenes":
+				child.disabled = true
+				child.get_parent().set_collision_layer_bit(0, false)
+				child.get_parent().set_collision_mask_bit(0, false)
+				child.get_parent().monitoring = true
+				child.get_parent().monitorable = false
+			
+			elif child is CollisionShape2D and child.get_parent().get_parent().name == "stairs":
+				child.disabled = true
+				child.get_parent().set_collision_layer_bit(0, false)
+				child.get_parent().set_collision_mask_bit(0, false)
+				child.get_parent().monitoring = true
+				child.get_parent().monitorable = false
 
 
 # Method to iterate over all nodes in "scene" and compresses all tilemaps to only one

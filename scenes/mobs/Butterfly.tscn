@@ -24,7 +24,8 @@ radius = 7.0
 height = 0.0
 
 [node name="Butterfly" type="KinematicBody2D" groups=["Ambient Mob"]]
-collision_layer = 8
+collision_layer = 0
+collision_mask = 0
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
