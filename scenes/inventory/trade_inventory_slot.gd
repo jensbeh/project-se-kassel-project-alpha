@@ -51,6 +51,7 @@ func can_drop_data(_pos, data):
 		return true
 	# Swap item
 	else:
+		# can´t swap when splitting
 		if Input.is_action_pressed("secondary"):
 			return false
 		else:
@@ -58,12 +59,15 @@ func can_drop_data(_pos, data):
 			data["target_texture"] = get_child(0).texture
 			data["target_frame"] = get_child(0).frame
 			data["target_stack"] = MerchantData.inv_data[target_slot]["Stack"]
-			if data["target_stack"] == Constants.MAX_STACK_SIZE or data["target_stack"] == 0:
+			data["target_stackable"] = GameData.item_data[str(MerchantData.inv_data[target_slot]["Item"])]["Stackable"]
+			if data["target_stack"] == Constants.MAX_STACK_SIZE:
 				return false
 			else:
-				if data["target_stack"] == Constants.MAX_STACK_SIZE or data["target_stack"] == 0:
-					return false
+				# sell on stack
+				if data["target_stackable"]: 
+					return true
 				else:
+					# swap and check if you have enough gold
 					if data["origin_panel"] == "Inventory":
 						if int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * int(
 							data["target_stack"]) <= player_gold + int(GameData.item_data[str(
@@ -83,6 +87,7 @@ func drop_data(_pos, data):
 	if data["origin_node"] == self:
 		pass
 	else:
+		# splitting
 		if Input.is_action_pressed("secondary") and data["origin_stack"] > 1 and data["origin_stack"] != 0:
 			var split_popup_instance = split_popup.instance()
 			split_popup_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(0,100)
@@ -109,6 +114,7 @@ func drop_data(_pos, data):
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			if valid:
 				# Update the data of the origin
+				# stacking 
 				if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
 				data["origin_panel"] == "TradeInventory"):
 					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
@@ -125,6 +131,7 @@ func drop_data(_pos, data):
 					else:
 						PlayerData.inv_data[origin_slot]["Stack"] = (PlayerData.inv_data[origin_slot]["Stack"] - 
 						(Constants.MAX_STACK_SIZE - data["target_stack"]))
+				# swap with item or empty
 				elif data["origin_panel"] == "TradeInventory":
 					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
@@ -133,6 +140,7 @@ func drop_data(_pos, data):
 					PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 					
 				# Update the texture of the origin
+				# stacking
 				if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 						data["origin_node"].get_child(0).texture = null
@@ -140,6 +148,7 @@ func drop_data(_pos, data):
 					else:
 						data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
 						(Constants.MAX_STACK_SIZE - data["target_stack"])))
+				# swap
 				elif data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
 					data["origin_node"].get_child(0).texture = null
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
