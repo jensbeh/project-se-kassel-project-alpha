@@ -1,5 +1,12 @@
 extends Node
 
+# Tiles
+const tile_size = 16
+
+# Chunks
+const chunk_size_tiles = 10 # In tiles
+const chunk_size_pixel = chunk_size_tiles * tile_size # In pixel
+
 # Player
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9

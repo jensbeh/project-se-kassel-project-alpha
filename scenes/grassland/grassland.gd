@@ -15,6 +15,7 @@ var check_spawn_despawn_timer = 0.0
 var max_check_spawn_despawn_time = 15.0
 var spawning_areas = {}
 var ambientMobsSpawnArea
+var map_min_global_pos
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -29,6 +30,7 @@ onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_n
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
+onready var chunks_node = $map_grassland/Chunks
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,6 +44,10 @@ func _ready():
 func _setup_scene_in_background():
 	# Setup player
 	setup_player()
+	
+	# Setup chunks
+	# Get map position
+	map_min_global_pos = chunks_node.get_meta("map_min_global_pos")
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
@@ -63,7 +69,6 @@ func _setup_scene_in_background():
 	var _error1 = DayNightCycle.connect("change_to_sunrise", self, "on_change_to_sunrise")
 	var _error2 = DayNightCycle.connect("change_to_night", self, "on_change_to_night")
 	
-	
 	call_deferred("_on_setup_scene_done")
 	
 # Method is called when thread is done and the scene is setup
@@ -80,6 +85,7 @@ func set_transition_data(transition_data):
 
 
 func _physics_process(delta):
+	print(Utils.get_players_chunk(map_min_global_pos))
 	check_spawn_despawn_timer += delta
 	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
 		check_spawn_despawn_timer = 0.0
