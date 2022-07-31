@@ -22,7 +22,8 @@ var init_transition_data = null
 
 # Nodes
 onready var changeScenesObject = $map_grassland/changeScenes
-onready var stairsObject = $map_grassland/ground/stairs
+onready var groundChunks = $map_grassland/ground/Chunks
+onready var higherChunks = $map_grassland/higher/Chunks
 onready var mobsNavigation2d = $map_grassland/mobs_navigation2d
 onready var mobsNavigationTileMap = $map_grassland/mobs_navigation2d/NavigationTileMap
 onready var ambientMobsNavigation2d = $map_grassland/ambient_mobs_navigation2d
@@ -30,7 +31,6 @@ onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_n
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
-onready var chunks_node = $map_grassland/Chunks
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -47,7 +47,7 @@ func _setup_scene_in_background():
 	
 	# Setup chunks
 	# Get map position
-	map_min_global_pos = chunks_node.get_meta("map_min_global_pos")
+	map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
@@ -85,7 +85,7 @@ func set_transition_data(transition_data):
 
 
 func _physics_process(delta):
-	print(Utils.get_players_chunk(map_min_global_pos))
+#	print(Utils.get_players_chunk(map_min_global_pos))
 	check_spawn_despawn_timer += delta
 	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
 		check_spawn_despawn_timer = 0.0
@@ -199,6 +199,8 @@ func body_exited_stair_area(body, _stairArea):
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
+	print("changeScene")
+	print(changeScenesObject.get_children())
 	for child in changeScenesObject.get_children():
 		if "changeScene" in child.name:
 			# connect Area2D with functions to handle body action
@@ -207,11 +209,12 @@ func setup_change_scene_areas():
 
 # Setup all stair objectes/Area2D's on start
 func setup_stair_areas():
-	for stair in stairsObject.get_children():
-		if "stairs" in stair.name:
-			# connect Area2D with functions to handle body action
-			stair.connect("body_entered", self, "body_entered_stair_area", [stair])
-			stair.connect("body_exited", self, "body_exited_stair_area", [stair])
+	for chunk in groundChunks.get_children():
+		for child in chunk.get_children():
+			if "stairs" in child.name:
+				# connect Area2D with functions to handle body action
+				child.connect("body_entered", self, "body_entered_stair_area", [child])
+				child.connect("body_exited", self, "body_exited_stair_area", [child])
 
 func on_change_to_sunrise():
 	# Spawn specific day mobs and remove specific night mobs

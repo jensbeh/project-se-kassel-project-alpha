@@ -18712,9 +18712,6 @@
 </chunk>
     </data>
    </layer>
-   <objectgroup id="48" name="chimney smoke">
-    <object id="1351" gid="4995" x="-2128" y="54" width="16" height="16"/>
-   </objectgroup>
   </group>
   <objectgroup id="6" name="treecrown">
    <object id="1229" gid="471" x="-1472" y="496" width="48" height="32"/>
@@ -19467,6 +19464,9 @@
    <object id="5585" gid="466" x="-1760" y="96" width="16" height="16"/>
    <object id="5586" gid="468" x="-2176" y="48" width="16" height="16"/>
   </objectgroup>
+  <objectgroup id="48" name="chimney smoke">
+   <object id="1351" gid="4995" x="-2128" y="54" width="16" height="16"/>
+  </objectgroup>
  </group>
  <group id="74" name="ambientMobs navigation"/>
  <group id="75" name="ambientMobsLayer"/>
@@ -19527,7 +19527,6 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="55" name="collisions"/>
  <objectgroup id="72" name="mobSpawns">
   <object id="5651" type="area" x="912" y="112">
    <properties>
