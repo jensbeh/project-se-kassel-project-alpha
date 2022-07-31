@@ -1,5 +1,6 @@
 extends Node2D
 
+
 # Map specific
 var current_ambient_mobs = 0
 var max_ambient_mobs = 50
@@ -15,7 +16,6 @@ var check_spawn_despawn_timer = 0.0
 var max_check_spawn_despawn_time = 15.0
 var spawning_areas = {}
 var ambientMobsSpawnArea
-var map_min_global_pos
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -45,9 +45,13 @@ func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
-	# Setup chunks
+	
+	# Setup chunks and chunkloader
 	# Get map position
-	map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
+	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
+	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
@@ -85,7 +89,6 @@ func set_transition_data(transition_data):
 
 
 func _physics_process(delta):
-#	print(Utils.get_players_chunk(map_min_global_pos))
 	check_spawn_despawn_timer += delta
 	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
 		check_spawn_despawn_timer = 0.0
@@ -199,8 +202,6 @@ func body_exited_stair_area(body, _stairArea):
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
-	print("changeScene")
-	print(changeScenesObject.get_children())
 	for child in changeScenesObject.get_children():
 		if "changeScene" in child.name:
 			# connect Area2D with functions to handle body action
@@ -332,3 +333,21 @@ func spawn_area_mobs():
 	#					print(spawning_areas[current_spawn_area]["current_mobs_count"])
 				else:
 					printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+
+
+func update_chunks(new_chunks : Array, deleting_chunks : Array):
+	for chunk in new_chunks:
+		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if ground_chunk != null:
+			ground_chunk.visible = true
+		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if higher_chunk != null:
+			higher_chunk.visible = true
+
+	for chunk in deleting_chunks:
+		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if ground_chunk != null:
+			ground_chunk.visible = false
+		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if higher_chunk != null:
+			higher_chunk.visible = false
