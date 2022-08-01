@@ -4,7 +4,6 @@ extends Node
 var compressed_tilemap = TileMap.new()
 var mobs_nav_tilemap = TileMap.new()
 
-var tilemap_list = {"ground": [], "higher": []}
 var chunk_size = Constants.chunk_size_tiles # Chunk tiles width/height in tiles
 var map_width = 0
 var map_height = 0
@@ -144,11 +143,9 @@ func generate_chunks(scene):
 	collect_tilemaps("ground", scene.find_node("ground"))
 	collect_tilemaps("higher", scene.find_node("higher"))
 	
+	# Create dublicates to get all tilemaps and objects
 	var ground_duplicate = scene.find_node("ground").duplicate()
-	remove_tilemaps(ground_duplicate)
-	
 	var higher_duplicate = scene.find_node("higher").duplicate()
-	remove_tilemaps(higher_duplicate)
 	
 	# Map size in tiles
 	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x)
@@ -156,7 +153,6 @@ func generate_chunks(scene):
 	var vertical_chunks_count = ceil(map_height / chunk_size)
 	var horizontal_chunks_count = ceil(map_width / chunk_size)
 	
-	var chunks = []
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()
 	ground_chunks_node.name = "Chunks"
@@ -187,7 +183,7 @@ func generate_chunks(scene):
 			var min_y = map_min_pos.y + chunk_size * chunk_y
 			var max_x = (map_min_pos.x + chunk_size * chunk_x) + chunk_size - 1
 			var max_y = (map_min_pos.y + chunk_size * chunk_y) + chunk_size - 1
-			var chunk = {"min_x": min_x, "min_y": min_y, "max_x": max_x, "max_y": max_y, "tilemaps": []}
+			var chunk_data = {"chunk_x": chunk_x, "chunk_y": chunk_y, "min_x": min_x, "min_y": min_y, "max_x": max_x, "max_y": max_y}
 
 			# Create chunk node
 			var chunk_node = Node2D.new()
@@ -195,30 +191,10 @@ func generate_chunks(scene):
 			chunk_node.visible = false
 			ground_chunks_node.add_child(chunk_node)
 			chunk_node.set_owner(scene)
-
-			# Create tilemaps for chunks from all tilemaps
-			for tilemap in tilemap_list["ground"]:
-				var empty_tilemap = true # To check if tilemap in chunk is empty or not
-
-				var new_tilemap = TileMap.new()
-				new_tilemap.name = tilemap.name
-				var dirtLvl0TileMap : TileMap = scene.find_node("dirt lvl0")
-				new_tilemap.tile_set = dirtLvl0TileMap.tile_set
-				new_tilemap.cell_quadrant_size = 1
-				new_tilemap.cell_y_sort = false
-				new_tilemap.cell_clip_uv = true
-				new_tilemap.cell_size = Vector2(16,16)
-				for cellPos in tilemap.get_used_cells(): 
-					if cellPos.x >= min_x and cellPos.x <= max_x and cellPos.y >= min_y and cellPos.y <= max_y:
-						if tilemap.get_cellv(cellPos) != -1:
-							empty_tilemap = false
-							new_tilemap.set_cell(cellPos.x, cellPos.y, tilemap.get_cellv(cellPos))
-
-				# Check if tilemap contains tiles and if it does add tilemap to chunk
-				if not empty_tilemap:
-					chunk_node.add_child(new_tilemap)
-					new_tilemap.set_owner(scene)
-	set_objects_to_chunks(scene, ground_chunks_node, ground_duplicate)
+			
+			# Create chunk with tilemaps and objects
+			create_chunk(scene, chunk_data, ground_duplicate, chunk_node)
+	
 	
 	# Create higher chunks
 	for chunk_y in range(vertical_chunks_count):
@@ -227,7 +203,7 @@ func generate_chunks(scene):
 			var min_y = map_min_pos.y + chunk_size * chunk_y
 			var max_x = (map_min_pos.x + chunk_size * chunk_x) + chunk_size - 1
 			var max_y = (map_min_pos.y + chunk_size * chunk_y) + chunk_size - 1
-			var chunk = {"min_x": min_x, "min_y": min_y, "max_x": max_x, "max_y": max_y, "tilemaps": []}
+			var chunk_data = {"chunk_x": chunk_x, "chunk_y": chunk_y, "min_x": min_x, "min_y": min_y, "max_x": max_x, "max_y": max_y}
 
 			# Create chunk node
 			var chunk_node = Node2D.new()
@@ -235,80 +211,109 @@ func generate_chunks(scene):
 			chunk_node.visible = false
 			higher_chunks_node.add_child(chunk_node)
 			chunk_node.set_owner(scene)
-
-			# Create tilemaps for chunks from all tilemaps
-			for tilemap in tilemap_list["higher"]:
-				var empty_tilemap = true # To check if tilemap in chunk is empty or not
-
-				var new_tilemap = TileMap.new()
-				new_tilemap.name = tilemap.name
-				var dirtLvl0TileMap : TileMap = scene.find_node("dirt lvl0")
-				new_tilemap.tile_set = dirtLvl0TileMap.tile_set
-				new_tilemap.cell_quadrant_size = 1
-				new_tilemap.cell_y_sort = false
-				new_tilemap.cell_clip_uv = true
-				new_tilemap.cell_size = Vector2(16,16)
-				for cellPos in tilemap.get_used_cells(): 
-					if cellPos.x >= min_x and cellPos.x <= max_x and cellPos.y >= min_y and cellPos.y <= max_y:
-						if tilemap.get_cellv(cellPos) != -1:
-							empty_tilemap = false
-							new_tilemap.set_cell(cellPos.x, cellPos.y, tilemap.get_cellv(cellPos))
-
-				# Check if tilemap contains tiles and if it does add tilemap to chunk
-				if not empty_tilemap:
-					chunk_node.add_child(new_tilemap)
-					new_tilemap.set_owner(scene)
-	set_objects_to_chunks(scene, higher_chunks_node, higher_duplicate)
+			
+			# Create chunk with tilemaps and objects
+			create_chunk(scene, chunk_data, higher_duplicate, chunk_node)
 
 
-# Method to cleanup the scene
-func set_objects_to_chunks(scene, chunks_node, ground_duplicate):
-	for child in ground_duplicate.get_children():
-		if child.get_child_count() > 0:
-			set_objects_to_chunks(scene, chunks_node, child)
+func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
+	for child in ground_duplicate_origin.get_children():
+		if child is TileMap:
+			var empty_tilemap = true # To check if tilemap in chunk is empty or not
+			var new_tilemap = TileMap.new()
+			new_tilemap.name = child.name
+			var dirtLvl0TileMap : TileMap = scene.find_node("dirt lvl0")
+			new_tilemap.tile_set = dirtLvl0TileMap.tile_set
+			new_tilemap.cell_quadrant_size = 1
+			new_tilemap.cell_y_sort = false
+			new_tilemap.cell_clip_uv = true
+			new_tilemap.cell_size = Vector2(16,16)
+			for cellPos in child.get_used_cells():
+				if cellPos.x >= chunk_data["min_x"] and cellPos.x <= chunk_data["max_x"] and cellPos.y >= chunk_data["min_y"] and cellPos.y <= chunk_data["max_y"]:
+					if child.get_cellv(cellPos) != -1:
+						empty_tilemap = false
+						new_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
+			
+			# Check if tilemap contains tiles and if it does add tilemap to chunk
+			if not empty_tilemap:
+				chunk_node.add_child(new_tilemap)
+				new_tilemap.set_owner(scene)
+		
+		elif child is Sprite:
+			# Check if child is in this chunk
+			var child_position = Vector2(child.position.x + int(round(child.region_rect.size.x * child.scale.x / 2)), child.position.y - int(round(child.region_rect.size.y * child.scale.y / 2)))
+			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
+			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+				# Remove parent from child
+				child.get_parent().remove_child(child)
+				
+				# Add parent and child to chunk
+				chunk_node.add_child(child)
+				child.set_owner(scene)
+			else:
+				continue
+		
+		elif child is StaticBody2D:
+			# Check if child is in this chunk
+			var child_position = child.position + child.get_child(0).shape.extents
+			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
+			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+				var node = StaticBody2D.new()
+				node.name = child.name
+				node.position = child.position
+				chunk_node.add_child(node)
+				node.set_owner(scene)
+			else:
+				continue
+		
+		elif child is Area2D:
+			# Check if child is in this chunk
+			var child_position = child.position + child.get_child(0).shape.extents
+			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
+			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+				var node = Area2D.new()
+				node.name = child.name
+				node.position = child.position
+				chunk_node.add_child(node)
+				node.set_owner(scene)
+			else:
+				continue
+		
+		elif child is CollisionShape2D:
+			var node = CollisionShape2D.new()
+			node.position = child.position
+			chunk_node.add_child(node)
+			node.set_owner(scene)
+			var shape = RectangleShape2D.new()
+			shape.extents = child.shape.extents
+			node.shape = shape
+		
+		elif child is CustomLight:
+			# Check if child is in this chunk
+			var chunk = get_chunk_from_position(map_min_global_pos, child.position)
+			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+				# Remove parent from child
+				child.get_parent().remove_child(child)
+				
+				# Add parent and child to chunk
+				chunk_node.add_child(child)
+				child.set_owner(scene)
+			else:
+				continue
+		
 		else:
-			# Remove all tilemaps excluding navigation tilemaps
-			if child is Sprite:
-				# Get chunk
-				var chunk = get_chunk_from_position(map_min_global_pos, child.position + child.texture.get_size() / 2)
-				var node = chunks_node.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-				
-				# Remove parent from child
-				child.get_parent().remove_child(child)
-				
-				# Add parent and child to chunk
-				node.add_child(child)
-				child.set_owner(scene)
-			
-			elif child is CollisionShape2D:
-				# Get chunk
-				var chunk = get_chunk_from_position(map_min_global_pos, child.get_parent().position + child.shape.extents)
-				var node = chunks_node.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-				
-				var parent_node = child.get_parent()
-				
-				# Remove parent from child
-				child.get_parent().remove_child(child)
-				parent_node.get_parent().remove_child(parent_node)
-				
-				# Add parent and child to chunk
-				node.add_child(parent_node)
-				parent_node.set_owner(scene)
-				parent_node.add_child(child)
-				child.set_owner(scene)
-			
-			elif child is CustomLight:
-				# Get chunk
-				var chunk = get_chunk_from_position(map_min_global_pos, child.position)
-				var node = chunks_node.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-
-				# Remove parent from child
-				child.get_parent().remove_child(child)
-
-				# Add parent and child to chunk
-				node.add_child(child)
-				child.set_owner(scene)
-
+			var node = Node2D.new()
+			node.name = child.name
+			chunk_node.add_child(node)
+			node.set_owner(scene)
+		
+		# Take sub-nodes
+		if child.get_child_count() > 0:
+			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name))
+			if chunk_node.get_node(child.name).get_children().size() == 0:
+				chunk_node.remove_child(chunk_node.get_node(child.name))
+	
+	return chunk_node
 
 
 func get_chunk_from_position(map_min_global_pos, global_position):
@@ -352,8 +357,6 @@ func collect_tilemaps(layer_name, node):
 			collect_tilemaps(layer_name, child)
 		else:
 			if child is TileMap:
-				tilemap_list[layer_name].append(child)
-				
 				# Get maximum map size in tiles
 				var used_cells = child.get_used_cells()
 				for cell_pos in used_cells:
