@@ -10,7 +10,7 @@ var current_player
 var current_chunk
 var previouse_chunk
 var active_chunks = []
-var load_chunks = false
+var can_load_chunks = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,7 +24,7 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	map_min_global_pos = init_map_min_global_pos
 	current_chunk = Utils.get_players_chunk(map_min_global_pos)
 	chunkloader_thread.start(self, "load_chunks")
-	load_chunks = true
+	can_load_chunks = true
 
 
 func stop():
@@ -34,7 +34,7 @@ func stop():
 
 func cleanup():
 	print("STOP CHUNK_LOADER_SERVICE")
-	load_chunks = false
+	can_load_chunks = false
 	world = null
 	vertical_chunks_count = null
 	horizontal_chunks_count = null
@@ -42,8 +42,8 @@ func cleanup():
 	current_chunk = null
 
 
-func _physics_process(delta):
-	if !chunkloader_thread.is_active() and load_chunks:
+func _physics_process(_delta):
+	if !chunkloader_thread.is_active() and can_load_chunks:
 		current_chunk = Utils.get_players_chunk(map_min_global_pos)
 		if previouse_chunk != current_chunk:
 			chunkloader_thread.start(self, "load_chunks")

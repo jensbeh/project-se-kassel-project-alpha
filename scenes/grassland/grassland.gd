@@ -225,11 +225,12 @@ func setup_change_scene_areas():
 # Setup all stair objectes/Area2D's on start
 func setup_stair_areas():
 	for chunk in groundChunks.get_children():
-		for child in chunk.get_children():
-			if "stairs" in child.name:
-				# connect Area2D with functions to handle body action
-				child.connect("body_entered", self, "body_entered_stair_area", [child])
-				child.connect("body_exited", self, "body_exited_stair_area", [child])
+		if chunk.has_node("stairs"):
+			for stair in chunk.get_node("stairs").get_children():
+				if "stairs" in stair.name:
+					# connect Area2D with functions to handle body action
+					stair.connect("body_entered", self, "body_entered_stair_area", [stair])
+					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
 
 func on_change_to_sunrise():
 	# Spawn specific day mobs and remove specific night mobs

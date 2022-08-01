@@ -241,7 +241,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		elif child is Sprite:
 			# Check if child is in this chunk
-			var child_position = Vector2(child.position.x + int(round(child.region_rect.size.x * child.scale.x / 2)), child.position.y - int(round(child.region_rect.size.y * child.scale.y / 2)))
+			var child_position = Vector2(child.position.x + int(round(child.region_rect.size.x * child.scale.x)), child.position.y - int(round(child.region_rect.size.y * child.scale.y / 2)))
 			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				# Remove parent from child

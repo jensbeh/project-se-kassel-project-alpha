@@ -7,7 +7,7 @@ var ambient_mobs_to_update = []
 var navigation : Navigation2D
 var ambient_navigation : Navigation2D
 var generate_ambient_mobs_path : bool = false
-var generate_pathes = false
+var can_generate_pathes = false
 
 func _ready():
 	print("START PATHFINDING_SERVICE")
@@ -26,7 +26,7 @@ func init(init_navigation : Navigation2D, init_ambient_navigation : Navigation2D
 		generate_ambient_mobs_path = false
 		ambient_navigation = null
 	
-	generate_pathes = true
+	can_generate_pathes = true
 
 
 func stop():
@@ -37,14 +37,14 @@ func stop():
 func cleanup():
 	print("STOP PATHFINDING_SERVICE")
 	# Reset variables
-	generate_pathes = false
+	can_generate_pathes = false
 	mobs_to_update.clear()
 	enemies_to_update.clear()
 	ambient_mobs_to_update.clear()
 
 
 func _physics_process(_delta):
-	if !pathfinder_thread.is_active() and generate_pathes:
+	if !pathfinder_thread.is_active() and can_generate_pathes:
 		var enemies = get_tree().get_nodes_in_group("Enemy")
 		var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
 		if mobs_to_update.size() > 0:
