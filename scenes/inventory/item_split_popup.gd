@@ -15,6 +15,8 @@ func _on_Confirm_pressed():
 	# max 999 stack size
 	if int(split_amount) > Constants.MAX_STACK_SIZE:
 		split_amount = Constants.MAX_STACK_SIZE
+	if data["origin_stack"] == 0 and !data["origin_stackable"]:
+		split_amount = 1
 	get_parent().SplitStack(int(split_amount), data)
 	queue_free()
 

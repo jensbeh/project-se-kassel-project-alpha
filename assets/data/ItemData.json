@@ -142,19 +142,6 @@
 	"Texture": "item_icons_1",
 	"Worth": 10
   },
-  "10012": {
-    "Name": "Mana Potion",
-    "Category": "Potion",
-    "EquipmentSlot": "",
-    "Attack": null,
-    "PotionHealth": null,
-    "PotionMana": 20,
-    "FoodSatiation": null,
-	"Stackable": true,
-	"Frame": 145,
-	"Texture": "item_icons_1",
-	"Worth": 10
-  },
   "10013": {
     "Name": "Good Health Potion",
     "Category": "Potion",
@@ -168,19 +155,6 @@
 	"Texture": "item_icons_1",
 	"Worth": 20
   },
-  "10014": {
-    "Name": "Good Mana Potion",
-    "Category": "Potion",
-    "EquipmentSlot": "",
-    "Attack": null,
-    "PotionHealth": null,
-    "PotionMana": 50,
-    "FoodSatiation": null,
-	"Stackable": true,
-	"Frame": 149,
-	"Texture": "item_icons_1",
-	"Worth": 20
-  },
   "10015": {
     "Name": "Rare Health Potion",
     "Category": "Potion",
@@ -191,19 +165,6 @@
     "FoodSatiation": null,
 	"Stackable": true,
 	"Frame": 152,
-	"Texture": "item_icons_1",
-	"Worth": 30
-  },
-  "10016": {
-    "Name": "Rare Mana Potion",
-    "Category": "Potion",
-    "EquipmentSlot": "",
-    "Attack": null,
-    "PotionHealth": null,
-    "PotionMana": 80,
-    "FoodSatiation": null,
-	"Stackable": true,
-	"Frame": 153,
 	"Texture": "item_icons_1",
 	"Worth": 30
   },
@@ -282,32 +243,6 @@
     "FoodSatiation": null,
 	"Stackable": true,
 	"Frame": 187,
-	"Texture": "item_icons_1",
-	"Worth": 50
-  },
-  "10023": {
-    "Name": "Treasure",
-    "Category": "Treasure",
-    "EquipmentSlot": "",
-    "Attack": null,
-    "PotionHealth": null,
-    "PotionMana": null,
-    "FoodSatiation": null,
-	"Stackable": true,
-	"Frame": 187,
-	"Texture": "item_icons_1",
-	"Worth": 50
-  },
-  "10024": {
-    "Name": "Great Mana Potion",
-    "Category": "Potion",
-    "EquipmentSlot": "",
-    "Attack": null,
-    "PotionHealth": null,
-    "PotionMana": 120,
-    "FoodSatiation": null,
-	"Stackable": true,
-	"Frame": 309,
 	"Texture": "item_icons_1",
 	"Worth": 50
   },

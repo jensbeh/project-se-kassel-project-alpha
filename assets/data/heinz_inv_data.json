@@ -16,36 +16,36 @@
 		"Stack": 0
 	},
 	"Inv5": {
-		"Item": 10014,
-		"Stack": 0
-	},
-	"Inv6": {
 		"Item": 10015,
 		"Stack": 0
 	},
-	"Inv7": {
-		"Item": 10016,
-		"Stack": 0
-	},
-	"Inv8": {
+	"Inv6": {
 		"Item": 10026,
 		"Stack": 0
 	},
-	"Inv9": {
+	"Inv7": {
 		"Item": 10027,
 		"Stack": 0
 	},
-	"Inv10": {
+	"Inv8": {
 		"Item": 10028,
 		"Stack": 0
 	},
-	"Inv11": {
+	"Inv9": {
+		"Item": 10029,
+		"Stack": 0
+	},
+	"Inv10": {
 		"Item": 10030,
 		"Stack": 0
 	},
+	"Inv11": {
+		"Item": null,
+		"Stack": null
+	},
 	"Inv12": {
-		"Item": 10029,
-		"Stack": 0
+		"Item": null,
+		"Stack": null
 	},
 	"Inv13": {
 		"Item": null,
