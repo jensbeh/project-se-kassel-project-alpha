@@ -36,6 +36,13 @@ func _on_setup_scene_done():
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 
+
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	pass
+
+
 # Method to setup the player with all informations
 func setup_player():
 	var scene_player = find_node("Player")

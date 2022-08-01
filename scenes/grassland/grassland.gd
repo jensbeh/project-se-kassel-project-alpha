@@ -83,6 +83,20 @@ func _on_setup_scene_done():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	# Stop pathfinder
+	PathfindingService.stop()
+	
+	# Stop chunkloader
+	ChunkLoaderService.stop()
+	
+	# Clean mobs
+	for mob in mob_list:
+		mob.queue_free()
+
+
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data

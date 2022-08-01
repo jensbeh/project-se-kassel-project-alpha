@@ -84,6 +84,12 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	pass
+
+
 # loaded the player data
 func load_data():
 	var dir = Directory.new()

@@ -7,15 +7,15 @@ var ambient_mobs_to_update = []
 var navigation : Navigation2D
 var ambient_navigation : Navigation2D
 var generate_ambient_mobs_path : bool = false
+var generate_pathes = false
 
 func _ready():
-	pass
+	print("START PATHFINDING_SERVICE")
+
 
 # Method is called when new scene is loaded with mobs with pathfinding
 func init(init_navigation : Navigation2D, init_ambient_navigation : Navigation2D = null):
-	# Reset variables
-	call_deferred("reset_variables")
-	
+	print("INIT PATHFINDING_SERVICE")
 	# Init variables
 	navigation = init_navigation
 	
@@ -25,10 +25,26 @@ func init(init_navigation : Navigation2D, init_ambient_navigation : Navigation2D
 	else:
 		generate_ambient_mobs_path = false
 		ambient_navigation = null
+	
+	generate_pathes = true
+
+
+func stop():
+	# Reset variables
+	call_deferred("cleanup")
+
+
+func cleanup():
+	print("STOP PATHFINDING_SERVICE")
+	# Reset variables
+	generate_pathes = false
+	mobs_to_update.clear()
+	enemies_to_update.clear()
+	ambient_mobs_to_update.clear()
+
 
 func _physics_process(_delta):
-#	print(mobs_to_update.size())
-	if !pathfinder_thread.is_active():
+	if !pathfinder_thread.is_active() and generate_pathes:
 		var enemies = get_tree().get_nodes_in_group("Enemy")
 		var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
 		if mobs_to_update.size() > 0:
@@ -86,9 +102,3 @@ func send_path_to_mob(mob, new_path):
 func task_finished():
 	# Wait for thread to finish
 	pathfinder_thread.wait_to_finish()
-
-func reset_variables():
-	# Reset variables
-	mobs_to_update.clear()
-	enemies_to_update.clear()
-	ambient_mobs_to_update.clear()

@@ -1560,9 +1560,6 @@ parameters/playback = SubResource( 15 )
 limit_left = -4335
 limit_bottom = 794
 
-[node name="ambient_mobs_navigation2d" parent="map_grassland" index="6"]
-visible = false
-
 [node name="NavigationPolygonInstance" parent="map_grassland/ambient_mobs_navigation2d" index="0"]
 visible = false
 

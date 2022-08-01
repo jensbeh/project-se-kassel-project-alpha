@@ -26,12 +26,29 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	chunkloader_thread.start(self, "load_chunks")
 	load_chunks = true
 
+
+func stop():
+	# Reset variables
+	call_deferred("cleanup")
+
+
+func cleanup():
+	print("STOP CHUNK_LOADER_SERVICE")
+	load_chunks = false
+	world = null
+	vertical_chunks_count = null
+	horizontal_chunks_count = null
+	map_min_global_pos = null
+	current_chunk = null
+
+
 func _physics_process(delta):
 	if !chunkloader_thread.is_active() and load_chunks:
 		current_chunk = Utils.get_players_chunk(map_min_global_pos)
 		if previouse_chunk != current_chunk:
 			chunkloader_thread.start(self, "load_chunks")
 	previouse_chunk = current_chunk
+
 
 func load_chunks():
 	var render_bounds = Constants.render_distance * 2 + 1
@@ -65,6 +82,7 @@ func load_chunks():
 	
 	call_deferred("task_finished")
 
+
 func task_finished():
 	# Wait for thread to finish
 	chunkloader_thread.wait_to_finish()
@@ -89,10 +107,12 @@ func update_mobs():
 		else:
 			call_deferred("set_mob_active", ambient_mob, false)
 
+
 func set_mob_active(mob, is_active):
 	if mob != null: # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("set_mob_activity", is_active)
 
 
 func send_chunks_to_world(deleting_chunks):
-	world.call_deferred("update_chunks", active_chunks, deleting_chunks)
+	if is_instance_valid(world):
+		world.call_deferred("update_chunks", active_chunks, deleting_chunks)

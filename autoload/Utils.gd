@@ -213,6 +213,7 @@ func is_position_in_camera_screen(position):
 	else:
 		return false
 
+
 func get_players_chunk(map_min_global_pos):
 	var player_position = current_player.global_position
 	var player_chunk = Vector2.ZERO

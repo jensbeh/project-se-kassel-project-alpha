@@ -71,7 +71,18 @@ func _load_scene_in_background():
 func _on_load_scene_done(scene):
 	# Get scene and pass init data
 	thread.wait_to_finish()
-
+	
+	# Cleanup previous scene
+	if current_scene.get_child(0).has_method("destroy_scene"):
+		current_scene.get_child(0).destroy_scene()
+		print("----> destroyed scene: \"" + str(current_scene.get_child(0).name) + "\"")
+	else:
+		printerr("----> NOT destroyed scene: \"" + str(current_scene.get_child(0).name) + "\"")
+	
+	# Cleanup player if coming from game_scene to menu
+	if current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE and Utils.get_current_player() != null:
+		Utils.set_current_player(null)
+	
 	# Add scene to current_scene
 	current_scene.get_child(0).queue_free()
 	current_scene.call_deferred("add_child", scene)
