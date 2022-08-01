@@ -60,11 +60,38 @@ func load_chunks():
 	# Make chunks visibel
 	call_deferred("send_chunks_to_world", deleting_chunks)
 	
+	# Update mobs to be active or not
+	update_mobs()
+	
 	call_deferred("task_finished")
 
 func task_finished():
 	# Wait for thread to finish
 	chunkloader_thread.wait_to_finish()
+
+
+func update_mobs():
+	# Mob lists
+	var enemies = get_tree().get_nodes_in_group("Enemy")
+	var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
+	
+	for enemy in enemies:
+		var enemy_chunk = Utils.get_chunk_from_position(map_min_global_pos, enemy.global_position)
+		if enemy_chunk in active_chunks:
+			call_deferred("set_mob_active", enemy, true)
+		else:
+			call_deferred("set_mob_active", enemy, false)
+	
+	for ambient_mob in ambient_mobs:
+		var ambient_mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, ambient_mob.global_position)
+		if ambient_mob_chunk in active_chunks:
+			call_deferred("set_mob_active", ambient_mob, true)
+		else:
+			call_deferred("set_mob_active", ambient_mob, false)
+
+func set_mob_active(mob, is_active):
+	if mob != null: # Because scene could be change and/or mob is despawned meanwhile
+		mob.call_deferred("set_mob_activity", is_active)
 
 
 func send_chunks_to_world(deleting_chunks):

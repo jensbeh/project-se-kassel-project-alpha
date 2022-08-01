@@ -5,11 +5,13 @@ var spawn_time
 
 # Variables
 enum {
+	SLEEPING,
 	IDLING,
 	WANDERING
 }
 var velocity = Vector2(0, 0)
-var behaviourState = IDLING
+var behaviour_state = IDLING
+var previous_behaviour_state = IDLING
 var ambientMobsSpawnArea
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
@@ -55,7 +57,7 @@ func init(init_ambientMobsSpawnArea, init_spawn_time):
 
 func _physics_process(delta):
 	# Handle behaviour
-	match behaviourState:
+	match behaviour_state:
 		IDLING:
 			# Mob is doing nothing, just standing
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
@@ -101,25 +103,32 @@ func move_to_position(delta):
 
 
 func update_behaviour(new_behaviour):
+	# Set previous behaviour state
+	previous_behaviour_state = behaviour_state
+	
 	# Reset timer
 	if ideling_time != 0.0:
 		ideling_time = 0.0
 	
 	# Handle new bahaviour
 	match new_behaviour:
+		SLEEPING:
+			behaviour_state = SLEEPING
+			mob_need_path = false
+		
 		IDLING:
 			# Set new max_ideling_time for IDLING
 			rng.randomize()
 			max_ideling_time = rng.randi_range(3, 10)
 			
 #			print("IDLING")
-			behaviourState = IDLING
+			behaviour_state = IDLING
 			mob_need_path = false
 
 		WANDERING:
 			speed = WANDERING_SPEED
 			
-			if behaviourState != WANDERING:
+			if behaviour_state != WANDERING:
 				# Reset path in case player is seen but e.g. state is wandering
 				path.resize(0)
 				
@@ -127,13 +136,13 @@ func update_behaviour(new_behaviour):
 				line2D.points = []
 			
 #			print("WANDERING")
-			behaviourState = WANDERING
+			behaviour_state = WANDERING
 			mob_need_path = true
 
 
 # Method returns next target position to pathfinding_service
 func get_target_position():
-	if behaviourState == WANDERING:
+	if behaviour_state == WANDERING:
 		return Utils.generate_position_in_polygon(ambientMobsSpawnArea)
 
 
@@ -145,3 +154,13 @@ func update_path(new_path):
 	
 	# Update line path
 	line2D.points = path
+
+
+# Method is called from chunk_loader_service to set mob activity
+func set_mob_activity(is_active):
+	if not is_active and behaviour_state != SLEEPING:
+		# Set mob to be sleeping
+		update_behaviour(SLEEPING)
+	elif is_active and behaviour_state == SLEEPING:
+		# wake up the mob to what it has done before
+		update_behaviour(previous_behaviour_state)

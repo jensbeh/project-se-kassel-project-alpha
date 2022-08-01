@@ -223,3 +223,14 @@ func get_players_chunk(map_min_global_pos):
 	player_chunk.x = floor(new_player_position.x / Constants.chunk_size_pixel)
 	player_chunk.y = floor(new_player_position.y / Constants.chunk_size_pixel)
 	return player_chunk
+
+
+func get_chunk_from_position(map_min_global_pos, global_position):
+	var chunk = Vector2.ZERO
+	var new_position = Vector2.ZERO
+	new_position.x = abs(map_min_global_pos.x) + global_position.x
+	new_position.y = abs(map_min_global_pos.y) + global_position.y
+	
+	chunk.x = floor(new_position.x / Constants.chunk_size_pixel)
+	chunk.y = floor(new_position.y / Constants.chunk_size_pixel)
+	return chunk

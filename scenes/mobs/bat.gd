@@ -7,6 +7,7 @@ var spawn_time = Constants.SpawnTime.ALWAYS
 
 # Variables
 enum {
+	SLEEPING,
 	IDLING,
 	SEARCHING,
 	WANDERING,
@@ -14,7 +15,8 @@ enum {
 #	ATTACKING
 }
 var velocity = Vector2(0, 0)
-var behaviourState = IDLING
+var behaviour_state = IDLING
+var previous_behaviour_state = IDLING
 var collision_radius
 var spawnArea
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -82,7 +84,7 @@ func init(init_spawnArea, new_navigation_tile_map):
 
 func _physics_process(delta):
 	# Handle behaviour
-	match behaviourState:
+	match behaviour_state:
 		IDLING:
 			# Mob is doing nothing, just standing and searching for player
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
@@ -116,7 +118,7 @@ func _physics_process(delta):
 
 func _process(delta):
 		# Handle behaviour
-	match behaviourState:
+	match behaviour_state:
 		IDLING:
 			search_player()
 			
@@ -222,25 +224,32 @@ func search_player():
 
 
 func update_behaviour(new_behaviour):
+	# Set previous behaviour state
+	previous_behaviour_state = behaviour_state
+	
 	# Reset timer
 	if ideling_time != 0.0:
 		ideling_time = 0.0
 	
 	# Handle new bahaviour
 	match new_behaviour:
+		SLEEPING:
+			behaviour_state = SLEEPING
+			mob_need_path = false
+		
 		IDLING:
 			# Set new max_ideling_time for IDLING
 			rng.randomize()
 			max_ideling_time = rng.randi_range(3, 10)
 			
 #			print("IDLING")
-			behaviourState = IDLING
+			behaviour_state = IDLING
 			mob_need_path = false
 
 		WANDERING:
 			speed = WANDERING_SPEED
 			
-			if behaviourState != WANDERING:
+			if behaviour_state != WANDERING:
 				# Reset path in case player is seen but e.g. state is wandering
 				path.resize(0)
 				
@@ -248,20 +257,20 @@ func update_behaviour(new_behaviour):
 				line2D.points = []
 			
 #			print("WANDERING")
-			behaviourState = WANDERING
+			behaviour_state = WANDERING
 			mob_need_path = true
 
 		HUNTING:
 			speed = HUNTING_SPEED
 			
-			if behaviourState != HUNTING:
+			if behaviour_state != HUNTING:
 				# Reset path in case player is seen but e.g. state is wandering
 				path.resize(0)
 				
 				# Update line path
 				line2D.points = []
 #			print("HUNTING")
-			behaviourState = HUNTING
+			behaviour_state = HUNTING
 			mob_need_path = true
 
 		SEARCHING:
@@ -279,24 +288,24 @@ func update_behaviour(new_behaviour):
 			max_searching_time = rng.randi_range(6, 12)
 			
 #			print("SEARCHING")
-			behaviourState = SEARCHING
+			behaviour_state = SEARCHING
 			mob_need_path = false
 
 #		ATTACKING:
-#			if behaviourState != ATTACKING:
+#			if behaviour_state != ATTACKING:
 #				# Reset path in case player is seen but e.g. state is wandering
 #				path.resize(0)
 #
 #				# Update line path
 #				line2D.points = []
 ##			print("ATTACKING")
-#			behaviourState = ATTACKING
+#			behaviour_state = ATTACKING
 #			mob_need_path = false
 
 # Method returns next target position to pathfinding_service
 func get_target_position():
 	# Return player hunting position if player is still existing
-	if behaviourState == HUNTING:
+	if behaviour_state == HUNTING:
 		var player = playerDetectionZone.player
 		if player != null:
 			return playerDetectionZone.player.global_position
@@ -304,11 +313,11 @@ func get_target_position():
 			return null
 	
 	# Return next wandering position
-	elif behaviourState == WANDERING:
+	elif behaviour_state == WANDERING:
 		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius)
 			
 	# Return next searching position
-	elif behaviourState == SEARCHING:
+	elif behaviour_state == SEARCHING:
 		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
 		
 
@@ -320,6 +329,17 @@ func update_path(new_path):
 	
 	# Update line path
 	line2D.points = path
+
+
+# Method is called from chunk_loader_service to set mob activity
+func set_mob_activity(is_active):
+	if not is_active and behaviour_state != SLEEPING:
+		# Set mob to be sleeping
+		update_behaviour(SLEEPING)
+	elif is_active and behaviour_state == SLEEPING:
+		# wake up the mob to what it has done before
+		update_behaviour(previous_behaviour_state)
+
 
 #
 #func on_player_entered_attack_zone():
