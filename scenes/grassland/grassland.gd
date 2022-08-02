@@ -45,7 +45,6 @@ func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
-	
 	# Setup chunks and chunkloader
 	# Get map position
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
@@ -58,7 +57,6 @@ func _setup_scene_in_background():
 	
 	# Setup stair areas
 	setup_stair_areas()
-	
 	
 	# Setup pathfinding
 	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)

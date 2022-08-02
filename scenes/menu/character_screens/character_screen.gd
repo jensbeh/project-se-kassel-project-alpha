@@ -378,7 +378,7 @@ func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
 #	var player_position = Vector2(1128,616) # Camp
-	var player_position = Vector2(768,752) # Grassland
+	var player_position = Vector2(-16,705) # Grassland
 	var view_direction = Vector2(0,1)
 	
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)

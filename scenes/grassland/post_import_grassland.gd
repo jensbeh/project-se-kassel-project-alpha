@@ -5,8 +5,6 @@ var compressed_tilemap = TileMap.new()
 var mobs_nav_tilemap = TileMap.new()
 
 var chunk_size = Constants.chunk_size_tiles # Chunk tiles width/height in tiles
-var map_width = 0
-var map_height = 0
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
@@ -24,11 +22,15 @@ func post_import(scene):
 			if child is Sprite:
 				var sprite_positon = child.position
 				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				custom_light.position = sprite_positon
 				custom_light.radius = 64
-				custom_light.position = Vector2(sprite_positon.x + 8, sprite_positon.y - 8)
+				var position2D = custom_light.get_node("LightPosition")
+				var sprite = custom_light.get_node("Sprite")
+				sprite.texture = child.texture
 				
-				lightsObject.add_child(custom_light)
-				custom_light.set_owner(scene)
+				# Set custom_light to node/replace existing sprite
+				child.replace_by(custom_light, true)
+				
 	
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
@@ -241,7 +243,11 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		elif child is Sprite:
 			# Check if child is in this chunk
-			var child_position = Vector2(child.position.x + int(round(child.region_rect.size.x * child.scale.x)), child.position.y - int(round(child.region_rect.size.y * child.scale.y / 2)))
+			var child_position
+			if child.region_rect.size.x == 0:
+				child_position = Vector2(child.position.x + int(round((child.texture.get_size().x / child.hframes - 1) * child.scale.x)), child.position.y - 1)
+			else:
+				child_position = Vector2(child.position.x + int(round((child.region_rect.size.x - 1) * child.scale.x)), child.position.y - 1)
 			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				# Remove parent from child
@@ -290,7 +296,8 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		elif child is CustomLight:
 			# Check if child is in this chunk
-			var chunk = get_chunk_from_position(map_min_global_pos, child.position)
+			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
+			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				# Remove parent from child
 				child.get_parent().remove_child(child)
@@ -298,8 +305,10 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 				# Add parent and child to chunk
 				chunk_node.add_child(child)
 				child.set_owner(scene)
-			else:
-				continue
+				
+				for child_in_light in child.get_children():
+					child_in_light.set_owner(scene)
+			continue
 		
 		else:
 			var node = Node2D.new()

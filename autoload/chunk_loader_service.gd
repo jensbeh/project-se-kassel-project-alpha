@@ -6,7 +6,6 @@ var world
 var vertical_chunks_count
 var horizontal_chunks_count
 var map_min_global_pos
-var current_player
 var current_chunk
 var previouse_chunk
 var active_chunks = []
@@ -35,11 +34,19 @@ func stop():
 func cleanup():
 	print("STOP CHUNK_LOADER_SERVICE")
 	can_load_chunks = false
+	
+	# Check if thread is active wait to stop
+	if chunkloader_thread.is_active():
+		task_finished()
+	
 	world = null
 	vertical_chunks_count = null
 	horizontal_chunks_count = null
 	map_min_global_pos = null
 	current_chunk = null
+	active_chunks.clear()
+	
+
 
 
 func _physics_process(_delta):
@@ -58,7 +65,7 @@ func load_chunks():
 			var chunk_x = current_chunk.x - Constants.render_distance + x
 			var chunk_y = current_chunk.y - Constants.render_distance + y
 			
-			if chunk_x <= horizontal_chunks_count and chunk_y <= vertical_chunks_count:
+			if chunk_x <= horizontal_chunks_count and chunk_y <= vertical_chunks_count and chunk_x >= 0 and chunk_y >= 0:
 				var chunk_coords = Vector2(chunk_x, chunk_y)
 				loading_chunks.append(chunk_coords)
 				
@@ -109,7 +116,7 @@ func update_mobs():
 
 
 func set_mob_active(mob, is_active):
-	if mob != null: # Because scene could be change and/or mob is despawned meanwhile
+	if is_instance_valid(mob): # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("set_mob_activity", is_active)
 
 

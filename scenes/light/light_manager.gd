@@ -49,7 +49,7 @@ func update_shader():
 		if light is CustomLight:
 			# Set player light position
 			if light.get_parent() is KinematicBody2D:
-				var light_position = light.position + light.get_parent().position
+				var light_position = light.get_light_position() + light.get_parent().position
 				image.set_pixel(i, 0, Color( \
 						light_position.x, light_position.y, \
 						light.strength, light.radius))
@@ -58,7 +58,7 @@ func update_shader():
 				
 			# Set torch, ... light position
 			else:
-				var light_position = light.position
+				var light_position = light.get_light_position()
 				image.set_pixel(i, 0, Color( \
 						light_position.x, light_position.y, \
 						light.strength, light.radius))

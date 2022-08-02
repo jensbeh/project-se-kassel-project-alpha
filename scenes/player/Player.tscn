@@ -1719,5 +1719,5 @@ position = Vector2( 0.222219, 3.55556 )
 cast_to = Vector2( 0, 8 )
 
 [node name="CustomLight" parent="." instance=ExtResource( 16 )]
-position = Vector2( -0.888891, 0.222227 )
+position = Vector2( -7.8, 8 )
 radius = 64
