@@ -48,6 +48,7 @@ func can_drop_data(_pos, data):
 		data["target_item_id"] = null
 		data["target_texture"] = null
 		data["target_stack"] = null
+		data["target_frame"] = null
 		return true
 	# Swap item
 	else:
@@ -145,7 +146,8 @@ func drop_data(_pos, data):
 				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 			else:
 				data["origin_node"].get_child(0).texture = data["target_texture"]
-				data["origin_node"].get_child(0).frame = data["target_frame"]
+				if data["target_frame"] != null:
+					data["origin_node"].get_child(0).frame = data["target_frame"]
 				verify_origin_texture(data)
 				if data["target_stack"] != null and data["target_stack"] > 1:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
@@ -153,6 +155,7 @@ func drop_data(_pos, data):
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 				
 			# Update the texture, label and data of the target
+			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 				if data["target_stack"] != 0:
 					var new_stack = data["target_stack"] + data["origin_stack"]
@@ -161,6 +164,7 @@ func drop_data(_pos, data):
 					MerchantData.inv_data[target_slot]["Stack"] = new_stack
 					get_node("../TextureRect/Stack").set_text(str(new_stack))
 			else:
+				# swaping
 				MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 				get_child(0).texture = data["origin_texture"]
 				get_child(0).frame = data["origin_frame"]
