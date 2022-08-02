@@ -3468,27 +3468,6 @@
      </data>
     </layer>
    </group>
-   <objectgroup id="633" name="buyingZones">
-    <properties>
-     <property name="type" value="BuyingZone"/>
-    </properties>
-    <object id="70" name="buyingZone market3" type="area" x="1184" y="528" width="80" height="32">
-     <properties>
-      <property name="enter_market" value="market3"/>
-      <property name="to_spawn_area_id" value="ps_d1-lvl1-entry"/>
-     </properties>
-    </object>
-    <object id="386" name="buyingZone market2" type="area" x="1040" y="544" width="80" height="32">
-     <properties>
-      <property name="enter_market" value="market2"/>
-     </properties>
-    </object>
-    <object id="387" name="buyingZone market1" type="area" x="864" y="592" width="80" height="32">
-     <properties>
-      <property name="enter_market" value="market1"/>
-     </properties>
-    </object>
-   </objectgroup>
    <objectgroup id="1089" name="doors">
     <object id="2143" name="door_house1" type="area" x="1184" y="704" width="16" height="17">
      <properties>

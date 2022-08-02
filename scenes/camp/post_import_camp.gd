@@ -248,23 +248,36 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			# Check if child is in this chunk
 			var child_position
 			if child.region_rect.size.x == 0:
-				child_position = Vector2(child.position.x + int(round((child.texture.get_size().x / child.hframes - 1) * child.scale.x)), child.position.y - 1)
+				child_position = Vector2(child.position.x + int(round((child.texture.get_size().x / child.hframes) * child.scale.x - 1)), child.position.y * child.scale.y - 1)
 			else:
-				child_position = Vector2(child.position.x + int(round((child.region_rect.size.x - 1) * child.scale.x)), child.position.y - 1)
+				var pos_x = child.position.x + int(round(child.region_rect.size.x * child.scale.x - 1))
+				var pos_y = child.position.y - 1
+				child_position = Vector2(pos_x, pos_y)
 			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				# Remove parent from child
-				child.get_parent().remove_child(child)
+				var sprite = Sprite.new()
+				sprite.name = child.name
+				sprite.texture = child.texture
+				sprite.centered = child.centered
+				sprite.offset = child.offset
+				sprite.hframes = child.hframes
+				sprite.vframes = child.vframes
+				sprite.frame = child.frame
+				sprite.region_enabled = child.region_enabled
+				sprite.region_rect = child.region_rect
+				sprite.position = child.position
+				sprite.scale = child.scale
 				
 				# Add parent and child to chunk
-				chunk_node.add_child(child)
-				child.set_owner(scene)
+				chunk_node.add_child(sprite)
+				sprite.set_owner(scene)
+				
 			else:
 				continue
 		
 		elif child is StaticBody2D:
 			# Check if child is in this chunk
-			var child_position = child.position + child.get_child(0).shape.extents
+			var child_position = child.position + child.get_child(0).shape.extents * 2 - Vector2(1,1)
 			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var node = StaticBody2D.new()
@@ -302,14 +315,17 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
 			var chunk = get_chunk_from_position(map_min_global_pos, child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				# Remove parent from child
-				child.get_parent().remove_child(child)
+				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				custom_light.name = child.name
+				custom_light.position = child.position
+				custom_light.radius = child.radius
+				var sprite = custom_light.get_node("Sprite")
+				sprite.texture = child.get_node("Sprite").texture
 				
-				# Add parent and child to chunk
-				chunk_node.add_child(child)
-				child.set_owner(scene)
-				
-				for child_in_light in child.get_children():
+				# Set custom_light to node
+				chunk_node.add_child(custom_light)
+				custom_light.set_owner(scene)
+				for child_in_light in custom_light.get_children():
 					child_in_light.set_owner(scene)
 			continue
 		
@@ -330,9 +346,8 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		# Take sub-nodes
 		if child.get_child_count() > 0:
 			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name))
-			if chunk_node.get_node(child.name).get_children().size() == 0:
+			if chunk_node.get_node(child.name).get_child_count() == 0:
 				chunk_node.remove_child(chunk_node.get_node(child.name))
-	
 	return chunk_node
 
 
