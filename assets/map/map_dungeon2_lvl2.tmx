@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="6">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <objectgroup id="11" name="mobSpawns">
+  <object id="3" type="area" x="16" y="-608">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="8"/>
+   </properties>
+   <polygon points="0,0 -32,32 -240,144 -320,240 -336,320 -192,352 -208,288 -240,256 -240,208 -192,160 -112,128 16,80 80,0"/>
+  </object>
+  <object id="4" type="area" x="-160" y="-48">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="8"/>
+   </properties>
+   <polygon points="0,0 -96,0 -128,48 -320,64 -368,112 -352,176 -272,224 -160,224 -112,160 -32,80"/>
+  </object>
+  <object id="5" type="area" x="48" y="-304">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="30"/>
+   </properties>
+   <polygon points="0,0 0,64 32,48 336,48 368,64 432,80 448,112 512,128 544,160 592,208 608,256 624,352 624,432 592,464 480,480 416,512 352,528 160,512 32,464 -16,400 -16,272 16,208 80,176 320,176 416,240 480,288 480,368 432,368 384,320 336,272 272,272 144,336 112,400 112,432 192,448 256,464 320,464 384,448 416,432 448,416 496,400 528,352 528,272 480,208 400,160 320,128 272,112 96,112 16,144 -48,192 -48,240 -64,272 -80,320 -64,352 -64,416 -48,448 -32,496 32,528 80,544 144,560 240,576 464,576 512,560 560,544 608,528 656,480 688,432 688,272 640,192 592,112 512,64 432,32 368,0 288,-16 160,-32 48,-16"/>
+  </object>
+ </objectgroup>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">

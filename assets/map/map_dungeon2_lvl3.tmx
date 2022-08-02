@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="7">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <objectgroup id="11" name="mobSpawns">
+  <object id="3" type="area" x="784" y="192">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="8"/>
+   </properties>
+   <polygon points="0,0 80,96 -32,160 -192,192 -400,224 -624,224 -736,224 -752,128 -560,160 -352,128 -208,96 -80,48"/>
+  </object>
+  <object id="4" type="area" x="208" y="624">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="8"/>
+   </properties>
+   <polygon points="0,0 0,64 64,32 176,0 272,-64 368,-80 464,-64 496,-48 544,-80 464,-144 368,-160 256,-144 160,-112 112,-64 32,-16"/>
+  </object>
+  <object id="5" type="area" x="768" y="-128">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="15"/>
+   </properties>
+   <polygon points="0,0 96,-64 -16,-176 -96,-288 -208,-336 -368,-352 -528,-304 -640,-272 -848,-192 -960,-128 -992,-64 -912,-48 -800,-144 -720,-176 -592,-208 -480,-240 -400,-272 -288,-272 -208,-224 -96,-192 -64,-144"/>
+  </object>
+  <object id="6" type="area" x="-80" y="-144">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="20"/>
+   </properties>
+   <polygon points="0,0 0,80 32,112 16,176 208,176 272,192 368,224 432,240 528,256 528,320 512,336 400,336 320,320 240,272 176,240 160,240 96,224 32,240 -16,288 0,320 32,352 96,384 176,400 256,416 544,400 608,384 624,368 720,304 768,272 768,192 720,128 688,112 576,112 480,96 400,96 336,48 304,-32 32,-16"/>
+  </object>
+ </objectgroup>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">

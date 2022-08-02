@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="14" nextobjectid="14">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="15" nextobjectid="17">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <objectgroup id="14" name="mobSpawns">
+  <object id="14" type="area" x="64" y="-224">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="8"/>
+   </properties>
+   <polygon points="0,0 0,128 -80,192 -128,256 -128,336 -80,368 0,400 -64,480 -176,416 -224,320 -240,256 -208,176 -160,128 -160,112 -208,112 -288,128 -384,176 -464,240 -496,144 -384,96 -288,48 -208,32 -96,0"/>
+  </object>
+  <object id="15" type="area" x="-288" y="-624">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="8"/>
+   </properties>
+   <polygon points="0,0 16,48 128,32 208,32 256,64 256,128 320,192 352,256 432,208 512,176 608,144 752,144 736,80 688,48 560,64 496,64 496,80 368,80 352,48 352,-16 384,-48 560,-48 656,-32 784,-16 784,-32 784,-128 672,-128 560,-144 448,-128 320,-96 272,-64 32,-32"/>
+  </object>
+  <object id="16" type="area" x="160" y="176">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="10"/>
+   </properties>
+   <polygon points="0,0 -32,112 160,144 352,96 512,-32 640,-160 736,-192 800,-304 768,-480 672,-528 672,-624 688,-768 576,-704 352,-624 448,-592 528,-576 592,-448 592,-320 560,-208 496,-176 256,-32 112,0"/>
+  </object>
+ </objectgroup>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">
