@@ -154,11 +154,8 @@ func drop_data(_pos, data):
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 			elif data["origin_panel"] == "TradeInventory":
-				if data["target_item_id"] != null:
-					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
-					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-				else:
-					MerchantData.inv_data[origin_slot]["Stack"] = MerchantData.inv_data[origin_slot]["Stack"] - split
+				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
+				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 			else:
 				# change equipment
 				PlayerData.equipment_data["Item"] = data["target_item_id"]
@@ -199,7 +196,11 @@ func drop_data(_pos, data):
 			# Update the texture, label and data of the target
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
-				var new_stack = data["target_stack"] + (data["origin_stack"] - split)
+				var new_stack = 0
+				if split != 0:
+					new_stack = data["target_stack"] + split
+				else:
+					new_stack = data["target_stack"] + data["origin_stack"]
 				if new_stack > Constants.MAX_STACK_SIZE:
 						new_stack = Constants.MAX_STACK_SIZE
 				PlayerData.inv_data[target_slot]["Stack"] = new_stack
