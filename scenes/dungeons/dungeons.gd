@@ -8,6 +8,8 @@ var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
 var mob_list : Array
+var groundChunks
+var higherChunks
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -17,7 +19,6 @@ onready var mobsNavigation2d = find_node("mobs_navigation2d")
 onready var mobsNavigationTileMap = find_node("NavigationTileMap")
 onready var mobSpawns = find_node("mobSpawns")
 onready var mobsLayer = find_node("mobslayer")
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,18 +31,27 @@ func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
+	# Setup chunks and chunkloader
+	# Get map position
+	groundChunks = find_node("groundlayer").get_node("Chunks")
+	higherChunks = find_node("higherlayer").get_node("Chunks")
+	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
+	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
+	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
+	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
-	print("INIT")
+
 	# Setup pathfinding
 	PathfindingService.init(mobsNavigation2d)
-	print("INIT2")
+
 	# Setup spawning areas
 	setup_spawning_areas()
-	print("INIT3")
+
 	# Spawn all mobs
 	spawn_mobs()
-	print("INIT4")
+
 	call_deferred("_on_setup_scene_done")
 
 
@@ -56,7 +66,15 @@ func _on_setup_scene_done():
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
-	pass
+	# Stop pathfinder
+	PathfindingService.stop()
+	
+	# Stop chunkloader
+	ChunkLoaderService.stop()
+	
+	# Clean mobs
+	for mob in mob_list:
+		mob.queue_free()
 
 
 # Method to setup the player with all informations
@@ -173,3 +191,21 @@ func spawn_mobs():
 #					print(spawning_areas[current_spawn_area]["current_mobs_count"])
 			else:
 				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+
+
+func update_chunks(new_chunks : Array, deleting_chunks : Array):
+	for chunk in new_chunks:
+		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if ground_chunk != null:
+			ground_chunk.visible = true
+		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if higher_chunk != null:
+			higher_chunk.visible = true
+
+	for chunk in deleting_chunks:
+		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if ground_chunk != null:
+			ground_chunk.visible = false
+		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if higher_chunk != null:
+			higher_chunk.visible = false

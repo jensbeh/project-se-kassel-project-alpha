@@ -12,8 +12,6 @@ var map_min_global_pos = Vector2.ZERO # In pixel
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
 	print("reimporte " + scene.name + "...")
-	# Compress all tilemaps to one
-	compress_tilemaps(scene)
 	
 	# Set lights with script to lightsObject
 	var lightsObject = scene.find_node("lights")
@@ -35,6 +33,8 @@ func post_import(scene):
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
 	
+	# Compress all tilemaps to one - direct before creating navigation and after adding custom nodes with collision on ground
+	compress_tilemaps(scene)
 	# Add navigation tilemap for mobs
 	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195
 	# Also in every TileMap all TileSets are stored
@@ -142,8 +142,8 @@ func post_import(scene):
 
 # Method to generate chunks in map
 func generate_chunks(scene):
-	collect_tilemaps("ground", scene.find_node("ground"))
-	collect_tilemaps("higher", scene.find_node("higher"))
+	collect_tilemaps(scene.find_node("ground"))
+	collect_tilemaps(scene.find_node("higher"))
 	
 	# Create dublicates to get all tilemaps and objects
 	var ground_duplicate = scene.find_node("ground").duplicate()
@@ -360,10 +360,10 @@ func cleanup_node(node):
 
 
 # Method to iterate over all nodes and sets specific properties
-func collect_tilemaps(layer_name, node):
+func collect_tilemaps(node):
 	for child in node.get_children():
 		if child.get_child_count() > 0:
-			collect_tilemaps(layer_name, child)
+			collect_tilemaps(child)
 		else:
 			if child is TileMap:
 				# Get maximum map size in tiles
