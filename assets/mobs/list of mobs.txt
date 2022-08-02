@@ -1,7 +1,3 @@
-{
-	"name": "Dungeon",
-	"data": {
-		"mobs": [
 			"SmallSlimePurple",
 			"SmallSlimeGreen",
 			"SmallSlimeOrange",
@@ -10,6 +6,11 @@
 			"BatPurple",
 			"BatRed",
 			"BatBlue",
+			
+			"FungusBrown",
+			"FungusBlue",
+			"FungusPurple",
+			"FungusRed",
 			
 			"GhostWhite",
 			"GhostGreen",
@@ -28,9 +29,10 @@
 			"SkeletonBlue",
 			"SkeletonRed",
 			
+			"SnakePurple",
+			"SnakeGreen",
+			"SnakeGrey",
+			
 			"ZombieGreen",
 			"ZombieGrey",
 			"ZombieBlue",
-		]
-	}
-}

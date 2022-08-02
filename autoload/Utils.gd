@@ -114,8 +114,9 @@ func calculate_triangle_area(A, B, C) -> float:
 	return 0.5 * abs(AxB)
 	
 
-func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, collision_radius) -> Vector2:
-	var position = generate_position_in_polygon(area_info)
+func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning) -> Vector2:
+	var position = generate_position_in_polygon(area_info, is_first_spawning)
+	var tile_set : TileSet = navigation_tile_map.tile_set
 	
 	# Check if position is valid
 	var cell = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor(position.y / 16)))
@@ -127,23 +128,33 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 	var cellTopLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor((position.y - collision_radius) / 16)))
 	var cellLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor(position.y / 16)))
 	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor((position.y + collision_radius) / 16)))
+	
+	# Check if cells / position with enough space around are perfect
+	var generate_again = false
 	if cell != -1 and cellBottom != -1 and cellBottomRight != -1 and cellRight != -1 and cellTopRight != -1 and cellTop != -1 and cellTopLeft != -1 and cellLeft != -1 and cellBottomLeft != -1:
-		# Position is perfect
-		return position
+		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
+		for cell_to_check in cells:
+			var shapes = tile_set.tile_get_shapes(cell_to_check)
+			if shapes.size() > 0:
+				for shape in shapes:
+					# If shape on tile is collision then generate again
+					if shape["shape"] is RectangleShape2D:
+						generate_again = true
 	else:
+		generate_again = true
+	
+	if generate_again:
 		# Position is blocked by collision, ... - get new one
-		return generate_position_in_mob_area(area_info, navigation_tile_map, collision_radius)
+		return generate_position_in_mob_area(area_info, navigation_tile_map, collision_radius, is_first_spawning)
+	else:
+		return position
 
-
-func n_random_numbers_with_max_sum(n, sum) -> Array:
-	var result : Array = []
-	var part = sum / n
-	for _i in range(n):
-		rng.randomize()
-		var num = rng.randi_range(part / 1.5, part)
-		result.append(num)
-	return result
-
+func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
+	var mobs_to_spawn = []
+	for _i in range(spawn_mobs_counter):
+		var num = rng.randi_range(0, biome_mobs_count - 1)
+		mobs_to_spawn.append(num)
+	return mobs_to_spawn
 
 func generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
 	# Get random position in circle
@@ -154,6 +165,7 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 	var randY = mob_global_position.y + (radius * sin(theta))
 	
 	var position = Vector2(randX, randY)
+	var tile_set : TileSet = navigation_tile_map.tile_set
 	
 	# Check if position is valid
 	var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
@@ -165,15 +177,28 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 	var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
 	var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
 	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	
+	# Check if cells / position with enough space around are perfect
+	var generate_again = false
 	if cell != -1 and cellBottom != -1 and cellBottomRight != -1 and cellRight != -1 and cellTopRight != -1 and cellTop != -1 and cellTopLeft != -1 and cellLeft != -1 and cellBottomLeft != -1:
-		# Position is perfect
-		return position
+		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
+		for cell_to_check in cells:
+			var shapes = tile_set.tile_get_shapes(cell_to_check)
+			if shapes.size() > 0:
+				for shape in shapes:
+					# If shape on tile is collision then generate again
+					if shape["shape"] is RectangleShape2D:
+						generate_again = true
 	else:
+		generate_again = true
+	
+	if generate_again:
 		# Position is blocked by collision, ... - get new one
 		return generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius)
+	else:
+		return position
 
-
-func generate_position_in_polygon(area_info):
+func generate_position_in_polygon(area_info, is_first_spawn):
 	# Get weighted random triangle
 	var complete_polygon_area = area_info[0] # complete_polygon_area
 	var remaining_distance = randf() * complete_polygon_area
@@ -194,11 +219,14 @@ func generate_position_in_polygon(area_info):
 	var randY = (1 - sqrt(r1)) * A.y + (sqrt(r1) * (1 - r2)) * B.y + (sqrt(r1) * r2) * C.y
 	
 	var position = Vector2(randX, randY)
-	# Check if spawn is in camera screen -> if it is then generate new position
-	if not is_position_in_camera_screen(position):
-		return position
+	# Check if spawn is in camera screen (only on first spawning) -> if it is then generate new position
+	if is_first_spawn:
+		if not is_position_in_camera_screen(position):
+			return position
+		else:
+			return generate_position_in_polygon(area_info, is_first_spawn)
 	else:
-		return generate_position_in_polygon(area_info)
+		return position
 
 
 func is_position_in_camera_screen(position):

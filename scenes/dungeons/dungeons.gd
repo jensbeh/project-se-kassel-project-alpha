@@ -45,10 +45,10 @@ func _setup_scene_in_background():
 
 	# Setup pathfinding
 	PathfindingService.init(mobsNavigation2d)
-
+	
 	# Setup spawning areas
 	setup_spawning_areas()
-
+	
 	# Spawn all mobs
 	spawn_mobs()
 
@@ -158,39 +158,36 @@ func setup_spawning_areas():
 
 
 func spawn_mobs():
-# e.g. spawning_areas[spawnArea] = {
-#								"biome": "forest",
-#								"max_mobs": 15,
-#								"current_mobs_count": 0,
-#								"biome_mobs": [Bat],
-#								"biome_mobs_count": 1
-#								}
-	
 	for current_spawn_area in spawning_areas.keys():
+		# Spawn area informations
 		var biome_mobs_count = spawning_areas[current_spawn_area]["biome_mobs_count"]
 		var max_mobs = spawning_areas[current_spawn_area]["max_mobs"]
 		var biome_mobs = spawning_areas[current_spawn_area]["biome_mobs"]
 		
+		# Get count of mobs to spawn
 		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
 		
-		var mob_count_breakdown : Array = Utils.n_random_numbers_with_max_sum(biome_mobs_count, spawn_mobs_counter)
-#		print("mob_count_breakdown: " + str(mob_count_breakdown))
-		# Iterate over diffent mobs classes
-		for i_mob in range(biome_mobs.size()):
-			# Load and spawn mobs
-			var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[i_mob] + ".tscn")
-			if mobScene != null:
-				for _num in range(mob_count_breakdown[i_mob]):
-					var mob_instance = mobScene.instance()
-#					print(current_spawn_area)
-#					print(mobsNavigationTileMap)
-					mob_instance.init(current_spawn_area, mobsNavigationTileMap)
-					mobsLayer.call_deferred("add_child", mob_instance)
-					mob_list.append(mob_instance)
-					spawning_areas[current_spawn_area]["current_mobs_count"] += 1
-#					print(spawning_areas[current_spawn_area]["current_mobs_count"])
-			else:
-				printerr("\""+ biome_mobs[i_mob] + "\" scene can't be loaded!")
+		# Spawn only if needed
+		if spawn_mobs_counter > 0:
+			var mobs_to_spawn : Array = []
+			mobs_to_spawn = Utils.get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter)
+			# Iterate over diffent mobs classes
+			for mob in range(biome_mobs.size()):
+				# Check if mob should be spawned
+				if mob in mobs_to_spawn:
+					# Load and spawn mobs
+					var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[mob] + ".tscn")
+					if mobScene != null:
+						# Spawn the mob as often as it is in the list
+						for mob_id in mobs_to_spawn:
+							if mob == mob_id:
+								var mob_instance = mobScene.instance()
+								mob_instance.init(current_spawn_area, mobsNavigationTileMap)
+								mobsLayer.call_deferred("add_child", mob_instance)
+								mob_list.append(mob_instance)
+								spawning_areas[current_spawn_area]["current_mobs_count"] += 1
+					else:
+						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
 
 
 func update_chunks(new_chunks : Array, deleting_chunks : Array):

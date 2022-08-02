@@ -38,7 +38,7 @@ onready var line2D = $Line2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set spawn_position
-	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea)
+	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea, false)
 	position = spawn_position # Vector2(380,538)
 
 	# Set init max_ideling_time for startstate IDLING
@@ -143,7 +143,7 @@ func update_behaviour(new_behaviour):
 # Method returns next target position to pathfinding_service
 func get_target_position():
 	if behaviour_state == WANDERING:
-		return Utils.generate_position_in_polygon(ambientMobsSpawnArea)
+		return Utils.generate_position_in_polygon(ambientMobsSpawnArea, false)
 
 
 # Method is called from pathfinding_service to set new path to mob

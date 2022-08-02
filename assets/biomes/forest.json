@@ -2,11 +2,31 @@
 	"name": "Forest",
 	"data": {
 		"mobs": [
-			"Bat",
 			"SmallSlimePurple",
 			"SmallSlimeGreen",
 			"SmallSlimeOrange",
 			"SmallSlimeRed",
+		
+			"BatPurple",
+			"BatRed",
+			"BatBlue",
+			
+			"FungusBrown",
+			"FungusBlue",
+			"FungusPurple",
+			"FungusRed",
+
+			"GhostWhite",
+			"GhostGreen",
+			"GhostPurple",
+			
+			"SkeletonWhite",
+			"SkeletonBlue",
+			"SkeletonRed",
+			
+			"SkeletonWhite",
+			"SkeletonBlue",
+			"SkeletonRed",
 		]
 	}
 }

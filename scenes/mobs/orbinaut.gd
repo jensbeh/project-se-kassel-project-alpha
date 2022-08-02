@@ -28,7 +28,7 @@ var min_searching_radius
 var start_searching_position
 
 # Constants
-const HUNTING_SPEED = 100
+const HUNTING_SPEED = 90
 const WANDERING_SPEED = 50
 
 # Mob movment
@@ -45,9 +45,7 @@ var searching_time = 0.0
 var max_searching_time
 
 # Nodes
-onready var animationPlayer = $AnimationPlayer
-onready var animationTree = $AnimationTree
-onready var animationState = animationTree.get("parameters/playback")
+onready var mobSprite = $AnimatedSprite
 onready var collision = $Collision
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
@@ -61,13 +59,10 @@ func _ready():
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, true)
 	position = spawn_position
-
+	
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
 	max_ideling_time = rng.randi_range(0, 8)
-	
-	# Setup initial mob view direction
-	velocity = Vector2(rng.randi_range(-1,1), rng.randi_range(-1,1))
 	
 	# Setup searching variables
 	max_searching_radius = playerDetectionZoneShape.shape.radius
@@ -75,7 +70,9 @@ func _ready():
 	
 #	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
 #	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
-
+	
+	# Set animation
+	mobSprite.speed_scale = 1
 
 # Method to init variables, typically called after instancing
 func init(init_spawnArea, new_navigation_tile_map):
@@ -110,11 +107,11 @@ func _physics_process(delta):
 				# Follow searching path
 				if path.size() > 0:
 					move_to_position(delta)
+		
 #		ATTACKING:
 #			# check if mob can attack
 #			if !playerAttackZone.mob_can_attack:
 #				update_behaviour(HUNTING)
-
 
 func _process(delta):
 		# Handle behaviour
@@ -169,6 +166,7 @@ func _process(delta):
 			# Mob is doing nothing, just standing and searching for player
 			search_player()
 
+
 func move_to_player(delta):
 	# Remove point when reach with little radius -> take next one
 	if global_position.distance_to(path[0]) < player_threshold:
@@ -183,15 +181,11 @@ func move_to_player(delta):
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
 		
-		# Update anmination
-		animationTree.set("parameters/IDLE/blend_position", velocity)
-		animationTree.set("parameters/WALK/blend_position", velocity)
-		
 		# Update line position
-#		line2D.global_position = Vector2(0,0)
+		line2D.global_position = Vector2(0,0)
 		
-#	if path.size() == 0:
-#		line2D.points = []
+	if path.size() == 0:
+		line2D.points = []
 
 
 
@@ -201,20 +195,16 @@ func move_to_position(delta):
 		path.remove(0)
 
 		# Update line
-		line2D.points = path
+#		line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
 		
-		# Update anmination
-		animationTree.set("parameters/IDLE/blend_position", velocity)
-		animationTree.set("parameters/WALK/blend_position", velocity)
-		
-#		# Update line position
+		# Update line position
 #		line2D.global_position = Vector2(0,0)
-#
+		
 #	if path.size() == 0:
 #		line2D.points = []
 
@@ -235,10 +225,14 @@ func update_behaviour(new_behaviour):
 	# Handle new bahaviour
 	match new_behaviour:
 		SLEEPING:
+			# Set variables
 			behaviour_state = SLEEPING
 			mob_need_path = false
 		
 		IDLING:
+			# Update animation
+			mobSprite.speed_scale = 1
+			
 			# Set new max_ideling_time for IDLING
 			rng.randomize()
 			max_ideling_time = rng.randi_range(3, 10)
@@ -246,10 +240,13 @@ func update_behaviour(new_behaviour):
 #			print("IDLING")
 			behaviour_state = IDLING
 			mob_need_path = false
-			animationState.travel("IDLE")
 		
 		WANDERING:
+			# Set variables
 			speed = WANDERING_SPEED
+			
+			# Update animation
+			mobSprite.speed_scale = 1
 			
 			if behaviour_state != WANDERING:
 				# Reset path in case player is seen but e.g. state is wandering
@@ -261,10 +258,13 @@ func update_behaviour(new_behaviour):
 #			print("WANDERING")
 			behaviour_state = WANDERING
 			mob_need_path = true
-			animationState.travel("WALK")
 		
 		HUNTING:
+			# Set variables
 			speed = HUNTING_SPEED
+			
+			# Update animation
+			mobSprite.speed_scale = 2
 			
 			if behaviour_state != HUNTING:
 				# Reset path in case player is seen but e.g. state is wandering
@@ -275,11 +275,13 @@ func update_behaviour(new_behaviour):
 #			print("HUNTING")
 			behaviour_state = HUNTING
 			mob_need_path = true
-			animationState.travel("WALK")
 		
 		SEARCHING:
 			# Set variables
 			speed = WANDERING_SPEED
+			
+			# Update animation
+			mobSprite.speed_scale = 1
 			
 			# start_searching_position -> last eye contact to player
 			if path.size() > 0:
@@ -294,7 +296,6 @@ func update_behaviour(new_behaviour):
 #			print("SEARCHING")
 			behaviour_state = SEARCHING
 			mob_need_path = false
-			animationState.travel("WALK")
 		
 #		ATTACKING:
 #			if behaviour_state != ATTACKING:

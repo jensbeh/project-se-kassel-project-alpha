@@ -3,7 +3,7 @@ extends KinematicBody2D
 # Mob specific
 var health = 100
 var damage = 15
-var spawn_time = Constants.SpawnTime.ONLY_NIGHT
+var spawn_time = Constants.SpawnTime.ALWAYS
 
 # Variables
 enum {
@@ -28,8 +28,8 @@ var min_searching_radius
 var start_searching_position
 
 # Constants
-const HUNTING_SPEED = 100
-const WANDERING_SPEED = 50
+const HUNTING_SPEED = 70
+const WANDERING_SPEED = 25
 
 # Mob movment
 var acceleration = 350
@@ -75,6 +75,11 @@ func _ready():
 	
 #	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
 #	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
+	
+	# Animation
+	animationTree.active = true
+	animationTree.set("parameters/IDLE/blend_position", velocity)
+	animationTree.set("parameters/WALK/blend_position", velocity)
 
 
 # Method to init variables, typically called after instancing

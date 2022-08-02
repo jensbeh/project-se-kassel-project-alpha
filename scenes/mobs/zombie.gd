@@ -3,7 +3,7 @@ extends KinematicBody2D
 # Mob specific
 var health = 100
 var damage = 15
-var spawn_time = Constants.SpawnTime.ONLY_NIGHT
+var spawn_time = Constants.SpawnTime.ALWAYS
 
 # Variables
 enum {
@@ -28,8 +28,8 @@ var min_searching_radius
 var start_searching_position
 
 # Constants
-const HUNTING_SPEED = 100
-const WANDERING_SPEED = 50
+const HUNTING_SPEED = 40
+const WANDERING_SPEED = 20
 
 # Mob movment
 var acceleration = 350

@@ -2,11 +2,21 @@
 	"name": "Beach",
 	"data": {
 		"mobs": [
-			"Bat",
-			"SmallSlimePurple",
-			"SmallSlimeGreen",
-			"SmallSlimeOrange",
-			"SmallSlimeRed",
+			"BatPurple",
+			"BatRed",
+			"BatBlue",
+			
+			"GhostWhite",
+			"GhostGreen",
+			"GhostPurple",
+			
+			"RatGrey",
+			"RatRed",
+			"RatWhite",
+			
+			"SnakePurple",
+			"SnakeGreen",
+			"SnakeGrey",
 		]
 	}
 }

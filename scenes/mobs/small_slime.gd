@@ -61,7 +61,7 @@ func _ready():
 	# Set spawn_position
 #	print("start ready")
 	collision_radius = collision.shape.radius
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, true)
 	position = spawn_position
 #	print(position)
 	# Set init max_ideling_time for startstate IDLING
@@ -124,6 +124,11 @@ func _physics_process(delta):
 #			# check if mob can attack
 #			if !playerAttackZone.mob_can_attack:
 #				update_behaviour(HUNTING)
+	
+	# Update anmination
+	animationTree.set("parameters/IDLE/blend_position", velocity)
+	animationTree.set("parameters/WALK/blend_position", velocity)
+
 
 func _process(delta):
 		# Handle behaviour
@@ -255,7 +260,7 @@ func update_behaviour(new_behaviour):
 			behaviour_state = IDLING
 			mob_need_path = false
 			animationState.travel("IDLE")
-
+		
 		WANDERING:
 			speed = WANDERING_SPEED
 			
@@ -269,10 +274,8 @@ func update_behaviour(new_behaviour):
 #			print("WANDERING")
 			behaviour_state = WANDERING
 			mob_need_path = true
-			animationTree.set("parameters/IDLE/blend_position", velocity)
-			animationTree.set("parameters/WALK/blend_position", velocity)
 			animationState.travel("WALK")
-
+		
 		HUNTING:
 			speed = HUNTING_SPEED
 			
@@ -286,7 +289,7 @@ func update_behaviour(new_behaviour):
 			behaviour_state = HUNTING
 			mob_need_path = true
 			animationState.travel("WALK")
-
+		
 		SEARCHING:
 			# Set variables
 			speed = WANDERING_SPEED
@@ -305,7 +308,7 @@ func update_behaviour(new_behaviour):
 			behaviour_state = SEARCHING
 			mob_need_path = false
 			animationState.travel("WALK")
-
+		
 #		ATTACKING:
 #			if behaviour_state != ATTACKING:
 #				# Reset path in case player is seen but e.g. state is wandering
@@ -329,7 +332,7 @@ func get_target_position():
 	
 	# Return next wandering position
 	elif behaviour_state == WANDERING:
-		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius)
+		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, false)
 			
 	# Return next searching position
 	elif behaviour_state == SEARCHING:
