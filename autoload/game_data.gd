@@ -1,6 +1,8 @@
 extends Node
 
 var item_data = {}
+var item_stats = ["Attack", "PotionHealth", "PotionMana", "FoodSatiation", "Worth"]
+var item_stat_labels = ["Attack", "Health", "Mana", "Satiation", "Worth"]
 
 # Load the item data
 func _ready():

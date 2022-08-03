@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/inventory/inventory.gd" type="Script" id=2]
-[ext_resource path="res://assets/Icon_Items/Empty Slot.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/checkbox_x_example.png" type="Texture" id=4]
+[ext_resource path="res://assets/ui/border.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=2]
 size = 24
@@ -20,17 +22,18 @@ rect_min_size = Vector2( 480, 540 )
 script = ExtResource( 2 )
 
 [node name="Background" type="NinePatchRect" parent="."]
-self_modulate = Color( 0.333333, 0.27451, 0.27451, 0.490196 )
+self_modulate = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -476.0
 margin_bottom = -445.0
 rect_min_size = Vector2( 480, 540 )
 texture = ExtResource( 3 )
-region_rect = Rect2( 7.10837, 7.85843, 48.4977, 49.0964 )
-patch_margin_top = 47
-patch_margin_right = 4
-patch_margin_bottom = 48
+region_rect = Rect2( 4, 5, 95, 97 )
+patch_margin_left = 10
+patch_margin_top = 9
+patch_margin_right = 10
+patch_margin_bottom = 11
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 anchor_right = 1.0
@@ -60,7 +63,7 @@ size_flags_horizontal = 3
 [node name="Gold" type="Label" parent="Background/MarginContainer/VBox/TitleBox/Control"]
 anchor_right = 0.155
 anchor_bottom = 0.175
-margin_left = -7.0
+margin_left = 9.0
 margin_top = 67.0
 margin_right = 272.01
 margin_bottom = 93.0
@@ -86,16 +89,16 @@ margin_right = 450.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="Background/MarginContainer/VBox/TitleBox/Exit"]
+[node name="Button" type="TextureRect" parent="Background/MarginContainer/VBox/TitleBox/Exit"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -58.0
+margin_left = -55.0
 margin_top = 16.0
-margin_right = -8.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 50, 50 )
-text = "Close"
-expand_icon = true
+margin_right = -5.0
+margin_bottom = 66.0
+rect_min_size = Vector2( 30, 30 )
+texture = ExtResource( 4 )
+expand = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/MarginContainer/VBox"]
 margin_top = 100.0
@@ -113,4 +116,13 @@ custom_constants/vseparation = 12
 custom_constants/hseparation = 12
 columns = 6
 
-[connection signal="pressed" from="Background/MarginContainer/VBox/TitleBox/Exit/Button" to="." method="_on_Button_pressed"]
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_right = 480.0
+margin_bottom = 540.0
+texture = ExtResource( 5 )
+patch_margin_left = 23
+patch_margin_top = 29
+patch_margin_right = 21
+patch_margin_bottom = 31
+
+[connection signal="gui_input" from="Background/MarginContainer/VBox/TitleBox/Exit/Button" to="." method="_on_Button_gui_input"]

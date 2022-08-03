@@ -10418,9 +10418,6 @@ frame = 0
 texture = ExtResource( 6 )
 frame = 0
 
-[node name="InteractionArea" parent="map_camp/npclayer/steven/interactionZone NPC" index="0"]
-position = Vector2( 8, 5.875 )
-
 [node name="AnimationPlayer" parent="map_camp/npclayer/steven" index="16"]
 anims/IdleDown = SubResource( 3 )
 anims/IdleLeft = SubResource( 4 )
@@ -10562,9 +10559,6 @@ frame = 24
 texture = ExtResource( 10 )
 frame = 0
 
-[node name="InteractionArea" parent="map_camp/npclayer/murphy/interactionZone NPC" index="0"]
-position = Vector2( 8, 5.875 )
-
 [node name="AnimationPlayer" parent="map_camp/npclayer/murphy" index="16"]
 anims/IdleDown = SubResource( 56 )
 anims/IdleLeft = SubResource( 57 )
@@ -10608,9 +10602,6 @@ frame = 0
 [node name="Hair" parent="map_camp/npclayer/octavia" index="10"]
 texture = ExtResource( 11 )
 frame = 0
-
-[node name="InteractionArea" parent="map_camp/npclayer/octavia/interactionZone NPC" index="0"]
-position = Vector2( 8, 5.875 )
 
 [node name="AnimationPlayer" parent="map_camp/npclayer/octavia" index="16"]
 anims/IdleDown = SubResource( 67 )

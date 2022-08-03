@@ -1719,18 +1719,7 @@ parameters/Walk/blend_position = Vector2( -0.852667, 0.595376 )
 
 [node name="DialogueBox" parent="." instance=ExtResource( 16 )]
 
-[node name="DialogueBox" parent="DialogueBox" index="0"]
-visible = false
-
-[node name="HSeparator" parent="DialogueBox" index="2"]
-visible = false
-
-[node name="Button" parent="DialogueBox" index="5"]
-visible = false
-
 [connection signal="area_entered" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_entered"]
 [connection signal="area_exited" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_exited"]
 [connection signal="body_entered" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_body_entered"]
 [connection signal="body_exited" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_body_exited"]
-
-[editable path="DialogueBox"]
