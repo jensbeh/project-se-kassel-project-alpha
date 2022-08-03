@@ -2,6 +2,7 @@ extends TextureRect
 
 var tool_tip = load(Constants.TOOLTIP)
 var split_popup = load(Constants.SPLIT_POPUP)
+var inv_slot = load(Constants.TRADE_INV_SLOT)
 
 # Get information about drag item
 func get_drag_data(_pos):
@@ -187,6 +188,7 @@ func drop_data(_pos, data):
 					get_node("../TextureRect/Stack").set_text("")
 
 			show_hide_stack_label(data)
+		check_slots()
 
 func SplitStack(split_amount, data):
 	var target_slot = get_parent().get_name()
@@ -220,6 +222,7 @@ func SplitStack(split_amount, data):
 		get_node("../TextureRect/Stack").set_text("")
 	
 	show_hide_stack_label(data)
+	check_slots()
 
 func show_hide_stack_label(data):
 	if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
@@ -272,3 +275,28 @@ func _on_Icon_mouse_entered():
 func _on_Icon_mouse_exited():
 	get_node("ToolTip").free()
 
+
+func check_slots():
+	var free = false
+	var free2 = false
+	var trade = get_parent().get_parent()
+	var slots = MerchantData.inv_data.size()
+	for i in MerchantData.inv_data:
+		if MerchantData.inv_data[i]["Item"] == null:
+			free = true
+	if !free:
+		for i in range(slots+1,slots +7):
+			var inv_slot_new = inv_slot.instance()
+			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
+			trade.add_child(inv_slot_new,true)
+		MerchantData.save_merchant_inventory()
+	elif slots > 30:
+		for i in range(0,6):
+			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
+				free2 = true
+		if !free2:
+			slots = MerchantData.inv_data.size()
+			for i in range(0,6):
+				MerchantData.inv_data.erase("Inv" + str(slots - i))
+				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+			

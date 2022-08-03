@@ -6,7 +6,7 @@ onready var gridcontainer = get_node("ColorRect/MarginContainer/HBoxContainer/Ba
 
 
 func _ready():
-	for i in range(1,31):
+	for i in range(1,MerchantData.inv_data.size()+1):
 		var inv_slot_new = inv_slot.instance()
 		var slot = "Inv" + str(i)
 		if MerchantData.inv_data[slot]["Item"] != null:
@@ -34,7 +34,7 @@ func _ready():
 				MerchantData.inv_data[slot]["Stack"] = null
 				MerchantData.inv_data[slot]["Time"] = null
 		gridcontainer.add_child(inv_slot_new, true)
-		
+	check_slots()
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
 
 
@@ -63,4 +63,27 @@ func set_name(npc_name):
 	else:
 		npc_name = "Bella"
 	$ColorRect/MarginContainer/HBoxContainer/Background.find_node("Titlename").text = npc_name + "´s " + tr("INVENTORY")
-
+	
+func check_slots():
+	var free = false
+	var free2 = false
+	var trade = gridcontainer
+	var slots = MerchantData.inv_data.size()
+	for i in MerchantData.inv_data:
+		if MerchantData.inv_data[i]["Item"] == null:
+			free = true
+	if !free:
+		for i in range(slots+1,slots +7):
+			var inv_slot_new = inv_slot.instance()
+			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
+			trade.add_child(inv_slot_new,true)
+		MerchantData.save_merchant_inventory()
+	elif slots > 30:
+		for i in range(0,6):
+			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
+				free2 = true
+		if !free2:
+			slots = MerchantData.inv_data.size()
+			for i in range(0,6):
+				MerchantData.inv_data.erase("Inv" + str(slots - i))
+				trade.remove_child(trade.get_node("Inv" + str(slots - i)))

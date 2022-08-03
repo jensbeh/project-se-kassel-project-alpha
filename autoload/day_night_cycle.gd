@@ -28,7 +28,7 @@ var current_minute = 0
 var previouse_current_minute = 0
 
 # Constants
-const COMPLETE_DAY_TIME = 10.0 # 24h -> 20min = 1200s
+const COMPLETE_DAY_TIME = 1200.0 # 24h -> 20min = 1200s
 # Times in sum == COMPLETE_DAY_TIME
 const DAY_TIME = COMPLETE_DAY_TIME / 2 # 12h -> 10min = 600s
 const SUNSET_TIME = COMPLETE_DAY_TIME / 12 # 2h ->  1.666min = 100s

@@ -2,6 +2,7 @@ extends TextureRect
 
 var tool_tip = load(Constants.TOOLTIP)
 var split_popup = load(Constants.SPLIT_POPUP)
+var inv_slot = load(Constants.TRADE_INV_SLOT)
 
 # Get information about drag item
 func get_drag_data(_pos):
@@ -151,6 +152,7 @@ func drop_data(_pos, data):
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+				check_slots()
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
@@ -162,6 +164,7 @@ func drop_data(_pos, data):
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 				else:
 					MerchantData.inv_data[origin_slot]["Time"] = null
+				check_slots()
 			else:
 				# change equipment
 				PlayerData.equipment_data["Item"] = data["target_item_id"]
@@ -249,6 +252,7 @@ func SplitStack(split_amount, data):
 		if MerchantData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "TradeInventory":
 			MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 			MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+			check_slots()
 		else:
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 		PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
@@ -320,4 +324,27 @@ func _on_Icon_mouse_entered():
 
 func _on_Icon_mouse_exited():
 	get_node("ToolTip").free()
-
+	
+func check_slots():
+	var free = false
+	var free2 = false
+	var trade = Utils.get_scene_manager().get_child(3).get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
+	var slots = MerchantData.inv_data.size()
+	for i in MerchantData.inv_data:
+		if MerchantData.inv_data[i]["Item"] == null:
+			free = true
+	if !free:
+		for i in range(slots+1,slots +7):
+			var inv_slot_new = inv_slot.instance()
+			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
+			trade.add_child(inv_slot_new,true)
+		MerchantData.save_merchant_inventory()
+	elif slots > 30:
+		for i in range(0,6):
+			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
+				free2 = true
+		if !free2:
+			slots = MerchantData.inv_data.size()
+			for i in range(0,6):
+				MerchantData.inv_data.erase("Inv" + str(slots - i))
+				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
