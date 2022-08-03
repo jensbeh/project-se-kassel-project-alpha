@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="13" nextobjectid="15">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="19">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
- <group id="5" name="ground">
+ <objectgroup id="16" name="mobSpawns">
+  <object id="16" type="area" x="224" y="320">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="15"/>
+   </properties>
+   <polygon points="0,0 64,-32 64,-80 80,-128 64,-144 16,-160 16,-144 -16,-128 -16,-112 -32,-96 -48,-80 -48,-64 -64,-48 -144,-48 -144,-96 -96,-144 -80,-192 -144,-240 -272,-336 -288,-432 -320,-464 -352,-432 -368,-400 -352,-368 -336,-352 -320,-304 -272,-272 -208,-240 -160,-208 -144,-192 -144,-144 -208,-80 -208,-48 -176,-16 -160,0"/>
+  </object>
+  <object id="17" type="area" x="496" y="208">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="15"/>
+   </properties>
+   <polygon points="0,0 80,16 80,-32 64,-80 48,-80 48,-144 32,-144 32,-240 48,-256 64,-272 48,-304 -32,-304 -32,-288 -144,-288 -208,-304 -256,-336 -304,-368 -400,-368 -368,-320 -320,-320 -288,-256 -144,-256 -144,-240 -64,-240 -32,-208 -32,-128 -16,-112 0,-96"/>
+  </object>
+  <object id="18" type="area" x="0" y="-128">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="5"/>
+   </properties>
+   <polygon points="0,0 48,-16 80,0 128,16 128,80 144,112 192,128 224,144 192,192 112,144 96,112 48,80"/>
+  </object>
+ </objectgroup>
+ <group id="15" name="navigation"/>
+ <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">
    <data encoding="csv">
     <chunk x="-16" y="-16" width="16" height="16">
@@ -222,7 +246,7 @@
 </chunk>
    </data>
   </layer>
-  <layer id="7" name="decoration1" width="30" height="20">
+  <layer id="7" name="ground decoration1" width="30" height="20">
    <data encoding="csv">
     <chunk x="-16" y="-16" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -406,16 +430,19 @@
 </chunk>
    </data>
   </layer>
-  <layer id="8" name="decoration2" width="30" height="20">
+  <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>
  </group>
- <group id="3" name="playerlayer"/>
- <group id="6" name="higher">
+ <group id="3" name="entitylayer">
+  <group id="13" name="playerlayer"/>
+  <group id="14" name="mobslayer"/>
+ </group>
+ <group id="6" name="higherlayer">
   <layer id="2" name="higher" width="30" height="20">
    <data encoding="csv"/>
   </layer>
-  <layer id="10" name="decoration" width="30" height="20">
+  <layer id="10" name="higher decoration" width="30" height="20">
    <data encoding="csv">
     <chunk x="16" y="0" width="16" height="16">
 0,0,0,0,174,0,0,0,0,0,0,0,0,0,0,0,

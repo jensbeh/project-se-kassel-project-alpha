@@ -26,8 +26,21 @@
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
- <tile id="5" probability="0.9"/>
- <tile id="6" probability="0.1"/>
+ <tile id="5" probability="0.9">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="6" probability="0.1">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="7">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="8">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
@@ -51,6 +64,21 @@
  <tile id="12">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="13">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="14">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="15">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
   </objectgroup>
  </tile>
  <tile id="16">
@@ -103,7 +131,21 @@
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
- <tile id="27" probability="0.1"/>
+ <tile id="26">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="27" probability="0.1">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="28">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="29">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
@@ -127,6 +169,21 @@
  <tile id="33">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="34">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="35">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="36">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
   </objectgroup>
  </tile>
  <tile id="37">
@@ -259,6 +316,11 @@
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
+ <tile id="68">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="69">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
@@ -287,6 +349,11 @@
  <tile id="75">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="76">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
   </objectgroup>
  </tile>
  <tile id="77">
@@ -324,6 +391,81 @@
    <object id="2" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
+ <tile id="105">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="106">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="107">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="108">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="109">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="113">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="114">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="115">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="116">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="117">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="126">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="127">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="128">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="129">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="130">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="131">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
@@ -334,6 +476,31 @@
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
+ <tile id="134">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="135">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="136">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="137">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="138">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
  <tile id="139">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
@@ -342,6 +509,36 @@
  <tile id="141">
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="147">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="148">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="149">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="155">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="156">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="157">
+  <objectgroup draworder="index" id="2">
+   <object id="1" type="navigation" x="-8" y="-8" width="16" height="16"/>
   </objectgroup>
  </tile>
  <tile id="193">

@@ -31,6 +31,12 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	pass
+
+
 func _on_Start_Game_pressed():
 	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)

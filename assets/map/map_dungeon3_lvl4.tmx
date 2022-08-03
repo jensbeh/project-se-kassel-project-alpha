@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="11" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="3">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
- <group id="5" name="ground">
+ <objectgroup id="11" name="mobSpawns"/>
+ <group id="15" name="navigation"/>
+ <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">
    <data encoding="csv">
     <chunk x="-16" y="-16" width="16" height="16">
@@ -294,7 +296,7 @@
 </chunk>
    </data>
   </layer>
-  <layer id="7" name="decoration1" width="30" height="20">
+  <layer id="7" name="ground decoration1" width="30" height="20">
    <data encoding="csv">
     <chunk x="-32" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -316,16 +318,19 @@
 </chunk>
    </data>
   </layer>
-  <layer id="8" name="decoration2" width="30" height="20">
+  <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>
  </group>
- <group id="3" name="playerlayer"/>
- <group id="6" name="higher">
+ <group id="3" name="entitylayer">
+  <group id="13" name="playerlayer"/>
+  <group id="14" name="mobslayer"/>
+ </group>
+ <group id="6" name="higherlayer">
   <layer id="2" name="higher" width="30" height="20">
    <data encoding="csv"/>
   </layer>
-  <layer id="9" name="decoration" width="30" height="20">
+  <layer id="9" name="higher decoration" width="30" height="20">
    <data encoding="csv">
     <chunk x="-32" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

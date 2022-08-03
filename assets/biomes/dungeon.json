@@ -1,0 +1,36 @@
+{
+	"name": "Dungeon",
+	"data": {
+		"mobs": [
+			"SmallSlimePurple",
+			"SmallSlimeGreen",
+			"SmallSlimeOrange",
+			"SmallSlimeRed",
+			
+			"BatPurple",
+			"BatRed",
+			"BatBlue",
+			
+			"GhostWhite",
+			"GhostGreen",
+			"GhostPurple",
+			
+			"OrbinautRed",
+			"OrbinautBlue",
+			"OrbinautGreen",
+			"OrbinautOrange",
+			
+			"RatGrey",
+			"RatRed",
+			"RatWhite",
+			
+			"SkeletonWhite",
+			"SkeletonBlue",
+			"SkeletonRed",
+			
+			"ZombieGreen",
+			"ZombieGrey",
+			"ZombieBlue",
+		]
+	}
+}

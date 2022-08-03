@@ -1473,7 +1473,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
 }
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=1]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=15]
 
 [node name="Grassland" type="Node2D"]
 script = ExtResource( 3 )
@@ -1500,7 +1500,6 @@ visible = false
 
 [node name="Beard" parent="map_grassland/npclayer/roan" index="7"]
 texture = SubResource( 14 )
-frame = 8
 
 [node name="Hair" parent="map_grassland/npclayer/roan" index="10"]
 texture = ExtResource( 6 )
@@ -1551,19 +1550,22 @@ parameters/playback = SubResource( 12 )
 [node name="AnimationPlayer" parent="map_grassland/npclayer/heinz/DialogueBox/Skip" index="0"]
 anims/RESET = SubResource( 13 )
 
-[node name="Player" parent="map_grassland/playerlayer" index="0" instance=ExtResource( 2 )]
-position = Vector2( -16, 768 )
+[node name="Player" parent="map_grassland/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
+position = Vector2( 184, 570 )
 
-[node name="AnimationTree" parent="map_grassland/playerlayer/Player" index="16"]
-parameters/playback = SubResource( 1 )
+[node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="16"]
+parameters/playback = SubResource( 15 )
 
-[node name="Camera2D" parent="map_grassland/playerlayer/Player" index="17"]
+[node name="Camera2D" parent="map_grassland/entitylayer/playerlayer/Player" index="17"]
 limit_left = -4335
 limit_bottom = 794
+
+[node name="NavigationPolygonInstance" parent="map_grassland/ambient_mobs_navigation2d" index="0"]
+visible = false
 
 [editable path="map_grassland"]
 [editable path="map_grassland/npclayer/roan"]
 [editable path="map_grassland/npclayer/roan/DialogueBox"]
 [editable path="map_grassland/npclayer/heinz"]
 [editable path="map_grassland/npclayer/heinz/DialogueBox"]
-[editable path="map_grassland/playerlayer/Player"]
+[editable path="map_grassland/entitylayer/playerlayer/Player"]

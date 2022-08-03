@@ -1,0 +1,22 @@
+{
+	"name": "Beach",
+	"data": {
+		"mobs": [
+			"BatPurple",
+			"BatRed",
+			"BatBlue",
+			
+			"GhostWhite",
+			"GhostGreen",
+			"GhostPurple",
+			
+			"RatGrey",
+			"RatRed",
+			"RatWhite",
+			
+			"SnakePurple",
+			"SnakeGreen",
+			"SnakeGrey",
+		]
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"name": "Mountain",
+	"data": {
+		"mobs": [
+			"SmallSlimePurple",
+			"SmallSlimeGreen",
+			"SmallSlimeOrange",
+			"SmallSlimeRed",
+			
+			"BatPurple",
+			"BatRed",
+			"BatBlue",
+			
+			"FungusBrown",
+			"FungusBlue",
+			"FungusPurple",
+			"FungusRed",
+			
+			"GhostWhite",
+			"GhostGreen",
+			"GhostPurple",
+			
+			"OrbinautRed",
+			"OrbinautBlue",
+			"OrbinautGreen",
+			"OrbinautOrange",
+			
+			"SkeletonWhite",
+			"SkeletonBlue",
+			"SkeletonRed",
+			
+			"SnakePurple",
+			"SnakeGreen",
+			"SnakeGrey",
+		]
+	}
+}

@@ -60,7 +60,7 @@ func _process(delta):
 	# Calls stuff every 1min (ingame time)
 	if current_minute != previouse_current_minute:
 		previouse_current_minute = current_minute
-		print(str(current_hour) + ":" + str(current_minute))
+#		print(str(current_hour) + ":" + str(current_minute))
 	
 	# Daytime
 	if current_time <= DAY_TIME:

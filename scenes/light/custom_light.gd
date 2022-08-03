@@ -1,4 +1,4 @@
-extends Position2D
+extends Node2D
 class_name CustomLight
 
 # Variables
@@ -10,6 +10,8 @@ const MAX_LIGHT_STRENGTH = 0.7
 const LIGHT_STRENGTH = 0.5
 const MIN_LIGHT_STRENGTH = 0.4
 
+# Nodes
+onready var lightPosition = $LightPosition
 
 # Light radius
 var max_radius = radius * 1.04 # 104% of radius
@@ -61,3 +63,7 @@ func show_light():
 	max_strength = MAX_LIGHT_STRENGTH
 	strength = LIGHT_STRENGTH
 	min_strength = MIN_LIGHT_STRENGTH
+
+#  Method to return position where the center of the light is
+func get_light_position():
+	return position + lightPosition.position

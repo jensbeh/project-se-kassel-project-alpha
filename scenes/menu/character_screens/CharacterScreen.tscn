@@ -1573,7 +1573,7 @@ rect_min_size = Vector2( 601, 808 )
 custom_constants/separation = 60
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 191, 24 )
+position = Vector2( 282, 1 )
 
 [node name="Player" parent="Node2D" instance=ExtResource( 2 )]
 position = Vector2( 1219, 356 )
