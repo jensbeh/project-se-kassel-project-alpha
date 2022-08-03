@@ -49,15 +49,15 @@ func _setup_scene_in_background():
 	# Setup spawning areas
 	setup_spawning_areas()
 	
-	# Spawn all mobs
-	spawn_mobs()
-
 	call_deferred("_on_setup_scene_done")
 
 
 # Method is called when thread is done and the scene is setup
 func _on_setup_scene_done():
 	thread.wait_to_finish()
+	
+	# Spawn all mobs without new thread
+	spawn_mobs()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -114,6 +114,8 @@ func interaction_detected():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
+			clear_signals()
+			
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
@@ -121,6 +123,20 @@ func body_entered_change_scene_area(body, changeSceneArea):
 		else:
 			player_in_change_scene_area = true
 			current_area = changeSceneArea
+
+
+# Method to disconnect all signals
+func clear_signals():
+	# Player
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
+	
+	# Change scene areas
+	var changeScenesObject = find_node("changeScenes")
+	for child in changeScenesObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.disconnect("body_entered", self, "body_entered_change_scene_area")
+			child.disconnect("body_exited", self, "body_exited_change_scene_area")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -199,17 +215,17 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null:
+		if ground_chunk != null and ground_chunk.is_inside_tree():
 			ground_chunk.visible = true
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null:
+		if higher_chunk != null and higher_chunk.is_inside_tree():
 			higher_chunk.visible = true
 	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null:
+		if ground_chunk != null and ground_chunk.is_inside_tree():
 			ground_chunk.visible = false
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null:
+		if higher_chunk != null and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false

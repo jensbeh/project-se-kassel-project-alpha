@@ -254,15 +254,16 @@ func is_position_in_camera_screen(position):
 
 # Method to return the players chunk coords with players position
 func get_players_chunk(map_min_global_pos):
-	var player_position = current_player.global_position
-	var player_chunk = Vector2.ZERO
-	var new_player_position = Vector2.ZERO
-	new_player_position.x = abs(map_min_global_pos.x) + player_position.x
-	new_player_position.y = abs(map_min_global_pos.y) + player_position.y
-	
-	player_chunk.x = floor(new_player_position.x / Constants.chunk_size_pixel)
-	player_chunk.y = floor(new_player_position.y / Constants.chunk_size_pixel)
-	return player_chunk
+	if is_instance_valid(current_player) and current_player.is_inside_tree():
+		var player_position = current_player.global_position
+		var player_chunk = Vector2.ZERO
+		var new_player_position = Vector2.ZERO
+		new_player_position.x = abs(map_min_global_pos.x) + player_position.x
+		new_player_position.y = abs(map_min_global_pos.y) + player_position.y
+		
+		player_chunk.x = floor(new_player_position.x / Constants.chunk_size_pixel)
+		player_chunk.y = floor(new_player_position.y / Constants.chunk_size_pixel)
+		return player_chunk
 
 
 # Method to return the chunk coords to the given position

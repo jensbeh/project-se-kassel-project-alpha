@@ -84,7 +84,7 @@ func _on_load_scene_done(scene):
 		Utils.set_current_player(null)
 	
 	# Add scene to current_scene
-	current_scene.get_child(0).queue_free()
+	current_scene.get_child(0).call_deferred("queue_free")
 	current_scene.call_deferred("add_child", scene)
 	
 # Method to pass the transition_data to the new scene 

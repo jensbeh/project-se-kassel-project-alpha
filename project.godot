@@ -42,6 +42,11 @@ PlayerData="*res://autoload/player_data.gd"
 PathfindingService="*res://autoload/pathfinding_service.gd"
 ChunkLoaderService="*res://autoload/chunk_loader_service.gd"
 
+[debug]
+
+settings/fps/force_fps=60
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/width=1920

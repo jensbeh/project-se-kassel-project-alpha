@@ -27,6 +27,9 @@ func post_import(scene):
 				
 				# Set custom_light to node/replace existing sprite
 				child.replace_by(custom_light, true)
+				custom_light.set_owner(scene)
+				for child_in_light in custom_light.get_children():
+					child_in_light.set_owner(scene)
 	
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
