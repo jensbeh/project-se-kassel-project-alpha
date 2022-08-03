@@ -17,6 +17,11 @@ func _on_Confirm_pressed():
 		split_amount = Constants.MAX_STACK_SIZE
 	if data["origin_stack"] == 0 and !data["origin_stackable"]:
 		split_amount = 1
+	var player_gold = int(Utils.get_current_player().get_gold())
+	if player_gold != 0:
+		if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(split_amount) > player_gold:
+			split_amount = int(player_gold/(int(GameData.item_data[str(data["origin_item_id"])]["Worth"])))
+	
 	get_parent().SplitStack(int(split_amount), data)
 	queue_free()
 

@@ -143,7 +143,7 @@ func drop_data(_pos, data):
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
 			data["origin_panel"] == "TradeInventory"):
 				if split != 0:
-					MerchantData.inv_data[origin_slot]["Stack"] = MerchantData.inv_data[origin_slot]["Stack"] - split
+					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
 				elif data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					MerchantData.inv_data[origin_slot]["Item"] = null
 					MerchantData.inv_data[origin_slot]["Stack"] = null
@@ -158,12 +158,16 @@ func drop_data(_pos, data):
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 			elif data["origin_panel"] == "TradeInventory":
-				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
-				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-				if data["target_item_id"] != null:
+				if split != 0:
+					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 				else:
-					MerchantData.inv_data[origin_slot]["Time"] = null
+					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
+					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
+					if data["target_item_id"] != null:
+						MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					else:
+						MerchantData.inv_data[origin_slot]["Time"] = null
 				check_slots()
 			else:
 				# change equipment
@@ -207,7 +211,7 @@ func drop_data(_pos, data):
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 				var new_stack = 0
 				if split != 0:
-					new_stack = data["target_stack"] + split
+					new_stack = split
 				else:
 					new_stack = data["target_stack"] + data["origin_stack"]
 				if new_stack > Constants.MAX_STACK_SIZE:
@@ -221,7 +225,7 @@ func drop_data(_pos, data):
 				get_child(0).frame = data["origin_frame"]
 				get_child(0).texture = data["origin_texture"]
 				if split != 0:
-					data["origin_stack"] = data["origin_stack"] - split
+					data["origin_stack"] = split
 				else: 
 					data["origin_stack"] = data["origin_stack"]
 				PlayerData.inv_data[target_slot]["Stack"] = data["origin_stack"]
