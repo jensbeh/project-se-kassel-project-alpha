@@ -108,7 +108,7 @@ func drop_data(_pos, data):
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			# Update the data of the origin
 			# stacking 
-			if (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["origin_stack"] == 0) and 
+			if (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
 			data["origin_panel"] == "TradeInventory"):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					MerchantData.inv_data[origin_slot]["Item"] = null
@@ -118,7 +118,7 @@ func drop_data(_pos, data):
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
-			elif (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["origin_stack"] == 0) and 
+			elif (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
 			data["origin_panel"] == "Inventory"):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[origin_slot]["Item"] = null
@@ -140,7 +140,7 @@ func drop_data(_pos, data):
 				
 			# Update the texture of the origin
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					data["origin_node"].get_child(0).texture = null
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
@@ -163,7 +163,7 @@ func drop_data(_pos, data):
 				
 			# Update the texture, label and data of the target
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0):
 				if data["target_stack"] != 0:
 					var new_stack = data["target_stack"] + data["origin_stack"]
 					if new_stack > Constants.MAX_STACK_SIZE:
