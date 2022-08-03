@@ -154,8 +154,8 @@ func generate_chunks(scene):
 	# Map size in tiles
 	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x)
 	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y)
-	var vertical_chunks_count = ceil(map_height / chunk_size)
-	var horizontal_chunks_count = ceil(map_width / chunk_size)
+	var vertical_chunks_count = ceil(map_height / chunk_size) + 1
+	var horizontal_chunks_count = ceil(map_width / chunk_size) + 1
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()

@@ -111,8 +111,8 @@ func generate_chunks(scene):
 	# Map size in tiles
 	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x)
 	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y)
-	var vertical_chunks_count = ceil(map_height / chunk_size)
-	var horizontal_chunks_count = ceil(map_width / chunk_size)
+	var vertical_chunks_count = ceil(map_height / chunk_size) + 1
+	var horizontal_chunks_count = ceil(map_width / chunk_size) + 1
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()
@@ -145,7 +145,7 @@ func generate_chunks(scene):
 			var max_x = (map_min_pos.x + chunk_size * chunk_x) + chunk_size - 1
 			var max_y = (map_min_pos.y + chunk_size * chunk_y) + chunk_size - 1
 			var chunk_data = {"chunk_x": chunk_x, "chunk_y": chunk_y, "min_x": min_x, "min_y": min_y, "max_x": max_x, "max_y": max_y}
-
+			
 			# Create chunk node
 			var chunk_node = Node2D.new()
 			chunk_node.name = "Chunk (" + str(chunk_x) + "," + str(chunk_y) + ")"
@@ -165,7 +165,7 @@ func generate_chunks(scene):
 			var max_x = (map_min_pos.x + chunk_size * chunk_x) + chunk_size - 1
 			var max_y = (map_min_pos.y + chunk_size * chunk_y) + chunk_size - 1
 			var chunk_data = {"chunk_x": chunk_x, "chunk_y": chunk_y, "min_x": min_x, "min_y": min_y, "max_x": max_x, "max_y": max_y}
-
+			
 			# Create chunk node
 			var chunk_node = Node2D.new()
 			chunk_node.name = "Chunk (" + str(chunk_x) + "," + str(chunk_y) + ")"
