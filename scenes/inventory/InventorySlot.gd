@@ -146,9 +146,11 @@ func drop_data(_pos, data):
 				elif data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					MerchantData.inv_data[origin_slot]["Item"] = null
 					MerchantData.inv_data[origin_slot]["Stack"] = null
+					MerchantData.inv_data[target_slot]["Time"] = null
 				else:
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
+					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
@@ -156,6 +158,10 @@ func drop_data(_pos, data):
 			elif data["origin_panel"] == "TradeInventory":
 				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
+				if data["target_item_id"] != null:
+					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+				else:
+					MerchantData.inv_data[origin_slot]["Time"] = null
 			else:
 				# change equipment
 				PlayerData.equipment_data["Item"] = data["target_item_id"]
@@ -208,10 +214,13 @@ func drop_data(_pos, data):
 			else:
 				# swaping
 				PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
+				verify_target_texture(data)
 				get_child(0).frame = data["origin_frame"]
 				get_child(0).texture = data["origin_texture"]
-				verify_target_texture(data)
-				data["origin_stack"] = data["origin_stack"] - split
+				if split != 0:
+					data["origin_stack"] = data["origin_stack"] - split
+				else: 
+					data["origin_stack"] = data["origin_stack"]
 				PlayerData.inv_data[target_slot]["Stack"] = data["origin_stack"]
 				if data["origin_stack"] != null and data["origin_stack"] > 1:
 					get_node("../TextureRect/Stack").set_text(str(data["origin_stack"]))
@@ -239,13 +248,14 @@ func SplitStack(split_amount, data):
 	if valid:
 		if MerchantData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "TradeInventory":
 			MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+			MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 		else:
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 		PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 		PlayerData.inv_data[target_slot]["Stack"] = split_amount
+		verify_target_texture(data)
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
-		verify_target_texture(data)
 		# origin label
 		if data["origin_stack"] - split_amount > 1:
 			data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))

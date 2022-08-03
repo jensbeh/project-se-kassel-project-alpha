@@ -10,24 +10,29 @@ func _ready():
 		var inv_slot_new = inv_slot.instance()
 		var slot = "Inv" + str(i)
 		if MerchantData.inv_data[slot]["Item"] != null:
-			var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
-			var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
-			var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
-			if texture == "item_icons_1":
-				inv_slot_new.get_node("Icon/Sprite").set_scale(Vector2(1.5,1.5))
-				inv_slot_new.get_node("Icon/Sprite").set_hframes(16)
-				inv_slot_new.get_node("Icon/Sprite").set_vframes(27)
+			if MerchantData.inv_data[slot]["Time"] == null or (MerchantData.inv_data[slot]["Time"] + (2000* DayNightCycle.COMPLETE_DAY_TIME)) >  OS.get_system_time_msecs():
+				var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
+				var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
+				var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+				if texture == "item_icons_1":
+					inv_slot_new.get_node("Icon/Sprite").set_scale(Vector2(1.5,1.5))
+					inv_slot_new.get_node("Icon/Sprite").set_hframes(16)
+					inv_slot_new.get_node("Icon/Sprite").set_vframes(27)
+				else:
+					inv_slot_new.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
+					inv_slot_new.get_node("Icon/Sprite").set_hframes(13)
+					inv_slot_new.get_node("Icon/Sprite").set_vframes(15)
+				inv_slot_new.get_node("Icon/Sprite").set_texture(icon_texture)
+				inv_slot_new.get_node("Icon/Sprite").frame = frame
+				
+				var item_stack = MerchantData.inv_data[slot]["Stack"]
+				if item_stack != null and item_stack > 1:
+					inv_slot_new.get_node("TextureRect/Stack").set_text(str(item_stack))
+					inv_slot_new.get_node("TextureRect").visible = true
 			else:
-				inv_slot_new.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
-				inv_slot_new.get_node("Icon/Sprite").set_hframes(13)
-				inv_slot_new.get_node("Icon/Sprite").set_vframes(15)
-			inv_slot_new.get_node("Icon/Sprite").set_texture(icon_texture)
-			inv_slot_new.get_node("Icon/Sprite").frame = frame
-			
-			var item_stack = MerchantData.inv_data[slot]["Stack"]
-			if item_stack != null and item_stack > 1:
-				inv_slot_new.get_node("TextureRect/Stack").set_text(str(item_stack))
-				inv_slot_new.get_node("TextureRect").visible = true
+				MerchantData.inv_data[slot]["Item"] = null
+				MerchantData.inv_data[slot]["Stack"] = null
+				MerchantData.inv_data[slot]["Time"] = null
 		gridcontainer.add_child(inv_slot_new, true)
 		
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
