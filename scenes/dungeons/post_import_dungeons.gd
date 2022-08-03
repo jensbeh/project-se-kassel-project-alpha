@@ -174,6 +174,7 @@ func generate_chunks(scene):
 			create_chunk(scene, chunk_data, higher_duplicate, chunk_node)
 
 
+# Method generates a single chunk with all nodes
 func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 	for child in ground_duplicate_origin.get_children():
 		if child is TileMap:
@@ -322,6 +323,7 @@ func collect_tilemaps(node):
 						map_max_pos.y = cell_pos.y
 
 
+# Method to return the chunk coords to the given position
 func get_chunk_from_position(map_min_global_pos, global_position):
 	var chunk = Vector2.ZERO
 	var new_position = Vector2.ZERO

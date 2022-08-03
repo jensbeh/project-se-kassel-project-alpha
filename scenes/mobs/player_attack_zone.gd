@@ -12,12 +12,14 @@ func _ready():
 	pass # Replace with function body.
 
 
+# Method is called when a body entered the attack zone
 func _on_PlayerAttackZone_body_entered(body):
 	# Mob recognize player
 	if body.name == "Player":
 		emit_signal("player_entered_attack_zone")
 
 
+# Method is called when a body exited the attack zone
 func _on_PlayerAttackZone_body_exited(body):
 	# Mob lose player
 	if body.name == "Player":

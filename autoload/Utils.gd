@@ -82,6 +82,7 @@ func update_current_scene_type(transition_data):
 		return Constants.SceneType.DUNGEON
 
 
+# Method generates spawning area with trianges and returns them
 func generate_mob_spawn_area_from_polygon(area_world_position, polygon) -> Dictionary:
 	var triangle_points = Geometry.triangulate_polygon(polygon)
 	var triangles_count = triangle_points.size() / 3
@@ -105,15 +106,17 @@ func generate_mob_spawn_area_from_polygon(area_world_position, polygon) -> Dicti
 		
 	triangles[0] = complete_polygon_area
 	return triangles
-	
+
+
 # Method to calculate the area of a triangle with vectors
 func calculate_triangle_area(A, B, C) -> float:
 	var AB : Vector2 = B - A
 	var AC : Vector2 = C - A
 	var AxB : float = AC.x * AB.y - AB.x * AC.y
 	return 0.5 * abs(AxB)
-	
 
+
+# Method to generate a valid position in a mob area
 func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning) -> Vector2:
 	var position = generate_position_in_polygon(area_info, is_first_spawning)
 	var tile_set : TileSet = navigation_tile_map.tile_set
@@ -149,6 +152,8 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 	else:
 		return position
 
+
+# Method to return random mob list as spawning list to spawning area
 func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
 	var mobs_to_spawn = []
 	for _i in range(spawn_mobs_counter):
@@ -156,6 +161,8 @@ func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
 		mobs_to_spawn.append(num)
 	return mobs_to_spawn
 
+
+# Method generates a valid position in a radius around the mob
 func generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
 	# Get random position in circle
 	rng.randomize()
@@ -198,6 +205,8 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 	else:
 		return position
 
+
+# Method generates a position in a polygon and checks if the position is in camera screen
 func generate_position_in_polygon(area_info, is_first_spawn):
 	# Get weighted random triangle
 	var complete_polygon_area = area_info[0] # complete_polygon_area
@@ -229,6 +238,7 @@ func generate_position_in_polygon(area_info, is_first_spawn):
 		return position
 
 
+# Method to check is given position is in camera screen
 func is_position_in_camera_screen(position):
 	var camera : Camera2D = Utils.get_current_player().get_node("Camera2D")
 	var canvas_transform = camera.get_canvas_transform()
@@ -242,6 +252,7 @@ func is_position_in_camera_screen(position):
 		return false
 
 
+# Method to return the players chunk coords with players position
 func get_players_chunk(map_min_global_pos):
 	var player_position = current_player.global_position
 	var player_chunk = Vector2.ZERO
@@ -254,6 +265,7 @@ func get_players_chunk(map_min_global_pos):
 	return player_chunk
 
 
+# Method to return the chunk coords to the given position
 func get_chunk_from_position(map_min_global_pos, global_position):
 	var chunk = Vector2.ZERO
 	var new_position = Vector2.ZERO

@@ -218,6 +218,7 @@ func generate_chunks(scene):
 			create_chunk(scene, chunk_data, higher_duplicate, chunk_node)
 
 
+# Method generates a single chunk with all nodes
 func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 	for child in ground_duplicate_origin.get_children():
 		if child is TileMap:
@@ -337,10 +338,11 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name))
 			if chunk_node.get_node(child.name).get_child_count() == 0:
 				chunk_node.remove_child(chunk_node.get_node(child.name))
-
+	
 	return chunk_node
 
 
+# Method to return the chunk coords to the given position
 func get_chunk_from_position(map_min_global_pos, global_position):
 	var chunk = Vector2.ZERO
 	var new_position = Vector2.ZERO
@@ -350,7 +352,6 @@ func get_chunk_from_position(map_min_global_pos, global_position):
 	chunk.x = floor(new_position.x / Constants.chunk_size_pixel)
 	chunk.y = floor(new_position.y / Constants.chunk_size_pixel)
 	return chunk
-
 
 
 # Method to cleanup the scene
@@ -444,7 +445,6 @@ func compress_tilemaps(node):
 			if child is TileMap:
 				for cellPos in child.get_used_cells():
 					compressed_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
-
 
 
 # Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map

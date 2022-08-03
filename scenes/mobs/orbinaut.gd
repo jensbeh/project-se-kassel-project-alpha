@@ -74,10 +74,12 @@ func _ready():
 	# Set animation
 	mobSprite.speed_scale = 1
 
+
 # Method to init variables, typically called after instancing
 func init(init_spawnArea, new_navigation_tile_map):
 	spawnArea = init_spawnArea
 	navigation_tile_map = new_navigation_tile_map
+
 
 func _physics_process(delta):
 	# Handle behaviour
@@ -113,6 +115,7 @@ func _physics_process(delta):
 #			if !playerAttackZone.mob_can_attack:
 #				update_behaviour(HUNTING)
 
+
 func _process(delta):
 		# Handle behaviour
 	match behaviour_state:
@@ -124,7 +127,7 @@ func _process(delta):
 			if ideling_time > max_ideling_time:
 				ideling_time = 0.0
 				update_behaviour(WANDERING)
-				
+		
 		WANDERING:
 			if not mob_need_path:
 				# Mob is wandering around and is searching for player
@@ -135,7 +138,7 @@ func _process(delta):
 				
 			# Check if player is nearby (needs to be at the end of WANDERING)
 			search_player()
-
+		
 		HUNTING:
 			# Update path generation timer
 			update_path_time += delta
@@ -147,7 +150,7 @@ func _process(delta):
 			if player == null:
 				# Lose player
 				update_behaviour(SEARCHING)
-
+		
 		SEARCHING:
 			if not mob_need_path:
 				# Mob is wandering around and is searching for player
@@ -162,18 +165,18 @@ func _process(delta):
 					# Case if pathend is reached, need new path for searching
 					mob_need_path = true
 			
-			
 			# Mob is doing nothing, just standing and searching for player
 			search_player()
 
 
+# Method to move mob to players position
 func move_to_player(delta):
 	# Remove point when reach with little radius -> take next one
 	if global_position.distance_to(path[0]) < player_threshold:
 		path.remove(0)
 		
 		# Update line
-		line2D.points = path
+#		line2D.points = path
 	else:
 		# Move mob
 		# Hunting player
@@ -182,13 +185,13 @@ func move_to_player(delta):
 		velocity = move_and_slide(velocity)
 		
 		# Update line position
-		line2D.global_position = Vector2(0,0)
+#		line2D.global_position = Vector2(0,0)
 		
-	if path.size() == 0:
-		line2D.points = []
+#	if path.size() == 0:
+#		line2D.points = []
 
 
-
+# Method to move the mob to position
 func move_to_position(delta):
 	# Stop motion when reached position
 	if global_position.distance_to(path[0]) < wandering_threshold:
@@ -208,12 +211,15 @@ func move_to_position(delta):
 #	if path.size() == 0:
 #		line2D.points = []
 
+
+# Method to search for player
 func search_player():
 	if playerDetectionZone.mob_can_see_player():
 		# Player in detection zone of this mob
 		update_behaviour(HUNTING)
 
 
+# Method to update the behaviour of the mob
 func update_behaviour(new_behaviour):
 	# Set previous behaviour state
 	previous_behaviour_state = behaviour_state
@@ -253,7 +259,7 @@ func update_behaviour(new_behaviour):
 				path.resize(0)
 				
 				# Update line path
-				line2D.points = []
+#				line2D.points = []
 			
 #			print("WANDERING")
 			behaviour_state = WANDERING
@@ -271,7 +277,7 @@ func update_behaviour(new_behaviour):
 				path.resize(0)
 				
 				# Update line path
-				line2D.points = []
+#				line2D.points = []
 #			print("HUNTING")
 			behaviour_state = HUNTING
 			mob_need_path = true
@@ -308,6 +314,7 @@ func update_behaviour(new_behaviour):
 #			behaviour_state = ATTACKING
 #			mob_need_path = false
 
+
 # Method returns next target position to pathfinding_service
 func get_target_position():
 	# Return player hunting position if player is still existing
@@ -325,7 +332,8 @@ func get_target_position():
 	# Return next searching position
 	elif behaviour_state == SEARCHING:
 		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
-		
+
+
 
 # Method is called from pathfinding_service to set new path to mob
 func update_path(new_path):
@@ -334,7 +342,7 @@ func update_path(new_path):
 	mob_need_path = false
 	
 	# Update line path
-	line2D.points = path
+#	line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity

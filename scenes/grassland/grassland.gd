@@ -118,6 +118,7 @@ func spawn_despawn_in_background(remove_mobs_list):
 func _on_spawn_despawn_done():
 	spawn_despawn_thread.wait_to_finish()
 
+
 # Method to setup the player with all informations
 func setup_player():
 	var scene_player = find_node("Player")
@@ -138,6 +139,7 @@ func setup_player():
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
 
+# Method to create spawning areas
 func setup_spawning_areas():
 	# AreaMobs spawning area
 	for area in mobSpawns.get_children():
@@ -156,15 +158,15 @@ func setup_spawning_areas():
 		
 		# Save spawning area
 		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
-		
-#		print(spawning_areas)
+	
 	
 	# AmbientMobs spawning area
 	var polygon = Polygon2D.new()
 	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
 	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
-		
 
+
+# Method to spawn all mobs
 func spawn_mobs():
 	# Spawn area mobs
 	spawn_area_mobs()
@@ -181,6 +183,7 @@ func interaction_detected():
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
 		Utils.get_scene_manager().transition_to_scene(transition_data)
 
+
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
@@ -193,24 +196,28 @@ func body_entered_change_scene_area(body, changeSceneArea):
 			player_in_change_scene_area = true
 			current_area = changeSceneArea
 
+
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
-		
+
+
 # Method which is called when a body has entered a stairArea
 func body_entered_stair_area(body, _stairArea):
 	if body.name == "Player":
 		# reduce player speed
 		Utils.get_current_player().set_speed(Constants.PLAYER_STAIR_SPEED_FACTOR)
 
+
 # Method which is called when a body has exited a stairArea
 func body_exited_stair_area(body, _stairArea):
 	if body.name == "Player":
 		# reset player speed
 		Utils.get_current_player().reset_speed()
+
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
@@ -219,6 +226,7 @@ func setup_change_scene_areas():
 			# connect Area2D with functions to handle body action
 			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
 			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
+
 
 # Setup all stair objectes/Area2D's on start
 func setup_stair_areas():
@@ -230,6 +238,8 @@ func setup_stair_areas():
 					stair.connect("body_entered", self, "body_entered_stair_area", [stair])
 					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
 
+
+# Method to recognize sunrise
 func on_change_to_sunrise():
 	# Spawn specific day mobs and remove specific night mobs
 	print("day")
@@ -242,6 +252,7 @@ func on_change_to_sunrise():
 	spawn_despawn_thread.start(self, "spawn_despawn_in_background", remove_mobs)
 
 
+# Method to recognize night
 func on_change_to_night():
 	# Spawn specific night mobs and remove specific day mobs
 	print("night")
@@ -254,6 +265,7 @@ func on_change_to_night():
 	spawn_despawn_thread.start(self, "spawn_despawn_in_background", remove_mobs)
 
 
+# Method to remove mobs if despawning
 func remove_mobs(mobs : Array):
 	if mobs.size() > 0:
 		for mob in mobs:
@@ -278,6 +290,7 @@ func remove_mobs(mobs : Array):
 					mobs_to_remove.append(mob)
 
 
+# Method to spawn ambient mobs
 func spawn_ambient_mobs():
 	# Spawn only if needed
 	if current_ambient_mobs < max_ambient_mobs:
@@ -296,7 +309,7 @@ func spawn_ambient_mobs():
 					current_ambient_mobs += 1
 			else:
 				printerr("\"Moth\" scene can't be loaded!")
-
+		
 		else:
 			# DAY
 			# Spawn butterflies
@@ -312,6 +325,7 @@ func spawn_ambient_mobs():
 				printerr("\"Butterfly\" scene can't be loaded!")
 
 
+# Method to spawn mobs
 func spawn_area_mobs():
 	for current_spawn_area in spawning_areas.keys():
 		# Spawn area informations
@@ -345,7 +359,9 @@ func spawn_area_mobs():
 						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
 
 
+# Method to update the chunks with active and deleted chunks to make them visible or not
 func update_chunks(new_chunks : Array, deleting_chunks : Array):
+	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if ground_chunk != null:
@@ -353,7 +369,8 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null:
 			higher_chunk.visible = true
-
+	
+	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if ground_chunk != null:

@@ -95,9 +95,11 @@ func setup_player():
 	# Connect signals
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
+
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
+
 
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
@@ -106,6 +108,7 @@ func interaction_detected():
 		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
 		Utils.get_scene_manager().transition_to_scene(transition_data)
+
 
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
@@ -119,12 +122,14 @@ func body_entered_change_scene_area(body, changeSceneArea):
 			player_in_change_scene_area = true
 			current_area = changeSceneArea
 
+
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
+
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
@@ -153,10 +158,9 @@ func setup_spawning_areas():
 		
 		# Save spawning area
 		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
-		
-#	print(spawning_areas)
 
 
+# Method to spawn all mobs to map
 func spawn_mobs():
 	for current_spawn_area in spawning_areas.keys():
 		# Spawn area informations
@@ -190,7 +194,9 @@ func spawn_mobs():
 						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
 
 
+# Method to update the chunks with active and deleted chunks to make them visible or not
 func update_chunks(new_chunks : Array, deleting_chunks : Array):
+	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if ground_chunk != null:
@@ -198,7 +204,8 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null:
 			higher_chunk.visible = true
-
+	
+	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if ground_chunk != null:

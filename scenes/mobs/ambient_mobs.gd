@@ -39,8 +39,8 @@ onready var line2D = $Line2D
 func _ready():
 	# Set spawn_position
 	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea, false)
-	position = spawn_position # Vector2(380,538)
-
+	position = spawn_position
+	
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
 	max_ideling_time = rng.randi_range(0, 8)
@@ -54,6 +54,7 @@ func _ready():
 func init(init_ambientMobsSpawnArea, init_spawn_time):
 	ambientMobsSpawnArea = init_ambientMobsSpawnArea
 	spawn_time = init_spawn_time
+
 
 func _physics_process(delta):
 	# Handle behaviour
@@ -85,7 +86,7 @@ func move_to_position(delta):
 		path.remove(0)
 		
 		# Update line
-		line2D.points = path
+#		line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
@@ -96,10 +97,10 @@ func move_to_position(delta):
 		mobSprite.flip_h = velocity.x > 0
 		
 		# Update line position
-		line2D.global_position = Vector2(0,0)
+#		line2D.global_position = Vector2(0,0)
 		
-	if path.size() == 0:
-		line2D.points = []
+#	if path.size() == 0:
+#		line2D.points = []
 
 
 func update_behaviour(new_behaviour):
@@ -124,7 +125,7 @@ func update_behaviour(new_behaviour):
 #			print("IDLING")
 			behaviour_state = IDLING
 			mob_need_path = false
-
+		
 		WANDERING:
 			speed = WANDERING_SPEED
 			
@@ -133,7 +134,7 @@ func update_behaviour(new_behaviour):
 				path.resize(0)
 				
 				# Update line path
-				line2D.points = []
+#				line2D.points = []
 			
 #			print("WANDERING")
 			behaviour_state = WANDERING
@@ -153,7 +154,7 @@ func update_path(new_path):
 	mob_need_path = false
 	
 	# Update line path
-	line2D.points = path
+#	line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity

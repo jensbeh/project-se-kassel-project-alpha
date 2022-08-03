@@ -34,6 +34,7 @@ func _physics_process(_delta):
 	if is_day_night_cycle:
 		material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
 
+
 # Method to set all lights (with all informations) to the shader
 func update_shader():
 	# Get all custom_lights in the current scene
@@ -73,6 +74,7 @@ func update_shader():
 	material.set_shader_param("lights_count", lights.size())
 	material.set_shader_param("light_data", texture)
 
+
 # Method to set the current camera zoom factor so that the transformation of the shader is correct
 func update_shader_transformation():
 	if Utils.get_current_player() != null:
@@ -85,6 +87,7 @@ func update_shader_transformation():
 		material.set_shader_param("camera_zoom_factor", camera.zoom.x)
 		
 		return t
+
 
 # Method to set the current shader color depending on the day night cycle
 func update_shader_color():
@@ -136,12 +139,14 @@ func update_lights(show_lights):
 		for light in lights:
 			light.hide_light()
 
+
 # Method to update all lights to be NOT visible -> signal from day_night_cycle_script
 func change_to_daytime():
 	var lights = get_tree().get_nodes_in_group("lights")
 	for light in lights:
 		if is_day_night_cycle:
 			light.hide_light()
+
 
 # Method to update all lights to be visible -> signal from day_night_cycle_script
 func change_to_sunset():

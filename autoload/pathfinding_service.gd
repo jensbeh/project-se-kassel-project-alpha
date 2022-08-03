@@ -28,12 +28,12 @@ func init(init_navigation : Navigation2D, init_ambient_navigation : Navigation2D
 	
 	can_generate_pathes = true
 
-
+# Method to stop the pathfinder to change map
 func stop():
 	# Reset variables
 	call_deferred("cleanup")
 
-
+# Method to cleanup the pathfinder
 func cleanup():
 	print("STOP PATHFINDING_SERVICE")
 	# Reset variables
@@ -70,6 +70,7 @@ func _physics_process(_delta):
 			pathfinder_thread.start(self, "generate_pathes", mobs_to_update)
 
 
+# Method to generate pathes in background
 func generate_pathes(mobs_dic : Dictionary):
 	# Generate new pathes and send to mobs
 	for mob_key in mobs_dic.keys():
@@ -94,11 +95,13 @@ func generate_pathes(mobs_dic : Dictionary):
 	call_deferred("task_finished")
 
 
+# Method to send new path to mob
 func send_path_to_mob(mob, new_path):
 	if mob != null: # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("update_path", new_path)
 
 
+# Method is called when thread finished
 func task_finished():
 	# Wait for thread to finish
 	pathfinder_thread.wait_to_finish()

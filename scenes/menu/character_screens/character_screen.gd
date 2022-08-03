@@ -377,14 +377,14 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-#	var player_position = Vector2(1128,616) # Camp
-	var player_position = Vector2(768,752) # Grassland
+	var player_position = Vector2(1128,616) # Camp
+#	var player_position = Vector2(768,752) # Grassland
 	var view_direction = Vector2(0,1)
 	
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)
 	
-#	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
-	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

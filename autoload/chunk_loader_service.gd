@@ -15,6 +15,7 @@ var can_load_chunks = false
 func _ready():
 	print("START CHUNK_LOADER_SERVICE")
 
+# Method to init all important variables
 func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, init_map_min_global_pos):
 	print("INIT CHUNK_LOADER_SERVICE")
 	world = init_world
@@ -25,12 +26,12 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	chunkloader_thread.start(self, "load_chunks")
 	can_load_chunks = true
 
-
+# Method to stop the chunkloader to change map
 func stop():
 	# Reset variables
 	call_deferred("cleanup")
 
-
+# Method to cleanup the chunkloader
 func cleanup():
 	print("STOP CHUNK_LOADER_SERVICE")
 	can_load_chunks = false
@@ -45,8 +46,6 @@ func cleanup():
 	map_min_global_pos = null
 	current_chunk = null
 	active_chunks.clear()
-	
-
 
 
 func _physics_process(_delta):
@@ -57,6 +56,7 @@ func _physics_process(_delta):
 	previouse_chunk = current_chunk
 
 
+# Method to load active chunks in background
 func load_chunks():
 	var render_bounds = Constants.render_distance * 2 + 1
 	var loading_chunks = []
@@ -89,12 +89,12 @@ func load_chunks():
 	
 	call_deferred("task_finished")
 
-
+# Method is called when thread finished
 func task_finished():
 	# Wait for thread to finish
 	chunkloader_thread.wait_to_finish()
 
-
+# Method to calculate mob activity
 func update_mobs():
 	# Mob lists
 	var enemies = get_tree().get_nodes_in_group("Enemy")
@@ -115,11 +115,13 @@ func update_mobs():
 			call_deferred("set_mob_active", ambient_mob, false)
 
 
+# Method to send mob activity to mob
 func set_mob_active(mob, is_active):
 	if is_instance_valid(mob): # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("set_mob_activity", is_active)
 
 
+# Method to send active and deleted chunks to map to update
 func send_chunks_to_world(deleting_chunks):
 	if is_instance_valid(world):
 		world.call_deferred("update_chunks", active_chunks, deleting_chunks)

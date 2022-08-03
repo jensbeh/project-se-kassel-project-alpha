@@ -145,7 +145,9 @@ func setup_door_areas():
 					door.connect("body_exited", self, "body_exited_door", [door])
 
 
+# Method to update the chunks with active and deleted chunks to make them visible or not
 func update_chunks(new_chunks : Array, deleting_chunks : Array):
+	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if ground_chunk != null:
@@ -153,7 +155,8 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null:
 			higher_chunk.visible = true
-
+	
+	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if ground_chunk != null:
