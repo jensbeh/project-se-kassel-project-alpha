@@ -226,7 +226,7 @@ func SplitStack(split_amount, data):
 		data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 	# target
 	if new_stack_size > 1:
-		get_node("../TextureRect/Stack").set_text(str(data["target_stack"] + split_amount))
+		get_node("../TextureRect/Stack").set_text(str(new_stack_size))
 	else:
 		get_node("../TextureRect/Stack").set_text("")
 	

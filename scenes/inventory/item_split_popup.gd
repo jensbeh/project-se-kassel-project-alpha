@@ -21,8 +21,8 @@ func _on_Confirm_pressed():
 	if player_gold != 0 and data["origin_panel"] == "TradeInventory":
 		if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(split_amount) > player_gold:
 			split_amount = int(player_gold/(int(GameData.item_data[str(data["origin_item_id"])]["Worth"])))
-	
-	get_parent().SplitStack(int(split_amount), data)
+	if int(split_amount) != 0:
+		get_parent().SplitStack(int(split_amount), data)
 	queue_free()
 
 func _input(event):
