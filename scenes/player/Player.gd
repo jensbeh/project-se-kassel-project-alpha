@@ -164,6 +164,8 @@ func _input(event):
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
 		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
+	if event.is_action_pressed("control_notes"):
+		Utils.get_scene_manager().get_child(3).get_node("ControlNotes").show_hide_control_notes()
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):

@@ -108,6 +108,8 @@ func finish_transition():
 				
 			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
+			yield(loading_screen_animation_player, "animation_finished")
+			Utils.get_scene_manager().get_child(3).get_node("ControlNotes").in_world(true)
 			
 		elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 			# Start fade to normal to menu

@@ -24,6 +24,7 @@ func _on_Back_to_Main_Menu_pressed():
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
 	Utils.get_scene_manager().get_child(3).get_node("GameMenu").queue_free()
 	Utils.set_current_player(null)
+	Utils.get_scene_manager().get_child(3).get_node("ControlNotes").in_world(false)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
