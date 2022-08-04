@@ -108,16 +108,21 @@ func drop_data(_pos, data):
 	else:
 		# splitting
 		if Input.is_action_pressed("secondary") and data["origin_stack"] > 1 or data["origin_stack"] == 0:
-			var split_popup_instance = split_popup.instance()
-			split_popup_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(0,100)
-			split_popup_instance.data = data
-			add_child(split_popup_instance)
-			get_node("ItemSplitPopup").show()
+			if data["origin_stackable"]:
+				var split_popup_instance = split_popup.instance()
+				split_popup_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(0,100)
+				split_popup_instance.data = data
+				add_child(split_popup_instance)
+				get_node("ItemSplitPopup").show()
+			else:
+				SplitStack(1,data)
 		else:
 			# paying
 			if data["origin_panel"] == "TradeInventory":
+				if data["target_stack"] == Constants.MAX_STACK_SIZE:
+					pass
 				# swap
-				if data["target_item_id"] != null and !data["origin_stackable"]:
+				elif data["target_item_id"] != null and (!data["origin_stackable"] or data["target_item_id"] != data["origin_item_id"]):
 					Utils.get_current_player().set_gold(player_gold - ((int(GameData.item_data[
 						str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) + 
 						(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
@@ -233,6 +238,8 @@ func drop_data(_pos, data):
 					get_node("../TextureRect/Stack").set_text(str(data["origin_stack"]))
 				else:
 					get_node("../TextureRect/Stack").set_text("")
+				hide_tooltip()
+				show_tooltip()
 					
 			show_hide_stack_label(data)
 			split = 0
@@ -315,6 +322,12 @@ func verify_target_texture(data):
 
 # ToolTips
 func _on_Icon_mouse_entered():
+	show_tooltip()
+
+func _on_Icon_mouse_exited():
+	hide_tooltip()
+	
+func show_tooltip():
 	var tool_tip_instance = tool_tip.instance()
 	tool_tip_instance.origin = "Inventory"
 	tool_tip_instance.slot = get_parent().get_name()
@@ -325,8 +338,7 @@ func _on_Icon_mouse_entered():
 	if has_node("ToolTip") and get_node("ToolTip").valid:
 		get_node("ToolTip").show()
 
-
-func _on_Icon_mouse_exited():
+func hide_tooltip():
 	get_node("ToolTip").free()
 	
 func check_slots():
