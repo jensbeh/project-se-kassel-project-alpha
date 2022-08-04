@@ -63,7 +63,7 @@ func can_drop_data(_pos, data):
 			return true
 	# Swap item
 	else:
-		if Input.is_action_pressed("secondary") or data["origin_stack"] == 0:
+		if data["origin_stack"] == 0:
 			return false
 		else:
 			if data["origin_panel"] != "CharacterInterface" or GameData.item_data[str(data["target_item_id"])]["Category"] == "Weapon":
@@ -249,6 +249,7 @@ func SplitStack(split_amount, data):
 	var origin_slot = data["origin_node"].get_parent().get_name()
 	var player_gold = int(Utils.get_current_player().get_gold())
 	var valid = true
+	var new_stack_size
 	# paying in case of buying and selling
 	if data["origin_panel"] == "TradeInventory":
 		if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount <= player_gold:
@@ -267,7 +268,11 @@ func SplitStack(split_amount, data):
 		else:
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 		PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
-		PlayerData.inv_data[target_slot]["Stack"] = split_amount
+		if data["target_stack"] != null:
+			new_stack_size = data["target_stack"] + split_amount
+		else:
+			new_stack_size = split_amount
+		PlayerData.inv_data[target_slot]["Stack"] = new_stack_size
 		verify_target_texture(data)
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
@@ -277,8 +282,8 @@ func SplitStack(split_amount, data):
 		else:
 			data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 		# target label
-		if split_amount > 1:
-			get_node("../TextureRect/Stack").set_text(str(split_amount))
+		if new_stack_size > 1:
+			get_node("../TextureRect/Stack").set_text(str(data["target_stack"] + split_amount))
 		else:
 			get_node("../TextureRect/Stack").set_text("")
 			

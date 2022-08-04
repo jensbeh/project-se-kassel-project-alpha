@@ -54,9 +54,9 @@ func can_drop_data(_pos, data):
 	# Swap item
 	else:
 		# can´t swap when splitting
-		if Input.is_action_pressed("secondary"):
-			return false
-		else:
+#		if Input.is_action_pressed("secondary"):
+#			return false
+#		else:
 			data["target_item_id"] = MerchantData.inv_data[target_slot]["Item"]
 			data["target_texture"] = get_child(0).texture
 			data["target_frame"] = get_child(0).frame
@@ -198,6 +198,7 @@ func SplitStack(split_amount, data):
 	var target_slot = get_parent().get_name()
 	var origin_slot = data["origin_node"].get_parent().get_name()
 	var player_gold = int(Utils.get_current_player().get_gold())
+	var new_stack_size
 	# paying in case of buying and selling
 	if data["origin_panel"] == "Inventory":
 		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))
@@ -209,8 +210,12 @@ func SplitStack(split_amount, data):
 	elif PlayerData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "Inventory":
 		PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
-	MerchantData.inv_data[target_slot]["Stack"] = split_amount
 	MerchantData.inv_data[target_slot]["Time"] = OS.get_system_time_msecs()
+	if data["target_stack"] != null:
+		new_stack_size = data["target_stack"] + split_amount
+	else:
+		new_stack_size = split_amount
+	MerchantData.inv_data[target_slot]["Stack"] = new_stack_size
 	verify_target_texture(data)
 	get_child(0).texture = data["origin_texture"]
 	get_child(0).frame = data["origin_frame"]
@@ -220,8 +225,8 @@ func SplitStack(split_amount, data):
 	else:
 		data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 	# target
-	if split_amount > 1:
-		get_node("../TextureRect/Stack").set_text(str(split_amount))
+	if new_stack_size > 1:
+		get_node("../TextureRect/Stack").set_text(str(data["target_stack"] + split_amount))
 	else:
 		get_node("../TextureRect/Stack").set_text("")
 	
