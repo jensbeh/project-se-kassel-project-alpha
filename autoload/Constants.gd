@@ -54,6 +54,10 @@ const INV_SLOT = "res://scenes/inventory/InventorySlot.tscn"
 const TOOLTIP = "res://scenes/inventory/ToolTip.tscn"
 const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
 const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
+const MERCHANT = "res://assets/data/merchant_inv_data.json"
+const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
+const SAVE_PATH = "user://character/"
+const DATA_PATH = "user://data/"
 
 
 # Called when the node enters the scene tree for the first time.

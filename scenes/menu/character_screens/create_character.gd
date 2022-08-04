@@ -547,10 +547,10 @@ func start_game():
 
 func create_player_inventory():
 	var dir = Directory.new()
-	if !dir.dir_exists("user://data/"):
-		dir.make_dir("user://data/")
+	if !dir.dir_exists(Constants.DATA_PATH):
+		dir.make_dir(Constants.DATA_PATH)
 	var save_player = File.new()
-	save_player.open("user://data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
 	# sets lp

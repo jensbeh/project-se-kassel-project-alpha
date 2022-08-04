@@ -415,9 +415,9 @@ func get_data():
 	
 func save_player_data(player_data):
 	var dir = Directory.new()
-	if !dir.dir_exists("user://character/"):
-		dir.make_dir("user://character/")
+	if !dir.dir_exists(Constants.SAVE_PATH):
+		dir.make_dir(Constants.SAVE_PATH)
 	var save_game = File.new()
-	save_game.open("user://character/" + player_data.id + ".json", File.WRITE)
+	save_game.open(Constants.SAVE_PATH + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()

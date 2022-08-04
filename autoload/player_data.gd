@@ -7,7 +7,7 @@ var equipment_data = {
 		"Stack": null,
 	},
 }
-var path = "res://assets/data/inv_data_file.json"
+var path = Constants.INVENTORY_PATH
 
 # Load the inventar items form the player
 func _ready():
@@ -21,7 +21,7 @@ func _ready():
 
 
 func set_path(new_path):
-	path = "user://data/" + new_path + "_inv_data.json"
+	path = Constants.DATA_PATH + new_path + "_inv_data.json"
 	
 func save_inventory():
 	var item_data_file = File.new()
