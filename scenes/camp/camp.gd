@@ -9,8 +9,9 @@ var current_area : Area2D = null
 var init_transition_data = null
 
 # Nodes
-onready var changeScenesObject = get_node("map_camp/changeScenes")
-onready var doorsObject = get_node("map_camp/ground/Buildings/doors")
+onready var changeScenesObject = $map_camp/changeScenes
+onready var groundChunks = $map_camp/ground/Chunks
+onready var higherChunks = $map_camp/higher/Chunks
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,7 +23,15 @@ func _ready():
 func _setup_scene_in_background():
 	# Setup player
 	setup_player()
-
+	
+	
+	# Setup chunks and chunkloader
+	# Get map position
+	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
+	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
+	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
+	
 	# setup areas to change areaScenes
 	setup_change_scene_areas()
 	# setup all door areas to handle action
@@ -35,6 +44,14 @@ func _on_setup_scene_done():
 	thread.wait_to_finish()
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+
+
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	# Stop chunkloader
+	ChunkLoaderService.stop()
+
 
 # Method to setup the player with all informations
 func setup_player():
@@ -118,8 +135,32 @@ func setup_change_scene_areas():
 
 # Setup all door objectes/Area2D's on start
 func setup_door_areas():
-	for door in doorsObject.get_children():
-		if "door_" in door.name:
-			# connect Area2D with functions to handle body action
-			door.connect("body_entered", self, "body_entered_door", [door])
-			door.connect("body_exited", self, "body_exited_door", [door])
+	for chunk in groundChunks.get_children():
+		var doors_object = chunk.find_node("doors")
+		if doors_object != null:
+			for door in doors_object.get_children():
+				if door is Area2D:
+					# connect Area2D with functions to handle body action
+					door.connect("body_entered", self, "body_entered_door", [door])
+					door.connect("body_exited", self, "body_exited_door", [door])
+
+
+# Method to update the chunks with active and deleted chunks to make them visible or not
+func update_chunks(new_chunks : Array, deleting_chunks : Array):
+	# Activate chunks
+	for chunk in new_chunks:
+		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if ground_chunk != null:
+			ground_chunk.visible = true
+		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if higher_chunk != null:
+			higher_chunk.visible = true
+
+	# Disable chunks
+	for chunk in deleting_chunks:
+		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if ground_chunk != null:
+			ground_chunk.visible = false
+		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
+		if higher_chunk != null:
+			higher_chunk.visible = false

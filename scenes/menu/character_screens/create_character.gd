@@ -91,6 +91,12 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	pass
+
+
 func get_sprites():
 	for child in Utils.get_player().get_children():
 		match child.name:

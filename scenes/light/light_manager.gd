@@ -22,17 +22,19 @@ func _ready():
 	material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 
 
-func _physics_process(_delta):
-	update_shader()
-	var t = Transform2D(0, Vector2())
-	# Use camera for the correct position of the current screen to show correct light positions
-	t = update_shader_transformation()
-	# Set global transformation in shader for correct pixels and map size
-	material.set_shader_param("global_transform", t)
-	
-	# Set current screen color when day night cycle is enabled depending on the current time
-	if is_day_night_cycle:
-		material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
+func _process(_delta):
+	if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree() and is_instance_valid(Utils.get_current_player().get_node("Camera2D")) and Utils.get_current_player().get_node("Camera2D").is_inside_tree():
+		update_shader()
+		var t = Transform2D(0, Vector2())
+		# Use camera for the correct position of the current screen to show correct light positions
+		t = update_shader_transformation()
+		# Set global transformation in shader for correct pixels and map size
+		material.set_shader_param("global_transform", t)
+		
+		# Set current screen color when day night cycle is enabled depending on the current time
+		if is_day_night_cycle:
+			material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
+
 
 # Method to set all lights (with all informations) to the shader
 func update_shader():
@@ -46,10 +48,10 @@ func update_shader():
 	image.lock()
 	for i in lights.size():
 		var light = lights[i]
-		if light is CustomLight:
+		if light is CustomLight and is_instance_valid(light) and light.is_inside_tree():
 			# Set player light position
 			if light.get_parent() is KinematicBody2D:
-				var light_position = light.position + light.get_parent().position
+				var light_position = light.get_light_position() + light.get_parent().position
 				image.set_pixel(i, 0, Color( \
 						light_position.x, light_position.y, \
 						light.strength, light.radius))
@@ -58,7 +60,7 @@ func update_shader():
 				
 			# Set torch, ... light position
 			else:
-				var light_position = light.position
+				var light_position = light.get_light_position()
 				image.set_pixel(i, 0, Color( \
 						light_position.x, light_position.y, \
 						light.strength, light.radius))
@@ -73,18 +75,19 @@ func update_shader():
 	material.set_shader_param("lights_count", lights.size())
 	material.set_shader_param("light_data", texture)
 
+
 # Method to set the current camera zoom factor so that the transformation of the shader is correct
 func update_shader_transformation():
-	if Utils.get_current_player() != null:
-		var camera = Utils.get_current_player().get_node("Camera2D")
-		var canvas_transform = camera.get_canvas_transform()
-		var top_left = -canvas_transform.origin / canvas_transform.get_scale()
-		var t = Transform2D(0, top_left * (1 / camera.zoom.x))
+	var camera = Utils.get_current_player().get_node("Camera2D")
+	var canvas_transform = camera.get_canvas_transform()
+	var top_left = -canvas_transform.origin / canvas_transform.get_scale()
+	var t = Transform2D(0, top_left * (1 / camera.zoom.x))
 
-		# Set zoom factor in shader for correct scaling
-		material.set_shader_param("camera_zoom_factor", camera.zoom.x)
-		
-		return t
+	# Set zoom factor in shader for correct scaling
+	material.set_shader_param("camera_zoom_factor", camera.zoom.x)
+	
+	return t
+
 
 # Method to set the current shader color depending on the day night cycle
 func update_shader_color():
@@ -136,12 +139,14 @@ func update_lights(show_lights):
 		for light in lights:
 			light.hide_light()
 
+
 # Method to update all lights to be NOT visible -> signal from day_night_cycle_script
 func change_to_daytime():
 	var lights = get_tree().get_nodes_in_group("lights")
 	for light in lights:
 		if is_day_night_cycle:
 			light.hide_light()
+
 
 # Method to update all lights to be visible -> signal from day_night_cycle_script
 func change_to_sunset():

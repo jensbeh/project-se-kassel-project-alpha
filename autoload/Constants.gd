@@ -1,5 +1,13 @@
 extends Node
 
+# Tiles
+const tile_size = 16
+
+# Chunks
+const chunk_size_tiles = 10 # In tiles -> if changing need reimport of maps!
+const chunk_size_pixel = chunk_size_tiles * tile_size # In pixel
+const render_distance = 2 # Loaded chunks each direction except the one where the player stands -> min 2 !!!
+
 # Player
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
@@ -18,6 +26,13 @@ enum SceneType {
 	CAMP,
 	GRASSLAND,
 	DUNGEON
+}
+
+# Spawn time
+enum SpawnTime {
+	ONLY_DAY,
+	ONLY_NIGHT,
+	ALWAYS
 }
 
 # Darkness lights environment
@@ -46,6 +61,8 @@ const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
 const SAVE_SETTINGS_PATH = "user://settings.json"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
+const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
+const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999

@@ -1560,24 +1560,28 @@ graph_offset = Vector2( -161.044, 0 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=3]
 
 [node name="Player" type="KinematicBody2D"]
+position = Vector2( 8, 8 )
 scale = Vector2( 0.9, 0.9 )
+collision_layer = 2
+collision_mask = 7
 script = ExtResource( 3 )
 
 [node name="Shadow" type="Sprite" parent="."]
+position = Vector2( -7.77778, -4.44444 )
 texture = ExtResource( 1 )
 centered = false
 
 [node name="Body" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -7.77778, -4.44444 )
 texture = ExtResource( 6 )
 centered = false
-offset = Vector2( 0, -4 )
+offset = Vector2( -8, -20 )
 hframes = 8
 vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Shoes" type="Sprite" parent="."]
-position = Vector2( -8, -12.5 )
+position = Vector2( -15.7778, -16.9444 )
 scale = Vector2( 1, 0.875 )
 texture = ExtResource( 10 )
 centered = false
@@ -1586,7 +1590,7 @@ hframes = 80
 vframes = 49
 
 [node name="Pants" type="Sprite" parent="."]
-position = Vector2( -8, -13 )
+position = Vector2( -15.7778, -17.4444 )
 scale = Vector2( 1, 0.875 )
 texture = ExtResource( 5 )
 centered = false
@@ -1595,7 +1599,7 @@ hframes = 80
 vframes = 49
 
 [node name="Clothes" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 2 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1603,7 +1607,7 @@ hframes = 80
 vframes = 49
 
 [node name="Blush" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 9 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1611,7 +1615,7 @@ hframes = 40
 vframes = 49
 
 [node name="Lipstick" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 8 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1619,7 +1623,7 @@ hframes = 40
 vframes = 49
 
 [node name="Beard" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 15 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1627,7 +1631,7 @@ hframes = 112
 vframes = 49
 
 [node name="Eyes" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 7 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1635,7 +1639,7 @@ hframes = 112
 vframes = 49
 
 [node name="Earring" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 13 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1644,7 +1648,7 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Hair" type="Sprite" parent="."]
-position = Vector2( -8, -16 )
+position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 4 )
 centered = false
 offset = Vector2( 0, -4 )
@@ -1683,7 +1687,7 @@ region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 8, 7 )
+position = Vector2( 0, 1.5 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -1705,14 +1709,15 @@ parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
 parameters/Walk/blend_position = Vector2( -0.380349, 0.202312 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 8, 8 )
+position = Vector2( 0.222219, 3.55556 )
 current = true
 zoom = Vector2( 0.25, 0.25 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2( 8, 8 )
+visible = false
+position = Vector2( 0.222219, 3.55556 )
 cast_to = Vector2( 0, 8 )
 
 [node name="CustomLight" parent="." instance=ExtResource( 16 )]
-position = Vector2( 6.88889, 4.66667 )
+position = Vector2( -7.8, 8 )
 radius = 64
