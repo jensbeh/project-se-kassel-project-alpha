@@ -55,6 +55,7 @@ func cleanup():
 	horizontal_chunks_count = null
 	map_min_global_pos = null
 	current_chunk = null
+	previouse_chunk = null
 	active_chunks.clear()
 	
 	print("STOPPED CHUNK_LOADER_SERVICE")
@@ -64,11 +65,8 @@ func cleanup():
 func load_chunks():
 	while can_load_chunks:
 		current_chunk = Utils.get_players_chunk(map_min_global_pos)
-		if current_chunk == null:
-			current_chunk = previouse_chunk
-		
 		# Generate and update chunks
-		if previouse_chunk != current_chunk:
+		if current_chunk != null and previouse_chunk != current_chunk:
 			previouse_chunk = current_chunk
 			var render_bounds = Constants.render_distance * 2 + 1
 			var loading_chunks = []

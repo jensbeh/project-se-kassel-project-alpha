@@ -45,4 +45,8 @@ func _on_Settings_pressed():
 	Utils.get_scene_manager().add_child(load(Constants.SETTINGS_PATH).instance())
 
 func _on_Exit_to_Desktop_pressed():
+	# Stop game
+	Utils.stop_game()
+	
+	# Quit and close game
 	get_tree().quit()

@@ -276,3 +276,16 @@ func get_chunk_from_position(map_min_global_pos, global_position):
 	chunk.x = floor(new_position.x / Constants.chunk_size_pixel)
 	chunk.y = floor(new_position.y / Constants.chunk_size_pixel)
 	return chunk
+
+
+# Method to stop the game
+	# Stops all threads which are still running like ChunkLoaderService, PathfindingService, ...
+func stop_game():
+	print("STOP GAME")
+	
+	# Stop threads
+	# Stop Chunkloader
+	ChunkLoaderService.stop()
+	# Stop Pathfinder
+	PathfindingService.stop()
+	
