@@ -63,39 +63,38 @@ func can_drop_data(_pos, data):
 			return true
 	# Swap item
 	else:
-		if data["origin_stack"] == 0:
-			return false
-		else:
-			if data["origin_panel"] != "CharacterInterface" or GameData.item_data[str(data["target_item_id"])]["Category"] == "Weapon":
-				data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
-				data["target_texture"] = get_child(0).texture
-				data["target_frame"] = get_child(0).frame
-				data["target_stack"] = PlayerData.inv_data[target_slot]["Stack"]
-				# not swaping with 0 stack
-				if data["target_stack"] == 0:
-					return false
-				else:
-					# check if buying
-					if data["origin_panel"] == "TradeInventory":
-						if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
-							if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(
-								data["origin_stack"]) <= player_gold:
-								return true
-							else:
-								if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) <= player_gold:
-									return true
-								else:
-									return false
-						elif int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(
-							data["origin_stack"]) <= player_gold + (int(GameData.item_data[str(
-								data["target_item_id"])]["Worth"]) * int(data["target_stack"])):
+		if data["origin_panel"] != "CharacterInterface" or GameData.item_data[str(data["target_item_id"])]["Category"] == "Weapon":
+			data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
+			data["target_texture"] = get_child(0).texture
+			data["target_frame"] = get_child(0).frame
+			data["target_stack"] = PlayerData.inv_data[target_slot]["Stack"]
+			# not swaping with 0 stack
+			if data["target_stack"] == 0:
+				return false
+			elif (data["target_item_id"] != null and data["target_item_id"] != data["origin_item_id"]) and (Input.is_action_pressed("secondary") or data["origin_stack"] == 0):
+				return false
+			else:
+				# check if buying
+				if data["origin_panel"] == "TradeInventory":
+					if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+						if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(
+							data["origin_stack"]) <= player_gold:
 							return true
 						else:
-							return false
-					else:
+							if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) <= player_gold:
+								return true
+							else:
+								return false
+					elif int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(
+						data["origin_stack"]) <= player_gold + (int(GameData.item_data[str(
+							data["target_item_id"])]["Worth"]) * int(data["target_stack"])):
 						return true
-			else:
-				return false
+					else:
+						return false
+				else:
+					return true
+		else:
+			return false
 
 
 func drop_data(_pos, data):

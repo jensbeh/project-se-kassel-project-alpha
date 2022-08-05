@@ -13,6 +13,7 @@ size = 25
 font_data = ExtResource( 1 )
 
 [node name="ItemSplitPopup" type="Popup"]
+visible = true
 margin_right = 250.0
 margin_bottom = 60.0
 script = ExtResource( 3 )
@@ -60,4 +61,5 @@ custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "OK"
 
+[connection signal="text_changed" from="NinePatchRect/MarginContainer/HBoxContainer/Amount" to="." method="_on_Amount_text_changed"]
 [connection signal="pressed" from="NinePatchRect/MarginContainer/HBoxContainer/Confirm" to="." method="_on_Confirm_pressed"]

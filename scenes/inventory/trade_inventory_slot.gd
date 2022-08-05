@@ -53,30 +53,28 @@ func can_drop_data(_pos, data):
 		return true
 	# Swap item
 	else:
-		# can´t swap when splitting
-#		if Input.is_action_pressed("secondary"):
-#			return false
-#		else:
-			data["target_item_id"] = MerchantData.inv_data[target_slot]["Item"]
-			data["target_texture"] = get_child(0).texture
-			data["target_frame"] = get_child(0).frame
-			data["target_stack"] = MerchantData.inv_data[target_slot]["Stack"]
-			# sell on stack
-			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0): 
-				return true
-			elif data["target_stack"] == 0:
-				return false
-			else:
-				# swap and check if you have enough gold
-				if data["origin_panel"] == "Inventory":
-					if int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * int(
-						data["target_stack"]) <= player_gold + int(GameData.item_data[str(
-							data["origin_item_id"])]["Worth"]) * int(data["origin_stack"]):
-						return true
-					else:
-						return false
-				else:
+		data["target_item_id"] = MerchantData.inv_data[target_slot]["Item"]
+		data["target_texture"] = get_child(0).texture
+		data["target_frame"] = get_child(0).frame
+		data["target_stack"] = MerchantData.inv_data[target_slot]["Stack"]
+		# sell on stack
+		if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0): 
+			return true
+		elif data["target_stack"] == 0:
+			return false
+		elif (data["target_item_id"] != null and data["target_item_id"] != data["origin_item_id"]) and (Input.is_action_pressed("secondary") or data["target_stack"] == 0):
+			return false
+		else:
+			# swap and check if you have enough gold
+			if data["origin_panel"] == "Inventory":
+				if int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * int(
+					data["target_stack"]) <= player_gold + int(GameData.item_data[str(
+						data["origin_item_id"])]["Worth"]) * int(data["origin_stack"]):
 					return true
+				else:
+					return false
+			else:
+				return true
 
 
 func drop_data(_pos, data):
