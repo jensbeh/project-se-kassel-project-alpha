@@ -56,6 +56,7 @@ func _ready():
 			"Hair":
 				hair = child
 	load_character()
+	find_node("Player").set_dragging(true)
 
 func load_character():
 	var player = find_node("Player")

@@ -57,6 +57,7 @@ var gold
 var attack = 0
 var max_health
 var data
+var dragging = false
 
 func _ready():
 	# Style
@@ -128,17 +129,18 @@ func _input(event):
 			print("interacted")
 			emit_signal("player_interact")
 		# Remove the trade inventory
-		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null:
-			Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
-			Utils.get_current_player().set_player_can_interact(true)
-			Utils.get_current_player().set_movement(true)
-			Utils.get_current_player().set_movment_animation(true)
-			# Reset npc interaction state
-			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
-				npc.set_interacted(false)
-			PlayerData.save_inventory()
-			save_player_data(Utils.get_current_player().get_data())
-			MerchantData.save_merchant_inventory()
+		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null and !dragging:
+				print(Utils.get_scene_manager().get_child(3).get_node("TradeInventory").is_drag_successful())
+				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
+				Utils.get_current_player().set_player_can_interact(true)
+				Utils.get_current_player().set_movement(true)
+				Utils.get_current_player().set_movment_animation(true)
+				# Reset npc interaction state
+				for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+					npc.set_interacted(false)
+				PlayerData.save_inventory()
+				save_player_data(Utils.get_current_player().get_data())
+				MerchantData.save_merchant_inventory()
 	# Open game menu with "esc"
 	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
 		set_movement(false)
@@ -156,7 +158,7 @@ func _input(event):
 		set_player_can_interact(false)
 		Utils.get_scene_manager().get_child(3).add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
 	# close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null:
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null and !dragging:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
@@ -421,3 +423,6 @@ func save_player_data(player_data):
 	save_game.open(Constants.SAVE_PATH + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
+
+func set_dragging(value):
+	dragging = value
