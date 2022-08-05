@@ -166,8 +166,8 @@ func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
 func generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
 	# Get random position in circle
 	rng.randomize()
-	var theta = rng.randi_range(0, 2 * PI)
-	var radius = rng.randi_range(min_radius, max_radius)
+	var theta = rng.randf_range(0, 2 * PI)
+	var radius = rng.randf_range(min_radius, max_radius)
 	var randX = mob_global_position.x + (radius * cos(theta))
 	var randY = mob_global_position.y + (radius * sin(theta))
 	

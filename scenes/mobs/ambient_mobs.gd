@@ -38,7 +38,7 @@ onready var line2D = $Line2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set spawn_position
-	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea, false)
+	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea, true)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING

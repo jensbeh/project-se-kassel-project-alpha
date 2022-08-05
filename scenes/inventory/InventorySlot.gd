@@ -71,6 +71,8 @@ func can_drop_data(_pos, data):
 			# not swaping with 0 stack
 			if data["target_stack"] == 0:
 				return false
+			elif data["origin_stack"] == 0 and !data["origin_stackable"]:
+				return false
 			elif (data["target_item_id"] != null and data["target_item_id"] != data["origin_item_id"]) and (Input.is_action_pressed("secondary") or data["origin_stack"] == 0):
 				return false
 			else:
