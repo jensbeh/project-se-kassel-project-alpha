@@ -105,7 +105,7 @@ func drop_data(_pos, data):
 				else:
 					Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
 					valid = true
-				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+				Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			if valid:
 				# Update the data of the origin
@@ -180,7 +180,7 @@ func SplitStack(split_amount, data):
 	# paying in case of buying and selling
 	if data["origin_panel"] == "Inventory":
 		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))
-		Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+		Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	
 	if MerchantData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "TradeInventory":

@@ -103,8 +103,12 @@ Feather,Feather,Feder
 Great Empty Flask,Great Empty Flask,Große Leere Flasche
 Empty Flask,Empty Flask,Leere Flasche
 MOVEMENT,Movement,Bewegung
-RUN,Run \n Split Items, Rennen \n Split Items
+RUN,Run, Rennen
 INVENTORY,Inventory,Inventar
 MENU,Menu,Menü
 CONTROLLS,Controlls,Steuerung
 MOUSE,Left Mouse,Maustaste
+INTERACTION,Interaction,Interagieren
+SPLITITEMS,Split Items,Aufteilen
+CLOSE,Close,Schließen
+CLOSEMENU,Close Menu, Menü Schließen

@@ -58,6 +58,8 @@ var attack = 0
 var max_health
 var data
 
+var preview = false
+
 func _ready():
 	# Style
 	bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
@@ -122,14 +124,15 @@ func _physics_process(_delta):
 
 # Method handles key inputs
 func _input(event):
+	Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").update()
 	if event.is_action_pressed("e"):
 		print("Pressed e")
 		if player_can_interact:
 			print("interacted")
 			emit_signal("player_interact")
 		# Remove the trade inventory
-		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null:
-			Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
+		if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") != null:
+			Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
@@ -140,32 +143,34 @@ func _input(event):
 			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
 	# Open game menu with "esc"
-	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
+	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_node("UI").find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
-		Utils.get_scene_manager().get_child(3).add_child(load(Constants.GAME_MENU_PATH).instance())
+		set_player_can_interact(false)		
+		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.GAME_MENU_PATH).instance())
 	# Close game menu with "esc" when game menu is open
-	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("GameMenu") != null:
+	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
 		set_movement(true)
 		set_movment_animation(true)
-		Utils.get_scene_manager().get_child(3).get_node("GameMenu").queue_free()
+		set_player_can_interact(true)
+		Utils.get_scene_manager().get_node("UI").get_node("GameMenu").queue_free()
 	# open character inventory with "i"
-	if event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
+	if event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_node("UI").find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
-		Utils.get_scene_manager().get_child(3).add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
 	# close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null:
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface") != null:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
 		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
-		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
-	if event.is_action_pressed("control_notes"):
-		Utils.get_scene_manager().get_child(3).get_node("ControlNotes").show_hide_control_notes()
+		Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").queue_free()
+	if event.is_action_pressed("control_notes") and !preview:
+		Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show_hide_control_notes()
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
@@ -423,3 +428,6 @@ func save_player_data(player_data):
 	save_game.open("user://character/" + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
+	
+func set_preview(value):
+	preview = value

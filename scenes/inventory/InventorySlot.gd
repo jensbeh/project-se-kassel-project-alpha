@@ -112,7 +112,7 @@ func drop_data(_pos, data):
 				else:
 					Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
 					valid = true
-				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+				Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			if valid:
 				# Update the data of the origin
@@ -142,11 +142,11 @@ func drop_data(_pos, data):
 					PlayerData.equipment_data["Item"] = data["target_item_id"]
 					PlayerData.equipment_data["Stack"] = data["target_stack"]
 					if PlayerData.equipment_data["Item"] != null:
-						Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").find_node("Damage").set_text(
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 							tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
 						Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
 					else:
-						Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").find_node("Damage").set_text(
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 							tr("ATTACK") + ": " + "0")
 						Utils.get_current_player().set_attack(0)
 				# Update the texture and label of the origin
@@ -201,7 +201,7 @@ func SplitStack(split_amount, data):
 			valid = true
 		else:
 			valid =  false
-		Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+		Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	# update only when payed
 	if valid:
