@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/ui/control_notes.gd" type="Script" id=2]
@@ -7,24 +7,6 @@
 [sub_resource type="DynamicFont" id=25]
 size = 20
 font_data = ExtResource( 1 )
-
-[sub_resource type="StyleBoxFlat" id=23]
-bg_color = Color( 1, 1, 1, 0.588235 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-shadow_color = Color( 0, 0, 0, 1 )
-shadow_size = 2
-
-[sub_resource type="StyleBoxFlat" id=24]
-bg_color = Color( 0.454902, 0.435294, 0.435294, 0.588235 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-shadow_color = Color( 0, 0, 0, 1 )
-shadow_size = 3
 
 [node name="ControlNotes" type="Control"]
 margin_right = 40.0
@@ -99,7 +81,7 @@ text = "Controlls"
 align = 1
 valign = 1
 
-[node name="Control" type="Panel" parent="."]
+[node name="Control" type="NinePatchRect" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -108,9 +90,14 @@ margin_left = 1496.0
 margin_top = 632.0
 margin_right = 1864.0
 margin_bottom = 1024.0
-custom_styles/panel = SubResource( 23 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 4, 5, 94, 95 )
+patch_margin_left = 11
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 10
 
-[node name="Panel2" type="Panel" parent="Control"]
+[node name="Panel2" type="NinePatchRect" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -119,7 +106,12 @@ margin_left = -168.0
 margin_top = 140.0
 margin_right = -48.0
 margin_bottom = 180.0
-custom_styles/panel = SubResource( 24 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 2, 0, 99, 103 )
+patch_margin_left = 15
+patch_margin_top = 13
+patch_margin_right = 11
+patch_margin_bottom = 8
 
 [node name="Label" type="Label" parent="Control/Panel2"]
 anchor_left = 0.5
@@ -154,7 +146,7 @@ custom_fonts/font = SubResource( 25 )
 text = "Menu"
 align = 1
 
-[node name="Panel3" type="Panel" parent="Control"]
+[node name="Panel3" type="NinePatchRect" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -163,7 +155,12 @@ margin_left = -168.0
 margin_top = 76.0
 margin_right = -48.0
 margin_bottom = 116.0
-custom_styles/panel = SubResource( 24 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 2, 0, 99, 103 )
+patch_margin_left = 12
+patch_margin_top = 14
+patch_margin_right = 12
+patch_margin_bottom = 15
 
 [node name="Label" type="Label" parent="Control/Panel3"]
 anchor_left = 0.5
@@ -199,7 +196,7 @@ custom_fonts/font = SubResource( 25 )
 text = "Interaction"
 align = 1
 
-[node name="Panel4" type="Panel" parent="Control"]
+[node name="Panel4" type="NinePatchRect" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -208,7 +205,12 @@ margin_left = -168.0
 margin_top = 12.0
 margin_right = -48.0
 margin_bottom = 52.0
-custom_styles/panel = SubResource( 24 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 2, 0, 99, 103 )
+patch_margin_left = 11
+patch_margin_top = 14
+patch_margin_right = 11
+patch_margin_bottom = 13
 
 [node name="Label" type="Label" parent="Control/Panel4"]
 anchor_left = 0.5
@@ -244,7 +246,7 @@ custom_fonts/font = SubResource( 25 )
 text = "Inventory"
 align = 1
 
-[node name="Panel5" type="Panel" parent="Control"]
+[node name="Panel5" type="NinePatchRect" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -253,7 +255,12 @@ margin_left = -168.0
 margin_top = -52.0
 margin_right = -48.0
 margin_bottom = -12.0
-custom_styles/panel = SubResource( 24 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 2, 0, 99, 103 )
+patch_margin_left = 19
+patch_margin_top = 14
+patch_margin_right = 13
+patch_margin_bottom = 15
 
 [node name="Label" type="Label" parent="Control/Panel5"]
 anchor_left = 0.5
@@ -289,7 +296,7 @@ text = "Rennen
 Split Items"
 align = 1
 
-[node name="Panel6" type="Panel" parent="Control"]
+[node name="Panel6" type="NinePatchRect" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -298,7 +305,12 @@ margin_left = -168.0
 margin_top = -116.0
 margin_right = -48.0
 margin_bottom = -76.0
-custom_styles/panel = SubResource( 24 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 2, 0, 99, 103 )
+patch_margin_left = 13
+patch_margin_top = 14
+patch_margin_right = 15
+patch_margin_bottom = 11
 
 [node name="Label" type="Label" parent="Control/Panel6"]
 anchor_left = 0.5
@@ -334,7 +346,7 @@ custom_fonts/font = SubResource( 25 )
 text = "Attack"
 align = 1
 
-[node name="Panel7" type="Panel" parent="Control"]
+[node name="Panel7" type="NinePatchRect" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -343,7 +355,12 @@ margin_left = -168.0
 margin_top = -180.0
 margin_right = -48.0
 margin_bottom = -140.0
-custom_styles/panel = SubResource( 24 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 2, 0, 99, 103 )
+patch_margin_left = 11
+patch_margin_top = 9
+patch_margin_right = 11
+patch_margin_bottom = 10
 
 [node name="Label" type="Label" parent="Control/Panel7"]
 anchor_left = 0.5
