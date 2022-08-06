@@ -9,20 +9,19 @@ var finished = false
 
 func _ready():
 	var _error = get_parent().connect("interacted", self, "start")
-	$DialogueBox.visible = false
+	$TextureRect.visible = false
 	$HSeparator.visible = false
 	$Button.visible = false
 	$Name.visible = false
 	$Text.visible = false
 
 func start():
-	$DialogueBox.visible = true
+	$TextureRect.visible = true
 	$HSeparator.visible = true
 	$Button.visible = true
 	$Name.visible = true
 	$Text.visible = true
 	$Timer.wait_time = textSpeed
-	$Trade.text = (tr("TRADE"))
 	# Get language
 	var lang = TranslationServer.get_locale()
 	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
@@ -82,7 +81,7 @@ func _on_Button_pressed():
 		$Text.visible_characters = len($Text.text)
 
 func close_dialog():
-	$DialogueBox.visible = false
+	$TextureRect.visible = false
 	$HSeparator.visible = false
 	$Button.visible = false
 	$Name.visible = false
@@ -99,6 +98,9 @@ func close_dialog():
 			npc.set_interacted(false)
 
 func _on_Trade_pressed():
+	MerchantData.set_path(get_parent().name)
+	MerchantData._ready()
+	PlayerData._ready()
 	close_dialog()
 	# Show trade inventory
 	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY_PATH).instance())

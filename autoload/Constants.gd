@@ -64,6 +64,18 @@ const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
 const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
 
+# inventory
+const MAX_STACK_SIZE = 999
+const TRADE_INV_SLOT = "res://scenes/inventory/TradeInventorySlot.tscn"
+const INV_SLOT = "res://scenes/inventory/InventorySlot.tscn"
+const TOOLTIP = "res://scenes/inventory/ToolTip.tscn"
+const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
+const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
+const MERCHANT = "res://assets/data/merchant_inv_data.json"
+const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
+const SAVE_PATH = "user://character/"
+const DATA_PATH = "user://data/"
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
