@@ -60,6 +60,7 @@ func _process(delta):
 	# Calls stuff every 1min (ingame time)
 	if current_minute != previouse_current_minute:
 		previouse_current_minute = current_minute
+		Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_time(current_hour, current_minute)
 #		print(str(current_hour) + ":" + str(current_minute))
 	
 	# Daytime

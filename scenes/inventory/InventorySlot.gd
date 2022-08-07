@@ -135,7 +135,7 @@ func drop_data(_pos, data):
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * split)
 					else:
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
-				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+				Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			# Update the data of the origin
 			# stacking
@@ -181,11 +181,11 @@ func drop_data(_pos, data):
 				PlayerData.equipment_data["Item"] = data["target_item_id"]
 				PlayerData.equipment_data["Stack"] = data["target_stack"]
 				if PlayerData.equipment_data["Item"] != null:
-					Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").find_node("Damage").set_text(
+					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
 					Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
 				else:
-					Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").find_node("Damage").set_text(
+					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + "0")
 					Utils.get_current_player().set_attack(0)
 			# Update the texture and label of the origin
@@ -352,7 +352,7 @@ func hide_tooltip():
 func check_slots():
 	var free = false
 	var free2 = false
-	var trade = Utils.get_scene_manager().get_child(3).get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
+	var trade = Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
 	var slots = MerchantData.inv_data.size()
 	for i in MerchantData.inv_data:
 		if MerchantData.inv_data[i]["Item"] == null:

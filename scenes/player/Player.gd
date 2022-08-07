@@ -57,9 +57,10 @@ var gold
 var attack = 0
 var max_health
 var data
+var level
 var dragging = false
-
 var preview = false
+var player_exp: int = 0
 
 func _ready():
 	# Style
@@ -132,8 +133,8 @@ func _input(event):
 			print("interacted")
 			emit_signal("player_interact")
 		# Remove the trade inventory
-		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null and !dragging:
-				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
+		if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") != null and !dragging:
+				Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").queue_free()
 				Utils.get_current_player().set_player_can_interact(true)
 				Utils.get_current_player().set_movement(true)
 				Utils.get_current_player().set_movment_animation(true)
@@ -147,8 +148,9 @@ func _input(event):
 	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_node("UI").find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
-		set_player_can_interact(false)		
+		set_player_can_interact(false)
 		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.GAME_MENU_PATH).instance())
+		save_player_data(data)
 	# Close game menu with "esc" when game menu is open
 	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
 		set_movement(true)
@@ -162,7 +164,7 @@ func _input(event):
 		set_player_can_interact(false)
 		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
 	# close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null and !dragging:
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface") != null and !dragging:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
@@ -435,3 +437,15 @@ func set_preview(value):
 
 func set_dragging(value):
 	dragging = value
+
+func set_level(new_level):
+	level = new_level
+	data.levle = new_level
+	
+func get_level():
+	return level
+
+func set_exp(new_exp):
+	data.exp = int(data.exp) + int(new_exp)
+	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
+	player_exp = player_exp + int(new_exp)
