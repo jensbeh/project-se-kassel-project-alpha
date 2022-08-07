@@ -84,6 +84,12 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	pass
+
+
 # loaded the player data
 func load_data():
 	var dir = Directory.new()
@@ -143,8 +149,8 @@ func delete_character():
 	if dir.file_exists(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION):
 		dir.remove(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION)
 	# remove inventory data
-	if dir.file_exists("res://assets/data/" + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
-		dir.remove("res://assets/data/" + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
+	if dir.file_exists(Constants.DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
+		dir.remove(Constants.DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -374,7 +380,9 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	var player_position = Vector2(1128,616)
+	var player_position = Vector2(1128,616) # Camp
+#	var player_position = Vector2(768,752) # Grassland
+#	var player_position = Vector2(336,-62) # Dungeon1-1
 	var view_direction = Vector2(0,1)
 	var data = data_list[selected_character]
 	Utils.get_current_player().set_data(data)
@@ -386,6 +394,8 @@ func start_game():
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

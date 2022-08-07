@@ -91,6 +91,12 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
+# Method to destroy the scene
+# Is called when SceneManager changes scene after loading new scene
+func destroy_scene():
+	pass
+
+
 func get_sprites():
 	for child in Utils.get_player().get_children():
 		match child.name:
@@ -546,8 +552,11 @@ func start_game():
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func create_player_inventory():
+	var dir = Directory.new()
+	if !dir.dir_exists(Constants.DATA_PATH):
+		dir.make_dir(Constants.DATA_PATH)
 	var save_player = File.new()
-	save_player.open("res://assets/data/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
 	# sets lp

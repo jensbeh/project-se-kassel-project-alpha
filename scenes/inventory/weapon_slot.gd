@@ -4,6 +4,7 @@ var tool_tip = load(Constants.TOOLTIP)
 
 # Get information about drag item
 func get_drag_data(_pos):
+	Utils.get_current_player().set_dragging(true)
 	if PlayerData.equipment_data["Item"] != null:
 		var data = {}
 		data["origin_node"] = self
@@ -86,6 +87,7 @@ func drop_data(_pos, data):
 		PlayerData.equipment_data["Stack"] = data["origin_stack"]
 		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
 		Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
+	Utils.get_current_player().set_dragging(false)
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:

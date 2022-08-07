@@ -18,11 +18,11 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="map_dungeon2_lvl4" parent="." instance=ExtResource( 2 )]
 
-[node name="Player" parent="map_dungeon2_lvl4/playerlayer" index="0" instance=ExtResource( 1 )]
-position = Vector2( 200, 440 )
+[node name="Player" parent="map_dungeon2_lvl4/entitylayer/playerlayer" index="0" instance=ExtResource( 1 )]
+position = Vector2( 232, 456 )
 
-[node name="AnimationTree" parent="map_dungeon2_lvl4/playerlayer/Player" index="16"]
+[node name="AnimationTree" parent="map_dungeon2_lvl4/entitylayer/playerlayer/Player" index="16"]
 parameters/playback = SubResource( 1 )
 
 [editable path="map_dungeon2_lvl4"]
-[editable path="map_dungeon2_lvl4/playerlayer/Player"]
+[editable path="map_dungeon2_lvl4/entitylayer/playerlayer/Player"]

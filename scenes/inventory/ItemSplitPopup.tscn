@@ -60,4 +60,5 @@ custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "OK"
 
+[connection signal="text_changed" from="NinePatchRect/MarginContainer/HBoxContainer/Amount" to="." method="_on_Amount_text_changed"]
 [connection signal="pressed" from="NinePatchRect/MarginContainer/HBoxContainer/Confirm" to="." method="_on_Confirm_pressed"]

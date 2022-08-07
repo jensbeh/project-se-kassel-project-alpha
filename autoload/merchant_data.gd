@@ -1,7 +1,7 @@
 extends Node
 
 var inv_data = {}
-var path = "res://assets/data/merchant_inv_data.json"
+var path = Constants.MERCHANT
 
 # Load the inventory items form the merchant
 func _ready():
