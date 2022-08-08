@@ -1,6 +1,6 @@
 extends Control
 
-onready var exp_bar = get_node("ProgressBar")
+onready var exp_bar = get_node("NinePatchRect/ProgressBar")
 onready var clock = get_node("Clock/clock")
 
 func _ready():

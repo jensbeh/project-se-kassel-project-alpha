@@ -157,9 +157,9 @@ script = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Weapon/WeaponBox/Icon"]
 position = Vector2( 50, 52 )
 scale = Vector2( 2.5, 2.5 )
-hframes = 13
-vframes = 15
-frame = 156
+hframes = 16
+vframes = 27
+frame = 169
 
 [node name="Control" type="NinePatchRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]
 margin_left = 104.0
@@ -219,14 +219,6 @@ margin_right = 84.0
 margin_bottom = 29.0
 custom_fonts/font = SubResource( 3 )
 text = "Stats:"
-valign = 1
-
-[node name="Level" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 134.0
-margin_right = 218.0
-margin_bottom = 29.0
-custom_fonts/font = SubResource( 3 )
-text = "Level:"
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer"]

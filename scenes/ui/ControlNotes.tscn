@@ -62,6 +62,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "Tab"
+align = 1
+valign = 1
 
 [node name="Label" type="Label" parent="ControlTab"]
 anchor_left = 1.0
@@ -129,6 +131,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "ESC"
+align = 1
+valign = 1
 
 [node name="Label" type="Label" parent="Control"]
 anchor_left = 1.0
@@ -179,6 +183,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "E"
 align = 1
+valign = 1
 
 [node name="Label2" type="Label" parent="Control"]
 anchor_left = 0.5
@@ -229,6 +234,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "I"
 align = 1
+valign = 1
 
 [node name="Label3" type="Label" parent="Control"]
 anchor_left = 0.5
@@ -278,6 +284,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "Shift"
+align = 1
+valign = 1
 
 [node name="Label4" type="Label" parent="Control"]
 anchor_left = 1.0
@@ -329,6 +337,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "Maustaste"
 align = 1
+valign = 1
 
 [node name="Label5" type="Label" parent="Control"]
 anchor_left = 0.5
@@ -379,6 +388,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "W,A,S,D"
 align = 1
+valign = 1
 
 [node name="Label6" type="Label" parent="Control"]
 anchor_left = 0.5
@@ -446,6 +456,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "E"
 align = 1
+valign = 1
 
 [node name="Label2" type="Label" parent="Dialog"]
 anchor_left = 0.5
@@ -513,6 +524,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "ESC"
 align = 1
+valign = 1
 
 [node name="Label2" type="Label" parent="Menu"]
 anchor_left = 0.5
@@ -580,6 +592,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "I"
 align = 1
+valign = 1
 
 [node name="Label3" type="Label" parent="Inventory"]
 anchor_left = 0.5
@@ -629,6 +642,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "Shift"
+valign = 1
 
 [node name="Label4" type="Label" parent="Inventory"]
 anchor_left = 1.0
@@ -636,9 +650,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = -216.0
-margin_top = -60.0
+margin_top = -56.0
 margin_right = -8.0
-margin_bottom = 1.0
+margin_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -697,6 +711,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "E"
 align = 1
+valign = 1
 
 [node name="Label2" type="Label" parent="Trade"]
 anchor_left = 0.5
@@ -746,6 +761,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 25 )
 text = "Shift"
+align = 1
+valign = 1
 
 [node name="Label4" type="Label" parent="Trade"]
 anchor_left = 1.0
@@ -753,9 +770,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = -216.0
-margin_top = -56.0
+margin_top = -48.0
 margin_right = -8.0
-margin_bottom = 5.0
+margin_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 custom_colors/font_color = Color( 0, 0, 0, 1 )
