@@ -446,6 +446,6 @@ func get_level():
 	return level
 
 func set_exp(new_exp):
-	data.exp = int(data.exp) + int(new_exp)
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
 	player_exp = player_exp + int(new_exp)
+	data.exp = player_exp

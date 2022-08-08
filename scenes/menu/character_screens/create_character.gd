@@ -125,7 +125,7 @@ func get_sprites():
 var save_game_data = {
 	"name": charac_name,
 	"level": "1",
-	"exp": "1",
+	"exp": "0",
 	"maxLP": "100",
 	"attack": "0",
 	"currentHP": "100",
