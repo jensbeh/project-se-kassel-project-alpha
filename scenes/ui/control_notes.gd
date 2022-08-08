@@ -23,6 +23,7 @@ func _ready():
 	get_node("Trade/Label4").set_text(tr("SPLITITEMS"))
 	get_node("Menu/Label2").set_text(tr("CLOSEMENU"))
 
+# makes all control notes invisible
 func hide():
 	if control_tab.visible:
 		visible_node = control_tab
@@ -34,10 +35,12 @@ func hide():
 	menu.visible = false
 	inventory.visible = false
 	trade.visible = false
-	
+
+# shows the control notes
 func show():
 	visible_node.visible = true
-	
+
+# control notes toggle with tab
 func show_hide_control_notes():
 	if !control_tab.visible and !dialog.visible and !menu.visible and !inventory.visible and !trade.visible and !control.visible:
 		pass
@@ -59,6 +62,7 @@ func show_hide_control_notes():
 		inventory.visible = false
 		trade.visible = false
 
+# change the control notes by interactions
 func update():
 	if !control_tab.visible and !dialog.visible and !menu.visible and !inventory.visible and !trade.visible and !control.visible:
 		pass
@@ -77,6 +81,7 @@ func update():
 		else:
 			control.visible = true
 
+# changes the control notes when enter/exit world
 func in_world(value):
 	if value:
 		control_tab.visible = true

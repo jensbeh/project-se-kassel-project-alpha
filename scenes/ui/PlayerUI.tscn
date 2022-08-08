@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/ui/expbar.png" type="Texture" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
@@ -15,6 +15,10 @@ region_rect = Rect2( 17.1928, 10.3088, 374.449, 20.8921 )
 margin_bottom = 0.903704
 
 [sub_resource type="StyleBoxTexture" id=5]
+
+[sub_resource type="DynamicFont" id=6]
+size = 18
+font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 24
@@ -44,7 +48,7 @@ patch_margin_bottom = 8
 [node name="ProgressBar" type="ProgressBar" parent="NinePatchRect"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -408.0
+margin_left = -418.0
 margin_top = 4.0
 margin_right = 419.0
 margin_bottom = 43.0
@@ -53,16 +57,22 @@ custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 5 )
 percent_visible = false
 
-[node name="TextureRect" type="NinePatchRect" parent="NinePatchRect"]
-margin_left = 6.0
-margin_top = 4.0
-margin_right = 17.0
-margin_bottom = 43.0
-texture = ExtResource( 1 )
-region_rect = Rect2( 11.3023, 10.237, 13.167, 21.1365 )
-patch_margin_left = 2
-patch_margin_right = 1
-patch_margin_bottom = 1
+[node name="EXPValue" type="Label" parent="NinePatchRect/ProgressBar"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -60.5
+margin_top = -11.0
+margin_right = 60.5
+margin_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 6 )
+text = "EXP: 0"
+align = 1
+valign = 1
 
 [node name="Clock" type="NinePatchRect" parent="."]
 anchor_left = 1.0
