@@ -31,7 +31,7 @@ position = Vector2( 27, 28 )
 scale = Vector2( 2.5, 2.5 )
 hframes = 13
 vframes = 15
-frame = 12
+frame = 107
 
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false

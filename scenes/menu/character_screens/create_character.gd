@@ -128,6 +128,8 @@ var save_game_data = {
 	"exp": "0",
 	"maxLP": "100",
 	"attack": "0",
+	"attack_speed": "0",
+	"knockback": "0",
 	"currentHP": "100",
 	"gold": "100",
 	"skincolor": curr_body,
@@ -565,6 +567,8 @@ func create_player_inventory():
 	# sets lp
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	Utils.get_current_player().set_attack(save_game_data.attack)
+	Utils.get_current_player().set_attack_speed(save_game_data.attack_speed)
+	Utils.get_current_player().set_knockback(save_game_data.knockback)
 	# set player data
 	PlayerData.set_path(uuid)
 	PlayerData._ready()
