@@ -506,7 +506,7 @@ func _on_BeardRight_pressed():
 
 
 func _on_LineEdit_text_changed(new_text):
-	if new_text.length() > 28:
+	if new_text.length() > Constants.NAME_LENGTH:
 		$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/LineEdit.delete_char_at_cursor()
 	else:
 		charac_name = new_text
