@@ -440,7 +440,7 @@ func set_dragging(value):
 
 func set_level(new_level):
 	level = new_level
-	data.levle = new_level
+	data.level = new_level
 	
 func get_level():
 	return level

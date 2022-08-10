@@ -138,7 +138,7 @@ func change_to_sunrise():
 	print("TO SUNRISE")
 	emit_signal("change_to_sunrise")
 	
-# method is called every minute to update the ui
+# Method is called every minute to update the ui
 func update_ui():
-	# updates the clock in the ui
+	# Updates the clock in the ui
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_time(current_hour, current_minute)
