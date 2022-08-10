@@ -11,7 +11,8 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 1 )
-region_rect = Rect2( 17.1928, 10.3088, 374.449, 20.8921 )
+region_rect = Rect2( 11.9341, 10.3088, 379.708, 20.8921 )
+margin_left = 0.977794
 margin_right = 7.0
 margin_bottom = 0.903704
 
