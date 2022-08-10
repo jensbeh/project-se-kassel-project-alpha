@@ -14,7 +14,7 @@ func set_exp(new_value):
 	exp_value.set_text("EXP: " + str(new_value))
 	exp_bar.value = int(new_value)
 	# Max exp for level
-	if exp_bar.value > exp_bar.max_value:
+	if exp_bar.value >= exp_bar.max_value:
 		Utils.get_current_player().set_level(int(Utils.get_current_player().get_level()) +1)
 		Utils.get_current_player().set_exp(new_value - exp_bar.max_value)
 
