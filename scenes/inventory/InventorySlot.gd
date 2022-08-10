@@ -184,10 +184,22 @@ func drop_data(_pos, data):
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
 					Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
+					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+						tr("ATTACK-SPEED") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]))
+					Utils.get_current_player().set_attack_speed(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"])
+					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+						tr("KNOCKBACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]))
+					Utils.get_current_player().set_knockback(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"])
 				else:
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + "0")
 					Utils.get_current_player().set_attack(0)
+					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+						tr("ATTACK-SPEED") + ": " + "0")
+					Utils.get_current_player().set_attack_speed(0)
+					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+						tr("KNOCKBACK") + ": " + "0")
+					Utils.get_current_player().set_knockback(0)
 			# Update the texture and label of the origin
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0:

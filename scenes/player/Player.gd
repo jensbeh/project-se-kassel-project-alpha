@@ -55,9 +55,11 @@ var player_can_interact
 # player stats and values
 var gold
 var attack = 0
+var knockback = 0
+var attack_speed = 0
 var max_health
 var data
-var level
+var level = 1
 var dragging = false
 var preview = false
 var player_exp: int = 0
@@ -150,7 +152,7 @@ func _input(event):
 		set_movment_animation(false)
 		set_player_can_interact(false)
 		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.GAME_MENU_PATH).instance())
-		save_player_data(data)
+		save_player_data(Utils.get_current_player().get_data())
 	# Close game menu with "esc" when game menu is open
 	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
 		set_movement(true)
@@ -455,3 +457,17 @@ func set_exp(new_exp):
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
 	# for save
 	data.exp = player_exp
+
+func get_attack_speed():
+	return attack_speed
+	
+func set_attack_speed(new_attack_speed):
+	attack_speed = new_attack_speed
+	data.attack_speed = new_attack_speed
+	
+func get_knockback():
+	return knockback
+	
+func set_knockback(new_knockback):
+	knockback = new_knockback
+	data.knockback = new_knockback

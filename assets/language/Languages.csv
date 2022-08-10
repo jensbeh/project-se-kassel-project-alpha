@@ -32,15 +32,14 @@ DELETE,Delete,Löschen
 TRADE,Trade,Handel
 INVENTORY,Inventory,Inventar
 Attack,Attack,Angriff
-Defense,Defense,Verteidigung
-Block,Block,Parieren
 Health,Health,Leben
-Mana,Mana,Mana
-Satiation,Satiation,Sättigung
+Knochback,Knockback,Rückstoß
+Attack-Speed,Speed,Geschwindigkeit
 Worth,Worth,Wert
 ATTACK,Attack,Angriff
 HEALTH,Health,Leben
-MANA,Mana,Mana
+ATTACK-SPEED,Speed,Geschw.
+KNOCKBACK,Knockback,Rückstoß
 Wood Sword,Wood Sword,Holzschwert
 Sword,Sword,Schwert
 Great Sword,Great Sword,Großschwert
@@ -52,18 +51,16 @@ Normal Axe,Normal Axe,Normale Axt
 Rare Sword,Rare Sword,Seltenes Schwert
 Dark Sword,Dark Sword,Dunkles Schwert
 Health Potion,Health Potion,Heil Trank
-Mana Potion,Mana Potion,Mana Trank
 Good Health Potion,Good Health Potion,Guter Heil Trank
-Good Mana Potion,Good Mana Potion,Guter Mana Trank
 Rare Health Potion,Rare Health Potion,Seltener Heil Trank
-Rare Mana Potion,Rare Mana Potion,Seltener Mana Trank
 Axe,Axe,Axt
 Pickaxe,Pickaxe,Spitzhacke
-Light,Light,Licht
+Lantern,Lantern,Laterne
+Torch,Torch,Fackel
+Candle,Candle,Kerze
 Treasure Key,Treasure Key,Schatztruhen Schlüssel
 Keys,Keys,Schlüssel
 Treasure,Treasure,Schatz
-Great Mana Potion,Great Mana Potion,Großer Mana Trank
 Great Health Potion,Great Health Potion,Großer Heil Trank
 Apple,Apple,Apfel
 Carrot,Carrot,Karotte
@@ -112,4 +109,4 @@ INTERACTION,Interaction,Interagieren
 SPLITITEMS,Split Items,Aufteilen
 CLOSE,Close,Schließen
 CLOSEMENU,Close Menu, Menü Schließen
-LEVEL,Level,Level
+LEVEL,Lvl,Lvl
