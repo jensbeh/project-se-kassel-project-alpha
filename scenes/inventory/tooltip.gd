@@ -40,6 +40,9 @@ func _ready():
 					if stat_name == "Attack-Speed" and stat_difference < 0:
 						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text(str(stat_difference))
 						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("3eff00"))
+					elif stat_name == "Attack-Speed" and stat_difference > 0:
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text("+" + str(stat_difference))
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("ff0000"))
 					elif stat_difference > 0:
 						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text("+" + str(stat_difference))
 						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("3eff00"))
