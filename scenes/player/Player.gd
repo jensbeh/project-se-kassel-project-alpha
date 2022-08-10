@@ -450,7 +450,7 @@ func get_exp():
 
 # set a new exp value for the player
 func set_exp(new_exp):
-	player_exp = new_exp
+	player_exp = int(new_exp)
 	# for ui update
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
 	# for save
