@@ -392,6 +392,7 @@ func start_game():
 	Utils.get_current_player().set_knockback(data.knockback)
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_exp(data.exp)
+	Utils.get_current_player().set_light(data.light)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
 	

@@ -132,6 +132,7 @@ var save_game_data = {
 	"knockback": "0",
 	"currentHP": "100",
 	"gold": "100",
+	"light": null,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
@@ -188,6 +189,8 @@ var save_inventory = {
 	"Inv29": {"Item": null,"Stack": null},
 	"Inv30": {"Item": null,"Stack": null},
 	"Weapon": {"Item": null,"Stack": null},
+	"Light": {"Item": null,"Stack": null},
+	"Hotbar": {"Item": null,"Stack": null},
 }
 
 # save the player data

@@ -36,6 +36,7 @@ func _ready():
 	find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(Utils.get_current_player().get_attack_speed()))
 	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
 	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))
+	find_node("Light").set_text(tr("LIGHT") + ": " + str(Utils.get_current_player().get_light()))
 	
 	data = Utils.get_current_player().get_data()
 	find_node("CharacterName").set_text(data.name)

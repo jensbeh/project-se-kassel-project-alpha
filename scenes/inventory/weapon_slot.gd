@@ -59,7 +59,7 @@ func can_drop_data(_pos, data):
 		return false
 
 func drop_data(_pos, data):
-	var origin_slot = data["origin_node"].get_parent().get_name()
+	var origin_slot = data["origin_node"].get_parent().get_parent().get_name()
 	if data["origin_node"] == self:
 		pass
 	else:
@@ -120,7 +120,7 @@ func verify_target_texture(data):
 func _on_Icon_mouse_entered():
 	var tool_tip_instance = tool_tip.instance()
 	tool_tip_instance.origin = "CharacterInterface"
-	tool_tip_instance.slot = get_parent().get_name()
+	tool_tip_instance.slot = get_parent().get_parent().get_name()
 	
 	tool_tip_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(100,-50)
 	

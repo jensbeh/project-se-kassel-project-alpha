@@ -63,6 +63,7 @@ var level = 1
 var dragging = false
 var preview = false
 var player_exp: int = 0
+var player_light_radius
 
 func _ready():
 	# Style
@@ -471,3 +472,10 @@ func get_knockback():
 func set_knockback(new_knockback):
 	knockback = new_knockback
 	data.knockback = new_knockback
+
+func set_light(new_light):
+	player_light_radius = new_light
+	data.light = player_light_radius
+
+func get_light_radius():
+	return player_light_radius

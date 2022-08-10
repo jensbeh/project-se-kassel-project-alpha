@@ -13,8 +13,8 @@ func _ready():
 			item_id = str(PlayerData.inv_data[slot]["Item"])
 			valid = true
 	elif origin == "CharacterInterface":
-		if PlayerData.equipment_data["Item"] != null:
-			item_id = str(PlayerData.equipment_data["Item"])
+		if PlayerData.equipment_data[slot]["Item"] != null:
+			item_id = str(PlayerData.equipment_data[slot]["Item"])
 			valid = true
 	else:# merchant
 		if MerchantData.inv_data[slot]["Item"] != null:

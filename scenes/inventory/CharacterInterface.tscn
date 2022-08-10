@@ -380,7 +380,7 @@ margin_right = 435.0
 margin_bottom = 127.0
 custom_constants/separation = 50
 
-[node name="Mana" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Light" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 192.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 110, 0 )
