@@ -11,7 +11,9 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 1 )
-region_rect = Rect2( 17.1928, 10.3088, 374.449, 20.8921 )
+region_rect = Rect2( 11.9341, 10.3088, 379.708, 20.8921 )
+margin_left = 0.977794
+margin_right = 7.0
 margin_bottom = 0.903704
 
 [sub_resource type="StyleBoxTexture" id=5]
@@ -55,6 +57,8 @@ margin_bottom = 43.0
 custom_fonts/font = SubResource( 3 )
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 5 )
+value = 140.0
+allow_greater = true
 percent_visible = false
 
 [node name="EXPValue" type="Label" parent="NinePatchRect/ProgressBar"]
