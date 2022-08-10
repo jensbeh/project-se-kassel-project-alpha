@@ -85,7 +85,7 @@ func _ready():
 	shadow.visible = false
 	
 	# Sets the Visibility of a given Sprite
-	set_visibility("Mask", false) #Sprite, true/false 
+	set_visibility("Mask", false) #Sprite, true/false
 	set_visibility("Glasses", false)
 	set_visibility("Earrings", false)
 	set_visibility("Hat", false)
@@ -145,17 +145,16 @@ func _input(event):
 			emit_signal("player_interact")
 		# Remove the trade inventory
 		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null and !dragging:
-				print(Utils.get_scene_manager().get_child(3).get_node("TradeInventory").is_drag_successful())
-				Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
-				Utils.get_current_player().set_player_can_interact(true)
-				Utils.get_current_player().set_movement(true)
-				Utils.get_current_player().set_movment_animation(true)
+			Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
+			Utils.get_current_player().set_player_can_interact(true)
+			Utils.get_current_player().set_movement(true)
+			Utils.get_current_player().set_movment_animation(true)
 				# Reset npc interaction state
-				for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
-					npc.set_interacted(false)
-				PlayerData.save_inventory()
-				save_player_data(Utils.get_current_player().get_data())
-				MerchantData.save_merchant_inventory()
+			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+				npc.set_interacted(false)
+			PlayerData.save_inventory()
+			save_player_data(Utils.get_current_player().get_data())
+			MerchantData.save_merchant_inventory()
 	# Open game menu with "esc"
 	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
 		set_movement(false)
@@ -337,9 +336,7 @@ func set_texture(name, value):
 func reset_key(track_idx):
 	var newAnimation = animation_player.get_animation("WalkDown")
 	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
-#	print("newValue" + str(newValue))
-#	print("oldValue" + str(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))))
-
+	
 	_set_key(track_idx, newValue)
 
 
@@ -357,50 +354,53 @@ func _set_key(track_idx, value):
 	var newLeft = animation_player.get_animation("WalkLeft")
 	set_key(newLeft, track_idx, value)
 	
-	animation_player.get_animation("IdleDown").track_set_key_value(track_idx, 
-	animation_player.get_animation("IdleDown").track_find_key(track_idx, 0.0, 1), 
-	animation_player.get_animation("IdleDown").track_get_key_value(track_idx, 
-	newDown.track_find_key(track_idx, 0.0, 1)) + value)
-	animation_player.get_animation("IdleUp").track_set_key_value(track_idx, 
-	animation_player.get_animation("IdleUp").track_find_key(track_idx, 0.0, 1), 
-	animation_player.get_animation("IdleUp").track_get_key_value(track_idx, 
-	newUp.track_find_key(track_idx, 0.0, 1)) + value)
-	animation_player.get_animation("IdleLeft").track_set_key_value(track_idx, 
-	animation_player.get_animation("IdleLeft").track_find_key(track_idx, 0.0, 1), 
-	animation_player.get_animation("IdleLeft").track_get_key_value(track_idx, 
-	newLeft.track_find_key(track_idx, 0.0, 1)) + value)
-	animation_player.get_animation("IdleRight").track_set_key_value(track_idx, 
-	animation_player.get_animation("IdleRight").track_find_key(track_idx, 0.0, 1), 
-	animation_player.get_animation("IdleRight").track_get_key_value(track_idx, 
-	newRight.track_find_key(track_idx, 0.0, 1)) + value)
+	animation_player.get_animation("IdleDown").track_set_key_value(track_idx,
+		animation_player.get_animation("IdleDown").track_find_key(track_idx, 0.0, 1),
+		animation_player.get_animation("IdleDown").track_get_key_value(track_idx,
+		newDown.track_find_key(track_idx, 0.0, 1)) + value)
+	animation_player.get_animation("IdleUp").track_set_key_value(track_idx,
+		animation_player.get_animation("IdleUp").track_find_key(track_idx, 0.0, 1),
+		animation_player.get_animation("IdleUp").track_get_key_value(track_idx,
+		newUp.track_find_key(track_idx, 0.0, 1)) + value)
+	animation_player.get_animation("IdleLeft").track_set_key_value(track_idx,
+		animation_player.get_animation("IdleLeft").track_find_key(track_idx, 0.0, 1),
+		animation_player.get_animation("IdleLeft").track_get_key_value(track_idx,
+		newLeft.track_find_key(track_idx, 0.0, 1)) + value)
+	animation_player.get_animation("IdleRight").track_set_key_value(track_idx,
+		animation_player.get_animation("IdleRight").track_find_key(track_idx, 0.0, 1),
+		animation_player.get_animation("IdleRight").track_get_key_value(track_idx,
+		newRight.track_find_key(track_idx, 0.0, 1)) + value)
 
 
 func set_key(newAnimation, track_idx, value):
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
-	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1), 
+	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1),
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
 
 
 func reset_attack_key(track_str):
-	var newAnimation = animation_player.get_animation("WalkDown")
+	# Get animation for color offset
+	var newAnimation = animation_player.get_animation("AttackDown")
+	# Get track from animation for color offset
 	var track_idx = newAnimation.find_track(track_str)
-	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
-	print("newValue" + str(newValue))
-	print("oldValue" + str(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))))
-
+	# Calculate offset
+	var current_frame = int(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)))
+	var current_texture_hframes = get_node(track_str.substr(0, track_str.find(":"))).hframes
+	var newValue = 0 - current_frame % current_texture_hframes
+	# Update frame
 	_set_attack_key(track_str, newValue)
 
 
@@ -410,37 +410,32 @@ func _set_attack_key(track_str, value):
 	set_attack_key(_attack_down, track_str, value)
 	
 	var _attack_up = animation_player.get_animation("AttackUp")
-	set_attack_key(_attack_down, track_str, value)
+	set_attack_key(_attack_up, track_str, value)
 	
 	var _attack_right = animation_player.get_animation("AttackRight")
-	set_attack_key(_attack_down, track_str, value)
+	set_attack_key(_attack_right, track_str, value)
 	
 	var _attack_left = animation_player.get_animation("AttackLeft")
-	set_attack_key(_attack_down, track_str, value)
+	set_attack_key(_attack_left, track_str, value)
 
 
 func set_attack_key(attack_animation, track_str, value):
 	var track_idx = attack_animation.find_track(track_str)
-#	print(track_idx)
+	
 	if attack_animation.track_find_key(track_idx, 0.0, 1) != -1:
-#		print(track_idx)
-		print(attack_animation.track_get_path(track_idx))
-		print(value)
-#		print(attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1)))
-#		print(value)
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1), 
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1)) + value)
 	
 	if attack_animation.track_find_key(track_idx, 0.2, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1), 
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1)) + value)
 	
 	if attack_animation.track_find_key(track_idx, 0.4, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1), 
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1)) + value)
 	
 	if attack_animation.track_find_key(track_idx, 0.8, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1), 
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1)) + value)
 
 
