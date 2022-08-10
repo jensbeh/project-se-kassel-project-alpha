@@ -60,6 +60,7 @@ func _process(delta):
 	# Calls stuff every 1min (ingame time)
 	if current_minute != previouse_current_minute:
 		previouse_current_minute = current_minute
+		update_ui()
 #		print(str(current_hour) + ":" + str(current_minute))
 	
 	# Daytime
@@ -136,3 +137,8 @@ func change_to_night():
 func change_to_sunrise():
 	print("TO SUNRISE")
 	emit_signal("change_to_sunrise")
+	
+# Method is called every minute to update the ui
+func update_ui():
+	# Updates the clock in the ui
+	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_time(current_hour, current_minute)
