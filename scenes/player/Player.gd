@@ -27,6 +27,8 @@ onready var hairSprite = $Hair
 onready var maskSprite = $Mask
 onready var glassesSprite = $Glasses
 onready var hatSprite = $Hat
+onready var weaponSprite = $Weapon
+onready var attackSwingSprite = $AttackSwing
 
 const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
@@ -59,6 +61,10 @@ var max_health
 var data
 var dragging = false
 
+# Variables
+var is_attacking = false
+
+
 func _ready():
 	# Style
 	bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
@@ -74,6 +80,7 @@ func _ready():
 	maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
 	glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
 	hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
+#	weaponSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
 	
 	shadow.visible = false
 	
@@ -82,12 +89,17 @@ func _ready():
 	set_visibility("Glasses", false)
 	set_visibility("Earrings", false)
 	set_visibility("Hat", false)
+	set_visibility("Weapon", false)
+	set_visibility("AttackSwing", false)
 
 	# Animation
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
+	animation_tree.set("parameters/Attack/blend_position", velocity)
 	
+#	animation_player.connect("animation_finished", self, "on_attack_finished")
+
 
 func _physics_process(_delta):
 	# Handle User Input
@@ -107,19 +119,22 @@ func _physics_process(_delta):
 	if Input.is_action_pressed("Shift"):
 		velocity *= 1.4
 	
-	if velocity != Vector2.ZERO:
-		animation_tree.set("parameters/Idle/blend_position", velocity)
-		animation_tree.set("parameters/Walk/blend_position", velocity)
-		animation_state.travel("Walk")
-	else:
-		animation_state.travel("Idle")
+	if not is_attacking:
+		if velocity != Vector2.ZERO:
+			animation_tree.set("parameters/Idle/blend_position", velocity)
+			animation_tree.set("parameters/Walk/blend_position", velocity)
+			animation_tree.set("parameters/Attack/blend_position", velocity)
+			animation_state.travel("Walk")
+		else:
+			animation_state.travel("Idle")
 	
 	if movement:
 		velocity = move_and_slide(velocity)
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
 			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-				emit_signal("player_collided", collision.get_collider())		
+				emit_signal("player_collided", collision.get_collider())
+
 
 # Method handles key inputs
 func _input(event):
@@ -166,28 +181,44 @@ func _input(event):
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
 		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
+	
+	# attack with "left_mouse"
+	elif event.is_action_pressed("attack"):
+		is_attacking = true
+		animation_state.travel("Attack")
+
+
+func on_attack_finished():
+	print("on_attack_finished")
+	is_attacking = false
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
 	player_can_interact = value
 
+
 # Method to get activate or disable state of possibility of interaction
 func get_player_can_interact():
 	return player_can_interact
+
 
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):
 	current_walk_speed *= factor
 
+
 func set_movement(value):
 	movement = value
+
 
 func get_movement():
 	return movement
 
+
 # Method to reset the player walk speed to const
 func reset_speed():
 	current_walk_speed = Constants.PLAYER_WALK_SPEED
+
 
 # Sets the Visibility of a given Sprite
 func set_visibility(sprite, visibility):
@@ -220,7 +251,12 @@ func set_visibility(sprite, visibility):
 			glassesSprite.visible = visibility
 		"Shadow":
 			shadow.visible = visibility
-			
+		"Weapon":
+			weaponSprite.visible = visibility
+		"AttackSwing":
+			attackSwingSprite.visible = visibility
+
+
 # Gets the Visibility of a given Sprite
 func get_visibility(sprite):
 	match sprite:
@@ -298,9 +334,17 @@ func set_texture(name, value):
 			hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
 
 
+func reset_key(track_idx):
+	var newAnimation = animation_player.get_animation("WalkDown")
+	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
+#	print("newValue" + str(newValue))
+#	print("oldValue" + str(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))))
+
+	_set_key(track_idx, newValue)
+
+
 # Track Key Value change for Colors
 func _set_key(track_idx, value):
-	
 	var newDown = animation_player.get_animation("WalkDown")
 	set_key(newDown, track_idx, value)
 	
@@ -333,27 +377,72 @@ func _set_key(track_idx, value):
 
 func set_key(newAnimation, track_idx, value):
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.1, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.2, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.3, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.4, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.5, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.6, 1)) + value)
 	newAnimation.track_set_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1), 
-	newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
+		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
 
 
-func reset_key(track_idx):
+func reset_attack_key(track_str):
 	var newAnimation = animation_player.get_animation("WalkDown")
+	var track_idx = newAnimation.find_track(track_str)
 	var newValue = 1 - newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))
-	_set_key(track_idx, newValue)
+	print("newValue" + str(newValue))
+	print("oldValue" + str(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1))))
+
+	_set_attack_key(track_str, newValue)
+
+
+# Track Key Value change for Colors
+func _set_attack_key(track_str, value):
+	var _attack_down = animation_player.get_animation("AttackDown")
+	set_attack_key(_attack_down, track_str, value)
+	
+	var _attack_up = animation_player.get_animation("AttackUp")
+	set_attack_key(_attack_down, track_str, value)
+	
+	var _attack_right = animation_player.get_animation("AttackRight")
+	set_attack_key(_attack_down, track_str, value)
+	
+	var _attack_left = animation_player.get_animation("AttackLeft")
+	set_attack_key(_attack_down, track_str, value)
+
+
+func set_attack_key(attack_animation, track_str, value):
+	var track_idx = attack_animation.find_track(track_str)
+#	print(track_idx)
+	if attack_animation.track_find_key(track_idx, 0.0, 1) != -1:
+#		print(track_idx)
+		print(attack_animation.track_get_path(track_idx))
+		print(value)
+#		print(attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1)))
+#		print(value)
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1), 
+			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1)) + value)
+	
+	if attack_animation.track_find_key(track_idx, 0.2, 1) != -1:
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1), 
+			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1)) + value)
+	
+	if attack_animation.track_find_key(track_idx, 0.4, 1) != -1:
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1), 
+			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1)) + value)
+	
+	if attack_animation.track_find_key(track_idx, 0.8, 1) != -1:
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1), 
+			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1)) + value)
+
 
 # Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
@@ -368,6 +457,7 @@ func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
+	animation_tree.set("parameters/Attack/blend_position", velocity)
 	position = spawn_position
 	animation_tree.active = true
 

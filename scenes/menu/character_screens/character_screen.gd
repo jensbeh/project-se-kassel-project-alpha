@@ -350,7 +350,7 @@ func load_character():
 func set_animation_data():
 	var data = data_list[selected_character]
 	var player = Utils.get_player()
-	# set the animation colors
+	# set the IDLE/WALK animation colors
 	player.reset_key(9)
 	player._set_key(9, data.hair_color*8)
 	player.reset_key(3)
@@ -364,19 +364,56 @@ func set_animation_data():
 	player.reset_key(6)
 	if data.beard_color == 0:
 		player._set_key(6, data.beard_color*8)
-	else: 
+	else:
 		player._set_key(6, (data.beard_color-1)*8)
 	player.reset_key(4)
 	if data.blush_color == 0:
 		player._set_key(4, data.blush_color*8)
-	else: 
+	else:
 		player._set_key(4, (data.blush_color-1)*8)
 	player.reset_key(5)
 	if data.lipstick_color == 0:
 		player._set_key(5, data.lipstick_color*8)
-	else: 
+	else:
 		player._set_key(5, (data.lipstick_color-1)*8)
-		
+	
+	
+	# set the ATTACK animation colors
+	# Shoes
+	player.reset_attack_key("Shoes:frame")
+	player._set_attack_key("Shoes:frame", data.shoe_color * 8)
+	# Pants
+	player.reset_attack_key("Pants:frame")
+	player._set_attack_key("Pants:frame", data.legs_color * 8)
+	# Clothes
+	player.reset_attack_key("Clothes:frame")
+	player._set_attack_key("Clothes:frame", data.torso_color * 8)
+	# Blush
+	player.reset_attack_key("Blush:frame")
+	if data.blush_color == 0:
+		player._set_attack_key("Blush:frame", data.blush_color * 8)
+	else: 
+		player._set_attack_key("Blush:frame", (data.blush_color - 1) * 8)
+	# Lipstick
+	player.reset_attack_key("Lipstick:frame")
+	if data.lipstick_color == 0:
+		player._set_attack_key("Lipstick:frame", data.lipstick_color * 8)
+	else: 
+		player._set_attack_key("Lipstick:frame", (data.lipstick_color - 1) * 8)
+	# Beard
+	player.reset_attack_key("Beard:frame")
+	if data.beard_color == 0:
+		player._set_attack_key("Beard:frame", data.beard_color * 8)
+	else: 
+		player._set_attack_key("Beard:frame", (data.beard_color - 1) * 8)
+	# Eyes
+	player.reset_attack_key("Eyes:frame")
+	player._set_attack_key("Eyes:frame", data.eyes_color * 8)
+	# Hairs
+	player.reset_attack_key("Hair:frame")
+	player._set_attack_key("Hair:frame", data.hair_color * 8)
+
+
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())

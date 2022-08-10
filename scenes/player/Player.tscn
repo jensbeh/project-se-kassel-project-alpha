@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -106,7 +106,7 @@ tracks/6/keys = {
 "times": PoolRealArray( 0, 0.2, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ 1328, 1329, 1331 ]
+"values": [ 1280, 1281, 1283 ]
 }
 tracks/7/type = "value"
 tracks/7/path = NodePath("Pants:frame")
@@ -118,7 +118,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0, 0.2, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ 1328, 1329, 1331 ]
+"values": [ 1280, 1281, 1283 ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("Clothes:frame")
@@ -130,7 +130,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1328, 1329, 1330, 1331 ]
+"values": [ 1280, 1281, 1282, 1283 ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("Blush:frame")
@@ -311,6 +311,20 @@ tracks/23/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ Vector2( -15.7778, -20.4444 ), Vector2( -15.778, -19.444 ), Vector2( -15.778, -20.444 ) ]
+}
+tracks/24/type = "method"
+tracks/24/path = NodePath(".")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ null ],
+"method": "on_attack_finished"
+} ]
 }
 
 [sub_resource type="Animation" id=39]
@@ -603,6 +617,20 @@ tracks/23/keys = {
 "update": 1,
 "values": [ Vector2( -15.778, -20.444 ), Vector2( -15.778, -19.444 ), Vector2( -15.778, -20.444 ) ]
 }
+tracks/24/type = "method"
+tracks/24/path = NodePath(".")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "on_attack_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=41]
 resource_name = "AttackRight"
@@ -894,9 +922,23 @@ tracks/23/keys = {
 "update": 1,
 "values": [ Vector2( -15.778, -20.444 ), Vector2( -15.778, -19.444 ), Vector2( -15.778, -20.444 ) ]
 }
+tracks/24/type = "method"
+tracks/24/path = NodePath(".")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "on_attack_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=42]
-resource_name = "AttacktUp"
+resource_name = "AttackUp"
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -1184,6 +1226,20 @@ tracks/23/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ Vector2( -15.778, -20.444 ), Vector2( -15.778, -19.444 ), Vector2( -15.778, -20.444 ) ]
+}
+tracks/24/type = "method"
+tracks/24/path = NodePath(".")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "on_attack_finished"
+} ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -2136,6 +2192,18 @@ tracks/25/keys = {
 "update": 0,
 "values": [ Vector2( -15.7778, -20.4444 ) ]
 }
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaBottom:monitoring")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "WalkDown"
@@ -2781,6 +2849,28 @@ tracks/12/keys = {
 "values": [ 9, 10, 11, 12, 13, 14, 15, 8 ]
 }
 
+[sub_resource type="AnimationNodeAnimation" id=48]
+animation = "AttackDown"
+
+[sub_resource type="AnimationNodeAnimation" id=49]
+animation = "AttackRight"
+
+[sub_resource type="AnimationNodeAnimation" id=50]
+animation = "AttackUp"
+
+[sub_resource type="AnimationNodeAnimation" id=51]
+animation = "AttackLeft"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=43]
+blend_point_0/node = SubResource( 48 )
+blend_point_0/pos = Vector2( 0, 1 )
+blend_point_1/node = SubResource( 49 )
+blend_point_1/pos = Vector2( 1, 0 )
+blend_point_2/node = SubResource( 50 )
+blend_point_2/pos = Vector2( 0, -1 )
+blend_point_3/node = SubResource( 51 )
+blend_point_3/pos = Vector2( -1, 0 )
+
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "IdleLeft"
 
@@ -2870,12 +2960,22 @@ blend_point_7/pos = Vector2( 1, 1 )
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=24]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=44]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=45]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=46]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=47]
+
 [sub_resource type="AnimationNodeStateMachine" id=2]
+states/Attack/node = SubResource( 43 )
+states/Attack/position = Vector2( 332.956, 177 )
 states/Idle/node = SubResource( 17 )
 states/Idle/position = Vector2( 240, 73 )
 states/Walk/node = SubResource( 22 )
 states/Walk/position = Vector2( 431, 73 )
-transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ) ]
+transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 44 ), "Attack", "Idle", SubResource( 45 ), "Attack", "Walk", SubResource( 46 ), "Walk", "Attack", SubResource( 47 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -161.044, 0 )
 
@@ -2929,6 +3029,7 @@ hframes = 80
 vframes = 49
 
 [node name="Blush" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 9 )
 centered = false
@@ -2937,6 +3038,7 @@ hframes = 40
 vframes = 49
 
 [node name="Lipstick" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 8 )
 centered = false
@@ -2945,6 +3047,7 @@ hframes = 40
 vframes = 49
 
 [node name="Beard" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 15 )
 centered = false
@@ -2961,6 +3064,7 @@ hframes = 112
 vframes = 49
 
 [node name="Earring" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 13 )
 centered = false
@@ -3013,6 +3117,41 @@ texture = ExtResource( 17 )
 vframes = 4
 frame = 3
 
+[node name="DamageAreaBottom" type="Area2D" parent="AttackSwing"]
+visible = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaBottom"]
+position = Vector2( -16.8667, -3.72222 )
+polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+
+[node name="DamageAreaLeft" type="Area2D" parent="AttackSwing"]
+visible = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaLeft"]
+position = Vector2( 6.46667, -9.27778 )
+rotation = 1.5708
+polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+
+[node name="DamageAreaTop" type="Area2D" parent="AttackSwing"]
+visible = false
+monitorable = false
+
+[node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaTop"]
+position = Vector2( 16.4667, 12.9444 )
+rotation = 3.14159
+polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+
+[node name="DamageAreaRight" type="Area2D" parent="AttackSwing"]
+visible = false
+monitorable = false
+
+[node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaRight"]
+position = Vector2( -6.86667, 24.0556 )
+rotation = 4.71239
+polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+
 [node name="Weapon" type="Sprite" parent="."]
 position = Vector2( 2.22222, -1.11111 )
 scale = Vector2( 0.031, 0.031 )
@@ -3031,7 +3170,7 @@ shape = SubResource( 1 )
 anims/AttackDown = SubResource( 40 )
 anims/AttackLeft = SubResource( 39 )
 anims/AttackRight = SubResource( 41 )
-anims/AttacktUp = SubResource( 42 )
+anims/AttackUp = SubResource( 42 )
 anims/IdleDown = SubResource( 4 )
 anims/IdleLeft = SubResource( 5 )
 anims/IdleRight = SubResource( 6 )
@@ -3045,7 +3184,9 @@ anims/WalkUp = SubResource( 10 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 2 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/playback = SubResource( 3 )
+parameters/Attack/blend_position = Vector2( -0.0162665, 0.00232017 )
 parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
 parameters/Walk/blend_position = Vector2( -0.380349, 0.202312 )
 
