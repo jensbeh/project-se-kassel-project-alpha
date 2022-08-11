@@ -17,10 +17,12 @@ onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlac
 # Node DayNight Cycle
 onready var darkness_lights_screen = $DarknessLightsCanvasLayer/DarknessLightsScreen
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set size of fade screen
 	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
+
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
@@ -42,10 +44,12 @@ func transition_to_scene(transition_data):
 	elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 		loading_screen_animation_player.play("MenuFadeToBlack")
 
+
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
+
 
 # Method to load the new scene with a thread in background
 func _load_scene_in_background():
@@ -66,7 +70,8 @@ func _load_scene_in_background():
 			
 			call_deferred("_on_load_scene_done", scene)
 			break
-			
+
+
 # Method is called when thread is done and the scene is loaded - here the scene will be instancing with all information and will be added to current_scene
 func _on_load_scene_done(scene):
 	# Get scene and pass init data
@@ -86,11 +91,13 @@ func _on_load_scene_done(scene):
 	# Add scene to current_scene
 	current_scene.get_child(0).call_deferred("queue_free")
 	current_scene.call_deferred("add_child", scene)
-	
+
+
 # Method to pass the transition_data to the new scene 
 func pass_data_to_scene(scene):
 	if current_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
 		scene.set_transition_data(current_transition_data)
+
 
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
@@ -129,19 +136,23 @@ func finish_transition():
 		# Mouse actions works now again
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
+
 # Method to update the current_scene_type and emits a signal
 func update_scene_type(new_transition_data):
 	current_scene_type = Utils.update_current_scene_type(new_transition_data)
 	emit_signal("scene_type_updated")
 
+
 # Method to return the previouse_scene_path
 func get_previouse_scene_path():
 	return previouse_scene_path
 
+
 # Method to return the current_scene_type
 func get_current_scene_type():
 	return current_scene_type
-	
+
+
 # Method to update the previouse_scene_path
 func update_previouse_scene_path():
 	if current_transition_data != null: # In menu (after start) it is null
@@ -149,10 +160,12 @@ func update_previouse_scene_path():
 	else:
 		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
 
+
 # Method returns true if day night cycle is enabled otherwise false FROM light_manager
 func is_day_night_cycle():
 	return darkness_lights_screen.get_is_day_night_cycle()
-	
+
+
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
 var timer = 0.0
