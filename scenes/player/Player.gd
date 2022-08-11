@@ -68,6 +68,7 @@ var player_exp: int = 0
 
 # Variables
 var is_attacking = false
+var can_attack = false
 
 
 func _ready():
@@ -198,7 +199,7 @@ func _input(event):
 		Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and movement:
+	elif event.is_action_pressed("attack") and can_attack and movement:
 		is_attacking = true
 		set_movement(false)
 		animation_state.travel("Attack")
@@ -477,7 +478,7 @@ func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
-	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
+	animation_tree.set("parameters/Attack/AttackCases/blend_position", view_direction)
 	position = spawn_position
 	animation_tree.active = true
 
@@ -500,6 +501,55 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	scene_camera.current = false
 
 
+func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback):
+	if new_weapon_id != null:
+		var weapon_id_str = str(new_weapon_id)
+		print(weapon_id_str)
+		can_attack = true
+		var weapons_dir = Directory.new()
+		var weapon_path = ""
+		if weapons_dir.open("res://assets/player/weapons/") == OK:
+			weapons_dir.list_dir_begin()
+			var weapon_name : String = weapons_dir.get_next()
+			while weapon_name != "":
+				if weapon_name.ends_with(".png"):
+					var file_weapon_id = weapon_name.substr(weapon_name.find_last("_") + 1, 5)
+					if file_weapon_id == weapon_id_str:
+						weapon_path = "res://assets/player/weapons/" + weapon_name
+						break
+					
+				weapon_name = weapons_dir.get_next()
+		
+		
+		var weapon_texture = load(weapon_path)
+		weaponSprite.texture = weapon_texture
+	
+	else:
+		can_attack = false
+		
+		
+	attack = new_attack_value
+	data.attack = new_attack_value
+	
+	attack_speed = new_attack_speed
+	data.attack_speed = new_attack_speed
+	
+	knockback = new_knockback
+	data.knockback = new_knockback
+
+
+func get_attack():
+	return attack
+
+
+func get_attack_speed():
+	return attack_speed
+
+
+func get_knockback():
+	return knockback
+
+
 func get_gold():
 	return gold
 
@@ -516,15 +566,6 @@ func get_max_health():
 func set_max_health(new_max_health):
 	max_health = new_max_health
 	data.maxLP = new_max_health
-
-
-func get_attack():
-	return attack
-	
-	
-func set_attack(new_attack_value):
-	attack = new_attack_value
-	data.attack = new_attack_value
 
 
 func set_data(new_data):
@@ -568,17 +609,3 @@ func set_exp(new_exp):
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
 	# for save
 	data.exp = player_exp
-
-func get_attack_speed():
-	return attack_speed
-	
-func set_attack_speed(new_attack_speed):
-	attack_speed = new_attack_speed
-	data.attack_speed = new_attack_speed
-	
-func get_knockback():
-	return knockback
-	
-func set_knockback(new_knockback):
-	knockback = new_knockback
-	data.knockback = new_knockback

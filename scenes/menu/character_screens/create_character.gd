@@ -567,14 +567,16 @@ func create_player_inventory():
 	save_player.open(Constants.DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
-	# sets lp
-	Utils.get_current_player().set_max_health(save_game_data.maxLP)
-	Utils.get_current_player().set_attack(save_game_data.attack)
-	Utils.get_current_player().set_attack_speed(save_game_data.attack_speed)
-	Utils.get_current_player().set_knockback(save_game_data.knockback)
+
 	# set player data
 	PlayerData.set_path(uuid)
 	PlayerData._ready()
+
+	# sets lp & weapon
+	Utils.get_current_player().set_max_health(save_game_data.maxLP)
+	var item_id = PlayerData.equipment_data["Item"]
+	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
+
 
 
 # Method to set all colors/frames to attack animations

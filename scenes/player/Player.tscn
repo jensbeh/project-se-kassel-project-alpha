@@ -17,7 +17,7 @@
 [ext_resource path="res://assets/player/acc/beard.png" type="Texture" id=15]
 [ext_resource path="res://scenes/light/CustomLight.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/player/attack_swing.png" type="Texture" id=17]
-[ext_resource path="res://assets/player/weapons/sword3.png" type="Texture" id=18]
+[ext_resource path="res://assets/player/weapons/wood_sword_10001.png" type="Texture" id=18]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
@@ -2778,7 +2778,7 @@ blend_point_3/pos = Vector2( -1, 0 )
 [sub_resource type="AnimationNodeTimeScale" id=56]
 
 [sub_resource type="AnimationNodeBlendTree" id=57]
-graph_offset = Vector2( -304.794, 60.6267 )
+graph_offset = Vector2( -349.023, 0 )
 nodes/AttackCases/node = SubResource( 62 )
 nodes/AttackCases/position = Vector2( -80, 100 )
 nodes/TimeScale/node = SubResource( 56 )
@@ -3069,11 +3069,13 @@ rotation = 4.71239
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
 
 [node name="Weapon" type="Sprite" parent="."]
-position = Vector2( -0.911102, -8.39999 )
+visible = false
+position = Vector2( 0.2, -8.2 )
 scale = Vector2( 0.031, 0.031 )
 texture = ExtResource( 18 )
 hframes = 4
 vframes = 4
+frame = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

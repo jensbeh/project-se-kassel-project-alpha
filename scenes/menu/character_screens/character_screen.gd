@@ -417,23 +417,26 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
+
+	# Set spawn
 	var player_position = Vector2(1128,616) # Camp
 #	var player_position = Vector2(768,752) # Grassland
 #	var player_position = Vector2(336,-62) # Dungeon1-1
 	var view_direction = Vector2(0,1)
+
+	# Set data
 	var data = data_list[selected_character]
-	Utils.get_current_player().set_data(data)
-	Utils.get_current_player().set_max_health(data.maxLP)
-	Utils.get_current_player().set_attack(data.attack)
-	Utils.get_current_player().set_attack_speed(data.attack_speed)
-	Utils.get_current_player().set_knockback(data.knockback)
-	Utils.get_current_player().set_level(data.level)
-	Utils.get_current_player().set_exp(data.exp)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
-	
+	Utils.get_current_player().set_data(data)
+	Utils.get_current_player().set_max_health(data.maxLP)
+	var item_id = PlayerData.equipment_data["Item"]
+	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
+	Utils.get_current_player().set_level(data.level)
+	Utils.get_current_player().set_exp(data.exp)
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)
 	
+	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
