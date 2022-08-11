@@ -16,6 +16,7 @@ func _ready():
 	$Text.visible = false
 
 func start():
+	Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").hide()
 	$TextureRect.visible = true
 	$HSeparator.visible = true
 	$Button.visible = true
@@ -96,12 +97,14 @@ func close_dialog():
 		# reset npc interaction state
 		for npc in get_parent().get_parent().get_children():
 			npc.set_interacted(false)
+	Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show()
 
 func _on_Trade_pressed():
+	Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show()
 	MerchantData.set_path(get_parent().name)
 	MerchantData._ready()
 	PlayerData._ready()
 	close_dialog()
 	# Show trade inventory
-	Utils.get_scene_manager().get_child(3).add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
-	Utils.get_scene_manager().get_child(3).get_node("TradeInventory").set_name(get_parent().name)
+	Utils.get_scene_manager().get_node("UI").add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
+	Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").set_name(get_parent().name)

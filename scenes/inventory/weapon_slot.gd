@@ -87,6 +87,10 @@ func drop_data(_pos, data):
 		PlayerData.equipment_data["Stack"] = data["origin_stack"]
 		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
 		Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
+		get_parent().get_parent().get_parent().get_parent().find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]))
+		Utils.get_current_player().set_knockback(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"])
+		get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]))
+		Utils.get_current_player().set_attack_speed(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"])
 	Utils.get_current_player().set_dragging(false)
 
 func verify_origin_texture(data):

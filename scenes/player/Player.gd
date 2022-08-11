@@ -57,9 +57,14 @@ var player_can_interact
 # player stats and values
 var gold
 var attack = 0
+var knockback = 0
+var attack_speed = 0
 var max_health
 var data
+var level = 1
 var dragging = false
+var preview = false
+var player_exp: int = 0
 
 # Variables
 var is_attacking = false
@@ -139,18 +144,19 @@ func _physics_process(_delta):
 
 # Method handles key inputs
 func _input(event):
+	Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").update()
 	if event.is_action_pressed("e"):
 		print("Pressed e")
 		if player_can_interact:
 			print("interacted")
 			emit_signal("player_interact")
 		# Remove the trade inventory
-		if Utils.get_scene_manager().get_child(3).get_node_or_null("TradeInventory") != null and !dragging:
-			Utils.get_scene_manager().get_child(3).get_node("TradeInventory").queue_free()
+		if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") != null and !dragging:
+			Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
-				# Reset npc interaction state
+			# Reset npc interaction state
 			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
 				npc.set_interacted(false)
 			PlayerData.save_inventory()
@@ -158,33 +164,40 @@ func _input(event):
 			MerchantData.save_merchant_inventory()
 	
 	# Open game menu with "esc"
-	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
-		set_movement(false)
-		set_movment_animation(false)
-		Utils.get_scene_manager().get_child(3).add_child(load(Constants.GAME_MENU_PATH).instance())
-	# Close game menu with "esc" when game menu is open
-	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("GameMenu") != null:
-		set_movement(true)
-		set_movment_animation(true)
-		Utils.get_scene_manager().get_child(3).get_node("GameMenu").queue_free()
-	
-	# open character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
+	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_node("UI").find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
-		Utils.get_scene_manager().get_child(3).add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
-	# close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_child(3).get_node_or_null("CharacterInterface") != null and !dragging:
+		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.GAME_MENU_PATH).instance())
+		save_player_data(Utils.get_current_player().get_data())
+	# Close game menu with "esc" when game menu is open
+	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
+		set_movement(true)
+		set_movment_animation(true)
+		set_player_can_interact(true)
+		Utils.get_scene_manager().get_node("UI").get_node("GameMenu").queue_free()
+	
+	# Open character inventory with "i"
+	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_node("UI").find_node("CharacterInterface") == null:
+		set_movement(false)
+		set_movment_animation(false)
+		set_player_can_interact(false)
+		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+	# Close character inventory with "i"
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface") != null and !dragging:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
 		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
-		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
+		Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").queue_free()
 	
-	# attack with "left_mouse"
+	# Control Notes
+	elif event.is_action_pressed("control_notes") and !preview:
+		Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show_hide_control_notes()
+	
+	# Attack with "left_mouse"
 	elif event.is_action_pressed("attack") and movement:
 		is_attacking = true
 		set_movement(false)
@@ -530,7 +543,42 @@ func save_player_data(player_data):
 	save_game.open(Constants.SAVE_PATH + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
+	
+func set_preview(value):
+	preview = value
 
 
 func set_dragging(value):
 	dragging = value
+
+func set_level(new_level):
+	level = new_level
+	data.level = new_level
+	
+func get_level():
+	return level
+
+func get_exp():
+	return player_exp
+
+# set a new exp value for the player
+func set_exp(new_exp):
+	player_exp = int(new_exp)
+	# for ui update
+	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
+	# for save
+	data.exp = player_exp
+
+func get_attack_speed():
+	return attack_speed
+	
+func set_attack_speed(new_attack_speed):
+	attack_speed = new_attack_speed
+	data.attack_speed = new_attack_speed
+	
+func get_knockback():
+	return knockback
+	
+func set_knockback(new_knockback):
+	knockback = new_knockback
+	data.knockback = new_knockback

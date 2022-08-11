@@ -425,6 +425,10 @@ func start_game():
 	Utils.get_current_player().set_data(data)
 	Utils.get_current_player().set_max_health(data.maxLP)
 	Utils.get_current_player().set_attack(data.attack)
+	Utils.get_current_player().set_attack_speed(data.attack_speed)
+	Utils.get_current_player().set_knockback(data.knockback)
+	Utils.get_current_player().set_level(data.level)
+	Utils.get_current_player().set_exp(data.exp)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
 	

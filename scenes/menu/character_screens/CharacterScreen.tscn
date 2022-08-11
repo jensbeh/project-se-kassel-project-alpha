@@ -1493,7 +1493,7 @@ default_font = SubResource( 13 )
 Button/colors/font_color_hover = Color( 0.941176, 0.941176, 0.941176, 1 )
 Button/styles/hover = SubResource( 15 )
 Button/styles/pressed = SubResource( 16 )
-Label/fonts/font = null
+Label/fonts/font = SubResource( 13 )
 
 [node name="CharacterScreen" type="Node2D"]
 script = ExtResource( 1 )

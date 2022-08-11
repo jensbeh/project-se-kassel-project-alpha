@@ -1,5 +1,8 @@
 extends Node
 
+# Variables
+const NAME_LENGTH = 15
+
 # Tiles
 const tile_size = 16
 

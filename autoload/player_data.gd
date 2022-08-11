@@ -6,6 +6,14 @@ var equipment_data = {
 		"Item": null,
 		"Stack": null,
 	},
+	"Light": {
+		"Item": null,
+		"Stack": null,
+	},
+	"Hotbar": {
+		"Item": null,
+		"Stack": null,
+	},
 }
 var path = Constants.INVENTORY_PATH
 

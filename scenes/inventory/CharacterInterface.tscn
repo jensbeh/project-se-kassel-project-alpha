@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=1]
 [ext_resource path="res://assets/ui/panel_grey.png" type="Texture" id=2]
@@ -12,6 +12,10 @@
 
 [sub_resource type="DynamicFont" id=1]
 size = 36
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 24
 font_data = ExtResource( 7 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=2]
@@ -89,19 +93,22 @@ margin_bottom = 80.0
 rect_min_size = Vector2( 0, 80 )
 
 [node name="Control" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
+visible = false
 margin_right = 58.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
-[node name="CharacterTitle" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_left = 62.0
-margin_right = 387.0
+[node name="CharacterTitle" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
+margin_right = 446.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 325, 0 )
+size_flags_horizontal = 3
+alignment = 2
 
 [node name="CharacterName" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/CharacterTitle"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_top = 4.0
+margin_right = 446.0
+margin_bottom = 47.0
 grow_horizontal = 0
 grow_vertical = 0
 custom_fonts/font = SubResource( 1 )
@@ -109,11 +116,21 @@ text = "Name"
 align = 1
 valign = 1
 
+[node name="CharacterLevel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/CharacterTitle"]
+margin_top = 51.0
+margin_right = 446.0
+margin_bottom = 80.0
+grow_horizontal = 0
+grow_vertical = 0
+custom_fonts/font = SubResource( 4 )
+text = "Level"
+align = 1
+valign = 1
+
 [node name="Exit" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_left = 391.0
+margin_left = 450.0
 margin_right = 450.0
 margin_bottom = 80.0
-size_flags_horizontal = 3
 
 [node name="Button" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Exit"]
 anchor_left = 1.0
@@ -157,9 +174,9 @@ script = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Weapon/WeaponBox/Icon"]
 position = Vector2( 50, 52 )
 scale = Vector2( 2.5, 2.5 )
-hframes = 13
-vframes = 15
-frame = 156
+hframes = 16
+vframes = 27
+frame = 169
 
 [node name="Control" type="NinePatchRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]
 margin_left = 104.0
@@ -209,8 +226,13 @@ margin_right = 445.0
 margin_bottom = 181.0
 custom_constants/separation = 20
 
-[node name="Label" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer"]
 margin_right = 435.0
+margin_bottom = 29.0
+custom_constants/separation = 50
+
+[node name="Label" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer4"]
+margin_right = 84.0
 margin_bottom = 29.0
 custom_fonts/font = SubResource( 3 )
 text = "Stats:"
@@ -223,13 +245,18 @@ margin_bottom = 78.0
 custom_constants/separation = 50
 
 [node name="Health" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 192.0
 margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="Damage" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 50.0
-margin_right = 50.0
+margin_left = 242.0
+margin_right = 435.0
 margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer"]
@@ -239,13 +266,19 @@ margin_bottom = 127.0
 custom_constants/separation = 50
 
 [node name="Mana" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 192.0
 margin_bottom = 29.0
+rect_min_size = Vector2( 110, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
-[node name="Defence" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 50.0
-margin_right = 50.0
+[node name="Attack-Speed" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 242.0
+margin_right = 435.0
 margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer"]
@@ -255,13 +288,19 @@ margin_bottom = 176.0
 custom_constants/separation = 50
 
 [node name="Block" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 192.0
 margin_bottom = 29.0
+rect_min_size = Vector2( 110, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
-[node name="None" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 50.0
-margin_right = 50.0
+[node name="Knockback" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 242.0
+margin_right = 435.0
 margin_bottom = 29.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]

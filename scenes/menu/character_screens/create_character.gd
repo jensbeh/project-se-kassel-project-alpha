@@ -125,8 +125,11 @@ func get_sprites():
 var save_game_data = {
 	"name": charac_name,
 	"level": "1",
+	"exp": "0",
 	"maxLP": "100",
 	"attack": "0",
+	"attack_speed": "0",
+	"knockback": "0",
 	"currentHP": "100",
 	"gold": "100",
 	"skincolor": curr_body,
@@ -503,7 +506,7 @@ func _on_BeardRight_pressed():
 
 
 func _on_LineEdit_text_changed(new_text):
-	if new_text.length() > 28:
+	if new_text.length() > Constants.NAME_LENGTH:
 		$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/LineEdit.delete_char_at_cursor()
 	else:
 		charac_name = new_text
@@ -539,6 +542,9 @@ func _on_LineEdit_focus_exited():
 
 
 func start_game():
+	# Set colors for attack animations
+	set_colors_for_attack_anim()
+	
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
 	var player_position = Vector2(1128,616)
@@ -547,6 +553,8 @@ func start_game():
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()
 	Utils.get_current_player().set_gold(save_game_data.gold)
+	Utils.get_current_player().set_level(save_game_data.level)
+	Utils.get_current_player().set_exp(save_game_data.exp)
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -562,6 +570,47 @@ func create_player_inventory():
 	# sets lp
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	Utils.get_current_player().set_attack(save_game_data.attack)
+	Utils.get_current_player().set_attack_speed(save_game_data.attack_speed)
+	Utils.get_current_player().set_knockback(save_game_data.knockback)
 	# set player data
 	PlayerData.set_path(uuid)
 	PlayerData._ready()
+
+
+# Method to set all colors/frames to attack animations
+func set_colors_for_attack_anim():
+	var player = Utils.get_player()
+	# set the ATTACK animation colors
+	# Shoes
+	player.reset_attack_key("Shoes:frame")
+	player._set_attack_key("Shoes:frame", curr_shoe_color * 8)
+	# Pants
+	player.reset_attack_key("Pants:frame")
+	player._set_attack_key("Pants:frame", curr_pants_color * 8)
+	# Clothes
+	player.reset_attack_key("Clothes:frame")
+	player._set_attack_key("Clothes:frame", curr_clothes_color * 8)
+	# Blush
+	player.reset_attack_key("Blush:frame")
+	if curr_blush_color == 0:
+		player._set_attack_key("Blush:frame", curr_blush_color * 8)
+	else: 
+		player._set_attack_key("Blush:frame", (curr_blush_color - 1) * 8)
+	# Lipstick
+	player.reset_attack_key("Lipstick:frame")
+	if curr_lipstick_color == 0:
+		player._set_attack_key("Lipstick:frame", curr_lipstick_color * 8)
+	else: 
+		player._set_attack_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+	# Beard
+	player.reset_attack_key("Beard:frame")
+	if curr_beard_color == 0:
+		player._set_attack_key("Beard:frame", curr_beard_color * 8)
+	else: 
+		player._set_attack_key("Beard:frame", (curr_beard_color - 1) * 8)
+	# Eyes
+	player.reset_attack_key("Eyes:frame")
+	player._set_attack_key("Eyes:frame", curr_eyes_color * 8)
+	# Hairs
+	player.reset_attack_key("Hair:frame")
+	player._set_attack_key("Hair:frame", curr_hair_color * 8)
