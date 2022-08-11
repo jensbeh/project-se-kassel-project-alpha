@@ -96,9 +96,10 @@ func _ready():
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
-	animation_tree.set("parameters/Attack/blend_position", velocity)
+	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
-#	animation_player.connect("animation_finished", self, "on_attack_finished")
+	# Weapon animation speed
+	animation_tree.set("parameters/Attack/TimeScale/scale", 1.0)
 
 
 func _physics_process(_delta):
@@ -123,7 +124,7 @@ func _physics_process(_delta):
 		if velocity != Vector2.ZERO:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
-			animation_tree.set("parameters/Attack/blend_position", velocity)
+			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 			animation_state.travel("Walk")
 		else:
 			animation_state.travel("Idle")
@@ -155,8 +156,9 @@ func _input(event):
 			PlayerData.save_inventory()
 			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
+	
 	# Open game menu with "esc"
-	if event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
+	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_child(3).find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		Utils.get_scene_manager().get_child(3).add_child(load(Constants.GAME_MENU_PATH).instance())
@@ -165,8 +167,9 @@ func _input(event):
 		set_movement(true)
 		set_movment_animation(true)
 		Utils.get_scene_manager().get_child(3).get_node("GameMenu").queue_free()
+	
 	# open character inventory with "i"
-	if event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
+	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_child(3).find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
@@ -182,14 +185,19 @@ func _input(event):
 		Utils.get_scene_manager().get_child(3).get_node("CharacterInterface").queue_free()
 	
 	# attack with "left_mouse"
-	elif event.is_action_pressed("attack"):
+	elif event.is_action_pressed("attack") and movement:
 		is_attacking = true
+		set_movement(false)
 		animation_state.travel("Attack")
+		print("ATTACK")
 
 
+# Method is called at the end of any attack animation
 func on_attack_finished():
 	print("on_attack_finished")
+	set_movement(true)
 	is_attacking = false
+
 
 # Method to activate or disable the possibility of interaction
 func set_player_can_interact(value):
@@ -206,11 +214,13 @@ func set_speed(factor: float):
 	current_walk_speed *= factor
 
 
-func set_movement(value):
-	movement = value
+# Method to activate or deactivate the movment state
+func set_movement(can_move : bool):
+	movement = can_move
 
 
-func get_movement():
+# Method to return the movment state
+func get_movement() -> bool:
 	return movement
 
 
@@ -443,18 +453,21 @@ func set_attack_key(attack_animation, track_str, value):
 func set_movment_animation(state: bool):
 	animation_tree.active = state
 
+
 # Method to get activate or disable state of player movment animation 
 func get_movment_animation():
 	return animation_tree.active
+
 
 # Method to set the spawn_position and view_direction of the current player
 func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
-	animation_tree.set("parameters/Attack/blend_position", velocity)
+	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	position = spawn_position
 	animation_tree.active = true
+
 
 # Method to setup the current player in the new scene with all information of the template player in the scene about camera, ...
 func setup_player_in_new_scene(scene_player: KinematicBody2D):
@@ -473,33 +486,42 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	_new_camera.current = true
 	scene_camera.current = false
 
+
 func get_gold():
 	return gold
-	
+
+
 func set_gold(new_gold_value):
 	gold = new_gold_value
 	data.gold = new_gold_value
-	
+
+
 func get_max_health():
 	return max_health
-	
+
+
 func set_max_health(new_max_health):
 	max_health = new_max_health
 	data.maxLP = new_max_health
 
+
 func get_attack():
 	return attack
+	
 	
 func set_attack(new_attack_value):
 	attack = new_attack_value
 	data.attack = new_attack_value
 
+
 func set_data(new_data):
 	data = new_data
-	
+
+
 func get_data():
 	return data
-	
+
+
 func save_player_data(player_data):
 	var dir = Directory.new()
 	if !dir.dir_exists(Constants.SAVE_PATH):
@@ -508,6 +530,7 @@ func save_player_data(player_data):
 	save_game.open(Constants.SAVE_PATH + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
+
 
 func set_dragging(value):
 	dragging = value
