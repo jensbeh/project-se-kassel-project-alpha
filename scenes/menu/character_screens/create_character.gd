@@ -579,7 +579,6 @@ func create_player_inventory():
 
 # Method to set all colors/frames to attack animations
 func set_colors_for_attack_anim():
-	var player = Utils.get_player()
 	# set the ATTACK animation colors
 	# Shoes
 	player.reset_attack_key("Shoes:frame")
