@@ -46,7 +46,7 @@
  	"Knockback": 1,
 	"Attack-Speed": 3,
     "Health": null,
-	"Stackable": 2,
+	"Stackable": false,
 	"Frame": 83,
 	"Texture": "item_icons_1",
 	"Worth": 110
