@@ -1,6 +1,6 @@
 {
   "10001": {
-    "Name": "Wood Sword",
+    "Name": "Wooden Sword",
     "Category": "Weapon",
     "EquipmentSlot": "Weapon",
     "Attack": 10,
@@ -13,7 +13,7 @@
 	"Worth": 10
   },
   "10002": {
-    "Name": "Sword",
+    "Name": "Iron Sword",
     "Category": "Weapon",
     "EquipmentSlot": "Weapon",
     "Attack": 30,
@@ -46,7 +46,7 @@
  	"Knockback": 1,
 	"Attack-Speed": 3,
     "Health": null,
-	"Stackable": 2,
+	"Stackable": false,
 	"Frame": 83,
 	"Texture": "item_icons_1",
 	"Worth": 110
@@ -55,40 +55,40 @@
     "Name": "Epic Sword",
     "Category": "Weapon",
     "EquipmentSlot": "Weapon",
-    "Attack": 180,
+    "Attack": 100,
 	"Knockback": 2,
-	"Attack-Speed": 2,
+	"Attack-Speed": 3,
     "Health": null,
 	"Stackable": false,
-	"Frame": 108,
-	"Texture": "item_icons_2",
-	"Worth": 500
+	"Frame": 84,
+	"Texture": "item_icons_1",
+	"Worth": 250
   },
   "10006": {
-    "Name": "Big Sword",
+    "Name": "Legendary Sword",
     "Category": "Weapon",
     "EquipmentSlot": "Weapon",
-    "Attack": 120,
-	"Knockback": 3,
-	"Attack-Speed": 1,
-    "Health": null,
-	"Stackable": false,
-	"Frame": 101,
-	"Texture": "item_icons_2",
-	"Worth": 170
-  },
-  "10007": {
-    "Name": "Greate Axe",
-    "Category": "Weapon",
-    "EquipmentSlot": "Weapon",
-    "Attack": 220,
+    "Attack": 150,
 	"Knockback": 4,
-	"Attack-Speed": 1,
+	"Attack-Speed": 3,
     "Health": null,
 	"Stackable": false,
-	"Frame": 91,
+	"Frame": 86,
 	"Texture": "item_icons_1",
 	"Worth": 400
+  },
+  "10007": {
+    "Name": "Large Dagger",
+    "Category": "Weapon",
+    "EquipmentSlot": "Weapon",
+    "Attack": 75,
+	"Knockback": 1,
+	"Attack-Speed": 4,
+    "Health": null,
+	"Stackable": false,
+	"Frame": 87,
+	"Texture": "item_icons_1",
+	"Worth": 80
   },
   "10008": {
     "Name": "Normal Axe",
@@ -104,30 +104,17 @@
 	"Worth": 40
   },
   "10009": {
-    "Name": "Rare Sword",
+    "Name": "Greate Axe",
     "Category": "Weapon",
     "EquipmentSlot": "Weapon",
-    "Attack": 110,
-	"Knockback": 1,
-	"Attack-Speed": 3,
+    "Attack": 220,
+	"Knockback": 4,
+	"Attack-Speed": 1,
     "Health": null,
 	"Stackable": false,
-	"Frame": 107,
-	"Texture": "item_icons_2",
-	"Worth": 350
-  },
-  "10010": {
-    "Name": "Dark Sword",
-    "Category": "Weapon",
-    "EquipmentSlot": "Weapon",
-    "Attack": 90,
-	"Knockback": 2,
-	"Attack-Speed": 3,
-    "Health": null,
-	"Stackable": false,
-	"Frame": 115,
-	"Texture": "item_icons_2",
-	"Worth": 300
+	"Frame": 91,
+	"Texture": "item_icons_1",
+	"Worth": 400
   },
   "10011": {
     "Name": "Health Potion",

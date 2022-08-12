@@ -181,25 +181,30 @@ func drop_data(_pos, data):
 				PlayerData.equipment_data["Item"] = data["target_item_id"]
 				PlayerData.equipment_data["Stack"] = data["target_stack"]
 				if PlayerData.equipment_data["Item"] != null:
+					var item_id = PlayerData.equipment_data["Item"]
+					var attack_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]
+					var attack_speed = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]
+					var knockback_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]
+					
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
-						tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
-					Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
+						tr("ATTACK") + ": " + str(attack_value))
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
-						tr("ATTACK-SPEED") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]))
-					Utils.get_current_player().set_attack_speed(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"])
+						tr("ATTACK-SPEED") + ": " + str(attack_speed))
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
-						tr("KNOCKBACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]))
-					Utils.get_current_player().set_knockback(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"])
+						tr("KNOCKBACK") + ": " + str(knockback_value))
+					
+					Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
+				
 				else:
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + "0")
-					Utils.get_current_player().set_attack(0)
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
 						tr("ATTACK-SPEED") + ": " + "0")
-					Utils.get_current_player().set_attack_speed(0)
 					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
 						tr("KNOCKBACK") + ": " + "0")
-					Utils.get_current_player().set_knockback(0)
+
+					Utils.get_current_player().set_weapon(null, 0, 0, 0)
+
 			# Update the texture and label of the origin
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0:
