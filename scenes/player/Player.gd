@@ -126,7 +126,7 @@ func _physics_process(_delta):
 	if Input.is_action_pressed("Shift"):
 		velocity *= 1.4
 	
-	if not is_attacking:
+	if not is_attacking: # Disable walking if attacking
 		if velocity != Vector2.ZERO:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
@@ -415,6 +415,7 @@ func set_key(newAnimation, track_idx, value):
 		newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.7, 1)) + value)
 
 
+# Method to reset animations back to first frame
 func reset_attack_key(track_str):
 	# Get animation for color offset
 	var newAnimation = animation_player.get_animation("AttackDown")
@@ -428,7 +429,7 @@ func reset_attack_key(track_str):
 	_set_attack_key(track_str, newValue)
 
 
-# Track Key Value change for Colors
+# Method to change all animiations frames/colors
 func _set_attack_key(track_str, value):
 	var _attack_down = animation_player.get_animation("AttackDown")
 	set_attack_key(_attack_down, track_str, value)
@@ -443,6 +444,7 @@ func _set_attack_key(track_str, value):
 	set_attack_key(_attack_left, track_str, value)
 
 
+# Method changes the frames of the animation
 func set_attack_key(attack_animation, track_str, value):
 	var track_idx = attack_animation.find_track(track_str)
 	
@@ -501,6 +503,7 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 	scene_camera.current = false
 
 
+# Method to set/save weapon and stats to player
 func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback):
 	if new_weapon_id != null:
 		var weapon_id_str = str(new_weapon_id)
@@ -584,7 +587,8 @@ func save_player_data(player_data):
 	save_game.open(Constants.SAVE_PATH + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
-	
+
+
 func set_preview(value):
 	preview = value
 
@@ -592,15 +596,19 @@ func set_preview(value):
 func set_dragging(value):
 	dragging = value
 
+
 func set_level(new_level):
 	level = new_level
 	data.level = new_level
-	
+
+
 func get_level():
 	return level
 
+
 func get_exp():
 	return player_exp
+
 
 # set a new exp value for the player
 func set_exp(new_exp):

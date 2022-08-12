@@ -532,15 +532,18 @@ func reset_frame():
 	eyes.frame = curr_eyes_color*8
 	hair.frame = curr_hair_color*8
 
+
 # Disable movment of player when type in name
 func _on_LineEdit_focus_entered():
 	Utils.get_player().set_movment_animation(false)
+
 
 # Enable movment of player when exiting the lineEdit
 func _on_LineEdit_focus_exited():
 	Utils.get_player().set_movment_animation(true)
 
 
+# Method to start game scene
 func start_game():
 	# Set colors for attack animations
 	set_colors_for_attack_anim()
@@ -559,6 +562,7 @@ func start_game():
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
+
 func create_player_inventory():
 	var dir = Directory.new()
 	if !dir.dir_exists(Constants.DATA_PATH):
@@ -576,7 +580,6 @@ func create_player_inventory():
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	var item_id = PlayerData.equipment_data["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
-
 
 
 # Method to set all colors/frames to attack animations

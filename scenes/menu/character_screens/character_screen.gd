@@ -306,6 +306,7 @@ func on_click(id):
 func on_double_click():
 	start_game()
 
+
 func load_character():
 	if data_list != []:
 		var data = data_list[selected_character]
@@ -414,6 +415,7 @@ func set_animation_data():
 	player._set_attack_key("Hair:frame", data.hair_color * 8)
 
 
+# Method to start game scene
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
