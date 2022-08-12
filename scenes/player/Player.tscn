@@ -17,7 +17,7 @@
 [ext_resource path="res://assets/player/acc/beard.png" type="Texture" id=15]
 [ext_resource path="res://scenes/light/CustomLight.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/player/attack_swing.png" type="Texture" id=17]
-[ext_resource path="res://assets/player/weapons/axe1.png" type="Texture" id=18]
+[ext_resource path="res://assets/player/weapons/wooden_sword_10001.png" type="Texture" id=18]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
