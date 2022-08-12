@@ -39,6 +39,26 @@ func set_life(new_value):
 		else:
 			# Minimum value from this heart + value - maxvalue of heart before / factor		
 			life_bar.value = 72 + (new_value - 66) / 1.25
+	if hearts == 4:
+		if new_value < 26:
+			life_bar.value = new_value / 1.25
+		elif new_value < 51:
+			life_bar.value = 27 + (new_value - 26) / 1.25
+		elif new_value < 76:
+			life_bar.value = 53 + (new_value - 51) / 1.25
+		else:
+			life_bar.value = 79 + (new_value - 76) / 1.25
+	if hearts == 5:
+		if new_value < 22:
+			life_bar.value = new_value / 1.3
+		elif new_value < 41:
+			life_bar.value = 23 + (new_value - 22) / 1.3
+		elif new_value < 62:
+			life_bar.value = 43 + (new_value - 41) / 1.3
+		elif new_value < 81:
+			life_bar.value = 64 + (new_value - 62) / 1.3
+		else:
+			life_bar.value = 84 + (new_value - 81) / 1.3
 
 	if life_bar.value <= 0:
 		print("Spieler ist tot")
