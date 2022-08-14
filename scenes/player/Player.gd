@@ -56,7 +56,7 @@ var player_can_interact
 
 # player stats and values
 var gold
-var attack = 0
+var attack_damage = 0
 var knockback = 0
 var attack_speed = 0
 var max_health
@@ -199,7 +199,7 @@ func _input(event):
 		Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and can_attack and movement:
+	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement:
 		is_attacking = true
 		set_movement(false)
 		animation_state.travel("Attack")
@@ -507,7 +507,6 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback):
 	if new_weapon_id != null:
 		var weapon_id_str = str(new_weapon_id)
-		print(weapon_id_str)
 		can_attack = true
 		var weapons_dir = Directory.new()
 		var weapon_path = ""
@@ -531,7 +530,7 @@ func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback
 		can_attack = false
 		
 		
-	attack = new_attack_value
+	attack_damage = new_attack_value
 	data.attack = new_attack_value
 	
 	attack_speed = new_attack_speed
@@ -541,8 +540,11 @@ func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback
 	data.knockback = new_knockback
 
 
-func get_attack():
-	return attack
+# Method to return the attack_damage
+func get_attack_damage():
+	# Maybe return random attack value around variables value
+	# Maybe random crit damage
+	return attack_damage
 
 
 func get_attack_speed():
@@ -617,3 +619,59 @@ func set_exp(new_exp):
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
 	# for save
 	data.exp = player_exp
+
+
+
+
+
+
+
+func _on_DamageAreaBottom_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
+		
+		if entity.has_method("take_damage"):
+			var damage = get_attack_damage()
+			entity.take_damage(damage)
+
+
+
+
+
+
+
+
+
+func _on_DamageAreaLeft_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
+		
+		if entity.has_method("take_damage"):
+			var damage = get_attack_damage()
+			entity.take_damage(damage)
+
+
+func _on_DamageAreaTop_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
+		
+		if entity.has_method("take_damage"):
+			var damage = get_attack_damage()
+			entity.take_damage(damage)
+
+
+func _on_DamageAreaRight_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
+		
+		if entity.has_method("take_damage"):
+			var damage = get_attack_damage()
+			entity.take_damage(damage)

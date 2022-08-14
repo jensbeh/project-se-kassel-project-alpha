@@ -326,6 +326,30 @@ tracks/24/keys = {
 "method": "on_attack_finished"
 } ]
 }
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [sub_resource type="Animation" id=39]
 resource_name = "AttackLeft"
@@ -630,6 +654,30 @@ tracks/24/keys = {
 "args": [  ],
 "method": "on_attack_finished"
 } ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 
 [sub_resource type="Animation" id=41]
@@ -936,6 +984,30 @@ tracks/24/keys = {
 "method": "on_attack_finished"
 } ]
 }
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [sub_resource type="Animation" id=42]
 resource_name = "AttackUp"
@@ -1240,6 +1312,30 @@ tracks/24/keys = {
 "args": [  ],
 "method": "on_attack_finished"
 } ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -2107,6 +2203,102 @@ tracks/18/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( -15.7778, -20.4444 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:disabled")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:visible")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:disabled")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:visible")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:disabled")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:visible")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -3034,42 +3226,45 @@ texture = ExtResource( 17 )
 vframes = 4
 
 [node name="DamageAreaBottom" type="Area2D" parent="AttackSwing"]
-visible = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaBottom"]
+visible = false
 position = Vector2( -16.8667, -3.72222 )
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="DamageAreaLeft" type="Area2D" parent="AttackSwing"]
-visible = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaLeft"]
+visible = false
 position = Vector2( 6.46667, -9.27778 )
 rotation = 1.5708
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="DamageAreaTop" type="Area2D" parent="AttackSwing"]
-visible = false
 monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaTop"]
+visible = false
 position = Vector2( 16.4667, 12.9444 )
 rotation = 3.14159
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="DamageAreaRight" type="Area2D" parent="AttackSwing"]
-visible = false
 monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaRight"]
+visible = false
 position = Vector2( -6.86667, 24.0556 )
 rotation = 4.71239
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="Weapon" type="Sprite" parent="."]
-visible = false
 position = Vector2( 0.2, -8.2 )
 scale = Vector2( 0.031, 0.031 )
 texture = ExtResource( 18 )
@@ -3083,6 +3278,7 @@ position = Vector2( 0, 1.5 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+method_call_mode = 1
 anims/AttackDown = SubResource( 40 )
 anims/AttackLeft = SubResource( 39 )
 anims/AttackRight = SubResource( 41 )
@@ -3120,3 +3316,8 @@ cast_to = Vector2( 0, 8 )
 [node name="CustomLight" parent="." instance=ExtResource( 16 )]
 position = Vector2( -7.8, 8 )
 radius = 64
+
+[connection signal="area_entered" from="AttackSwing/DamageAreaBottom" to="." method="_on_DamageAreaBottom_area_entered"]
+[connection signal="area_entered" from="AttackSwing/DamageAreaLeft" to="." method="_on_DamageAreaLeft_area_entered"]
+[connection signal="area_entered" from="AttackSwing/DamageAreaTop" to="." method="_on_DamageAreaTop_area_entered"]
+[connection signal="area_entered" from="AttackSwing/DamageAreaRight" to="." method="_on_DamageAreaRight_area_entered"]

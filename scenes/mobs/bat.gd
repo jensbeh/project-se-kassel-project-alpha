@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 # Mob specific
 var health = 100
-var damage = 15
+var attack_damage = 15
 var spawn_time = Constants.SpawnTime.ONLY_NIGHT
 
 # Variables
@@ -360,3 +360,16 @@ func set_mob_activity(is_active):
 #
 #func on_player_exited_attack_zone():
 #	update_behaviour(HUNTING)
+
+
+func take_damage(damage : int):
+	print("-----------> Takes " + str(damage) + " damage")
+	
+	health -= damage
+	print("-----> remaining health: " + str(health))
+	
+	if health <= 0:
+		print(self.owner)
+	
+	
+
