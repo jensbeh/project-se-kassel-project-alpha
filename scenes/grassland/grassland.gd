@@ -59,7 +59,7 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
+#	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
@@ -406,3 +406,15 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false
+
+
+func despawn_mob(mob):
+	if mob_list.find(mob) != -1:
+		mob_list.remove(mob_list.find(mob))
+	if mobs_to_remove.find(mob) != -1:
+		mobs_to_remove.remove(mobs_to_remove.find(mob))
+	
+	if mobsLayer.get_node_or_null(mob.name) != null:
+		mobsLayer.call_deferred("remove_child" ,mob)
+		mob.call_deferred("queue_free")
+		print("----------> Mob \"" + mob.name + "\" removed")

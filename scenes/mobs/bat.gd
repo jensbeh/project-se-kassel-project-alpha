@@ -363,13 +363,11 @@ func set_mob_activity(is_active):
 
 
 func take_damage(damage : int):
-	print("-----------> Takes " + str(damage) + " damage")
-	
+	# Add damage
 	health -= damage
-	print("-----> remaining health: " + str(health))
+	print("-----------> Takes " + str(damage) + " damage")
+	print("-----------> remaining health: " + str(health))
 	
+	# Mob is killed
 	if health <= 0:
-		print(self.owner)
-	
-	
-
+		Utils.get_scene_manager().get_current_scene().despawn_mob(self)
