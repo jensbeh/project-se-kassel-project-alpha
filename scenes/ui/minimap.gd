@@ -6,7 +6,7 @@ var atlas
 var zoom_factor = 0.1
 var zoom
 
-var worldsize = Vector2(2816,1792) #your world size
+var worldsize = Vector2(2816,1792) # World size
 var player = Utils.get_current_player()
 
 
@@ -19,20 +19,21 @@ func _ready():
 
 
 # Move with player and showing position
-func moveMapWithPlayer():
+func move_map_with_player():
 	if atlas.get_atlas() != null and player != null:
 		#half resolution , used to keep player centered in minimap
 		var half_res = zoom / 2 
-		half_res.x = -half_res.x
+		# position x-achse wrong camp
+		# position grassland wrong
 		var pos = player.position - half_res
 		
 		#clamp
 		pos.x = clamp(pos.x,0, worldsize.x)
 		pos.y = clamp(pos.y,0, worldsize.y)
-		material.set_shader_param("pos",pos / worldsize)
+		atlas.set_region(Rect2(pos.x,pos.y,zoom.x,zoom.y))
 
 func _process(_delta):
-	moveMapWithPlayer()
+	move_map_with_player()
 
 
 # Switch texture when change scene
@@ -72,4 +73,3 @@ func _on_TextureRect_gui_input(event):
 		elif zoom_factor > 1:
 			zoom_factor = 1
 		zoom = zoom_factor * worldsize
-		atlas.set_region(Rect2(0,0, zoom.x, zoom.y))
