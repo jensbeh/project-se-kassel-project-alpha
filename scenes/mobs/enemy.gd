@@ -88,9 +88,11 @@ func init(init_spawnArea, new_navigation_tile_map):
 func _physics_process(delta):
 	# Handle behaviour
 	match behaviour_state:
+		
 		IDLING:
 			# Mob is doing nothing, just standing and searching for player
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
+		
 		
 		WANDERING:
 			if not mob_need_path:
@@ -98,6 +100,7 @@ func _physics_process(delta):
 				# Follow wandering path
 				if path.size() > 0:
 					move_to_position(delta)
+		
 		
 		HUNTING:
 			# Check if player is nearby
@@ -107,12 +110,14 @@ func _physics_process(delta):
 				if path.size() > 0:
 					move_to_player(delta)
 		
+		
 		SEARCHING:
 			if not mob_need_path:
 				# Mob is wandering around and is searching for player
 				# Follow searching path
 				if path.size() > 0:
 					move_to_position(delta)
+		
 		
 #		ATTACKING:
 #			# check if mob can attack
@@ -123,6 +128,7 @@ func _physics_process(delta):
 func _process(delta):
 		# Handle behaviour
 	match behaviour_state:
+		
 		IDLING:
 			search_player()
 			
@@ -131,6 +137,7 @@ func _process(delta):
 			if ideling_time > max_ideling_time:
 				ideling_time = 0.0
 				update_behaviour(WANDERING)
+		
 		
 		WANDERING:
 			if not mob_need_path:
@@ -143,6 +150,7 @@ func _process(delta):
 			# Check if player is nearby (needs to be at the end of WANDERING)
 			search_player()
 		
+		
 		HUNTING:
 			# Update path generation timer
 			update_path_time += delta
@@ -154,6 +162,7 @@ func _process(delta):
 			if player == null:
 				# Lose player
 				update_behaviour(SEARCHING)
+		
 		
 		SEARCHING:
 			if not mob_need_path:
@@ -241,9 +250,11 @@ func update_behaviour(new_behaviour):
 	
 	# Handle new bahaviour
 	match new_behaviour:
+		
 		SLEEPING:
 			behaviour_state = SLEEPING
 			mob_need_path = false
+		
 		
 		IDLING:
 			# Set new max_ideling_time for IDLING
@@ -254,6 +265,7 @@ func update_behaviour(new_behaviour):
 			behaviour_state = IDLING
 			mob_need_path = false
 			change_animations(IDLING)
+		
 		
 		WANDERING:
 			speed = WANDERING_SPEED
@@ -270,6 +282,7 @@ func update_behaviour(new_behaviour):
 			mob_need_path = true
 			change_animations(WANDERING)
 		
+		
 		HUNTING:
 			speed = HUNTING_SPEED
 			
@@ -283,6 +296,7 @@ func update_behaviour(new_behaviour):
 			behaviour_state = HUNTING
 			mob_need_path = true
 			change_animations(HUNTING)
+		
 		
 		SEARCHING:
 			# Set variables
@@ -305,12 +319,12 @@ func update_behaviour(new_behaviour):
 		
 		
 		HURT:
-			print("HELLO")
 			change_animations(HURT)
 		
 		
 		DIE:
 			change_animations(DIE)
+		
 		
 #		ATTACKING:
 #			if behaviour_state != ATTACKING:
@@ -335,7 +349,7 @@ func update_animations():
 
 
 # Method to change the animations dependent on behaviour state -> needs to code in child
-func change_animations(animation_behaviour_state):
+func change_animations(_animation_behaviour_state):
 	pass
 
 

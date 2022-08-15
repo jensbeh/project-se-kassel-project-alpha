@@ -621,34 +621,22 @@ func set_exp(new_exp):
 	data.exp = player_exp
 
 
-
-
-
-
-
 func _on_DamageAreaBottom_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
 		
 		if entity.has_method("take_damage"):
 			var damage = get_attack_damage()
 			entity.take_damage(damage)
 
 
-
-
-
-
-
-
-
 func _on_DamageAreaLeft_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
 		
 		if entity.has_method("take_damage"):
 			var damage = get_attack_damage()
@@ -659,7 +647,7 @@ func _on_DamageAreaTop_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
 		
 		if entity.has_method("take_damage"):
 			var damage = get_attack_damage()
@@ -670,7 +658,7 @@ func _on_DamageAreaRight_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
 		
 		if entity.has_method("take_damage"):
 			var damage = get_attack_damage()
