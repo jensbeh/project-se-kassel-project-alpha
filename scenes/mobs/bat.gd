@@ -12,7 +12,9 @@ enum {
 	SEARCHING,
 	WANDERING,
 	HUNTING,
-#	ATTACKING
+	HURT,
+	DIE,
+#	ATTACKING,
 }
 var velocity = Vector2(0, 0)
 var behaviour_state = IDLING
@@ -68,6 +70,10 @@ func _ready():
 	
 	# Setup initial mob view direction
 	velocity = Vector2(rng.randi_range(-1,1), rng.randi_range(-1,1))
+	
+	# Animation
+	animationTree.active = true
+	update_animations()
 	
 	# Setup searching variables
 	max_searching_radius = playerDetectionZoneShape.shape.radius
@@ -188,8 +194,7 @@ func move_to_player(delta):
 		velocity = move_and_slide(velocity)
 		
 		# Update anmination
-		animationTree.set("parameters/IDLE/blend_position", velocity)
-		animationTree.set("parameters/WALK/blend_position", velocity)
+		update_animations()
 		
 		# Update line position
 #		line2D.global_position = Vector2(0,0)
@@ -213,8 +218,7 @@ func move_to_position(delta):
 		velocity = move_and_slide(velocity)
 		
 		# Update anmination
-		animationTree.set("parameters/IDLE/blend_position", velocity)
-		animationTree.set("parameters/WALK/blend_position", velocity)
+		update_animations()
 		
 		# Update line position
 #		line2D.global_position = Vector2(0,0)
@@ -303,6 +307,14 @@ func update_behaviour(new_behaviour):
 			mob_need_path = false
 			animationState.travel("WALK")
 		
+		
+		HURT:
+			animationState.travel("HURT")
+		
+		
+		DIE:
+			animationState.travel("DIE")
+		
 #		ATTACKING:
 #			if behaviour_state != ATTACKING:
 #				# Reset path in case player is seen but e.g. state is wandering
@@ -313,6 +325,14 @@ func update_behaviour(new_behaviour):
 ##			print("ATTACKING")
 #			behaviour_state = ATTACKING
 #			mob_need_path = false
+
+
+# Method to update the animationtree with velocity for direction
+func update_animations():
+	animationTree.set("parameters/IDLE/blend_position", velocity)
+	animationTree.set("parameters/WALK/blend_position", velocity)
+	animationTree.set("parameters/HURT/blend_position", velocity)
+	animationTree.set("parameters/DIE/blend_position", velocity)
 
 
 # Method returns next target position to pathfinding_service
@@ -370,4 +390,14 @@ func take_damage(damage : int):
 	
 	# Mob is killed
 	if health <= 0:
-		Utils.get_scene_manager().get_current_scene().despawn_mob(self)
+		update_behaviour(DIE)
+	else:
+		update_behaviour(HURT)
+
+
+func mob_hurt():
+	update_behaviour(previous_behaviour_state)
+
+
+func mob_killed():
+	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
