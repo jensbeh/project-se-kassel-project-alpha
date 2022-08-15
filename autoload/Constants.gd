@@ -49,6 +49,10 @@ const DUNGEON_COLOR = Color("000000")
 const NPC_NORMAL_SPEED = 30
 const NPC_STAIRS_SPEED = NPC_NORMAL_SPEED*0.6
 
+# Minimap
+const MINIMAP_GRASSLAND = "res://assets/ui/map_grassland.png"
+const MINIMAP_CAMP = "res://assets/ui/map_camp.png"
+
 # Pathes
 const MENU_FOLDER = "res://scenes/menu/"
 const CAMP_FOLDER = "res://scenes/camp/"
