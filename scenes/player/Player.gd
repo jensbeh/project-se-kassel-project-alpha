@@ -86,7 +86,6 @@ func _ready():
 	maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
 	glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
 	hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
-#	weaponSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
 	
 	shadow.visible = false
 	
@@ -103,9 +102,6 @@ func _ready():
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
-	
-	# Weapon animation speed
-	animation_tree.set("parameters/Attack/TimeScale/scale", 1.0)
 
 
 func _physics_process(_delta):
@@ -535,6 +531,8 @@ func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback
 	
 	attack_speed = new_attack_speed
 	data.attack_speed = new_attack_speed
+	# Update attack animation speed
+	animation_tree.set("parameters/Attack/TimeScale/scale", new_attack_speed)
 	
 	knockback = new_knockback
 	data.knockback = new_knockback
