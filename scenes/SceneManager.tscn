@@ -23,7 +23,7 @@ shader_param/light_strength_modifier = 1.0
 
 [sub_resource type="AtlasTexture" id=26]
 atlas = ExtResource( 11 )
-region = Rect2( 0, 0, 600, 400 )
+region = Rect2( 5000, 1000, 600, 400 )
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 3 )
@@ -326,7 +326,7 @@ visible = false
 visible = false
 margin_left = 24.0
 margin_top = 848.0
-margin_right = 234.0
+margin_right = 334.0
 margin_bottom = 1058.0
 rect_min_size = Vector2( 210, 210 )
 rect_clip_content = true
@@ -342,26 +342,36 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -105.0
+margin_left = -155.0
 margin_top = -105.0
-margin_right = 105.0
+margin_right = 155.0
 margin_bottom = 105.0
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
 
+[node name="ColorRect" type="ColorRect" parent="UI/Minimap/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 305.0
+margin_bottom = 205.0
+color = Color( 0, 0, 0, 1 )
+
 [node name="TextureRect" type="TextureRect" parent="UI/Minimap/MarginContainer"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 205.0
+margin_right = 305.0
 margin_bottom = 205.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_min_size = Vector2( 200, 200 )
+rect_clip_content = true
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = SubResource( 26 )
 expand = true
-stretch_mode = 2
+stretch_mode = 7
 script = ExtResource( 10 )
 
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
@@ -377,7 +387,7 @@ self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 10 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
