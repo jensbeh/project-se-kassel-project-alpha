@@ -39,7 +39,7 @@ func set_time(new_hour, new_minute):
 
 
 # LifeBar its a % display
-func set_life(percent_player_health):
+func set_life(percent_player_health: int):
 	# Factor = 100 / 80 -> 20 = empty = 27-37, 62-72
 	# 3 beacuse 3 hearts -> 1/3 each
 	if hearts == 3:
@@ -51,7 +51,7 @@ func set_life(percent_player_health):
 		else:
 			# Minimum value from this heart + value - maxvalue of heart before / factor		
 			life_bar.value = 72 + (percent_player_health - 66) / 1.25
-	if hearts == 4:
+	elif hearts == 4:
 		if percent_player_health < 26:
 			life_bar.value = percent_player_health / 1.25
 		elif percent_player_health < 51:
@@ -60,7 +60,7 @@ func set_life(percent_player_health):
 			life_bar.value = 53 + (percent_player_health - 51) / 1.25
 		else:
 			life_bar.value = 79 + (percent_player_health - 76) / 1.25
-	if hearts == 5:
+	elif hearts == 5:
 		if percent_player_health < 22:
 			life_bar.value = percent_player_health / 1.3
 		elif percent_player_health < 41:

@@ -112,6 +112,6 @@ margin_right = -62.0
 margin_bottom = -250.0
 rect_scale = Vector2( 0.25, 0.25 )
 step = 0.01
-value = 100.0
+rounded = true
 texture_under = ExtResource( 6 )
 texture_progress = ExtResource( 5 )

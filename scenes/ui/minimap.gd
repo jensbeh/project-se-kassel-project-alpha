@@ -28,9 +28,6 @@ func move_map_with_player():
 		# calculate position with player pos, map offset and center this
 		var pos = player.get_global_position() - min_pos - half_res
 		
-		# Clamp to keep in map
-		pos.x = clamp(pos.x,0, worldsize.x)
-		pos.y = clamp(pos.y,0, worldsize.y)
 		atlas.set_region(Rect2(pos.x,pos.y,zoom.x,zoom.y))
 
 func _process(_delta):

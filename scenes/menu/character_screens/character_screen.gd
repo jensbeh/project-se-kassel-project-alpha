@@ -436,7 +436,8 @@ func start_game():
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_exp(data.exp)
-	Utils.get_current_player().set_gold(data_list[selected_character].gold)
+	Utils.get_current_player().set_gold(data.gold)
+	Utils.get_current_player().set_current_health(data.currentHP)
 	
 	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
 	

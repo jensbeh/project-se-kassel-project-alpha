@@ -10620,13 +10620,13 @@ anims/RESET = SubResource( 77 )
 [node name="Player" parent="map_camp/playerlayer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 1176, 600 )
 
-[node name="CollisionShape2D" parent="map_camp/playerlayer/Player" index="14"]
+[node name="CollisionShape2D" parent="map_camp/playerlayer/Player" index="16"]
 visible = true
 
-[node name="AnimationTree" parent="map_camp/playerlayer/Player" index="16"]
+[node name="AnimationTree" parent="map_camp/playerlayer/Player" index="18"]
 parameters/playback = SubResource( 1 )
 
-[node name="Camera2D" parent="map_camp/playerlayer/Player" index="17"]
+[node name="Camera2D" parent="map_camp/playerlayer/Player" index="19"]
 zoom = Vector2( 0.2, 0.2 )
 limit_top = 186
 
