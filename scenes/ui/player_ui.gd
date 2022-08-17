@@ -78,7 +78,7 @@ func set_life(percent_player_health: int):
 
 func change_heart_number(number_heart):
 	hearts = number_heart
-	life_bar.texture_progress = load("res://assets/ui/lifebar_background_" + str(number_heart) + ".png")
-	life_bar.texture_under = load("res://assets/ui/lifebar_" + str(number_heart) + ".png")
+	life_bar.texture_under = load("res://assets/ui/lifebar_background_" + str(number_heart) + ".png")
+	life_bar.texture_progress = load("res://assets/ui/lifebar_" + str(number_heart) + ".png")
 	
 	
