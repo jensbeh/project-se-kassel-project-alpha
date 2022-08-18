@@ -20,7 +20,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 5 ]
+"values": [ 9 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -63,7 +63,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 11 ]
+"values": [ 19 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -106,7 +106,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 17 ]
+"values": [ 29 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -149,7 +149,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 23 ]
+"values": [ 39 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -192,7 +192,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 4 ]
+"values": [ 8 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -223,7 +223,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 10 ]
+"values": [ 18 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -254,7 +254,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 16 ]
+"values": [ 28 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -285,7 +285,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 22 ]
+"values": [ 38 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -662,7 +662,6 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 4 )
 hframes = 6
 vframes = 8
-frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
