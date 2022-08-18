@@ -1480,6 +1480,9 @@ script = ExtResource( 3 )
 
 [node name="map_grassland" parent="." instance=ExtResource( 1 )]
 
+[node name="NavigationTileMap" parent="map_grassland/mobs_navigation2d" index="0"]
+bake_navigation = true
+
 [node name="roan" parent="map_grassland/npclayer" index="0" instance=ExtResource( 4 )]
 position = Vector2( -40, 368 )
 
@@ -1553,10 +1556,10 @@ anims/RESET = SubResource( 13 )
 [node name="Player" parent="map_grassland/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 184, 570 )
 
-[node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="16"]
+[node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="18"]
 parameters/playback = SubResource( 15 )
 
-[node name="Camera2D" parent="map_grassland/entitylayer/playerlayer/Player" index="17"]
+[node name="Camera2D" parent="map_grassland/entitylayer/playerlayer/Player" index="19"]
 limit_left = -4335
 limit_bottom = 794
 
