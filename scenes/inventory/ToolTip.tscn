@@ -43,7 +43,7 @@ custom_constants/margin_bottom = 20
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 280.0
-margin_bottom = 194.0
+margin_bottom = 187.0
 mouse_filter = 2
 
 [node name="ItemName" type="Label" parent="NinePatchRect/Margin/VBox"]

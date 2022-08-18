@@ -107,20 +107,21 @@ margin_bottom = 80.0
 rect_min_size = Vector2( 0, 80 )
 
 [node name="Control" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
+visible = false
 margin_right = 58.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
 [node name="CharacterTitle" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_left = 62.0
-margin_right = 387.0
+margin_right = 446.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 325, 0 )
+size_flags_horizontal = 3
 alignment = 2
 
 [node name="CharacterName" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/CharacterTitle"]
 margin_top = 4.0
-margin_right = 325.0
+margin_right = 446.0
 margin_bottom = 47.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -131,7 +132,7 @@ valign = 1
 
 [node name="CharacterLevel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/CharacterTitle"]
 margin_top = 51.0
-margin_right = 325.0
+margin_right = 446.0
 margin_bottom = 80.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -141,10 +142,9 @@ align = 1
 valign = 1
 
 [node name="Exit" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_left = 391.0
+margin_left = 450.0
 margin_right = 450.0
 margin_bottom = 80.0
-size_flags_horizontal = 3
 
 [node name="Button" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Exit"]
 anchor_left = 1.0

@@ -85,12 +85,20 @@ func drop_data(_pos, data):
 		get_child(0).frame = data["origin_frame"]
 		verify_target_texture(data)
 		PlayerData.equipment_data["Stack"] = data["origin_stack"]
-		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]))
-		Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"])
-		get_parent().get_parent().get_parent().get_parent().find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]))
-		Utils.get_current_player().set_knockback(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"])
-		get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]))
-		Utils.get_current_player().set_attack_speed(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"])
+
+		var item_id = PlayerData.equipment_data["Item"]
+		var attack_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]
+		var attack_speed = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]
+		var knockback_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]
+
+		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(attack_value))
+		get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(attack_speed))
+		get_parent().get_parent().get_parent().get_parent().find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(knockback_value))
+		
+
+		Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
+	
+	
 	Utils.get_current_player().set_dragging(false)
 
 func verify_origin_texture(data):
