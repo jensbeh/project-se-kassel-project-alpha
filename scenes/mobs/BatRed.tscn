@@ -20,7 +20,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 8 ]
+"values": [ 5 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -63,7 +63,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 17 ]
+"values": [ 11 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -106,7 +106,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 26 ]
+"values": [ 17 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -149,7 +149,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 35 ]
+"values": [ 23 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -192,7 +192,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 7 ]
+"values": [ 4 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -223,7 +223,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 16 ]
+"values": [ 10 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -254,7 +254,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 25 ]
+"values": [ 16 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -285,7 +285,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 34 ]
+"values": [ 22 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
