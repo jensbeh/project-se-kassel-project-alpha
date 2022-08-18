@@ -56,8 +56,8 @@ func change_animations(animation_behaviour_state):
 		SEARCHING:
 			animationState.travel("WALK")
 		
-		HURT:
+		HURTING:
 			animationState.travel("HURT")
 		
-		DIE:
+		DYING:
 			animationState.travel("DIE")

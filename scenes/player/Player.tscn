@@ -24,6 +24,7 @@ extents = Vector2( 7, 6 )
 
 [sub_resource type="Animation" id=40]
 resource_name = "AttackDown"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -322,7 +323,7 @@ tracks/24/keys = {
 "times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [ null ],
+"args": [  ],
 "method": "on_attack_finished"
 } ]
 }
@@ -353,6 +354,7 @@ tracks/26/keys = {
 
 [sub_resource type="Animation" id=39]
 resource_name = "AttackLeft"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -682,6 +684,7 @@ tracks/26/keys = {
 
 [sub_resource type="Animation" id=41]
 resource_name = "AttackRight"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -1011,6 +1014,7 @@ tracks/26/keys = {
 
 [sub_resource type="Animation" id=42]
 resource_name = "AttackUp"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -2970,7 +2974,7 @@ blend_point_3/pos = Vector2( -1, 0 )
 [sub_resource type="AnimationNodeTimeScale" id=56]
 
 [sub_resource type="AnimationNodeBlendTree" id=57]
-graph_offset = Vector2( -349.023, 0 )
+graph_offset = Vector2( -234.798, -15.4479 )
 nodes/AttackCases/node = SubResource( 62 )
 nodes/AttackCases/position = Vector2( -80, 100 )
 nodes/TimeScale/node = SubResource( 56 )
@@ -3265,12 +3269,11 @@ polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556
 disabled = true
 
 [node name="Weapon" type="Sprite" parent="."]
-position = Vector2( 0.2, -8.2 )
+position = Vector2( -0.911102, -8.39999 )
 scale = Vector2( 0.031, 0.031 )
 texture = ExtResource( 18 )
 hframes = 4
 vframes = 4
-frame = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

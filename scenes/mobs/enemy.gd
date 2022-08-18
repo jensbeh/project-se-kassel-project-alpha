@@ -16,8 +16,8 @@ enum {
 	SEARCHING,
 	WANDERING,
 	HUNTING,
-	HURT,
-	DIE,
+	HURTING,
+	DYING,
 #	ATTACKING,
 }
 var velocity = Vector2(0, 0)
@@ -318,12 +318,18 @@ func update_behaviour(new_behaviour):
 			change_animations(SEARCHING)
 		
 		
-		HURT:
-			change_animations(HURT)
+		HURTING:
+			behaviour_state = HURTING
+			print("HURTING")
+			change_animations(HURTING)
 		
 		
-		DIE:
-			change_animations(DIE)
+		DYING:
+			if behaviour_state != DYING:
+				# Reset path in case player is seen but e.g. state is wandering
+				path.resize(0)
+			behaviour_state = DYING
+			change_animations(DYING)
 		
 		
 #		ATTACKING:
@@ -408,12 +414,14 @@ func take_damage(damage : int):
 	
 	# Mob is killed
 	if health <= 0:
-		update_behaviour(DIE)
+		update_behaviour(DYING)
 	else:
-		update_behaviour(HURT)
+		update_behaviour(HURTING)
 
 
 func mob_hurt():
+	print("END HURTING")
+	print(previous_behaviour_state)
 	update_behaviour(previous_behaviour_state)
 
 

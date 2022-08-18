@@ -45,6 +45,7 @@ ChunkLoaderService="*res://autoload/chunk_loader_service.gd"
 [debug]
 
 settings/fps/force_fps=60
+gdscript/warnings/treat_warnings_as_errors=true
 
 [display]
 

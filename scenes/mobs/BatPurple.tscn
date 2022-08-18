@@ -8,6 +8,7 @@
 
 [sub_resource type="Animation" id=69]
 resource_name = "Die_Down"
+length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -35,9 +36,22 @@ tracks/1/keys = {
 "method": "mob_killed"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
 
 [sub_resource type="Animation" id=73]
 resource_name = "Die_Left"
+length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -65,9 +79,22 @@ tracks/1/keys = {
 "method": "mob_killed"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
 
 [sub_resource type="Animation" id=74]
 resource_name = "Die_Right"
+length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -95,9 +122,22 @@ tracks/1/keys = {
 "method": "mob_killed"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
 
 [sub_resource type="Animation" id=75]
 resource_name = "Die_Up"
+length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -125,10 +165,22 @@ tracks/1/keys = {
 "method": "mob_killed"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
 
 [sub_resource type="Animation" id=68]
 resource_name = "Hurt_Down"
-length = 0.4
+length = 0.5
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -159,7 +211,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=70]
 resource_name = "Hurt_Left"
-length = 0.4
+length = 0.5
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -190,7 +242,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=71]
 resource_name = "Hurt_Right"
-length = 0.4
+length = 0.5
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -221,7 +273,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=72]
 resource_name = "Hurt_Up"
-length = 0.4
+length = 0.5
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -318,6 +370,18 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=10]
 length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=52]
 resource_name = "Walk_Down"
@@ -574,7 +638,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 4
+frame = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")

@@ -59,7 +59,7 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-#	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
+	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
 	
 	# Setup spawning areas
 	setup_spawning_areas()

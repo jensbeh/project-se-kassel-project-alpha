@@ -39,8 +39,8 @@ func change_animations(animation_behaviour_state):
 		SEARCHING:
 			mobSprite.speed_scale = 1
 		
-		HURT:
+		HURTING:
 			mobSprite.speed_scale = 1
 		
-		DIE:
+		DYING:
 			mobSprite.speed_scale = 1
