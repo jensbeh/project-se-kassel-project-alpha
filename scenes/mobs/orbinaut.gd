@@ -1,7 +1,8 @@
 extends "res://scenes/mobs/enemy.gd"
 
 # Nodes
-onready var mobSprite = $AnimatedSprite
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,7 +21,8 @@ func _ready():
 
 # Method to setup the animations
 func setup_animations():
-	mobSprite.speed_scale = 1
+	animationTree.active = true
+	animationState.travel("MOVE")
 
 
 # Method to change the animations dependent on behaviour state
@@ -28,19 +30,26 @@ func change_animations(animation_behaviour_state):
 	# Handle animation_behaviour_state
 	match animation_behaviour_state:
 		IDLING:
-			mobSprite.speed_scale = 1
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.travel("MOVE")
 		
 		WANDERING:
-			mobSprite.speed_scale = 1
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.travel("MOVE")
 		
 		HUNTING:
-			mobSprite.speed_scale = 2
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.travel("MOVE")
 		
 		SEARCHING:
-			mobSprite.speed_scale = 1
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.travel("MOVE")
 		
 		HURTING:
-			mobSprite.speed_scale = 1
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.travel("MOVE")
+			mob_hurt()
 		
 		DYING:
-			mobSprite.speed_scale = 1
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.travel("DIE")
