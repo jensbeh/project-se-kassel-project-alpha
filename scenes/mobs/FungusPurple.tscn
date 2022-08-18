@@ -20,7 +20,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 9 ]
+"values": [ 5 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -63,7 +63,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 19 ]
+"values": [ 11 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -106,7 +106,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 29 ]
+"values": [ 17 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -149,7 +149,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 39 ]
+"values": [ 23 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -192,7 +192,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 8 ]
+"values": [ 4 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -223,7 +223,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 18 ]
+"values": [ 10 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -254,7 +254,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 28 ]
+"values": [ 16 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -285,7 +285,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 38 ]
+"values": [ 22 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -650,7 +650,7 @@ radius = 96.0
 [sub_resource type="CircleShape2D" id=40]
 radius = 24.0
 
-[sub_resource type="CircleShape2D" id=156]
+[sub_resource type="CircleShape2D" id=131]
 radius = 8.0
 
 [node name="FungusPurple" type="KinematicBody2D" groups=["Enemy"]]
@@ -722,7 +722,7 @@ visible = false
 position = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
-shape = SubResource( 156 )
+shape = SubResource( 131 )
 
 [editable path="PlayerDetectionZone"]
 [editable path="PlayerAttackZone"]

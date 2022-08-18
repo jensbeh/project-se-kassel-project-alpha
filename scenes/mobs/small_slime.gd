@@ -57,7 +57,7 @@ func change_animations(animation_behaviour_state):
 			animationState.travel("WALK")
 		
 		HURTING:
-			animationState.travel("HURT")
+			mob_hurt()
 		
 		DYING:
 			animationState.travel("DIE")
