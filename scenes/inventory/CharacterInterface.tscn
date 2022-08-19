@@ -267,13 +267,13 @@ patch_margin_bottom = 14
 position = Vector2( 115, 155 )
 scale = Vector2( 10, 10 )
 
-[node name="CollisionShape2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="14"]
+[node name="CollisionShape2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="16"]
 disabled = true
 
-[node name="AnimationTree" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="16"]
+[node name="AnimationTree" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="18"]
 parameters/playback = SubResource( 2 )
 
-[node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="17"]
+[node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="19"]
 current = false
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]
@@ -380,7 +380,7 @@ margin_right = 435.0
 margin_bottom = 127.0
 custom_constants/separation = 50
 
-[node name="Light" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="LightRadius" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 192.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 110, 0 )

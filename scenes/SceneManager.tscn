@@ -315,6 +315,7 @@ __meta__ = {
 script = ExtResource( 8 )
 
 [node name="ControlNotes" parent="UI" instance=ExtResource( 1 )]
+visible = false
 
 [node name="PlayerUI" parent="UI" instance=ExtResource( 4 )]
 visible = false

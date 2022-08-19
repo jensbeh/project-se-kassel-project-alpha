@@ -432,7 +432,7 @@ func start_game():
 	PlayerData._ready()
 	Utils.get_current_player().set_data(data)
 	Utils.get_current_player().set_max_health(data.maxLP)
-	var item_id = PlayerData.equipment_data["Item"]
+	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_exp(data.exp)

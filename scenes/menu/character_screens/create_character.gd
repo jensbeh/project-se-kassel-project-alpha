@@ -582,7 +582,7 @@ func create_player_inventory():
 
 	# sets lp & weapon
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
-	var item_id = PlayerData.equipment_data["Item"]
+	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
 
 

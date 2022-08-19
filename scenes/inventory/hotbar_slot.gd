@@ -1,5 +1,5 @@
 extends TextureRect
-
+#todo
 var tool_tip = load(Constants.TOOLTIP)
 
 # Get information about drag item

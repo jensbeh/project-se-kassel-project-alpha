@@ -10,11 +10,11 @@ var lipstick
 var beard
 var eyes
 var hair
-
+#todo all 3 slots
 
 func _ready():
 	# load weapon
-	if PlayerData.equipment_data["Item"] != null:
+	if PlayerData.equipment_data["Weapon"]["Item"] != null:
 		var weapon = find_node("WeaponBox")
 		var texture = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Texture"]
 		var frame = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Frame"]
@@ -27,8 +27,8 @@ func _ready():
 			weapon.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
 			weapon.get_node("Icon/Sprite").set_hframes(13)
 			weapon.get_node("Icon/Sprite").set_vframes(15)
-		weapon.get_node("Icon/Sprite").set_texture(icon_texture)
-		weapon.get_node("Icon/Sprite").frame = frame
+		weapon.get_node("WeaponBox/Icon/Sprite").set_texture(icon_texture)
+		weapon.get_node("WeaponBox/Icon/Sprite").frame = frame
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
@@ -36,7 +36,7 @@ func _ready():
 	find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(Utils.get_current_player().get_attack_speed()))
 	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
 	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))
-	find_node("Light").set_text(tr("LIGHT") + ": " + str(Utils.get_current_player().get_light()))
+	find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(Utils.get_current_player().get_light_radius()))
 	
 	data = Utils.get_current_player().get_data()
 	find_node("CharacterName").set_text(data.name)
@@ -141,6 +141,8 @@ func _on_Button_gui_input(event):
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
-			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
+			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
+			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
+			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			PlayerData.save_inventory()
 			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())

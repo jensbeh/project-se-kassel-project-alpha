@@ -5,12 +5,13 @@ var tool_tip = load(Constants.TOOLTIP)
 # Get information about drag item
 func get_drag_data(_pos):
 	Utils.get_current_player().set_dragging(true)
-	if PlayerData.equipment_data["Item"] != null:
+	var slot = get_parent().get_parent().get_name()
+	if PlayerData.equipment_data[slot]["Item"] != null:
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
-		data["origin_item_id"] = PlayerData.equipment_data["Item"]
-		data["origin_slot"] = GameData.item_data[str(PlayerData.equipment_data["Item"])]
+		data["origin_item_id"] = PlayerData.equipment_data[slot]["Item"]
+		data["origin_slot"] = GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]
 		data["origin_texture"] = get_child(0).texture
 		data["origin_frame"] = get_child(0).frame
 		data["origin_stackable"] = false
@@ -18,7 +19,7 @@ func get_drag_data(_pos):
 		
 		# Texture wich will drag
 		var drag_texture = Sprite.new()
-		if GameData.item_data[str(PlayerData.equipment_data["Item"])]["Texture"] == "item_icons_1":
+		if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Texture"] == "item_icons_1":
 			drag_texture.set_scale(Vector2(2.5,2.5))
 			drag_texture.set_hframes(16)
 			drag_texture.set_vframes(27)
@@ -41,25 +42,27 @@ func get_drag_data(_pos):
 
 # Check if we can drop an item to this slot
 func can_drop_data(_pos, data):
+	var target_slot = get_parent().get_parent().get_name()
 	# Move item
 	if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Weapon":
-		if PlayerData.equipment_data["Item"] == null:
+		if PlayerData.equipment_data[target_slot]["Item"] == null:
 			data["target_item_id"] = null
 			data["target_texture"] = null
 			data["target_stack"] = null
 			return true
 		# Swap item
 		else:
-			data["target_item_id"] = PlayerData.equipment_data["Item"]
+			data["target_item_id"] = PlayerData.equipment_data[target_slot]["Item"]
 			data["target_texture"] = get_child(0).texture
 			data["target_frame"] = get_child(0).frame
-			data["target_stack"] = PlayerData.equipment_data["Stack"]
+			data["target_stack"] = PlayerData.equipment_data[target_slot]["Stack"]
 			return true
 	else:
 		return false
 
 func drop_data(_pos, data):
-	var origin_slot = data["origin_node"].get_parent().get_parent().get_name()
+	var target_slot = get_parent().get_parent().get_name()
+	var origin_slot = data["origin_node"].get_parent().get_name()
 	if data["origin_node"] == self:
 		pass
 	else:
@@ -80,16 +83,16 @@ func drop_data(_pos, data):
 				data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 			
 		# Update the texture, label and data of the target
-		PlayerData.equipment_data["Item"] = data["origin_item_id"]
+		PlayerData.equipment_data[target_slot]["Item"] = data["origin_item_id"]
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
 		verify_target_texture(data)
-		PlayerData.equipment_data["Stack"] = data["origin_stack"]
+		PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
 
-		var item_id = PlayerData.equipment_data["Item"]
-		var attack_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]
-		var attack_speed = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]
-		var knockback_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]
+		var item_id = PlayerData.equipment_data[target_slot]["Item"]
+		var attack_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Attack"]
+		var attack_speed = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Attack-Speed"]
+		var knockback_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Knockback"]
 
 		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(attack_value))
 		get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(attack_speed))

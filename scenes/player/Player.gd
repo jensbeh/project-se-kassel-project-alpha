@@ -191,7 +191,7 @@ func _input(event):
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
-		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
+		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
 		Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").queue_free()
