@@ -415,6 +415,6 @@ func despawn_mob(mob):
 		mobs_to_remove.remove(mobs_to_remove.find(mob))
 	
 	if mobsLayer.get_node_or_null(mob.name) != null:
-		mobsLayer.call_deferred("remove_child" ,mob)
-		mob.call_deferred("queue_free")
+		mobsLayer.remove_child(mob)
+		mob.queue_free()
 		print("----------> Mob \"" + mob.name + "\" removed")

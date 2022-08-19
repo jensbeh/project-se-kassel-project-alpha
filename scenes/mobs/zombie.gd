@@ -12,6 +12,7 @@ func _ready():
 	# Mob specific
 	health = 100
 	attack_damage = 15
+	mob_weight = 50
 	spawn_time = Constants.SpawnTime.ALWAYS
 	# Constants
 	HUNTING_SPEED = 40

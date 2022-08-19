@@ -8,6 +8,7 @@ var WANDERING_SPEED = 50
 var health = 100
 var attack_damage = 15
 var spawn_time = Constants.SpawnTime.ALWAYS
+var mob_weight
 
 # Variables
 enum {
@@ -123,6 +124,17 @@ func _physics_process(delta):
 #			# check if mob can attack
 #			if !playerAttackZone.mob_can_attack:
 #				update_behaviour(HUNTING)
+		
+		
+		HURTING:
+			# handle knockback
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
+		
+		DYING:
+			# handle knockback
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
 
 
 func _process(delta):
@@ -320,7 +332,7 @@ func update_behaviour(new_behaviour):
 		
 		HURTING:
 			behaviour_state = HURTING
-			print("HURTING")
+#			print("HURTING")
 			change_animations(HURTING)
 		
 		
@@ -406,22 +418,26 @@ func set_mob_activity(is_active):
 #	update_behaviour(HUNTING)
 
 
-func take_damage(damage : int):
+func simulate_damage(damage : int, knockback : int):
 	# Add damage
 	health -= damage
-	print("-----------> Takes " + str(damage) + " damage")
-	print("-----------> remaining health: " + str(health))
 	
 	# Mob is killed
 	if health <= 0:
 		update_behaviour(DYING)
 	else:
 		update_behaviour(HURTING)
+		
+	# Add knockback
+	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
+	var min_knockback_velocity_factor = 50
+	var max_knockback_velocity_factor = 200
+	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
+	var knockback_velocity_factor = m * knockback + min_knockback_velocity_factor - mob_weight
+	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
 
 
 func mob_hurt():
-	print("END HURTING")
-	print(previous_behaviour_state)
 	update_behaviour(previous_behaviour_state)
 
 

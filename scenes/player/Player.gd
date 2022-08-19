@@ -540,9 +540,24 @@ func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback
 
 # Method to return the attack_damage
 func get_attack_damage():
-	# Maybe return random attack value around variables value
-	# Maybe random crit damage
-	return attack_damage
+	randomize()
+	var random_float = randf()
+	
+	# Calculate damage
+	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
+		# Return CRITICAL_ATTACK damage
+		print("CRITICAL_ATTACK")
+		var damage = attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
+		return damage
+	
+	else:
+		# Return NORMAL_ATTACK damage
+		var rng = RandomNumberGenerator.new()
+		rng.randomize()
+		var normal_attack_factor = rng.randf_range(Constants.NORMAL_ATTACK_MIN_DAMAGE_FACTOR, Constants.NORMAL_ATTACK_MAX_DAMAGE_FACTOR)
+		print("NORMAL_ATTACK")
+		var damage = int(round(attack_damage * normal_attack_factor))
+		return damage
 
 
 func get_attack_speed():
@@ -625,9 +640,9 @@ func _on_DamageAreaBottom_area_entered(area):
 		
 		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
 		
-		if entity.has_method("take_damage"):
+		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
-			entity.take_damage(damage)
+			entity.simulate_damage(damage, knockback)
 
 
 func _on_DamageAreaLeft_area_entered(area):
@@ -636,9 +651,9 @@ func _on_DamageAreaLeft_area_entered(area):
 		
 		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
 		
-		if entity.has_method("take_damage"):
+		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
-			entity.take_damage(damage)
+			entity.simulate_damage(damage, knockback)
 
 
 func _on_DamageAreaTop_area_entered(area):
@@ -647,9 +662,9 @@ func _on_DamageAreaTop_area_entered(area):
 		
 		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
 		
-		if entity.has_method("take_damage"):
+		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
-			entity.take_damage(damage)
+			entity.simulate_damage(damage, knockback)
 
 
 func _on_DamageAreaRight_area_entered(area):
@@ -658,6 +673,6 @@ func _on_DamageAreaRight_area_entered(area):
 		
 		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
 		
-		if entity.has_method("take_damage"):
+		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
-			entity.take_damage(damage)
+			entity.simulate_damage(damage, knockback)
