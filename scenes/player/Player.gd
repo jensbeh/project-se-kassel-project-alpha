@@ -143,9 +143,9 @@ func _physics_process(_delta):
 func _input(event):
 	Utils.get_scene_manager().get_UI().get_node("ControlNotes").update()
 	if event.is_action_pressed("e"):
-		print("Pressed e")
+#		print("Pressed e")
 		if player_can_interact:
-			print("interacted")
+#			print("interacted")
 			emit_signal("player_interact")
 		# Remove the trade inventory
 		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null and !dragging:
@@ -199,12 +199,11 @@ func _input(event):
 		is_attacking = true
 		set_movement(false)
 		animation_state.travel("Attack")
-		print("ATTACK")
+#		print("ATTACK")
 
 
 # Method is called at the end of any attack animation
 func on_attack_finished():
-	print("on_attack_finished")
 	set_movement(true)
 	is_attacking = false
 
@@ -546,7 +545,6 @@ func get_attack_damage():
 	# Calculate damage
 	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
 		# Return CRITICAL_ATTACK damage
-		print("CRITICAL_ATTACK")
 		var damage = attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
 		return damage
 	
@@ -555,7 +553,6 @@ func get_attack_damage():
 		var rng = RandomNumberGenerator.new()
 		rng.randomize()
 		var normal_attack_factor = rng.randf_range(Constants.NORMAL_ATTACK_MIN_DAMAGE_FACTOR, Constants.NORMAL_ATTACK_MAX_DAMAGE_FACTOR)
-		print("NORMAL_ATTACK")
 		var damage = int(round(attack_damage * normal_attack_factor))
 		return damage
 
@@ -638,7 +635,7 @@ func _on_DamageAreaBottom_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -649,7 +646,7 @@ func _on_DamageAreaLeft_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -660,7 +657,7 @@ func _on_DamageAreaTop_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -671,7 +668,7 @@ func _on_DamageAreaRight_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()

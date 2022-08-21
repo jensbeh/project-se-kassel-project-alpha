@@ -5,6 +5,7 @@ var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 
 # Mob specific
+var max_heath = 100
 var health = 100
 var attack_damage = 15
 var spawn_time = Constants.SpawnTime.ALWAYS
@@ -54,6 +55,8 @@ onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
 onready var playerAttackZone = $PlayerAttackZone
 onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
 onready var line2D = $Line2D
+onready var healthBar = $NinePatchRect/ProgressBar
+onready var healthBarBackground = $NinePatchRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -69,15 +72,17 @@ func _ready():
 	# Setup initial mob view direction
 	velocity = Vector2(rng.randi_range(-1,1), rng.randi_range(-1,1))
 	
-	# Animation
-#	setup_animations()
-	
 	# Setup searching variables
 	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius / 3
 	
 #	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
 #	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
+	
+	# Healthbar
+	healthBar.value = 100
+	healthBar.visible = false
+	healthBarBackground.visible = false
 
 
 # Method to init variables, typically called after instancing
@@ -253,112 +258,109 @@ func search_player():
 
 # Method to update the behaviour of the mob
 func update_behaviour(new_behaviour):
-	# Set previous behaviour state
-	previous_behaviour_state = behaviour_state
+	if behaviour_state != new_behaviour:
+		# Set previous behaviour state
+		previous_behaviour_state = behaviour_state
 	
-	# Reset timer
-	if ideling_time != 0.0:
-		ideling_time = 0.0
-	
-	# Handle new bahaviour
-	match new_behaviour:
+		# Reset timer
+		if ideling_time != 0.0:
+			ideling_time = 0.0
 		
-		SLEEPING:
-			behaviour_state = SLEEPING
-			mob_need_path = false
-		
-		
-		IDLING:
-			# Set new max_ideling_time for IDLING
-			rng.randomize()
-			max_ideling_time = rng.randi_range(3, 10)
+		# Handle new bahaviour
+		match new_behaviour:
 			
-#			print("IDLING")
-			behaviour_state = IDLING
-			mob_need_path = false
-			change_animations(IDLING)
-		
-		
-		WANDERING:
-			speed = WANDERING_SPEED
+			SLEEPING:
+				behaviour_state = SLEEPING
+				mob_need_path = false
 			
-			if behaviour_state != WANDERING:
-				# Reset path in case player is seen but e.g. state is wandering
-				path.resize(0)
+			
+			IDLING:
+				# Set new max_ideling_time for IDLING
+				rng.randomize()
+				max_ideling_time = rng.randi_range(3, 10)
 				
-				# Update line path
-#				line2D.points = []
+	#			print("IDLING")
+				behaviour_state = IDLING
+				mob_need_path = false
+				change_animations(IDLING)
 			
-#			print("WANDERING")
-			behaviour_state = WANDERING
-			mob_need_path = true
-			change_animations(WANDERING)
-		
-		
-		HUNTING:
-			speed = HUNTING_SPEED
 			
-			if behaviour_state != HUNTING:
-				# Reset path in case player is seen but e.g. state is wandering
-				path.resize(0)
+			WANDERING:
+				speed = WANDERING_SPEED
 				
-				# Update line path
-#				line2D.points = []
-#			print("HUNTING")
-			behaviour_state = HUNTING
-			mob_need_path = true
-			change_animations(HUNTING)
-		
-		
-		SEARCHING:
-			# Set variables
-			speed = WANDERING_SPEED
-			
-			# start_searching_position -> last eye contact to player
-			if path.size() > 0:
-				start_searching_position = path[-1] 
-			else:
-				start_searching_position = global_position
+				if behaviour_state != WANDERING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					# Update line path
+	#				line2D.points = []
 				
-			# Set new max_searching_time for SEARCHING
-			rng.randomize()
-			max_searching_time = rng.randi_range(6, 12)
+	#			print("WANDERING")
+				behaviour_state = WANDERING
+				mob_need_path = true
+				change_animations(WANDERING)
 			
-#			print("SEARCHING")
-			behaviour_state = SEARCHING
-			mob_need_path = false
-			change_animations(SEARCHING)
-		
-		
-		HURTING:
-			behaviour_state = HURTING
-#			print("HURTING")
-			change_animations(HURTING)
-		
-		
-		DYING:
-			if behaviour_state != DYING:
-				# Reset path in case player is seen but e.g. state is wandering
-				path.resize(0)
-			behaviour_state = DYING
-			change_animations(DYING)
-		
-		
-#		ATTACKING:
-#			if behaviour_state != ATTACKING:
-#				# Reset path in case player is seen but e.g. state is wandering
-#				path.resize(0)
-#
-#				# Update line path
-#				line2D.points = []
-##			print("ATTACKING")
-#			behaviour_state = ATTACKING
-#			mob_need_path = false
-
-
-# Method to setup the animations -> needs to code in child
-func setup_animations():
-	pass
+			
+			HUNTING:
+				speed = HUNTING_SPEED
+				
+				if behaviour_state != HUNTING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					# Update line path
+	#				line2D.points = []
+	#			print("HUNTING")
+				behaviour_state = HUNTING
+				mob_need_path = true
+				change_animations(HUNTING)
+			
+			
+			SEARCHING:
+				# Set variables
+				speed = WANDERING_SPEED
+				
+				# start_searching_position -> last eye contact to player
+				if path.size() > 0:
+					start_searching_position = path[-1] 
+				else:
+					start_searching_position = global_position
+					
+				# Set new max_searching_time for SEARCHING
+				rng.randomize()
+				max_searching_time = rng.randi_range(6, 12)
+				
+	#			print("SEARCHING")
+				behaviour_state = SEARCHING
+				mob_need_path = false
+				change_animations(SEARCHING)
+			
+			
+			HURTING:
+	#			print("HURTING")
+				if behaviour_state != HURTING:
+					behaviour_state = HURTING
+					# Show hurt animation if not already played
+					change_animations(HURTING)
+			
+			
+			DYING:
+				if behaviour_state != DYING:
+					behaviour_state = DYING
+					# Show hurt animation if not already played
+					change_animations(DYING)
+			
+			
+	#		ATTACKING:
+	#			if behaviour_state != ATTACKING:
+	#				# Reset path in case player is seen but e.g. state is wandering
+	#				path.resize(0)
+	#
+	#				# Update line path
+	#				line2D.points = []
+	##			print("ATTACKING")
+	#			behaviour_state = ATTACKING
+	#			mob_need_path = false
 
 
 # Method to update the animation with velocity for direction -> needs to code in child
@@ -421,6 +423,13 @@ func set_mob_activity(is_active):
 func simulate_damage(damage : int, knockback : int):
 	# Add damage
 	health -= damage
+	
+	# Healthbar
+	var healthbar_value_in_percent = (100 / max_heath) * health
+	healthBar.value = healthbar_value_in_percent
+	if not healthBar.visible:
+		healthBar.visible = true
+		healthBarBackground.visible = true
 	
 	# Mob is killed
 	if health <= 0:

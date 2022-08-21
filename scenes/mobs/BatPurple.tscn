@@ -1,14 +1,16 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=75 format=2]
 
 [ext_resource path="res://assets/mobs/BatPurple.png" type="Texture" id=1]
 [ext_resource path="res://scenes/mobs/bat.gd" type="Script" id=2]
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=7]
+[ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=8]
 
 [sub_resource type="Animation" id=69]
 resource_name = "Die_Down"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -48,10 +50,21 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=73]
 resource_name = "Die_Left"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -91,10 +104,21 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=74]
 resource_name = "Die_Right"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -134,10 +158,21 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=75]
 resource_name = "Die_Up"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -177,10 +212,22 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=68]
 resource_name = "Hurt_Down"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -211,7 +258,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=70]
 resource_name = "Hurt_Left"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -242,7 +289,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=71]
 resource_name = "Hurt_Right"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -273,7 +320,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=72]
 resource_name = "Hurt_Up"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -381,6 +428,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../NinePatchRect:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.022, 0.043 ) ]
 }
 
 [sub_resource type="Animation" id=52]
@@ -612,7 +671,7 @@ states/WALK/node = SubResource( 56 )
 states/WALK/position = Vector2( 559, 107 )
 transitions = [ "IDLE", "WALK", SubResource( 57 ), "WALK", "IDLE", SubResource( 58 ), "IDLE", "HURT", SubResource( 78 ), "HURT", "IDLE", SubResource( 79 ), "HURT", "WALK", SubResource( 80 ), "WALK", "HURT", SubResource( 81 ), "WALK", "DIE", SubResource( 82 ), "DIE", "WALK", SubResource( 83 ), "DIE", "HURT", SubResource( 84 ), "DIE", "IDLE", SubResource( 85 ), "IDLE", "DIE", SubResource( 86 ), "HURT", "DIE", SubResource( 87 ) ]
 start_node = "IDLE"
-graph_offset = Vector2( 0, 189.524 )
+graph_offset = Vector2( 0, 23.5323 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=24]
 
@@ -629,6 +688,17 @@ radius = 24.0
 [sub_resource type="CircleShape2D" id=67]
 radius = 8.0
 
+[sub_resource type="DynamicFont" id=112]
+size = 24
+font_data = ExtResource( 6 )
+
+[sub_resource type="StyleBoxTexture" id=113]
+texture = ExtResource( 8 )
+region_rect = Rect2( 13.5209, 10.9816, 376.731, 18.6612 )
+margin_right = 3.58902
+
+[sub_resource type="StyleBoxTexture" id=114]
+
 [node name="BatPurple" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 8
 script = ExtResource( 2 )
@@ -638,10 +708,11 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 4
+frame = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
+reset_on_save = false
 anims/Die_Down = SubResource( 69 )
 anims/Die_Left = SubResource( 73 )
 anims/Die_Right = SubResource( 74 )
@@ -700,6 +771,32 @@ position = Vector2( 0, -3 )
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
 shape = SubResource( 67 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_left = -424.0
+margin_top = -34.0
+margin_right = 424.0
+margin_bottom = 13.0
+rect_scale = Vector2( 0.022, 0.043 )
+rect_pivot_offset = Vector2( 424, 23 )
+texture = ExtResource( 7 )
+region_rect = Rect2( 3, 4.5077, 95, 95.4923 )
+patch_margin_left = 10
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="ProgressBar" type="ProgressBar" parent="NinePatchRect"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 843.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 112 )
+custom_styles/fg = SubResource( 113 )
+custom_styles/bg = SubResource( 114 )
+value = 100.0
+allow_greater = true
+percent_visible = false
 
 [editable path="PlayerDetectionZone"]
 [editable path="PlayerAttackZone"]
