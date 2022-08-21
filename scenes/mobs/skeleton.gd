@@ -8,15 +8,20 @@ onready var animationState = animationTree.get("parameters/playback")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Set variables
+	# Setup mob
 	# Mob specific
+	max_heath = 100
 	health = 100
 	attack_damage = 15
 	mob_weight = 40
 	spawn_time = Constants.SpawnTime.ALWAYS
+	
 	# Constants
 	HUNTING_SPEED = 50
 	WANDERING_SPEED = 40
+	
+	# Animations
+	setup_animations()
 
 
 # Method to setup the animations
@@ -38,19 +43,19 @@ func change_animations(animation_behaviour_state):
 	# Handle animation_behaviour_state
 	match animation_behaviour_state:
 		IDLING:
-			animationState.travel("IDLE")
+			animationState.start("IDLE")
 		
 		WANDERING:
-			animationState.travel("WALK")
+			animationState.start("WALK")
 		
 		HUNTING:
-			animationState.travel("WALK")
+			animationState.start("WALK")
 		
 		SEARCHING:
-			animationState.travel("WALK")
+			animationState.start("WALK")
 		
 		HURTING:
-			animationState.travel("HURT")
+			animationState.start("HURT")
 		
 		DYING:
-			animationState.travel("DIE")
+			animationState.start("DIE")

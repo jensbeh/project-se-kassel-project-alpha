@@ -1,14 +1,16 @@
-[gd_scene load_steps=69 format=2]
+[gd_scene load_steps=75 format=2]
 
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/mobs/rat.gd" type="Script" id=3]
 [ext_resource path="res://assets/mobs/RatWhite.png" type="Texture" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=6]
+[ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=7]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=8]
 
 [sub_resource type="Animation" id=88]
 resource_name = "Die_Down"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -51,7 +53,6 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=89]
 resource_name = "Die_Left"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -94,7 +95,6 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=90]
 resource_name = "Die_Right"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -137,7 +137,6 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=91]
 resource_name = "Die_Up"
-length = 1.1
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -180,7 +179,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=92]
 resource_name = "Hurt_Down"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -211,7 +210,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=93]
 resource_name = "Hurt_Left"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -242,7 +241,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=94]
 resource_name = "Hurt_Right"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -273,7 +272,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=95]
 resource_name = "Hurt_Up"
-length = 0.5
+length = 0.4
 step = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -653,6 +652,17 @@ radius = 24.0
 [sub_resource type="CircleShape2D" id=131]
 radius = 8.0
 
+[sub_resource type="DynamicFont" id=132]
+size = 24
+font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxTexture" id=133]
+texture = ExtResource( 6 )
+region_rect = Rect2( 13.5209, 10.9816, 376.731, 18.6612 )
+margin_right = 3.58902
+
+[sub_resource type="StyleBoxTexture" id=134]
+
 [node name="RatWhite" type="KinematicBody2D" groups=["Enemy"]]
 collision_layer = 8
 script = ExtResource( 3 )
@@ -723,6 +733,32 @@ position = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
 shape = SubResource( 131 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_left = -424.0
+margin_top = -38.0
+margin_right = 424.0
+margin_bottom = 9.0
+rect_scale = Vector2( 0.022, 0.043 )
+rect_pivot_offset = Vector2( 424, 23 )
+texture = ExtResource( 7 )
+region_rect = Rect2( 3, 4.5077, 95, 95.4923 )
+patch_margin_left = 10
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="ProgressBar" type="ProgressBar" parent="NinePatchRect"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 843.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 132 )
+custom_styles/fg = SubResource( 133 )
+custom_styles/bg = SubResource( 134 )
+value = 100.0
+allow_greater = true
+percent_visible = false
 
 [editable path="PlayerDetectionZone"]
 [editable path="PlayerAttackZone"]

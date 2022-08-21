@@ -774,9 +774,9 @@ shape = SubResource( 67 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 margin_left = -424.0
-margin_top = -34.0
+margin_top = -35.0
 margin_right = 424.0
-margin_bottom = 13.0
+margin_bottom = 12.0
 rect_scale = Vector2( 0.022, 0.043 )
 rect_pivot_offset = Vector2( 424, 23 )
 texture = ExtResource( 7 )
