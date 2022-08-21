@@ -421,8 +421,8 @@ func start_game():
 	Utils.set_current_player(Utils.get_player())
 
 	# Set spawn
-#	var player_position = Vector2(1128,616) # Camp
-	var player_position = Vector2(768,752) # Grassland
+	var player_position = Vector2(1128,616) # Camp
+#	var player_position = Vector2(768,752) # Grassland
 #	var player_position = Vector2(336,-62) # Dungeon1-1
 	var view_direction = Vector2(0,1)
 
@@ -439,8 +439,8 @@ func start_game():
 	Utils.get_current_player().set_gold(data_list[selected_character].gold)
 	
 	# Transition
-#	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
-	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 

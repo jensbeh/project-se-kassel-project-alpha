@@ -420,6 +420,7 @@ func set_mob_activity(is_active):
 #	update_behaviour(HUNTING)
 
 
+# Method to simulate damage and behaviour to mob
 func simulate_damage(damage : int, knockback : int):
 	# Add damage
 	health -= damage
@@ -446,9 +447,11 @@ func simulate_damage(damage : int, knockback : int):
 	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
 
 
+# Method is called when HURT animation is done
 func mob_hurt():
 	update_behaviour(previous_behaviour_state)
 
 
+# Method is called when DIE animation is done
 func mob_killed():
 	Utils.get_scene_manager().get_current_scene().despawn_mob(self)

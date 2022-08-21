@@ -408,12 +408,15 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 			higher_chunk.visible = false
 
 
+# Method to despawn/remove mob
 func despawn_mob(mob):
+	# Remove from variables
 	if mob_list.find(mob) != -1:
 		mob_list.remove(mob_list.find(mob))
 	if mobs_to_remove.find(mob) != -1:
 		mobs_to_remove.remove(mobs_to_remove.find(mob))
 	
+	# Remove from nodes
 	if mobsLayer.get_node_or_null(mob.name) != null:
 		mobsLayer.remove_child(mob)
 		mob.queue_free()
