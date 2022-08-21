@@ -15,10 +15,10 @@ var min_camp_l = 320
 var min_camp_b = 1390
 var min_camp_t = 176
 var min_camp_r = 1985
-var min_grassland_l = -4352
+var min_grassland_l = -4472#-5352
 var min_grassland_b = 900
 var min_grassland_t = -2100
-var min_grassland_r = 1760
+var min_grassland_r = 1880#1760
 var region = "camp"
 
 # Initial and size
@@ -38,21 +38,17 @@ func move_map_with_player():
 		var pos = player.position - min_pos - half_res
 		var origin_pos = atlas.get_region()
 		if region == "camp":
-			if (pos.x > min_camp_l and pos.x < min_camp_r):
+			if (pos.x > min_camp_l - min_pos.x and pos.x < min_camp_r - zoom.x - min_pos.x):
 				atlas.set_region(Rect2(pos.x,origin_pos.position.y,zoom.x,zoom.y))
 				origin_pos.position.x = pos.x
-			if (pos.y > min_camp_t and pos.y < min_camp_b):
+			if (pos.y > min_camp_t - min_pos.y and pos.y < min_camp_b - zoom.y - min_pos.y):
 				atlas.set_region(Rect2(origin_pos.position.x,pos.y,zoom.x,zoom.y))
 		elif region == "grassland":
-			if (pos.x > min_grassland_l and pos.x < min_grassland_r):
+			if (pos.x > min_grassland_l - min_pos.x and pos.x < min_grassland_r - zoom.x - min_pos.x):
 				atlas.set_region(Rect2(pos.x,origin_pos.position.y,zoom.x,zoom.y))
 				origin_pos.position.x = pos.x
-			if (pos.y > min_grassland_t and pos.y < min_grassland_b):
+			if (pos.y > min_grassland_t - min_pos.y and pos.y < min_grassland_b - zoom.y - min_pos.y):
 				atlas.set_region(Rect2(origin_pos.position.x,pos.y,zoom.x,zoom.y))
-		print(pos.x, "playerx")
-		print(pos.y, "playery")
-		print(origin_pos.position.x)
-		print(origin_pos.position.y)
 
 func _process(_delta):
 	move_map_with_player()
@@ -81,7 +77,14 @@ func update_minimap():
 			worldsize = Vector2.ZERO
 			min_pos = Vector2.ZERO
 			region = ""
-			
+	
+	zoom_factor = 0.2
+	zoom = worldsize * zoom_factor
+	if region == "grassland":
+		atlas.set_region(Rect2(min_grassland_l - zoom.x - min_pos.x, min_grassland_b - zoom.y - min_pos.y, zoom.x, zoom.y))
+	elif region == "camp":
+		atlas.set_region(Rect2(min_camp_l - zoom.x - min_pos.x, min_camp_t - zoom.y - min_pos.y, zoom.x, zoom.y))
+	
 	# Not visible in Menu
 	if atlas.get_atlas() == null:
 		Utils.get_scene_manager().get_node("UI").get_node("Minimap").visible = false
@@ -89,6 +92,8 @@ func update_minimap():
 		Utils.get_scene_manager().get_node("UI").get_node("Minimap").visible = true
 		
 	player = Utils.get_current_player()
+	if player != null:
+		check_pos(player.position - min_pos - (zoom/2))
 
 
 # Scroll over map to zoom in and out 
@@ -103,3 +108,55 @@ func _on_TextureRect_gui_input(event):
 		elif zoom_factor > 0.4:
 			zoom_factor = 0.4
 		zoom = zoom_factor * worldsize
+		check_pos(atlas.get_region().position)
+
+
+func check_pos(origin_pos):
+	if region == "camp":
+		if origin_pos.x < min_camp_l - min_pos.x:
+			atlas.set_region(Rect2(min_camp_l - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		elif origin_pos.x > min_camp_r - zoom.x - min_pos.x:
+			atlas.set_region(Rect2(min_camp_r - zoom.x - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		elif player.position.x - min_pos.x - (zoom.x/2) > min_camp_l - min_pos.x and player.position.x - min_pos.x - (zoom.x/2) < min_camp_r - zoom.x - min_pos.x:
+			atlas.set_region(Rect2(player.position.x - min_pos.x - (zoom.x/2),origin_pos.y,zoom.x,zoom.y))
+		elif player.position.x - min_pos.x - (zoom.x/2) < min_camp_l - min_pos.x:
+			atlas.set_region(Rect2(min_camp_l - zoom.x - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		elif player.position.x - min_pos.x - (zoom.x/2) > min_camp_r - zoom.x - min_pos.x:
+			atlas.set_region(Rect2(min_camp_r - zoom.x - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		
+		origin_pos = atlas.get_region().position
+		if origin_pos.y < min_camp_t - min_pos.y: 
+			atlas.set_region(Rect2(origin_pos.x,min_camp_t - min_pos.y,zoom.x,zoom.y))
+		elif origin_pos.y > min_camp_b - zoom.y - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,min_camp_b - zoom.y - min_pos.y,zoom.x,zoom.y))
+		elif player.position.y - min_pos.y - (zoom.y/2) > min_camp_t - min_pos.y and player.position.y - min_pos.y - (zoom.y/2) < min_camp_b - zoom.y - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,player.position.y - min_pos.y - (zoom.y/2),zoom.x,zoom.y))
+		elif player.position.y - min_pos.y - (zoom.y/2) < min_camp_t - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,min_camp_t - min_pos.y,zoom.x,zoom.y))
+		elif player.position.y - min_pos.y - (zoom.y/2) > min_camp_b - zoom.y - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,min_camp_b - zoom.y - min_pos.y,zoom.x,zoom.y))
+		
+	elif region == "grassland":
+		if origin_pos.x < min_grassland_l - min_pos.x:
+			atlas.set_region(Rect2(min_grassland_l - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		elif origin_pos.x > min_grassland_r - zoom.x - min_pos.x:
+			atlas.set_region(Rect2(min_grassland_r - zoom.x - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		elif player.position.x - min_pos.x - (zoom.x/2) > min_grassland_l - min_pos.x and player.position.x - min_pos.x - (zoom.x/2) < min_grassland_r - zoom.x - min_pos.x:
+			atlas.set_region(Rect2(player.position.x - min_pos.x - (zoom.x/2),origin_pos.y,zoom.x,zoom.y))
+		elif player.position.x - min_pos.x - (zoom.x/2) < min_grassland_l - min_pos.x:
+			atlas.set_region(Rect2(min_grassland_l - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		elif player.position.x - min_pos.x - (zoom.x/2) > min_grassland_r - zoom.x - min_pos.x:
+			atlas.set_region(Rect2(min_grassland_r - zoom.x - min_pos.x,origin_pos.y,zoom.x,zoom.y))
+		
+		origin_pos = atlas.get_region().position
+		if origin_pos.y < min_grassland_t - min_pos.y: 
+			atlas.set_region(Rect2(origin_pos.x,min_grassland_t - min_pos.y,zoom.x,zoom.y))
+		elif origin_pos.y > min_grassland_b - zoom.y - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,min_grassland_b - zoom.y - min_pos.y,zoom.x,zoom.y))
+		elif player.position.y - min_pos.y - (zoom.y/2) > min_grassland_t - min_pos.y and player.position.y - min_pos.y - (zoom.y/2) < min_grassland_b - zoom.y - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,player.position.y - min_pos.y - (zoom.y/2),zoom.x,zoom.y))
+		elif player.position.y - min_pos.y - (zoom.y/2) < min_grassland_t - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,min_grassland_t - min_pos.y,zoom.x,zoom.y))
+		elif player.position.y - min_pos.y - (zoom.y/2) > min_grassland_b - zoom.y - min_pos.y:
+			atlas.set_region(Rect2(origin_pos.x,min_grassland_b - zoom.y - min_pos.y,zoom.x,zoom.y))
+			
