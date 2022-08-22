@@ -42,12 +42,12 @@ func _ready():
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").queue_free()
+			Utils.get_scene_manager().get_UI().get_node("TradeInventory").queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
 			# Reset npc interaction state
-			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+			for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 				npc.set_interacted(false)
 			MerchantData.save_merchant_inventory()
 			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())

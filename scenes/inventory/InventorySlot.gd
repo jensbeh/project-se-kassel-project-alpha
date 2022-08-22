@@ -135,7 +135,7 @@ func drop_data(_pos, data):
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * split)
 					else:
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
-				Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+				Utils.get_scene_manager().get_UI().get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			# Update the data of the origin
 			# stacking
@@ -186,21 +186,21 @@ func drop_data(_pos, data):
 					var attack_speed = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]
 					var knockback_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]
 					
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+					Utils.get_scene_manager().get_UI().get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + str(attack_value))
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+					Utils.get_scene_manager().get_UI().get_node("CharacterInterface").find_node("Attack-Speed").set_text(
 						tr("ATTACK-SPEED") + ": " + str(attack_speed))
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+					Utils.get_scene_manager().get_UI().get_node("CharacterInterface").find_node("Knockback").set_text(
 						tr("KNOCKBACK") + ": " + str(knockback_value))
 					
 					Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
 				
 				else:
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+					Utils.get_scene_manager().get_UI().get_node("CharacterInterface").find_node("Damage").set_text(
 						tr("ATTACK") + ": " + "0")
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+					Utils.get_scene_manager().get_UI().get_node("CharacterInterface").find_node("Attack-Speed").set_text(
 						tr("ATTACK-SPEED") + ": " + "0")
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+					Utils.get_scene_manager().get_UI().get_node("CharacterInterface").find_node("Knockback").set_text(
 						tr("KNOCKBACK") + ": " + "0")
 
 					Utils.get_current_player().set_weapon(null, 0, 0, 0)
@@ -277,7 +277,7 @@ func SplitStack(split_amount, data):
 			valid = true
 		else:
 			valid =  false
-		Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+		Utils.get_scene_manager().get_UI().get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	# update only when payed
 	if valid:
@@ -369,7 +369,7 @@ func hide_tooltip():
 func check_slots():
 	var free = false
 	var free2 = false
-	var trade = Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
+	var trade = Utils.get_scene_manager().get_UI().get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
 	var slots = MerchantData.inv_data.size()
 	for i in MerchantData.inv_data:
 		if MerchantData.inv_data[i]["Item"] == null:

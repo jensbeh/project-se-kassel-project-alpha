@@ -229,3 +229,16 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false
+
+
+# Method to despawn/remove mob
+func despawn_mob(mob):
+	# Remove from variables
+	if mob_list.find(mob) != -1:
+		mob_list.remove(mob_list.find(mob))
+	
+	# Remove from nodes
+	if mobsLayer.get_node_or_null(mob.name) != null:
+		mobsLayer.remove_child(mob)
+		mob.queue_free()
+		print("----------> Mob \"" + mob.name + "\" removed")

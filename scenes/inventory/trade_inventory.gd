@@ -28,5 +28,5 @@ func _on_Button_pressed():
 	Utils.get_current_player().set_movment_animation(true)
 	Utils.get_scene_manager().find_node("Inventory").visible = false
 	# reset npc interaction state
-	for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+	for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 		npc.set_interacted(false)
