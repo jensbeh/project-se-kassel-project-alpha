@@ -13,38 +13,24 @@ var hair
 #todo all 3 slots
 
 func _ready():
-	# load weapon
-	if PlayerData.equipment_data["Weapon"]["Item"] != null:
-		var weapon = find_node("Weapon")
-		var texture = GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Texture"]
-		var frame = GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Frame"]
-		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
-		if texture == "item_icons_1":
-			weapon.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
-			weapon.get_node("Icon/Sprite").set_hframes(16)
-			weapon.get_node("Icon/Sprite").set_vframes(27)
-		else:
-			weapon.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
-			weapon.get_node("Icon/Sprite").set_hframes(13)
-			weapon.get_node("Icon/Sprite").set_vframes(15)
-		weapon.get_node("Icon/Sprite").set_texture(icon_texture)
-		weapon.get_node("Icon/Sprite").frame = frame
-	# load light
-	if PlayerData.equipment_data["Light"]["Item"] != null:
-		var light = find_node("Light")
-		var texture = GameData.item_data[str(PlayerData.equipment_data["Light"]["Item"])]["Texture"]
-		var frame = GameData.item_data[str(PlayerData.equipment_data["Light"]["Item"])]["Frame"]
-		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
-		if texture == "item_icons_1":
-			light.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
-			light.get_node("Icon/Sprite").set_hframes(16)
-			light.get_node("Icon/Sprite").set_vframes(27)
-		else:
-			light.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
-			light.get_node("Icon/Sprite").set_hframes(13)
-			light.get_node("Icon/Sprite").set_vframes(15)
-		light.get_node("Icon/Sprite").set_texture(icon_texture)
-		light.get_node("Icon/Sprite").frame = frame
+	# load weapon, light and hotbar
+	for item in ["Weapon", "Light", "Hotbar"]:
+		if PlayerData.equipment_data[item]["Item"] != null:
+			var item_slot = find_node(item)
+			var texture = GameData.item_data[str(PlayerData.equipment_data[item]["Item"])]["Texture"]
+			var frame = GameData.item_data[str(PlayerData.equipment_data[item]["Item"])]["Frame"]
+			var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+			if texture == "item_icons_1":
+				item_slot.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
+				item_slot.get_node("Icon/Sprite").set_hframes(16)
+				item_slot.get_node("Icon/Sprite").set_vframes(27)
+			else:
+				item_slot.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
+				item_slot.get_node("Icon/Sprite").set_hframes(13)
+				item_slot.get_node("Icon/Sprite").set_vframes(15)
+			item_slot.get_node("Icon/Sprite").set_texture(icon_texture)
+			item_slot.get_node("Icon/Sprite").frame = frame
+	
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
