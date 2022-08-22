@@ -15,9 +15,9 @@ var hair
 func _ready():
 	# load weapon
 	if PlayerData.equipment_data["Weapon"]["Item"] != null:
-		var weapon = find_node("WeaponBox")
-		var texture = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Texture"]
-		var frame = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Frame"]
+		var weapon = find_node("Weapon")
+		var texture = GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Texture"]
+		var frame = GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Frame"]
 		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
 		if texture == "item_icons_1":
 			weapon.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
@@ -27,8 +27,24 @@ func _ready():
 			weapon.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
 			weapon.get_node("Icon/Sprite").set_hframes(13)
 			weapon.get_node("Icon/Sprite").set_vframes(15)
-		weapon.get_node("WeaponBox/Icon/Sprite").set_texture(icon_texture)
-		weapon.get_node("WeaponBox/Icon/Sprite").frame = frame
+		weapon.get_node("Icon/Sprite").set_texture(icon_texture)
+		weapon.get_node("Icon/Sprite").frame = frame
+	# load light
+	if PlayerData.equipment_data["Light"]["Item"] != null:
+		var light = find_node("Light")
+		var texture = GameData.item_data[str(PlayerData.equipment_data["Light"]["Item"])]["Texture"]
+		var frame = GameData.item_data[str(PlayerData.equipment_data["Light"]["Item"])]["Frame"]
+		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+		if texture == "item_icons_1":
+			light.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
+			light.get_node("Icon/Sprite").set_hframes(16)
+			light.get_node("Icon/Sprite").set_vframes(27)
+		else:
+			light.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
+			light.get_node("Icon/Sprite").set_hframes(13)
+			light.get_node("Icon/Sprite").set_vframes(15)
+		light.get_node("Icon/Sprite").set_texture(icon_texture)
+		light.get_node("Icon/Sprite").frame = frame
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))

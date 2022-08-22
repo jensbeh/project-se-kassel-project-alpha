@@ -180,30 +180,46 @@ func drop_data(_pos, data):
 				# change equipment
 				PlayerData.equipment_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.equipment_data[origin_slot]["Stack"] = data["target_stack"]
-				if PlayerData.equipment_data[origin_slot]["Item"] != null:
-					var item_id = PlayerData.equipment_data[origin_slot]["Item"]
-					var attack_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack"]
-					var attack_speed = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack-Speed"]
-					var knockback_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Knockback"]
+				# Weapon
+				if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Weapon":
+					if PlayerData.equipment_data[origin_slot]["Item"] != null:
+						var item_id = PlayerData.equipment_data[origin_slot]["Item"]
+						var attack_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack"]
+						var attack_speed = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack-Speed"]
+						var knockback_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Knockback"]
+						
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+							tr("ATTACK") + ": " + str(attack_value))
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+							tr("ATTACK-SPEED") + ": " + str(attack_speed))
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+							tr("KNOCKBACK") + ": " + str(knockback_value))
+						
+						Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
 					
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
-						tr("ATTACK") + ": " + str(attack_value))
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
-						tr("ATTACK-SPEED") + ": " + str(attack_speed))
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
-						tr("KNOCKBACK") + ": " + str(knockback_value))
-					
-					Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
-				
-				else:
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
-						tr("ATTACK") + ": " + "0")
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
-						tr("ATTACK-SPEED") + ": " + "0")
-					Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
-						tr("KNOCKBACK") + ": " + "0")
+					else:
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+							tr("ATTACK") + ": " + "0")
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+							tr("ATTACK-SPEED") + ": " + "0")
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+							tr("KNOCKBACK") + ": " + "0")
 
-					Utils.get_current_player().set_weapon(null, 0, 0, 0)
+						Utils.get_current_player().set_weapon(null, 0, 0, 0)
+				# Light
+				elif GameData.item_data[str(data["origin_item_id"])]["Category"] == "Light":
+					if PlayerData.equipment_data[origin_slot]["Item"] != null:
+						var light_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Radius"]
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("LightRadius").set_text(
+							tr("LIGHT") + ": " + str(light_value))
+						Utils.get_current_player().set_light(light_value)
+					else:
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("LightRadius").set_text(
+							tr("LIGHT") + ": " + "0")
+						Utils.get_current_player().set_light(0)
+				# Hotbar
+				else:
+					pass
 
 			# Update the texture and label of the origin
 			# stacking

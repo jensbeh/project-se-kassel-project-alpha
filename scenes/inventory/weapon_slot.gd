@@ -5,7 +5,7 @@ var tool_tip = load(Constants.TOOLTIP)
 # Get information about drag item
 func get_drag_data(_pos):
 	Utils.get_current_player().set_dragging(true)
-	var slot = get_parent().get_parent().get_name()
+	var slot = get_parent().get_name()
 	if PlayerData.equipment_data[slot]["Item"] != null:
 		var data = {}
 		data["origin_node"] = self
@@ -42,7 +42,7 @@ func get_drag_data(_pos):
 
 # Check if we can drop an item to this slot
 func can_drop_data(_pos, data):
-	var target_slot = get_parent().get_parent().get_name()
+	var target_slot = get_parent().get_name()
 	# Move item
 	if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Weapon":
 		if PlayerData.equipment_data[target_slot]["Item"] == null:
@@ -61,7 +61,7 @@ func can_drop_data(_pos, data):
 		return false
 
 func drop_data(_pos, data):
-	var target_slot = get_parent().get_parent().get_name()
+	var target_slot = get_parent().get_name()
 	var origin_slot = data["origin_node"].get_parent().get_name()
 	if data["origin_node"] == self:
 		pass
@@ -94,9 +94,9 @@ func drop_data(_pos, data):
 		var attack_speed = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Attack-Speed"]
 		var knockback_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Knockback"]
 
-		get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(attack_value))
-		get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(attack_speed))
-		get_parent().get_parent().get_parent().get_parent().find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(knockback_value))
+		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(attack_value))
+		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(attack_speed))
+		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(knockback_value))
 		
 
 		Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
@@ -131,7 +131,7 @@ func verify_target_texture(data):
 func _on_Icon_mouse_entered():
 	var tool_tip_instance = tool_tip.instance()
 	tool_tip_instance.origin = "CharacterInterface"
-	tool_tip_instance.slot = get_parent().get_parent().get_name()
+	tool_tip_instance.slot = get_parent().get_name()
 	
 	tool_tip_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(100,-50)
 	

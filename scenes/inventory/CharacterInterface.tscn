@@ -166,11 +166,11 @@ margin_bottom = 334.0
 margin_right = 100.0
 margin_bottom = 250.0
 
-[node name="Weapon" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer"]
+[node name="WeaponBox" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer"]
 margin_right = 100.0
 rect_min_size = Vector2( 100, 0 )
 
-[node name="WeaponLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon"]
+[node name="WeaponLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -186,7 +186,7 @@ text = "Weapon"
 align = 1
 valign = 1
 
-[node name="WeaponBox" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon"]
+[node name="Weapon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -50.0
@@ -195,7 +195,7 @@ margin_right = 55.0
 margin_bottom = 249.0
 texture = ExtResource( 1 )
 
-[node name="Icon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon/WeaponBox"]
+[node name="Icon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox/Weapon"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -52.5
@@ -204,19 +204,19 @@ margin_bottom = 105.0
 expand = true
 script = ExtResource( 4 )
 
-[node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon/WeaponBox/Icon"]
+[node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox/Weapon/Icon"]
 position = Vector2( 50, 52 )
 scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 169
 
-[node name="Light" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer"]
+[node name="LightBox" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer"]
 margin_top = 4.0
 margin_right = 100.0
 margin_bottom = 4.0
 
-[node name="LightLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light"]
+[node name="LightLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox"]
 margin_left = 15.5
 margin_top = -8.0
 margin_right = 80.5
@@ -228,13 +228,13 @@ text = "Light"
 align = 1
 valign = 1
 
-[node name="LightBox" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light"]
+[node name="Light" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox"]
 margin_top = 16.0
 margin_right = 105.0
 margin_bottom = 121.0
 texture = ExtResource( 1 )
 
-[node name="Icon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light/LightBox"]
+[node name="Icon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox/Light"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -52.5
@@ -243,7 +243,7 @@ margin_bottom = 105.0
 expand = true
 script = ExtResource( 11 )
 
-[node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light/LightBox/Icon"]
+[node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox/Light/Icon"]
 position = Vector2( 50, 52 )
 scale = Vector2( 2.5, 2.5 )
 hframes = 16
@@ -281,11 +281,11 @@ margin_left = 350.0
 margin_right = 450.0
 margin_bottom = 250.0
 
-[node name="Hotbar" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
+[node name="HotbarBox" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2"]
 margin_right = 100.0
 rect_min_size = Vector2( 100, 0 )
 
-[node name="HotbarLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar"]
+[node name="HotbarLabel" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox"]
 margin_left = 7.0
 margin_top = 78.0
 margin_right = 85.0
@@ -298,7 +298,7 @@ Bar"
 align = 1
 valign = 1
 
-[node name="HotbarBox" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar"]
+[node name="Hotbar" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -310,7 +310,7 @@ margin_bottom = 249.0
 texture = ExtResource( 1 )
 expand = true
 
-[node name="Icon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar/HotbarBox"]
+[node name="Icon" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -322,7 +322,7 @@ margin_bottom = 52.5
 expand = true
 script = ExtResource( 10 )
 
-[node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar/HotbarBox/Icon"]
+[node name="Sprite" type="Sprite" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon"]
 position = Vector2( 50, 52 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox"]
@@ -433,11 +433,11 @@ patch_margin_right = 21
 patch_margin_bottom = 31
 
 [connection signal="gui_input" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Exit/Button" to="." method="_on_Button_gui_input"]
-[connection signal="mouse_entered" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon/WeaponBox/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon/WeaponBox/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon/WeaponBox/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Weapon/WeaponBox/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light/LightBox/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light/LightBox/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light/LightBox/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/Light/LightBox/Icon" method="_on_Icon_mouse_exited"]
-[connection signal="mouse_entered" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar/HotbarBox/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar/HotbarBox/Icon" method="_on_Icon_mouse_entered"]
-[connection signal="mouse_exited" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar/HotbarBox/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/Hotbar/HotbarBox/Icon" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox/Weapon/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox/Weapon/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox/Weapon/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/WeaponBox/Weapon/Icon" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox/Light/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox/Light/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox/Light/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer/LightBox/Light/Icon" method="_on_Icon_mouse_exited"]
+[connection signal="mouse_entered" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon" method="_on_Icon_mouse_exited"]
 
 [editable path="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player"]

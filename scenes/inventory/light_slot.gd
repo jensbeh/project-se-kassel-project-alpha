@@ -5,7 +5,7 @@ var tool_tip = load(Constants.TOOLTIP)
 
 # Get information about drag item
 func get_drag_data(_pos):
-	var slot = get_parent().get_parent().get_name()
+	var slot = get_parent().get_name()
 	Utils.get_current_player().set_dragging(true)
 	if PlayerData.equipment_data[slot]["Item"] != null:
 		var data = {}
@@ -44,7 +44,7 @@ func get_drag_data(_pos):
 
 # Check if we can drop an item to this slot
 func can_drop_data(_pos, data):
-	var target_slot = get_parent().get_parent().get_name()
+	var target_slot = get_parent().get_name()
 	# Move item
 	if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Light":
 		if PlayerData.equipment_data[target_slot]["Item"] == null:
@@ -64,8 +64,8 @@ func can_drop_data(_pos, data):
 
 
 func drop_data(_pos, data):
-	var target_slot = get_parent().get_parent().get_name()
-	var origin_slot = data["origin_node"].get_parent().get_parent().get_name()
+	var target_slot = get_parent().get_name()
+	var origin_slot = data["origin_node"].get_parent().get_name()
 	if data["origin_node"] == self:
 		pass
 	else:
@@ -91,8 +91,11 @@ func drop_data(_pos, data):
 		get_child(0).frame = data["origin_frame"]
 		verify_target_texture(data)
 		PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
-		get_parent().get_parent().get_parent().get_parent().find_node("Light").set_text(tr("LIGHT") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Item"])]["Radius"]))
-		Utils.get_current_player().set_attack(GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Radius"])
+		
+		var light_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Radius"]
+		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(light_value))
+		Utils.get_current_player().set_light(light_value)
+	
 	Utils.get_current_player().set_dragging(false)
 
 
@@ -131,7 +134,7 @@ func _on_Icon_mouse_exited():
 func show_tooltip():
 	var tool_tip_instance = tool_tip.instance()
 	tool_tip_instance.origin = "CharacterInterface"
-	tool_tip_instance.slot = get_parent().get_parent().get_name()
+	tool_tip_instance.slot = get_parent().get_name()
 	
 	tool_tip_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(64,64)
 	
