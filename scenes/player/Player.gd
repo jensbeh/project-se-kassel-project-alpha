@@ -198,11 +198,15 @@ func _input(event):
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
 		Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").queue_free()
-	
+		
+	# Use Item from Hotbar
+	elif event.is_action_pressed("hotbar") and !preview:
+		Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").use_item()
+		
 	# Control Notes
 	elif event.is_action_pressed("control_notes") and !preview:
 		Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show_hide_control_notes()
-	
+		
 	# Attack with "left_mouse"
 	elif event.is_action_pressed("attack") and can_attack and movement:
 		is_attacking = true

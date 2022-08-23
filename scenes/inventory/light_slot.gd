@@ -6,8 +6,8 @@ var tool_tip = load(Constants.TOOLTIP)
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
-	Utils.get_current_player().set_dragging(true)
 	if PlayerData.equipment_data[slot]["Item"] != null:
+		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"

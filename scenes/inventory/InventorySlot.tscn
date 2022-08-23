@@ -57,5 +57,6 @@ custom_fonts/font = SubResource( 8 )
 align = 1
 valign = 1
 
+[connection signal="gui_input" from="Icon" to="Icon" method="_on_Icon_gui_input"]
 [connection signal="mouse_entered" from="Icon" to="Icon" method="_on_Icon_mouse_entered"]
 [connection signal="mouse_exited" from="Icon" to="Icon" method="_on_Icon_mouse_exited"]

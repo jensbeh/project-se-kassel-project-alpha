@@ -6,8 +6,8 @@ var tool_tip = load(Constants.TOOLTIP)
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
-	Utils.get_current_player().set_dragging(true)
 	if PlayerData.equipment_data[slot]["Item"] != null:
+		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -46,7 +46,7 @@ func get_drag_data(_pos):
 func can_drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
 	# Move item
-	if GameData.item_data[str(data["origin_item_id"])]["Category"] in ["Potion", "Food"] :
+	if GameData.item_data[str(data["origin_item_id"])]["Category"] in ["Potion", "Food"]:
 		if PlayerData.equipment_data[target_slot]["Item"] == null:
 			data["target_item_id"] = null
 			data["target_texture"] = null
@@ -91,6 +91,15 @@ func drop_data(_pos, data):
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
 		PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
+		if data["origin_stack"] != null and data["origin_stack"] > 1:
+			get_node("TextureRect/Stack").set_text(str(data["origin_stack"]))
+		else:
+			get_node("TextureRect/Stack").set_text("")
+		hide_tooltip()
+		show_tooltip()
+		show_hide_stack_label(data)
+	
+	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
 	
 	Utils.get_current_player().set_dragging(false)
 
@@ -117,6 +126,19 @@ func verify_target_texture(data):
 			get_child(0).set_scale(Vector2(4.5,4.5))
 			get_child(0).set_hframes(13)
 			get_child(0).set_vframes(15)
+
+
+func show_hide_stack_label(data):
+	if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+	data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
+		data["origin_node"].get_parent().get_node("TextureRect").visible = true
+	else:
+		data["origin_node"].get_parent().get_node("TextureRect").visible = false
+	if (int(get_node("TextureRect/Stack").get_text()) > 1 and 
+	get_node("TextureRect/Stack").get_text() != null):
+		get_node("TextureRect").visible = true
+	else:
+		get_node("TextureRect").visible = false
 
 
 # ToolTips

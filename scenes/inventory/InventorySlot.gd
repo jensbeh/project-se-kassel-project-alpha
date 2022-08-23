@@ -6,9 +6,9 @@ var inv_slot = load(Constants.TRADE_INV_SLOT)
 
 # Get information about drag item
 func get_drag_data(_pos):
-	Utils.get_current_player().set_dragging(true)
 	var slot = get_parent().get_name()
 	if PlayerData.inv_data[slot]["Item"] != null:
+		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Inventory"
@@ -221,7 +221,7 @@ func drop_data(_pos, data):
 						Utils.get_current_player().set_light(0)
 				# Hotbar
 				else:
-					pass
+					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
 
 			# Update the texture and label of the origin
 			# stacking
@@ -282,6 +282,7 @@ func drop_data(_pos, data):
 			split = 0
 	Utils.get_current_player().set_dragging(false)
 
+
 func SplitStack(split_amount, data):
 	var target_slot = get_parent().get_name()
 	var origin_slot = data["origin_node"].get_parent().get_name()
@@ -327,6 +328,7 @@ func SplitStack(split_amount, data):
 			
 		show_hide_stack_label(data)
 
+
 func show_hide_stack_label(data):
 	if data["origin_panel"] != "CharacterInterface":
 		if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
@@ -339,6 +341,7 @@ func show_hide_stack_label(data):
 			get_parent().get_node("TextureRect").visible = true
 		else:
 			get_parent().get_node("TextureRect").visible = false
+
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
@@ -363,12 +366,14 @@ func verify_target_texture(data):
 			get_child(0).set_hframes(13)
 			get_child(0).set_vframes(15)
 
+
 # ToolTips
 func _on_Icon_mouse_entered():
 	show_tooltip()
 
 func _on_Icon_mouse_exited():
 	hide_tooltip()
+	
 	
 func show_tooltip():
 	var tool_tip_instance = tool_tip.instance()
@@ -383,6 +388,7 @@ func show_tooltip():
 
 func hide_tooltip():
 	get_node("ToolTip").free()
+	
 	
 func check_slots():
 	var free = false
@@ -407,3 +413,24 @@ func check_slots():
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+
+
+func _on_Icon_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
+		var slot = get_parent().get_name()
+		if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+			if PlayerData.inv_data[slot]["Stack"] != null:
+				PlayerData.inv_data[slot]["Stack"] -= 1
+				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+				int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
+				if PlayerData.inv_data[slot]["Stack"] <= 0:
+					PlayerData.inv_data[slot]["Stack"] = null
+					PlayerData.inv_data[slot]["Item"] = null
+					get_node("../TextureRect/Stack").set_text("0")
+					get_node("../TextureRect").visible = false
+					get_node("../Icon/Sprite").set_texture(null)
+				elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
+					get_node("../TextureRect/Stack").set_text("1")
+					get_node("../TextureRect").visible = false
+				else:
+					get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
