@@ -193,7 +193,7 @@
 	"Radius": 100,
 	"Frame": 169,
 	"Texture": "item_icons_1",
-	"Worth": 100
+	"Worth": 200
   },
   "10020": {
     "Name": "Torch",
@@ -207,7 +207,7 @@
 	"Radius": 75,
 	"Frame": 170,
 	"Texture": "item_icons_1",
-	"Worth": 50
+	"Worth": 100
   },
   "10021": {
     "Name": "Candle",
