@@ -160,6 +160,8 @@ func drop_data(_pos, data):
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 				check_slots()
+			# stacking for hotbar
+			#elif
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]

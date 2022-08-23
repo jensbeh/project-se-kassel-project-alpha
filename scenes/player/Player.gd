@@ -173,6 +173,7 @@ func _input(event):
 		set_player_can_interact(false)
 		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.GAME_MENU_PATH).instance())
 		save_player_data(Utils.get_current_player().get_data())
+		PlayerData.save_inventory()
 	# Close game menu with "esc" when game menu is open
 	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
 		set_movement(true)

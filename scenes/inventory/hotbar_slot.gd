@@ -87,9 +87,9 @@ func drop_data(_pos, data):
 			
 		# Update the texture, label and data of the target
 		PlayerData.equipment_data[target_slot]["Item"] = data["origin_item_id"]
+		verify_target_texture(data)
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
-		verify_target_texture(data)
 		PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
 	
 	Utils.get_current_player().set_dragging(false)

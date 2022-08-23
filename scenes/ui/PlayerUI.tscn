@@ -1,12 +1,13 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/ui/expbar.png" type="Texture" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://scenes/ui/player_ui.gd" type="Script" id=3]
 [ext_resource path="res://assets/ui/panel_grey.png" type="Texture" id=4]
-[ext_resource path="res://scenes/inventory/InventorySlot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/ui/hotbar.gd" type="Script" id=5]
 [ext_resource path="res://assets/ui/lifebar_background_3.png" type="Texture" id=6]
 [ext_resource path="res://assets/ui/lifebar_3.png" type="Texture" id=7]
+[ext_resource path="res://assets/ui/panel_background.png" type="Texture" id=8]
 
 [sub_resource type="DynamicFont" id=3]
 size = 24
@@ -27,6 +28,10 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 24
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 18
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=7]
@@ -122,34 +127,57 @@ rounded = true
 texture_under = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
 
-[node name="Inv1" parent="." instance=ExtResource( 5 )]
-visible = false
+[node name="Hotbar" type="TextureRect" parent="."]
 margin_left = -574.0
 margin_top = 456.0
 margin_right = -486.0
 margin_bottom = 544.0
+rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 4 )
+expand = true
+script = ExtResource( 5 )
 
-[node name="Icon" parent="Inv1" index="0"]
+[node name="Icon" type="TextureRect" parent="Hotbar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = -604.0
 margin_top = 616.0
 margin_right = -612.0
 margin_bottom = 608.0
-script = null
+expand = true
 
-[node name="TextureRect" parent="Inv1" index="1"]
+[node name="Sprite" type="Sprite" parent="Hotbar/Icon"]
+position = Vector2( 28, 28 )
+scale = Vector2( 1.5, 1.5 )
+hframes = 16
+vframes = 27
+frame = 46
+
+[node name="TextureRect" type="TextureRect" parent="Hotbar"]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 47.0
 margin_top = 60.0
 margin_right = 111.0
 margin_bottom = 96.0
+texture = ExtResource( 8 )
+expand = true
 
-[node name="Stack" parent="Inv1/TextureRect" index="0"]
+[node name="Stack" type="Label" parent="Hotbar/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 margin_left = -20.0
 margin_top = -12.0
 margin_right = 20.0
 margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 8 )
+align = 1
+valign = 1
 
-[node name="TextureRect2" type="TextureRect" parent="Inv1"]
+[node name="TextureRect2" type="TextureRect" parent="Hotbar"]
 anchor_left = -0.08
 anchor_top = 0.727
 anchor_right = 0.273
@@ -163,7 +191,7 @@ size_flags_vertical = 0
 texture = ExtResource( 4 )
 expand = true
 
-[node name="Label" type="Label" parent="Inv1/TextureRect2"]
+[node name="Label" type="Label" parent="Hotbar/TextureRect2"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -181,4 +209,6 @@ text = "Q"
 align = 1
 valign = 1
 
-[editable path="Inv1"]
+[connection signal="gui_input" from="Hotbar" to="Hotbar" method="_on_Hotbar_gui_input"]
+[connection signal="mouse_entered" from="Hotbar/Icon" to="Hotbar/Icon" method="_on_Icon_mouse_entered"]
+[connection signal="mouse_exited" from="Hotbar/Icon" to="Hotbar/Icon" method="_on_Icon_mouse_exited"]
