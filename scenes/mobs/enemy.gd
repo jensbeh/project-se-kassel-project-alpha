@@ -20,7 +20,8 @@ enum {
 	HUNTING,
 	HURTING,
 	DYING,
-#	ATTACKING,
+	PRE_ATTACKING,
+	ATTACKING,
 }
 var velocity = Vector2(0, 0)
 var behaviour_state = IDLING
@@ -34,6 +35,9 @@ var max_update_path_time = 0.4
 var max_searching_radius
 var min_searching_radius
 var start_searching_position
+var max_attacking_radius
+var min_attacking_radius
+var attack_direction
 
 # Mob movment
 var acceleration = 350
@@ -76,13 +80,17 @@ func _ready():
 	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius / 3
 	
-#	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
-#	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
+	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
+	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
 	
 	# Healthbar
 	healthBar.value = 100
 	healthBar.visible = false
 	healthBarBackground.visible = false
+	
+	# Setup searching variables
+	max_attacking_radius = 40
+	min_attacking_radius = max_attacking_radius - 4
 
 
 # Method to init variables, typically called after instancing
@@ -124,6 +132,23 @@ func _physics_process(delta):
 				if path.size() > 0:
 					move_to_position(delta)
 		
+		
+		PRE_ATTACKING:
+			# Follow path
+			if path.size() > 0:
+				move_to_position(delta)
+		
+		
+		ATTACKING:
+			# handle knockback
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
+			
+			if velocity == Vector2.ZERO:
+				if playerAttackZone.mob_can_attack:
+					update_behaviour(PRE_ATTACKING)
+				else:
+					update_behaviour(HUNTING)
 		
 #		ATTACKING:
 #			# check if mob can attack
@@ -198,6 +223,11 @@ func _process(delta):
 			
 			# Mob is doing nothing, just standing and searching for player
 			search_player()
+		
+		PRE_ATTACKING:
+			if not mob_need_path:
+				if path.size() == 0:
+					update_behaviour(ATTACKING)
 
 
 # Method to move mob to players position
@@ -259,6 +289,8 @@ func search_player():
 # Method to update the behaviour of the mob
 func update_behaviour(new_behaviour):
 	if behaviour_state != new_behaviour:
+		print(new_behaviour)
+		
 		# Set previous behaviour state
 		previous_behaviour_state = behaviour_state
 	
@@ -351,16 +383,32 @@ func update_behaviour(new_behaviour):
 					change_animations(DYING)
 			
 			
-	#		ATTACKING:
-	#			if behaviour_state != ATTACKING:
-	#				# Reset path in case player is seen but e.g. state is wandering
-	#				path.resize(0)
-	#
-	#				# Update line path
-	#				line2D.points = []
-	##			print("ATTACKING")
-	#			behaviour_state = ATTACKING
-	#			mob_need_path = false
+			PRE_ATTACKING:
+				if behaviour_state != PRE_ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+
+					# Update line path
+					line2D.points = []
+				print("PRE_ATTACKING")
+				behaviour_state = PRE_ATTACKING
+				mob_need_path = true
+			
+			
+			ATTACKING:
+				if behaviour_state != ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+
+					# Update line path
+					line2D.points = []
+				
+				# Move Mob to player and further more
+				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
+				
+				print("ATTACKING")
+				behaviour_state = ATTACKING
+				mob_need_path = false
 
 
 # Method to update the animation with velocity for direction -> needs to code in child
@@ -390,7 +438,9 @@ func get_target_position():
 	# Return next searching position
 	elif behaviour_state == SEARCHING:
 		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
-
+	
+	elif behaviour_state == PRE_ATTACKING:
+		return Utils.generate_position_near_mob(Utils.get_current_player().global_position, min_attacking_radius, max_attacking_radius, navigation_tile_map, collision_radius)
 
 # Method is called from pathfinding_service to set new path to mob
 func update_path(new_path):
@@ -412,12 +462,13 @@ func set_mob_activity(is_active):
 		update_behaviour(previous_behaviour_state)
 
 
-#
-#func on_player_entered_attack_zone():
-#	update_behaviour(ATTACKING)
-#
-#func on_player_exited_attack_zone():
+
+func on_player_entered_attack_zone():
+	update_behaviour(PRE_ATTACKING)
+
+func on_player_exited_attack_zone():
 #	update_behaviour(HUNTING)
+	pass
 
 
 # Method to simulate damage and behaviour to mob
