@@ -258,7 +258,7 @@ func update_behaviour(new_behaviour):
 				rng.randomize()
 				max_ideling_time = rng.randi_range(3, 10)
 				
-				print("IDLING")
+#				print("IDLING")
 				behaviour_state = IDLING
 				mob_need_path = false
 				change_animations(IDLING)
@@ -274,7 +274,7 @@ func update_behaviour(new_behaviour):
 					# Update line path
 	#				line2D.points = []
 				
-				print("WANDERING")
+#				print("WANDERING")
 				behaviour_state = WANDERING
 				mob_need_path = true
 				change_animations(WANDERING)
@@ -289,7 +289,7 @@ func update_behaviour(new_behaviour):
 					
 					# Update line path
 	#				line2D.points = []
-				print("HUNTING")
+#				print("HUNTING")
 				behaviour_state = HUNTING
 				mob_need_path = true
 				change_animations(HUNTING)
@@ -309,14 +309,14 @@ func update_behaviour(new_behaviour):
 				rng.randomize()
 				max_searching_time = rng.randi_range(6, 12)
 				
-				print("SEARCHING")
+#				print("SEARCHING")
 				behaviour_state = SEARCHING
 				mob_need_path = false
 				change_animations(SEARCHING)
 			
 			
 			HURTING:
-				print("HURTING")
+#				print("HURTING")
 				if behaviour_state != HURTING:
 					behaviour_state = HURTING
 					# Show hurt animation if not already played
@@ -324,7 +324,7 @@ func update_behaviour(new_behaviour):
 			
 			
 			DYING:
-				print("DYING")
+#				print("DYING")
 				if behaviour_state != DYING:
 					behaviour_state = DYING
 					# Show hurt animation if not already played
@@ -384,12 +384,12 @@ func set_mob_activity(is_active):
 
 
 func on_player_entered_attack_zone():
-	if behaviour_state != DYING: # Because if mob is dying then state should be change with area's
+	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
 		update_behaviour(PRE_ATTACKING)
 
 
 func on_player_exited_attack_zone():
-	if behaviour_state != DYING: # Because if mob is dying then state should be change with area's
+	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
 		update_behaviour(HUNTING)
 
 
@@ -422,7 +422,8 @@ func simulate_damage(damage : int, knockback : int):
 
 # Method is called when HURT animation is done
 func mob_hurt():
-	update_behaviour(previous_behaviour_state)
+	if previous_behaviour_state != HURTING: # Because sometimes animations are stuck
+		update_behaviour(previous_behaviour_state)
 
 
 # Method is called when DIE animation is done

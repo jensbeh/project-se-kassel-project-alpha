@@ -49,6 +49,14 @@ func change_animations(animation_behaviour_state):
 			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("MOVE")
 		
+		PRE_ATTACKING:
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
+		
+		ATTACKING:
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
+		
 		HURTING:
 			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("MOVE")
@@ -57,10 +65,6 @@ func change_animations(animation_behaviour_state):
 		DYING:
 			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("DIE")
-		
-		ATTACKING:
-			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
-			animationState.start("MOVE")
 
 
 func _physics_process(delta):
@@ -123,9 +127,10 @@ func update_behaviour(new_behaviour):
 					
 					# Update line path
 					line2D.points = []
-				print("PRE_ATTACKING")
+#				print("PRE_ATTACKING")
 				behaviour_state = PRE_ATTACKING
 				mob_need_path = true
+				change_animations(PRE_ATTACKING)
 			
 			
 			ATTACKING:
@@ -139,6 +144,7 @@ func update_behaviour(new_behaviour):
 				# Move Mob to player and further more
 				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
 				change_animations(ATTACKING)
-				print("ATTACKING")
+#				print("ATTACKING")
 				behaviour_state = ATTACKING
 				mob_need_path = false
+				change_animations(ATTACKING)

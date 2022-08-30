@@ -63,6 +63,12 @@ func change_animations(animation_behaviour_state):
 		SEARCHING:
 			animationState.start("WALK")
 		
+		PRE_ATTACKING:
+			animationState.start("WALK")
+		
+		ATTACKING:
+			animationState.start("WALK")
+		
 		HURTING:
 			animationState.start("HURT")
 		
@@ -135,9 +141,10 @@ func update_behaviour(new_behaviour):
 					
 					# Update line path
 					line2D.points = []
-				print("PRE_ATTACKING")
+#				print("PRE_ATTACKING")
 				behaviour_state = PRE_ATTACKING
 				mob_need_path = true
+				change_animations(PRE_ATTACKING)
 			
 			
 			ATTACKING:
@@ -151,6 +158,7 @@ func update_behaviour(new_behaviour):
 				# Move Mob to player and further more
 				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
 				update_animations()
-				print("ATTACKING")
+#				print("ATTACKING")
 				behaviour_state = ATTACKING
 				mob_need_path = false
+				change_animations(ATTACKING)
