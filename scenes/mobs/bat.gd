@@ -15,7 +15,7 @@ func _ready():
 	attack_damage = 15
 	mob_weight = 10
 	spawn_time = Constants.SpawnTime.ONLY_NIGHT
-	max_pre_attack_time = get_new_pre_attack_time()
+	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 	
 	# Constants
 	HUNTING_SPEED = 50
@@ -112,7 +112,7 @@ func _process(delta):
 				
 				if path.size() == 0 and pre_attack_time > max_pre_attack_time:
 					pre_attack_time = 0.0
-					max_pre_attack_time = get_new_pre_attack_time()
+					max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 					update_behaviour(ATTACKING)
 
 

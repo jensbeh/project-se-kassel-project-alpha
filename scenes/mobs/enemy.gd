@@ -430,5 +430,5 @@ func mob_killed():
 	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
 
 
-func get_new_pre_attack_time() -> float:
-	return rng.randf_range(0.0, 2.5)
+func get_new_pre_attack_time(min_time, max_time) -> float:
+	return rng.randf_range(min_time, max_time)
