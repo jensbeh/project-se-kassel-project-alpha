@@ -15,8 +15,8 @@ func get_drag_data(_pos):
 		data["origin_slot"] = GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]
 		data["origin_texture"] = get_child(0).texture
 		data["origin_frame"] = get_child(0).frame
-		data["origin_stackable"] = false
-		data["origin_stack"] = 1
+		data["origin_stackable"] = true
+		data["origin_stack"] = PlayerData.inv_data[slot]["Stack"]
 		
 		# Texture wich will drag
 		var drag_texture = Sprite.new()
@@ -162,3 +162,26 @@ func show_tooltip():
 
 func hide_tooltip():
 	get_node("ToolTip").free()
+	
+	
+func _on_Icon_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
+		var slot = get_parent().get_name()
+		if PlayerData.inv_data[slot]["Item"] != null:
+			if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+				if PlayerData.inv_data[slot]["Stack"] != null:
+					PlayerData.inv_data[slot]["Stack"] -= 1
+					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+					int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
+					if PlayerData.inv_data[slot]["Stack"] <= 0:
+						PlayerData.inv_data[slot]["Stack"] = null
+						PlayerData.inv_data[slot]["Item"] = null
+						get_node("TextureRect/Stack").set_text("0")
+						get_node("TextureRect").visible = false
+						get_node("Sprite").set_texture(null)
+					elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
+						get_node("TextureRect/Stack").set_text("1")
+						get_node("TextureRect").visible = false
+					else:
+						get_node("TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
+

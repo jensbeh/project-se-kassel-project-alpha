@@ -64,7 +64,7 @@ func can_drop_data(_pos, data):
 			return true
 	# Swap item
 	else:
-		if data["origin_panel"] != "CharacterInterface" or GameData.item_data[str(data["target_item_id"])]["Category"] == "Weapon":
+		if data["origin_panel"] != "CharacterInterface" or check_category(data):
 			data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
 			data["target_texture"] = get_child(0).texture
 			data["target_frame"] = get_child(0).frame
@@ -99,6 +99,14 @@ func can_drop_data(_pos, data):
 		else:
 			return false
 
+
+# Check for same category
+func check_category(data):
+	if GameData.item_data[str(data["target_item_id"])]["Category"] == GameData.item_data[str(data["origin_item_id"])]["Category"]:
+		return true
+	else:
+		return false
+	
 
 func drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
@@ -161,7 +169,16 @@ func drop_data(_pos, data):
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 				check_slots()
 			# stacking for hotbar
-			#elif
+			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
+			data["origin_panel"] == "CharacterInterface"):
+				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+					PlayerData.equipment_data[origin_slot]["Item"] = null
+					PlayerData.equipment_data[origin_slot]["Stack"] = null
+				else:
+					PlayerData.equipment_data[origin_slot]["Stack"] = (PlayerData.equipment_dataa[origin_slot]["Stack"] - 
+					(Constants.MAX_STACK_SIZE - data["target_stack"]))
+				Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
+			# swaping
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
@@ -226,12 +243,21 @@ func drop_data(_pos, data):
 			# Update the texture and label of the origin
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0:
-				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-					data["origin_node"].get_child(0).texture = null
-					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+				if data["origin_panel"] == "CharacterInterface":
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						data["origin_node"].get_child(0).texture = null
+						data["origin_node"].get_node("TextureRect/Stack").set_text("")
+					else:
+						data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["origin_stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"])))
 				else:
-					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
-					(Constants.MAX_STACK_SIZE - data["target_stack"])))
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						data["origin_node"].get_child(0).texture = null
+						data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+					else:
+						data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"])))
+				
 			# swap
 			elif data["origin_panel"] == "TradeInventory" and data["target_item_id"] == null and split == 0:
 				data["origin_node"].get_child(0).texture = null
@@ -247,6 +273,8 @@ func drop_data(_pos, data):
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 				elif data["origin_panel"] == "Inventory" or data["origin_panel"] == "TradeInventory":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+				else:
+					data["origin_node"].get_node("TextureRect/Stack").set_text("")
 				
 			# Update the texture, label and data of the target
 			# stacking
@@ -300,12 +328,16 @@ func SplitStack(split_amount, data):
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	# update only when payed
 	if valid:
-		if MerchantData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "TradeInventory":
-			MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
-			MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
-			check_slots()
-		else:
+		if data["origin_panel"] == "TradeInventory":
+			if MerchantData.inv_data[origin_slot]["Stack"] != 0:
+				MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+				MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+				check_slots()
+		elif data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+		else:
+			PlayerData.equipment_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+			Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
 		PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 		if data["target_stack"] != null:
 			new_stack_size = data["target_stack"] + split_amount
@@ -316,10 +348,16 @@ func SplitStack(split_amount, data):
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
 		# origin label
-		if data["origin_stack"] - split_amount > 1:
-			data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+		if data["origin_panel"] != "CharacterInterface":
+			if data["origin_stack"] - split_amount > 1:
+				data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+			else:
+				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 		else:
-			data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+			if data["origin_stack"] - split_amount > 1:
+				data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+			else:
+				data["origin_node"].get_node("TextureRect/Stack").set_text("")
 		# target label
 		if new_stack_size > 1:
 			get_node("../TextureRect/Stack").set_text(str(new_stack_size))
@@ -336,6 +374,17 @@ func show_hide_stack_label(data):
 			data["origin_node"].get_parent().get_node("TextureRect").visible = true
 		else:
 			data["origin_node"].get_parent().get_node("TextureRect").visible = false
+		if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+		get_parent().get_node("TextureRect/Stack").get_text() != null):
+			get_parent().get_node("TextureRect").visible = true
+		else:
+			get_parent().get_node("TextureRect").visible = false
+	else:
+		if (int(data["origin_node"].get_node("TextureRect/Stack").get_text()) > 1 and 
+		data["origin_node"].get_node("TextureRect/Stack").get_text() != null):
+			data["origin_node"].get_node("TextureRect").visible = true
+		else:
+			data["origin_node"].get_node("TextureRect").visible = false
 		if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
 		get_parent().get_node("TextureRect/Stack").get_text() != null):
 			get_parent().get_node("TextureRect").visible = true
@@ -418,19 +467,20 @@ func check_slots():
 func _on_Icon_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
 		var slot = get_parent().get_name()
-		if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
-			if PlayerData.inv_data[slot]["Stack"] != null:
-				PlayerData.inv_data[slot]["Stack"] -= 1
-				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
-				int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
-				if PlayerData.inv_data[slot]["Stack"] <= 0:
-					PlayerData.inv_data[slot]["Stack"] = null
-					PlayerData.inv_data[slot]["Item"] = null
-					get_node("../TextureRect/Stack").set_text("0")
-					get_node("../TextureRect").visible = false
-					get_node("../Icon/Sprite").set_texture(null)
-				elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
-					get_node("../TextureRect/Stack").set_text("1")
-					get_node("../TextureRect").visible = false
-				else:
-					get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
+		if PlayerData.inv_data[slot]["Item"] != null:
+			if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+				if PlayerData.inv_data[slot]["Stack"] != null:
+					PlayerData.inv_data[slot]["Stack"] -= 1
+					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+					int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
+					if PlayerData.inv_data[slot]["Stack"] <= 0:
+						PlayerData.inv_data[slot]["Stack"] = null
+						PlayerData.inv_data[slot]["Item"] = null
+						get_node("../TextureRect/Stack").set_text("0")
+						get_node("../TextureRect").visible = false
+						get_node("../Icon/Sprite").set_texture(null)
+					elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
+						get_node("../TextureRect/Stack").set_text("1")
+						get_node("../TextureRect").visible = false
+					else:
+						get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
