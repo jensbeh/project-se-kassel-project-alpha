@@ -5,6 +5,7 @@ extends "res://scenes/mobs/enemy.gd"
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 
+# Variables
 var attack = false
 var previouse_player_global_position
 var previouse_global_position
