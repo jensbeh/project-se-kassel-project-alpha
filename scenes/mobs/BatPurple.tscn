@@ -708,7 +708,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 4
+frame = 6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -757,6 +757,7 @@ shape = SubResource( 8 )
 position = Vector2( 0, -3 )
 
 [node name="AttackShape" parent="PlayerAttackZone" index="0"]
+visible = false
 shape = SubResource( 40 )
 
 [node name="Line2D" type="Line2D" parent="."]

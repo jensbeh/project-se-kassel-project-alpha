@@ -69,8 +69,6 @@ var player_exp: int = 0
 # Variables
 var is_attacking = false
 var can_attack = false
-var max_attacking_radius
-var min_attacking_radius
 
 
 func _ready():
@@ -104,6 +102,7 @@ func _ready():
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
+
 
 func _physics_process(_delta):
 	# Handle User Input

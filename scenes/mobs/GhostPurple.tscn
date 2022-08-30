@@ -683,7 +683,7 @@ height = 0.0
 radius = 96.0
 
 [sub_resource type="CircleShape2D" id=40]
-radius = 24.0
+radius = 32.0
 
 [sub_resource type="CircleShape2D" id=67]
 radius = 8.0
@@ -764,6 +764,7 @@ width = 2.0
 default_color = Color( 1, 0, 0, 1 )
 
 [node name="HitboxZone" parent="." instance=ExtResource( 5 )]
+visible = false
 position = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]

@@ -431,5 +431,6 @@ func mob_killed():
 	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
 
 
+# Method to return a random time between min_time and max_time
 func get_new_pre_attack_time(min_time, max_time) -> float:
 	return rng.randf_range(min_time, max_time)
