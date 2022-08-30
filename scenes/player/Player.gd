@@ -9,9 +9,6 @@ onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
 
-# Nodes
-onready var attackAreaShape = $AttackArea/AttackAreaShape
-
 # Collision
 onready var ray = $RayCast2D
 

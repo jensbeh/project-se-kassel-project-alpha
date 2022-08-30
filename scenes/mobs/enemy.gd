@@ -35,9 +35,10 @@ var max_update_path_time = 0.4
 var max_searching_radius
 var min_searching_radius
 var start_searching_position
-var max_attacking_radius
-var min_attacking_radius
-var attack_direction
+var max_attacking_radius_around_player
+var min_attacking_radius_around_player
+var pre_attack_time = 0.0
+var max_pre_attack_time
 
 # Mob movment
 var acceleration = 350
@@ -62,6 +63,7 @@ onready var line2D = $Line2D
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set spawn_position
@@ -78,7 +80,7 @@ func _ready():
 	
 	# Setup searching variables
 	max_searching_radius = playerDetectionZoneShape.shape.radius
-	min_searching_radius = max_searching_radius / 3
+	min_searching_radius = max_searching_radius * 0.33
 	
 	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
 	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
@@ -88,9 +90,9 @@ func _ready():
 	healthBar.visible = false
 	healthBarBackground.visible = false
 	
-	# Setup searching variables
-	max_attacking_radius = 40
-	min_attacking_radius = max_attacking_radius - 4
+	# Setup attacking radius around player variables
+	max_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.95
+	min_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.85
 
 
 # Method to init variables, typically called after instancing
@@ -131,29 +133,6 @@ func _physics_process(delta):
 				# Follow searching path
 				if path.size() > 0:
 					move_to_position(delta)
-		
-		
-		PRE_ATTACKING:
-			# Follow path
-			if path.size() > 0:
-				move_to_position(delta)
-		
-		
-		ATTACKING:
-			# handle knockback
-			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
-			velocity = move_and_slide(velocity)
-			
-			if velocity == Vector2.ZERO:
-				if playerAttackZone.mob_can_attack:
-					update_behaviour(PRE_ATTACKING)
-				else:
-					update_behaviour(HUNTING)
-		
-#		ATTACKING:
-#			# check if mob can attack
-#			if !playerAttackZone.mob_can_attack:
-#				update_behaviour(HUNTING)
 		
 		
 		HURTING:
@@ -223,11 +202,6 @@ func _process(delta):
 			
 			# Mob is doing nothing, just standing and searching for player
 			search_player()
-		
-		PRE_ATTACKING:
-			if not mob_need_path:
-				if path.size() == 0:
-					update_behaviour(ATTACKING)
 
 
 # Method to move mob to players position
@@ -289,7 +263,6 @@ func search_player():
 # Method to update the behaviour of the mob
 func update_behaviour(new_behaviour):
 	if behaviour_state != new_behaviour:
-		print(new_behaviour)
 		
 		# Set previous behaviour state
 		previous_behaviour_state = behaviour_state
@@ -311,7 +284,7 @@ func update_behaviour(new_behaviour):
 				rng.randomize()
 				max_ideling_time = rng.randi_range(3, 10)
 				
-	#			print("IDLING")
+				print("IDLING")
 				behaviour_state = IDLING
 				mob_need_path = false
 				change_animations(IDLING)
@@ -327,7 +300,7 @@ func update_behaviour(new_behaviour):
 					# Update line path
 	#				line2D.points = []
 				
-	#			print("WANDERING")
+				print("WANDERING")
 				behaviour_state = WANDERING
 				mob_need_path = true
 				change_animations(WANDERING)
@@ -342,7 +315,7 @@ func update_behaviour(new_behaviour):
 					
 					# Update line path
 	#				line2D.points = []
-	#			print("HUNTING")
+				print("HUNTING")
 				behaviour_state = HUNTING
 				mob_need_path = true
 				change_animations(HUNTING)
@@ -362,14 +335,14 @@ func update_behaviour(new_behaviour):
 				rng.randomize()
 				max_searching_time = rng.randi_range(6, 12)
 				
-	#			print("SEARCHING")
+				print("SEARCHING")
 				behaviour_state = SEARCHING
 				mob_need_path = false
 				change_animations(SEARCHING)
 			
 			
 			HURTING:
-	#			print("HURTING")
+				print("HURTING")
 				if behaviour_state != HURTING:
 					behaviour_state = HURTING
 					# Show hurt animation if not already played
@@ -381,34 +354,6 @@ func update_behaviour(new_behaviour):
 					behaviour_state = DYING
 					# Show hurt animation if not already played
 					change_animations(DYING)
-			
-			
-			PRE_ATTACKING:
-				if behaviour_state != PRE_ATTACKING:
-					# Reset path in case player is seen but e.g. state is wandering
-					path.resize(0)
-
-					# Update line path
-					line2D.points = []
-				print("PRE_ATTACKING")
-				behaviour_state = PRE_ATTACKING
-				mob_need_path = true
-			
-			
-			ATTACKING:
-				if behaviour_state != ATTACKING:
-					# Reset path in case player is seen but e.g. state is wandering
-					path.resize(0)
-
-					# Update line path
-					line2D.points = []
-				
-				# Move Mob to player and further more
-				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
-				
-				print("ATTACKING")
-				behaviour_state = ATTACKING
-				mob_need_path = false
 
 
 # Method to update the animation with velocity for direction -> needs to code in child
@@ -440,7 +385,8 @@ func get_target_position():
 		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
 	
 	elif behaviour_state == PRE_ATTACKING:
-		return Utils.generate_position_near_mob(Utils.get_current_player().global_position, min_attacking_radius, max_attacking_radius, navigation_tile_map, collision_radius)
+		return Utils.generate_position_near_mob(Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+
 
 # Method is called from pathfinding_service to set new path to mob
 func update_path(new_path):
@@ -462,13 +408,12 @@ func set_mob_activity(is_active):
 		update_behaviour(previous_behaviour_state)
 
 
-
 func on_player_entered_attack_zone():
 	update_behaviour(PRE_ATTACKING)
 
+
 func on_player_exited_attack_zone():
-#	update_behaviour(HUNTING)
-	pass
+	update_behaviour(HUNTING)
 
 
 # Method to simulate damage and behaviour to mob
@@ -506,3 +451,7 @@ func mob_hurt():
 # Method is called when DIE animation is done
 func mob_killed():
 	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
+
+
+func get_new_pre_attack_time() -> float:
+	return rng.randf_range(0.0, 2.5)
