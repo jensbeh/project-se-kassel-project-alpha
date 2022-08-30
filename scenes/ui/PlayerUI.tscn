@@ -39,6 +39,7 @@ size = 24
 font_data = ExtResource( 2 )
 
 [node name="PlayerUI" type="Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 940.0
@@ -69,6 +70,7 @@ margin_bottom = 43.0
 custom_fonts/font = SubResource( 3 )
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 5 )
+value = 30.0
 allow_greater = true
 percent_visible = false
 
@@ -122,7 +124,7 @@ margin_right = -62.0
 margin_bottom = -250.0
 rect_scale = Vector2( 0.25, 0.25 )
 step = 0.01
-value = 100.0
+value = 80.0
 rounded = true
 texture_under = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
