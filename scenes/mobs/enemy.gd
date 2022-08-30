@@ -44,8 +44,7 @@ var max_pre_attack_time
 var acceleration = 350
 var friction = 200
 var speed = WANDERING_SPEED
-var player_threshold = 16
-var wandering_threshold = 5
+var position_threshold = 5
 var path : PoolVector2Array = []
 var navigation_tile_map
 var ideling_time = 0.0
@@ -124,7 +123,7 @@ func _physics_process(delta):
 			if player != null:
 				# Follow path
 				if path.size() > 0:
-					move_to_player(delta)
+					move_to_position(delta)
 		
 		
 		SEARCHING:
@@ -204,35 +203,10 @@ func _process(delta):
 			search_player()
 
 
-# Method to move mob to players position
-func move_to_player(delta):
-	# Remove point when reach with little radius -> take next one
-	if global_position.distance_to(path[0]) < player_threshold:
-		path.remove(0)
-		
-		# Update line
-#		line2D.points = path
-	else:
-		# Move mob
-		# Hunting player
-		var direction = global_position.direction_to(path[0])
-		velocity = velocity.move_toward(direction * speed, acceleration * delta)
-		velocity = move_and_slide(velocity)
-		
-		# Update anmination
-		update_animations()
-		
-		# Update line position
-#		line2D.global_position = Vector2(0,0)
-		
-#	if path.size() == 0:
-#		line2D.points = []
-
-
 # Method to move the mob to position
 func move_to_position(delta):
 	# Stop motion when reached position
-	if global_position.distance_to(path[0]) < wandering_threshold:
+	if global_position.distance_to(path[0]) < position_threshold:
 		path.remove(0)
 		
 		# Update line
@@ -350,6 +324,7 @@ func update_behaviour(new_behaviour):
 			
 			
 			DYING:
+				print("DYING")
 				if behaviour_state != DYING:
 					behaviour_state = DYING
 					# Show hurt animation if not already played
@@ -409,11 +384,13 @@ func set_mob_activity(is_active):
 
 
 func on_player_entered_attack_zone():
-	update_behaviour(PRE_ATTACKING)
+	if behaviour_state != DYING: # Because if mob is dying then state should be change with area's
+		update_behaviour(PRE_ATTACKING)
 
 
 func on_player_exited_attack_zone():
-	update_behaviour(HUNTING)
+	if behaviour_state != DYING: # Because if mob is dying then state should be change with area's
+		update_behaviour(HUNTING)
 
 
 # Method to simulate damage and behaviour to mob

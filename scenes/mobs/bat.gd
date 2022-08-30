@@ -19,7 +19,7 @@ func _ready():
 	
 	# Constants
 	HUNTING_SPEED = 50
-	WANDERING_SPEED = 20
+	WANDERING_SPEED = 25
 	
 	# Animations
 	setup_animations()
@@ -83,7 +83,7 @@ func _physics_process(delta):
 		
 		
 		ATTACKING:
-			# handle knockback
+			# Move mob
 			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 			velocity = move_and_slide(velocity)
 			
