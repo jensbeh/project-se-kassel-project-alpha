@@ -71,6 +71,7 @@ var player_exp: int = 0
 var is_attacking = false
 var can_attack = false
 var hurting = false
+var dying = false
 
 
 func _ready():
@@ -125,7 +126,7 @@ func _physics_process(_delta):
 	if Input.is_action_pressed("Shift"):
 		velocity *= 1.4
 	
-	if not is_attacking and not hurting: # Disable walking if attacking
+	if not is_attacking and not hurting and not dying: # Disable walking if attacking
 		if velocity != Vector2.ZERO:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
@@ -751,7 +752,7 @@ func _on_DamageAreaRight_area_entered(area):
 			entity.simulate_damage(damage, knockback)
 
 
-# Method to simulate damage and behaviour to mob
+# Method to simulate damage and behaviour to player
 func simulate_damage(damage_to_player : int, knockback_to_player : int):
 	# Add damage
 	health -= damage_to_player
@@ -761,27 +762,28 @@ func simulate_damage(damage_to_player : int, knockback_to_player : int):
 	print("damage_to_player: " + str(damage_to_player))
 	print("knockback_to_player: " + str(knockback_to_player))
 	
-#	# Mob is killed
+	# Check if player is hurted or killed
 	if health <= 0:
-		print("DIE")
-		hurting = true
-		set_movement(false)
-		animation_state.travel("Die")
-		
+		kill_player()
 	else:
-		print("HURT")
-		print(animation_state.get_current_node())
-		hurting = true
-		set_movement(false)
-		animation_state.travel("Hurt")
+		hurt_player()
 		
 	# Add knockback
 	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
 #	var min_knockback_velocity_factor = 50
 #	var max_knockback_velocity_factor = 200
 #	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
-#	var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
+#	var knockback_velocity_factor = m * knockback_to_player + min_knockback_velocity_factor
 #	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
+
+
+# Method is called when hurting player
+func hurt_player():
+	print("HURT")
+	print(animation_state.get_current_node())
+	hurting = true
+	set_movement(false)
+	animation_state.travel("Hurt")
 
 
 # Method is called when HURT animation is done
@@ -791,6 +793,34 @@ func player_hurt():
 	print("player_hurt END")
 
 
+# Method is called when killing player
+func kill_player():
+	# Remove player from player layer so the mobs wont recognize the player anymore
+	set_collision_layer_bit(1, false)
+	
+	print("DIE")
+	dying = true
+	set_movement(false)
+	animation_state.travel("Die")
+
+
 # Method is called when DIE animation is done
 func player_killed():
+	Utils.get_scene_manager().show_death_screen()
 	print("player_killed END")
+
+
+# Method to return true if player is dying/died otherwise false -> called from scene_manager
+func is_player_dying():
+	return dying
+
+
+# Method to reset the players behaviour after dying -> called from scene_manager
+func reset_player_after_dying():
+	# Add player to player layer so the mobs will recognize the player again
+	set_collision_layer_bit(1, true)
+	
+	health = 100
+	dying = false
+	set_movement(true)
+	animation_state.travel("Idle")
