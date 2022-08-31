@@ -70,6 +70,7 @@ var player_exp: int = 0
 # Variables
 var is_attacking = false
 var can_attack = false
+var hurting = false
 
 
 func _ready():
@@ -102,6 +103,7 @@ func _ready():
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
+	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 
 
@@ -123,10 +125,11 @@ func _physics_process(_delta):
 	if Input.is_action_pressed("Shift"):
 		velocity *= 1.4
 	
-	if not is_attacking: # Disable walking if attacking
+	if not is_attacking and not hurting: # Disable walking if attacking
 		if velocity != Vector2.ZERO:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
+			animation_tree.set("parameters/Hurt/blend_position", velocity)
 			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 			animation_state.travel("Walk")
 		else:
@@ -461,6 +464,77 @@ func set_attack_key(attack_animation, track_str, value):
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1)) + value)
 
 
+# Method to reset animations back to first frame
+func reset_hurt_key(track_str):
+	# Get animation for color offset
+	var newAnimation = animation_player.get_animation("HurtDown")
+	# Get track from animation for color offset
+	var track_idx = newAnimation.find_track(track_str)
+	# Calculate offset
+	var current_frame = int(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)))
+	var current_texture_hframes = get_node(track_str.substr(0, track_str.find(":"))).hframes
+	var newValue = 0 - current_frame % current_texture_hframes
+	# Update frame
+	_set_hurt_key(track_str, newValue)
+
+
+# Method to change all animiations frames/colors
+func _set_hurt_key(track_str, value):
+	var _hurt_down = animation_player.get_animation("HurtDown")
+	set_hurt_key(_hurt_down, track_str, value)
+	
+	var _hurt_up = animation_player.get_animation("HurtUp")
+	set_hurt_key(_hurt_up, track_str, value)
+	
+	var _hurt_right = animation_player.get_animation("HurtRight")
+	set_hurt_key(_hurt_right, track_str, value)
+	
+	var _hurt_left = animation_player.get_animation("HurtLeft")
+	set_hurt_key(_hurt_left, track_str, value)
+
+
+# Method changes the frames of the animation
+func set_hurt_key(hurt_animation, track_str, value):
+	var track_idx = hurt_animation.find_track(track_str)
+	
+	if hurt_animation.track_find_key(track_idx, 0.0, 1) != -1:
+		hurt_animation.track_set_key_value(track_idx, hurt_animation.track_find_key(track_idx, 0.0, 1),
+			hurt_animation.track_get_key_value(track_idx, hurt_animation.track_find_key(track_idx, 0.0, 1)) + value)
+
+
+# Method to reset animations back to first frame
+func reset_die_key(track_str):
+	# Get animation for color offset
+	var newAnimation = animation_player.get_animation("Die")
+	# Get track from animation for color offset
+	var track_idx = newAnimation.find_track(track_str)
+	# Calculate offset
+	var current_frame = int(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)))
+	var current_texture_hframes = get_node(track_str.substr(0, track_str.find(":"))).hframes
+	var newValue = 0 - current_frame % current_texture_hframes
+	# Update frame
+	_set_die_key(track_str, newValue)
+
+
+# Method to change all animiations frames/colors
+func _set_die_key(track_str, value):
+	var _die_animation = animation_player.get_animation("Die")
+	set_die_key(_die_animation, track_str, value)
+
+
+# Method changes the frames of the animation
+func set_die_key(die_animation, track_str, value):
+	var track_idx = die_animation.find_track(track_str)
+	
+	if die_animation.track_find_key(track_idx, 0.0, 1) != -1:
+		die_animation.track_set_key_value(track_idx, die_animation.track_find_key(track_idx, 0.0, 1),
+			die_animation.track_get_key_value(track_idx, die_animation.track_find_key(track_idx, 0.0, 1)) + value)
+	
+	if die_animation.track_find_key(track_idx, 1.0, 1) != -1:
+		die_animation.track_set_key_value(track_idx, die_animation.track_find_key(track_idx, 1.0, 1),
+			die_animation.track_get_key_value(track_idx, die_animation.track_find_key(track_idx, 1.0, 1)) + value)
+	
+
 # Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
 	animation_tree.active = state
@@ -476,6 +550,7 @@ func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
+	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", view_direction)
 	position = spawn_position
 	animation_tree.active = true
@@ -688,9 +763,17 @@ func simulate_damage(damage_to_player : int, knockback_to_player : int):
 	
 #	# Mob is killed
 	if health <= 0:
-		print("update_behaviour(DYING)")
+		print("DIE")
+		hurting = true
+		set_movement(false)
+		animation_state.travel("Die")
+		
 	else:
-		print("update_behaviour(HURTING)")
+		print("HURT")
+		print(animation_state.get_current_node())
+		hurting = true
+		set_movement(false)
+		animation_state.travel("Hurt")
 		
 	# Add knockback
 	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
@@ -699,3 +782,15 @@ func simulate_damage(damage_to_player : int, knockback_to_player : int):
 #	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
 #	var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
 #	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
+
+
+# Method is called when HURT animation is done
+func player_hurt():
+	hurting = false
+	set_movement(true)
+	print("player_hurt END")
+
+
+# Method is called when DIE animation is done
+func player_killed():
+	print("player_killed END")
