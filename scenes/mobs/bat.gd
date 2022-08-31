@@ -12,7 +12,7 @@ func _ready():
 	# Mob specific
 	max_health = 100
 	health = 100
-	attack_damage = 15
+	attack_damage = 20
 	knockback = 1
 	mob_weight = 10
 	spawn_time = Constants.SpawnTime.ONLY_NIGHT
@@ -173,4 +173,4 @@ func _on_DamageArea_area_entered(area):
 			
 			if player.has_method("simulate_damage"):
 				var damage = get_attack_damage(attack_damage)
-				player.simulate_damage(damage, knockback)
+				player.simulate_damage(global_position, damage, knockback)

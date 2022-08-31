@@ -10,7 +10,7 @@ func _ready():
 	# Mob specific
 	max_health = 100
 	health = 100
-	attack_damage = 15
+	attack_damage = 35
 	mob_weight = 35
 	spawn_time = Constants.SpawnTime.ONLY_NIGHT
 	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
