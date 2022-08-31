@@ -59,8 +59,8 @@ var gold
 var attack = 0
 var knockback = 0
 var attack_speed = 0
-var max_health = 100
-var current_health
+var max_health: int = 100
+var current_health: int
 var data
 var level = 1
 var dragging = false
@@ -567,7 +567,7 @@ func get_max_health():
 	return max_health
 
 
-func set_max_health(new_max_health):
+func set_max_health(new_max_health: int):
 	max_health = new_max_health
 	data.maxLP = new_max_health
 
@@ -576,9 +576,9 @@ func get_current_health():
 	return current_health
 
 
-func set_current_health(new_current_health):
+func set_current_health(new_current_health: int):
 	current_health = new_current_health
-	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_life(int(int(new_current_health)*100 / int(max_health)))
+	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_life(new_current_health*100 / max_health)
 	data.currentHP = new_current_health
 
 

@@ -28,6 +28,8 @@ func set_exp(new_value):
 		Utils.get_current_player().set_level(int(player_level +1))
 		Utils.get_current_player().set_exp(new_value - exp_bar.max_value)
 		exp_bar.max_value = (player_level + 1) * 100
+		# increase max lp by 10 by level up
+		Utils.get_current_player().set_max_health(100 + player_level*10)
 		if int(player_level +1) == 5:
 			change_heart_number(4)
 		elif int(player_level +1) == 10:
