@@ -5,6 +5,10 @@ extends "res://scenes/mobs/enemy.gd"
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 
+# Variables
+var attack = false
+var previouse_player_global_position
+var previouse_global_position
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,10 +19,11 @@ func _ready():
 	attack_damage = 15
 	mob_weight = 10
 	spawn_time = Constants.SpawnTime.ALWAYS
+	max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
 	
 	# Constants
-	HUNTING_SPEED = 70
-	WANDERING_SPEED = 40
+	HUNTING_SPEED = 35
+	WANDERING_SPEED = 20
 	
 	# Animations
 	setup_animations()
@@ -38,6 +43,14 @@ func update_animations():
 	animationTree.set("parameters/DIE/blend_position", velocity)
 
 
+# Method to update the view direction with custom value
+func set_view_direction(view_direction):
+	animationTree.set("parameters/IDLE/blend_position", view_direction)
+	animationTree.set("parameters/WALK/blend_position", view_direction)
+	animationTree.set("parameters/HURT/blend_position", view_direction)
+	animationTree.set("parameters/DIE/blend_position", view_direction)
+
+
 # Method to change the animations dependent on behaviour state
 func change_animations(animation_behaviour_state):
 	# Handle animation_behaviour_state
@@ -54,8 +67,111 @@ func change_animations(animation_behaviour_state):
 		SEARCHING:
 			animationState.start("WALK")
 		
+		PRE_ATTACKING:
+			animationState.start("WALK")
+		
+		ATTACKING:
+			animationState.start("WALK")
+		
 		HURTING:
 			animationState.start("HURT")
 		
 		DYING:
 			animationState.start("DIE")
+
+
+func _physics_process(delta):
+	# Update parent method
+	._physics_process(delta)
+	
+	# Handle behaviour
+	match behaviour_state:
+		PRE_ATTACKING:
+			# Follow path
+			if path.size() > 0:
+				move_to_position(delta)
+		
+		
+		ATTACKING:
+			# Move mob
+			if attack:
+				global_position = global_position.move_toward(previouse_player_global_position, delta * 80)
+				var view_direction = global_position.direction_to(previouse_player_global_position)
+				set_view_direction(view_direction)
+				if global_position == previouse_player_global_position:
+					attack = false
+			else:
+				global_position = global_position.move_toward(previouse_global_position, delta * 80)
+				var view_direction = global_position.direction_to(previouse_player_global_position)
+				set_view_direction(view_direction)
+				if global_position == previouse_global_position:
+					if playerAttackZone.mob_can_attack:
+						update_behaviour(PRE_ATTACKING)
+					else:
+						update_behaviour(HUNTING)
+
+
+func _process(delta):
+	# Update parent method
+	._process(delta)
+	
+	# Handle behaviour
+	match behaviour_state:
+		PRE_ATTACKING:
+			# Update pre-attack timer so that the mob will wait a specific time before attacking / cooldown
+			pre_attack_time += delta
+			
+			if not mob_need_path:
+				if path.size() == 0:
+					# Set view direction to player
+					var view_direction = global_position.direction_to(Utils.get_current_player().global_position)
+					set_view_direction(view_direction)
+				
+				if path.size() == 0 and pre_attack_time > max_pre_attack_time:
+					pre_attack_time = 0.0
+					max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
+					update_behaviour(ATTACKING)
+
+
+# Method to update the behaviour of the mob
+func update_behaviour(new_behaviour):
+	# Update parent method
+	.update_behaviour(new_behaviour)
+	
+	if behaviour_state != new_behaviour:
+		# Set previous behaviour state
+		previous_behaviour_state = behaviour_state
+		
+		# Handle new bahaviour
+		match new_behaviour:
+			PRE_ATTACKING:
+				speed = HUNTING_SPEED
+				if behaviour_state != PRE_ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					# Update line path
+					line2D.points = []
+#				print("PRE_ATTACKING")
+				behaviour_state = PRE_ATTACKING
+				mob_need_path = true
+				change_animations(PRE_ATTACKING)
+			
+			
+			ATTACKING:
+				if behaviour_state != ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					# Update line path
+					line2D.points = []
+				
+				# Move Mob to player and further more
+				update_animations()
+				attack = true
+				previouse_global_position = global_position
+				previouse_player_global_position = Utils.get_current_player().global_position
+#				print("ATTACKING")
+				behaviour_state = ATTACKING
+				mob_need_path = false
+				change_animations(ATTACKING)

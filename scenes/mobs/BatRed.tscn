@@ -671,7 +671,7 @@ height = 0.0
 radius = 96.0
 
 [sub_resource type="CircleShape2D" id=40]
-radius = 24.0
+radius = 32.0
 
 [sub_resource type="CircleShape2D" id=131]
 radius = 8.0
@@ -696,7 +696,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 5
+frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")

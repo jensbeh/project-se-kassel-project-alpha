@@ -13,10 +13,11 @@ func _ready():
 	attack_damage = 15
 	mob_weight = 35
 	spawn_time = Constants.SpawnTime.ONLY_NIGHT
+	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 	
 	# Constants
-	HUNTING_SPEED = 90
-	WANDERING_SPEED = 15
+	HUNTING_SPEED = 45
+	WANDERING_SPEED = 8
 	
 	# Animations
 	setup_animations()
@@ -48,6 +49,14 @@ func change_animations(animation_behaviour_state):
 			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("MOVE")
 		
+		PRE_ATTACKING:
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
+		
+		ATTACKING:
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
+		
 		HURTING:
 			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("MOVE")
@@ -56,3 +65,86 @@ func change_animations(animation_behaviour_state):
 		DYING:
 			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("DIE")
+
+
+func _physics_process(delta):
+	# Update parent method
+	._physics_process(delta)
+	
+	# Handle behaviour
+	match behaviour_state:
+		PRE_ATTACKING:
+			# Follow path
+			if path.size() > 0:
+				move_to_position(delta)
+		
+		
+		ATTACKING:
+			# Move mob
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
+			
+			if velocity == Vector2.ZERO:
+				if playerAttackZone.mob_can_attack:
+					update_behaviour(PRE_ATTACKING)
+				else:
+					update_behaviour(HUNTING)
+
+
+func _process(delta):
+	# Update parent method
+	._process(delta)
+	
+	# Handle behaviour
+	match behaviour_state:
+		PRE_ATTACKING:
+			# Update pre-attack timer so that the mob will wait a specific time before attacking / cooldown
+			pre_attack_time += delta
+			
+			if not mob_need_path:
+				if path.size() == 0 and pre_attack_time > max_pre_attack_time:
+					pre_attack_time = 0.0
+					max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
+					update_behaviour(ATTACKING)
+
+
+# Method to update the behaviour of the mob
+func update_behaviour(new_behaviour):
+	# Update parent method
+	.update_behaviour(new_behaviour)
+	
+	if behaviour_state != new_behaviour:
+		# Set previous behaviour state
+		previous_behaviour_state = behaviour_state
+		
+		# Handle new bahaviour
+		match new_behaviour:
+			PRE_ATTACKING:
+				speed = HUNTING_SPEED
+				if behaviour_state != PRE_ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					# Update line path
+					line2D.points = []
+#				print("PRE_ATTACKING")
+				behaviour_state = PRE_ATTACKING
+				mob_need_path = true
+				change_animations(PRE_ATTACKING)
+			
+			
+			ATTACKING:
+				if behaviour_state != ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					# Update line path
+					line2D.points = []
+				
+				# Move Mob to player and further more
+				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
+				change_animations(ATTACKING)
+#				print("ATTACKING")
+				behaviour_state = ATTACKING
+				mob_need_path = false
+				change_animations(ATTACKING)
