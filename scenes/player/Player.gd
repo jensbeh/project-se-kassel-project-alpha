@@ -152,17 +152,18 @@ func _physics_process(delta):
 # Method handles key inputs
 func _input(event):
 	Utils.get_scene_manager().get_UI().get_node("ControlNotes").update()
+	
 	if event.is_action_pressed("e"):
-#		print("Pressed e")
+		
 		if player_can_interact:
-#			print("interacted")
 			emit_signal("player_interact")
+			
 		# Remove the trade inventory
 		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null and !dragging:
 			Utils.get_scene_manager().get_UI().get_node("TradeInventory").queue_free()
-			Utils.get_current_player().set_player_can_interact(true)
-			Utils.get_current_player().set_movement(true)
-			Utils.get_current_player().set_movment_animation(true)
+			set_player_can_interact(true)
+			set_movement(true)
+			set_movment_animation(true)
 			# Reset npc interaction state
 			for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 				npc.set_interacted(false)
@@ -171,7 +172,7 @@ func _input(event):
 			MerchantData.save_merchant_inventory()
 	
 	# Open game menu with "esc"
-	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_UI().find_node("GameMenu") == null:
+	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_scene_manager().get_UI().find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
@@ -185,7 +186,7 @@ func _input(event):
 		Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
 	
 	# Open character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_UI().find_node("CharacterInterface") == null:
+	elif event.is_action_pressed("character_inventory") and movement and not hurting and not dying and Utils.get_scene_manager().get_UI().find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
@@ -205,11 +206,10 @@ func _input(event):
 		Utils.get_scene_manager().get_UI().get_node("ControlNotes").show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement:
+	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying:
 		is_attacking = true
 		set_movement(false)
 		animation_state.start("Attack")
-#		print("ATTACK")
 
 
 # Method is called at the end of any attack animation
@@ -788,7 +788,8 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 
 # Method is called when hurting player
 func hurt_player():
-	hurting = true
+	if animation_tree.active: # Because when in menu the animation tree is disabled and the animation is never finished to unlock "hurting"
+		hurting = true
 	set_movement(false)
 	animation_state.start("Hurt")
 
@@ -806,7 +807,9 @@ func kill_player():
 	
 	dying = true
 	set_movement(false)
-	animation_state.start("Die")
+	if not animation_tree.active: # Show "Die" animation in all states to call "player_killed"
+		animation_tree.active = true
+	animation_state.travel("Die")
 
 
 # Method is called when DIE animation is done
@@ -827,5 +830,6 @@ func reset_player_after_dying():
 	health = 100
 	hurting = false
 	dying = false
+	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")

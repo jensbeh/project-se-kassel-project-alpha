@@ -38,6 +38,14 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().set_movment_animation(false)
 		Utils.get_current_player().set_player_can_interact(false)
 	
+	# Cleanup UI
+	# Remove "ESC" Game Menu
+	if get_UI().get_node_or_null("GameMenu") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("GameMenu"))
+	# Remove "I" Inventory
+	if get_UI().get_node_or_null("CharacterInterface") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("CharacterInterface"))
+	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 		loading_screen_animation_player.play("GameFadeToBlack")
