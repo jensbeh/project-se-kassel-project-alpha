@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=2]
+[gd_scene load_steps=77 format=2]
 
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=6]
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=7]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://scenes/mobs/DamageArea.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Animation" id=88]
 resource_name = "Die_Down"
@@ -700,6 +701,9 @@ radius = 32.0
 [sub_resource type="CircleShape2D" id=131]
 radius = 8.0
 
+[sub_resource type="CircleShape2D" id=135]
+radius = 8.0
+
 [sub_resource type="DynamicFont" id=132]
 size = 24
 font_data = ExtResource( 8 )
@@ -782,6 +786,13 @@ position = Vector2( 0, -2 )
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
 shape = SubResource( 131 )
 
+[node name="DamageArea" parent="." instance=ExtResource( 9 )]
+visible = false
+position = Vector2( 0, -3 )
+
+[node name="CollisionShape2D" parent="DamageArea" index="0"]
+shape = SubResource( 135 )
+
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 margin_left = -424.0
 margin_top = -38.0
@@ -808,6 +819,9 @@ value = 100.0
 allow_greater = true
 percent_visible = false
 
+[connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
+
 [editable path="PlayerDetectionZone"]
 [editable path="PlayerAttackZone"]
 [editable path="HitboxZone"]
+[editable path="DamageArea"]

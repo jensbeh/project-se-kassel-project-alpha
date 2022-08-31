@@ -208,7 +208,7 @@ func _input(event):
 	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement:
 		is_attacking = true
 		set_movement(false)
-		animation_state.travel("Attack")
+		animation_state.start("Attack")
 #		print("ATTACK")
 
 
@@ -790,7 +790,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 func hurt_player():
 	hurting = true
 	set_movement(false)
-	animation_state.travel("Hurt")
+	animation_state.start("Hurt")
 
 
 # Method is called when HURT animation is done
@@ -806,7 +806,7 @@ func kill_player():
 	
 	dying = true
 	set_movement(false)
-	animation_state.travel("Die")
+	animation_state.start("Die")
 
 
 # Method is called when DIE animation is done
@@ -825,6 +825,7 @@ func reset_player_after_dying():
 	set_collision_layer_bit(1, true)
 	
 	health = 100
+	hurting = false
 	dying = false
 	set_movement(true)
-	animation_state.travel("Idle")
+	animation_state.start("Idle")

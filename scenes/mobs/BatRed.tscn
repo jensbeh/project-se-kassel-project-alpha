@@ -759,8 +759,6 @@ default_color = Color( 1, 0, 0, 1 )
 [node name="HitboxZone" parent="." instance=ExtResource( 5 )]
 visible = false
 position = Vector2( 0, -3 )
-collision_layer = 12
-collision_mask = 0
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
 shape = SubResource( 131 )
@@ -797,6 +795,8 @@ custom_styles/bg = SubResource( 134 )
 value = 100.0
 allow_greater = true
 percent_visible = false
+
+[connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 
 [editable path="PlayerDetectionZone"]
 [editable path="PlayerAttackZone"]
