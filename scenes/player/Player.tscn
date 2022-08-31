@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=66 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -18,14 +18,9 @@
 [ext_resource path="res://scenes/light/CustomLight.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/player/attack_swing.png" type="Texture" id=17]
 [ext_resource path="res://assets/player/weapons/wooden_sword_10001.png" type="Texture" id=18]
-[ext_resource path="res://scenes/player/HitboxZone.tscn" type="PackedScene" id=19]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
-
-[sub_resource type="CapsuleShape2D" id=67]
-radius = 6.66667
-height = 2.22222
 
 [sub_resource type="Animation" id=40]
 resource_name = "AttackDown"
@@ -3235,8 +3230,6 @@ texture = ExtResource( 17 )
 vframes = 4
 
 [node name="DamageAreaBottom" type="Area2D" parent="AttackSwing"]
-collision_layer = 0
-collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaBottom"]
@@ -3246,8 +3239,6 @@ polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556
 disabled = true
 
 [node name="DamageAreaLeft" type="Area2D" parent="AttackSwing"]
-collision_layer = 0
-collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaLeft"]
@@ -3258,8 +3249,6 @@ polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556
 disabled = true
 
 [node name="DamageAreaTop" type="Area2D" parent="AttackSwing"]
-collision_layer = 0
-collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaTop"]
@@ -3270,8 +3259,6 @@ polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556
 disabled = true
 
 [node name="DamageAreaRight" type="Area2D" parent="AttackSwing"]
-collision_layer = 0
-collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaRight"]
@@ -3292,14 +3279,6 @@ vframes = 4
 visible = false
 position = Vector2( 0, 1.5 )
 shape = SubResource( 1 )
-
-[node name="HitboxZone" parent="." instance=ExtResource( 19 )]
-visible = false
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionShape2D" parent="HitboxZone" index="0"]
-shape = SubResource( 67 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
@@ -3345,5 +3324,3 @@ radius = 64
 [connection signal="area_entered" from="AttackSwing/DamageAreaLeft" to="." method="_on_DamageAreaLeft_area_entered"]
 [connection signal="area_entered" from="AttackSwing/DamageAreaTop" to="." method="_on_DamageAreaTop_area_entered"]
 [connection signal="area_entered" from="AttackSwing/DamageAreaRight" to="." method="_on_DamageAreaRight_area_entered"]
-
-[editable path="HitboxZone"]

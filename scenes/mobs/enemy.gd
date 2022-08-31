@@ -5,10 +5,9 @@ var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 
 # Mob specific
-var max_health = 100
+var max_heath = 100
 var health = 100
 var attack_damage = 15
-var knockback = 0
 var spawn_time = Constants.SpawnTime.ALWAYS
 var mob_weight
 
@@ -395,12 +394,12 @@ func on_player_exited_attack_zone():
 
 
 # Method to simulate damage and behaviour to mob
-func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
+func simulate_damage(damage : int, knockback : int):
 	# Add damage
-	health -= damage_to_mob
+	health -= damage
 	
 	# Healthbar
-	var healthbar_value_in_percent = (100 / max_health) * health
+	var healthbar_value_in_percent = (100 / max_heath) * health
 	healthBar.value = healthbar_value_in_percent
 	if not healthBar.visible:
 		healthBar.visible = true
@@ -417,7 +416,7 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	var min_knockback_velocity_factor = 50
 	var max_knockback_velocity_factor = 200
 	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
-	var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
+	var knockback_velocity_factor = m * knockback + min_knockback_velocity_factor - mob_weight
 	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
 
 
@@ -435,22 +434,3 @@ func mob_killed():
 # Method to return a random time between min_time and max_time
 func get_new_pre_attack_time(min_time, max_time) -> float:
 	return rng.randf_range(min_time, max_time)
-
-
-# Method to return the attack_damage
-func get_attack_damage(mob_attack_damage):
-	randomize()
-	var random_float = randf()
-	
-	# Calculate damage
-	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
-		# Return CRITICAL_ATTACK damage
-		var damage = mob_attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
-		return damage
-	
-	else:
-		# Return NORMAL_ATTACK damage
-		rng.randomize()
-		var normal_attack_factor = rng.randf_range(Constants.NORMAL_ATTACK_MIN_DAMAGE_FACTOR, Constants.NORMAL_ATTACK_MAX_DAMAGE_FACTOR)
-		var damage = int(round(mob_attack_damage * normal_attack_factor))
-		return damage

@@ -14,7 +14,7 @@ var previouse_global_position
 func _ready():
 	# Setup mob
 	# Mob specific
-	max_health = 100
+	max_heath = 100
 	health = 100
 	attack_damage = 15
 	mob_weight = 10

@@ -60,7 +60,6 @@ var attack_damage = 0
 var knockback = 0
 var attack_speed = 0
 var max_health
-var health = 100
 var data
 var level = 1
 var dragging = false
@@ -674,28 +673,3 @@ func _on_DamageAreaRight_area_entered(area):
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
 			entity.simulate_damage(damage, knockback)
-
-
-# Method to simulate damage and behaviour to mob
-func simulate_damage(damage_to_player : int, knockback_to_player : int):
-	# Add damage
-	health -= damage_to_player
-	
-	print("health: " + str(health))
-	print("max_health: " + str(max_health))
-	print("damage_to_player: " + str(damage_to_player))
-	print("knockback_to_player: " + str(knockback_to_player))
-	
-#	# Mob is killed
-	if health <= 0:
-		print("update_behaviour(DYING)")
-	else:
-		print("update_behaviour(HURTING)")
-		
-	# Add knockback
-	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-#	var min_knockback_velocity_factor = 50
-#	var max_knockback_velocity_factor = 200
-#	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
-#	var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
-#	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
