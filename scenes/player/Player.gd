@@ -56,7 +56,7 @@ var player_can_interact
 
 # player stats and values
 var gold
-var attack = 0
+var attack_damage = 0
 var knockback = 0
 var attack_speed = 0
 var max_health: int = 100
@@ -87,7 +87,6 @@ func _ready():
 	maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
 	glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
 	hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
-#	weaponSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
 	
 	shadow.visible = false
 	
@@ -104,9 +103,6 @@ func _ready():
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
-	
-	# Weapon animation speed
-	animation_tree.set("parameters/Attack/TimeScale/scale", 1.0)
 
 
 func _physics_process(_delta):
@@ -146,70 +142,69 @@ func _physics_process(_delta):
 
 # Method handles key inputs
 func _input(event):
-	Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").update()
+	Utils.get_scene_manager().get_UI().get_node("ControlNotes").update()
 	if event.is_action_pressed("e"):
-		print("Pressed e")
+#		print("Pressed e")
 		if player_can_interact:
-			print("interacted")
+#			print("interacted")
 			emit_signal("player_interact")
 		# Remove the trade inventory
-		if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") != null and !dragging:
-			Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").queue_free()
+		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null and !dragging:
+			Utils.get_scene_manager().get_UI().get_node("TradeInventory").queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
 			# Reset npc interaction state
-			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+			for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 				npc.set_interacted(false)
 			PlayerData.save_inventory()
 			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
 	
 	# Open game menu with "esc"
-	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_node("UI").find_node("GameMenu") == null:
+	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_UI().find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
-		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.GAME_MENU_PATH).instance())
+		Utils.get_scene_manager().get_UI().add_child(load(Constants.GAME_MENU_PATH).instance())
 		save_player_data(Utils.get_current_player().get_data())
 	# Close game menu with "esc" when game menu is open
-	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
+	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_UI().get_node_or_null("GameMenu") != null:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
-		Utils.get_scene_manager().get_node("UI").get_node("GameMenu").queue_free()
+		Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
 	
 	# Open character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_node("UI").find_node("CharacterInterface") == null:
+	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_UI().find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
-		Utils.get_scene_manager().get_node("UI").add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+		Utils.get_scene_manager().get_UI().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
 	# Close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface") != null and !dragging:
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_UI().get_node_or_null("CharacterInterface") != null and !dragging:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
 		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
-		Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").queue_free()
+		Utils.get_scene_manager().get_UI().get_node("CharacterInterface").queue_free()
 	
 	# Control Notes
 	elif event.is_action_pressed("control_notes") and !preview:
-		Utils.get_scene_manager().get_node("UI").get_node("ControlNotes").show_hide_control_notes()
+		Utils.get_scene_manager().get_UI().get_node("ControlNotes").show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and can_attack and movement:
+	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement:
 		is_attacking = true
 		set_movement(false)
 		animation_state.travel("Attack")
-		print("ATTACK")
+#		print("ATTACK")
 
 
 # Method is called at the end of any attack animation
 func on_attack_finished():
-	print("on_attack_finished")
 	set_movement(true)
 	is_attacking = false
 
@@ -508,7 +503,6 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback):
 	if new_weapon_id != null:
 		var weapon_id_str = str(new_weapon_id)
-		print(weapon_id_str)
 		can_attack = true
 		var weapons_dir = Directory.new()
 		var weapon_path = ""
@@ -532,18 +526,36 @@ func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback
 		can_attack = false
 		
 		
-	attack = new_attack_value
+	attack_damage = new_attack_value
 	data.attack = new_attack_value
 	
 	attack_speed = new_attack_speed
 	data.attack_speed = new_attack_speed
+	# Update attack animation speed
+	animation_tree.set("parameters/Attack/TimeScale/scale", new_attack_speed)
 	
 	knockback = new_knockback
 	data.knockback = new_knockback
 
 
-func get_attack():
-	return attack
+# Method to return the attack_damage
+func get_attack_damage():
+	randomize()
+	var random_float = randf()
+	
+	# Calculate damage
+	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
+		# Return CRITICAL_ATTACK damage
+		var damage = attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
+		return damage
+	
+	else:
+		# Return NORMAL_ATTACK damage
+		var rng = RandomNumberGenerator.new()
+		rng.randomize()
+		var normal_attack_factor = rng.randf_range(Constants.NORMAL_ATTACK_MIN_DAMAGE_FACTOR, Constants.NORMAL_ATTACK_MAX_DAMAGE_FACTOR)
+		var damage = int(round(attack_damage * normal_attack_factor))
+		return damage
 
 
 func get_attack_speed():
@@ -625,6 +637,50 @@ func get_exp():
 func set_exp(new_exp):
 	player_exp = int(new_exp)
 	# for ui update
-	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_exp(new_exp)
+	Utils.get_scene_manager().get_UI().get_node("PlayerUI").set_exp(new_exp)
 	# for save
 	data.exp = player_exp
+
+
+func _on_DamageAreaBottom_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
+		
+		if entity.has_method("simulate_damage"):
+			var damage = get_attack_damage()
+			entity.simulate_damage(damage, knockback)
+
+
+func _on_DamageAreaLeft_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
+		
+		if entity.has_method("simulate_damage"):
+			var damage = get_attack_damage()
+			entity.simulate_damage(damage, knockback)
+
+
+func _on_DamageAreaTop_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
+		
+		if entity.has_method("simulate_damage"):
+			var damage = get_attack_damage()
+			entity.simulate_damage(damage, knockback)
+
+
+func _on_DamageAreaRight_area_entered(area):
+	if area.name == "HitboxZone":
+		var entity = area.owner
+		
+#		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
+		
+		if entity.has_method("simulate_damage"):
+			var damage = get_attack_damage()
+			entity.simulate_damage(damage, knockback)
