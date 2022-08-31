@@ -590,6 +590,7 @@ func get_current_health():
 
 func set_current_health(new_current_health: int):
 	current_health = new_current_health
+# warning-ignore:integer_division
 	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_life(new_current_health*100 / max_health)
 	data.currentHP = new_current_health
 
