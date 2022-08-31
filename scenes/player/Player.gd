@@ -60,6 +60,7 @@ var attack_damage = 0
 var knockback = 0
 var attack_speed = 0
 var max_health
+var health = 100
 var data
 var level = 1
 var dragging = false
@@ -69,6 +70,8 @@ var player_exp: int = 0
 # Variables
 var is_attacking = false
 var can_attack = false
+var hurting = false
+var dying = false
 
 
 func _ready():
@@ -101,58 +104,66 @@ func _ready():
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
+	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 
 
-func _physics_process(_delta):
-	# Handle User Input
-	if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
-		velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
-	else:
-		velocity.x = 0
+func _physics_process(delta):
+	if not is_attacking and not hurting and not dying: # Disable walking if attacking
+		# Handle User Input
+		if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
+			velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
+		else:
+			velocity.x = 0
+			
+		if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
+			velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
+		else:
+			velocity.y = 0
 		
-	if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
-		velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
-	else:
-		velocity.y = 0
-	
-	if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
-		velocity /= 1.45
+		if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
+			velocity /= 1.45
+			
+		if Input.is_action_pressed("Shift"):
+			velocity *= 1.4
 		
-	if Input.is_action_pressed("Shift"):
-		velocity *= 1.4
-	
-	if not is_attacking: # Disable walking if attacking
 		if velocity != Vector2.ZERO:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
+			animation_tree.set("parameters/Hurt/blend_position", velocity)
 			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 			animation_state.travel("Walk")
 		else:
 			animation_state.travel("Idle")
+		
+		if movement:
+			velocity = move_and_slide(velocity)
+			for i in get_slide_count():
+				var collision = get_slide_collision(i)
+				if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+					emit_signal("player_collided", collision.get_collider())
 	
-	if movement:
+	elif hurting or dying and velocity != Vector2.ZERO:
+		# handle knockback when hurting or dying
+		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
-		for i in get_slide_count():
-			var collision = get_slide_collision(i)
-			if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-				emit_signal("player_collided", collision.get_collider())
 
 
 # Method handles key inputs
 func _input(event):
 	Utils.get_scene_manager().get_UI().get_node("ControlNotes").update()
+	
 	if event.is_action_pressed("e"):
-#		print("Pressed e")
+		
 		if player_can_interact:
-#			print("interacted")
 			emit_signal("player_interact")
+			
 		# Remove the trade inventory
 		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null and !dragging:
 			Utils.get_scene_manager().get_UI().get_node("TradeInventory").queue_free()
-			Utils.get_current_player().set_player_can_interact(true)
-			Utils.get_current_player().set_movement(true)
-			Utils.get_current_player().set_movment_animation(true)
+			set_player_can_interact(true)
+			set_movement(true)
+			set_movment_animation(true)
 			# Reset npc interaction state
 			for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 				npc.set_interacted(false)
@@ -161,7 +172,7 @@ func _input(event):
 			MerchantData.save_merchant_inventory()
 	
 	# Open game menu with "esc"
-	elif event.is_action_pressed("esc") and movement and Utils.get_scene_manager().get_UI().find_node("GameMenu") == null:
+	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_scene_manager().get_UI().find_node("GameMenu") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
@@ -175,7 +186,7 @@ func _input(event):
 		Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
 	
 	# Open character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and movement and Utils.get_scene_manager().get_UI().find_node("CharacterInterface") == null:
+	elif event.is_action_pressed("character_inventory") and movement and not hurting and not dying and Utils.get_scene_manager().get_UI().find_node("CharacterInterface") == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
@@ -195,11 +206,10 @@ func _input(event):
 		Utils.get_scene_manager().get_UI().get_node("ControlNotes").show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement:
+	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying:
 		is_attacking = true
 		set_movement(false)
-		animation_state.travel("Attack")
-#		print("ATTACK")
+		animation_state.start("Attack")
 
 
 # Method is called at the end of any attack animation
@@ -460,6 +470,77 @@ func set_attack_key(attack_animation, track_str, value):
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1)) + value)
 
 
+# Method to reset animations back to first frame
+func reset_hurt_key(track_str):
+	# Get animation for color offset
+	var newAnimation = animation_player.get_animation("HurtDown")
+	# Get track from animation for color offset
+	var track_idx = newAnimation.find_track(track_str)
+	# Calculate offset
+	var current_frame = int(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)))
+	var current_texture_hframes = get_node(track_str.substr(0, track_str.find(":"))).hframes
+	var newValue = 0 - current_frame % current_texture_hframes
+	# Update frame
+	_set_hurt_key(track_str, newValue)
+
+
+# Method to change all animiations frames/colors
+func _set_hurt_key(track_str, value):
+	var _hurt_down = animation_player.get_animation("HurtDown")
+	set_hurt_key(_hurt_down, track_str, value)
+	
+	var _hurt_up = animation_player.get_animation("HurtUp")
+	set_hurt_key(_hurt_up, track_str, value)
+	
+	var _hurt_right = animation_player.get_animation("HurtRight")
+	set_hurt_key(_hurt_right, track_str, value)
+	
+	var _hurt_left = animation_player.get_animation("HurtLeft")
+	set_hurt_key(_hurt_left, track_str, value)
+
+
+# Method changes the frames of the animation
+func set_hurt_key(hurt_animation, track_str, value):
+	var track_idx = hurt_animation.find_track(track_str)
+	
+	if hurt_animation.track_find_key(track_idx, 0.0, 1) != -1:
+		hurt_animation.track_set_key_value(track_idx, hurt_animation.track_find_key(track_idx, 0.0, 1),
+			hurt_animation.track_get_key_value(track_idx, hurt_animation.track_find_key(track_idx, 0.0, 1)) + value)
+
+
+# Method to reset animations back to first frame
+func reset_die_key(track_str):
+	# Get animation for color offset
+	var newAnimation = animation_player.get_animation("Die")
+	# Get track from animation for color offset
+	var track_idx = newAnimation.find_track(track_str)
+	# Calculate offset
+	var current_frame = int(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)))
+	var current_texture_hframes = get_node(track_str.substr(0, track_str.find(":"))).hframes
+	var newValue = 0 - current_frame % current_texture_hframes
+	# Update frame
+	_set_die_key(track_str, newValue)
+
+
+# Method to change all animiations frames/colors
+func _set_die_key(track_str, value):
+	var _die_animation = animation_player.get_animation("Die")
+	set_die_key(_die_animation, track_str, value)
+
+
+# Method changes the frames of the animation
+func set_die_key(die_animation, track_str, value):
+	var track_idx = die_animation.find_track(track_str)
+	
+	if die_animation.track_find_key(track_idx, 0.0, 1) != -1:
+		die_animation.track_set_key_value(track_idx, die_animation.track_find_key(track_idx, 0.0, 1),
+			die_animation.track_get_key_value(track_idx, die_animation.track_find_key(track_idx, 0.0, 1)) + value)
+	
+	if die_animation.track_find_key(track_idx, 1.0, 1) != -1:
+		die_animation.track_set_key_value(track_idx, die_animation.track_find_key(track_idx, 1.0, 1),
+			die_animation.track_get_key_value(track_idx, die_animation.track_find_key(track_idx, 1.0, 1)) + value)
+	
+
 # Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
 	animation_tree.active = state
@@ -475,6 +556,7 @@ func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
+	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", view_direction)
 	position = spawn_position
 	animation_tree.active = true
@@ -673,3 +755,81 @@ func _on_DamageAreaRight_area_entered(area):
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
 			entity.simulate_damage(damage, knockback)
+
+
+# Method to simulate damage and behaviour to player
+func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to_player : int):
+	# Add damage
+	health -= damage_to_player
+	
+	print("health: " + str(health))
+	print("max_health: " + str(max_health))
+	print("damage_to_player: " + str(damage_to_player))
+	print("knockback_to_player: " + str(knockback_to_player))
+	
+	
+	# TODO handle here healthbar
+	
+	
+	# Check if player is hurted or killed
+	if health <= 0:
+		kill_player()
+	else:
+		hurt_player()
+		
+	# Add knockback
+	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
+	var min_knockback_velocity_factor = 25
+	var max_knockback_velocity_factor = 100
+	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
+	var knockback_velocity_factor = m * knockback_to_player + min_knockback_velocity_factor
+	velocity = enemy_global_position.direction_to(global_position) * knockback_velocity_factor
+
+
+# Method is called when hurting player
+func hurt_player():
+	if animation_tree.active: # Because when in menu the animation tree is disabled and the animation is never finished to unlock "hurting"
+		hurting = true
+	set_movement(false)
+	animation_state.start("Hurt")
+
+
+# Method is called when HURT animation is done
+func player_hurt():
+	hurting = false
+	set_movement(true)
+
+
+# Method is called when killing player
+func kill_player():
+	# Remove player from player layer so the mobs wont recognize the player anymore
+	set_collision_layer_bit(1, false)
+	
+	dying = true
+	set_movement(false)
+	if not animation_tree.active: # Show "Die" animation in all states to call "player_killed"
+		animation_tree.active = true
+	animation_state.travel("Die")
+
+
+# Method is called when DIE animation is done
+func player_killed():
+	Utils.get_scene_manager().show_death_screen()
+
+
+# Method to return true if player is dying/died otherwise false -> called from scene_manager
+func is_player_dying():
+	return dying
+
+
+# Method to reset the players behaviour after dying -> called from scene_manager
+func reset_player_after_dying():
+	# Add player to player layer so the mobs will recognize the player again
+	set_collision_layer_bit(1, true)
+	
+	health = 100
+	hurting = false
+	dying = false
+	set_movment_animation(true)
+	set_movement(true)
+	animation_state.start("Idle")
