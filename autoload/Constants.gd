@@ -83,6 +83,7 @@ const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
 const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
+const DEATH_SCREEN_PATH = "res://scenes/ui/DeathScreen.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999

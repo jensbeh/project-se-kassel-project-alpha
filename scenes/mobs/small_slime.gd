@@ -11,9 +11,10 @@ onready var animationState = animationTree.get("parameters/playback")
 func _ready():
 	# Setup mob
 	# Mob specific
-	max_heath = 100
+	max_health = 100
 	health = 100
-	attack_damage = 15
+	attack_damage = 20
+	knockback = 2
 	mob_weight = 30
 	spawn_time = Constants.SpawnTime.ALWAYS
 	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
@@ -166,3 +167,14 @@ func update_behaviour(new_behaviour):
 				behaviour_state = ATTACKING
 				mob_need_path = false
 				change_animations(ATTACKING)
+
+
+func _on_DamageArea_area_entered(area):
+	if behaviour_state == ATTACKING:
+		if area.name == "HitboxZone" and area.owner.name == "Player":
+			var player = area.owner
+			print("PLAYER \"" + str(player.name) + "\" DAMAGE ----> " + str(area.name))
+			
+			if player.has_method("simulate_damage"):
+				var damage = get_attack_damage(attack_damage)
+				player.simulate_damage(global_position, damage, knockback)

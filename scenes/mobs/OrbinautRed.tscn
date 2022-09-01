@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://assets/mobs/OrbinautRed.png" type="Texture" id=1]
 [ext_resource path="res://scenes/mobs/orbinaut.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=6]
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=7]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://scenes/mobs/DamageArea.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Animation" id=35]
 resource_name = "Die"
@@ -150,6 +151,9 @@ radius = 32.0
 [sub_resource type="CircleShape2D" id=19]
 radius = 8.0
 
+[sub_resource type="CircleShape2D" id=43]
+radius = 8.0
+
 [sub_resource type="DynamicFont" id=40]
 size = 24
 font_data = ExtResource( 8 )
@@ -214,6 +218,13 @@ position = Vector2( 0, -5 )
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
 shape = SubResource( 19 )
 
+[node name="DamageArea" parent="." instance=ExtResource( 9 )]
+visible = false
+position = Vector2( 0, -5 )
+
+[node name="CollisionShape2D" parent="DamageArea" index="0"]
+shape = SubResource( 43 )
+
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 margin_left = -424.0
 margin_top = -39.0
@@ -240,6 +251,9 @@ value = 100.0
 allow_greater = true
 percent_visible = false
 
+[connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
+
 [editable path="PlayerDetectionZone"]
 [editable path="PlayerAttackZone"]
 [editable path="HitboxZone"]
+[editable path="DamageArea"]

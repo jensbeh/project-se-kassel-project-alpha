@@ -38,6 +38,14 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().set_movment_animation(false)
 		Utils.get_current_player().set_player_can_interact(false)
 	
+	# Cleanup UI
+	# Remove "ESC" Game Menu
+	if get_UI().get_node_or_null("GameMenu") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("GameMenu"))
+	# Remove "I" Inventory
+	if get_UI().get_node_or_null("CharacterInterface") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("CharacterInterface"))
+	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 		loading_screen_animation_player.play("GameFadeToBlack")
@@ -84,6 +92,12 @@ func _on_load_scene_done(scene):
 	else:
 		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	
+	# Cleanup UI
+	# Remove death screen
+	if get_UI().get_node_or_null("DeathScreen") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("DeathScreen"))
+	
+	
 	# Cleanup player if coming from game_scene to menu
 	if current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE and Utils.get_current_player() != null:
 		Utils.set_current_player(null)
@@ -122,7 +136,8 @@ func finish_transition():
 				Utils.get_current_player().set_visibility("Shadow", false)
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
-				
+			if Utils.get_current_player().is_player_dying() == true:
+				Utils.get_current_player().reset_player_after_dying()
 				
 			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
@@ -175,6 +190,13 @@ func get_current_scene():
 # Method to return the UI node
 func get_UI():
 	return get_node("UI")
+
+
+# Method to show death screen
+func show_death_screen():
+	# Load death screen to ui
+	if get_UI() != null:
+		get_UI().add_child(load(Constants.DEATH_SCREEN_PATH).instance())
 
 
 # Methods and stuff for better debugging

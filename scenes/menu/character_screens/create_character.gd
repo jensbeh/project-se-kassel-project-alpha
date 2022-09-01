@@ -548,6 +548,12 @@ func start_game():
 	# Set colors for attack animations
 	set_colors_for_attack_anim()
 	
+	# Set colors for hurt animations
+	set_colors_for_hurt_anim()
+	
+	# Set colors for die animations
+	set_colors_for_die_anim()
+	
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
 	var player_position = Vector2(1128,616)
@@ -619,3 +625,79 @@ func set_colors_for_attack_anim():
 	# Hairs
 	player.reset_attack_key("Hair:frame")
 	player._set_attack_key("Hair:frame", curr_hair_color * 8)
+
+
+# Method to set all colors/frames to hurt animations
+func set_colors_for_hurt_anim():
+	# set the HURT animation colors
+	# Shoes
+	player.reset_hurt_key("Shoes:frame")
+	player._set_hurt_key("Shoes:frame", curr_shoe_color * 8)
+	# Pants
+	player.reset_hurt_key("Pants:frame")
+	player._set_hurt_key("Pants:frame", curr_pants_color * 8)
+	# Clothes
+	player.reset_hurt_key("Clothes:frame")
+	player._set_hurt_key("Clothes:frame", curr_clothes_color * 8)
+	# Blush
+	player.reset_hurt_key("Blush:frame")
+	if curr_blush_color == 0:
+		player._set_hurt_key("Blush:frame", curr_blush_color * 8)
+	else: 
+		player._set_hurt_key("Blush:frame", (curr_blush_color - 1) * 8)
+	# Lipstick
+	player.reset_hurt_key("Lipstick:frame")
+	if curr_lipstick_color == 0:
+		player._set_hurt_key("Lipstick:frame", curr_lipstick_color * 8)
+	else: 
+		player._set_hurt_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+	# Beard
+	player.reset_hurt_key("Beard:frame")
+	if curr_beard_color == 0:
+		player._set_hurt_key("Beard:frame", curr_beard_color * 8)
+	else: 
+		player._set_hurt_key("Beard:frame", (curr_beard_color - 1) * 8)
+	# Eyes
+	player.reset_hurt_key("Eyes:frame")
+	player._set_hurt_key("Eyes:frame", curr_eyes_color * 8)
+	# Hairs
+	player.reset_hurt_key("Hair:frame")
+	player._set_hurt_key("Hair:frame", curr_hair_color * 8)
+
+
+# Method to set all colors/frames to die animation
+func set_colors_for_die_anim():
+	# set the DIE animation colors
+	# Shoes
+	player.reset_die_key("Shoes:frame")
+	player._set_die_key("Shoes:frame", curr_shoe_color * 8)
+	# Pants
+	player.reset_die_key("Pants:frame")
+	player._set_die_key("Pants:frame", curr_pants_color * 8)
+	# Clothes
+	player.reset_die_key("Clothes:frame")
+	player._set_die_key("Clothes:frame", curr_clothes_color * 8)
+	# Blush
+	player.reset_die_key("Blush:frame")
+	if curr_blush_color == 0:
+		player._set_die_key("Blush:frame", curr_blush_color * 8)
+	else: 
+		player._set_die_key("Blush:frame", (curr_blush_color - 1) * 8)
+	# Lipstick
+	player.reset_die_key("Lipstick:frame")
+	if curr_lipstick_color == 0:
+		player._set_die_key("Lipstick:frame", curr_lipstick_color * 8)
+	else: 
+		player._set_die_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+	# Beard
+	player.reset_die_key("Beard:frame")
+	if curr_beard_color == 0:
+		player._set_die_key("Beard:frame", curr_beard_color * 8)
+	else: 
+		player._set_die_key("Beard:frame", (curr_beard_color - 1) * 8)
+	# Eyes
+	player.reset_die_key("Eyes:frame")
+	player._set_die_key("Eyes:frame", curr_eyes_color * 8)
+	# Hairs
+	player.reset_die_key("Hair:frame")
+	player._set_die_key("Hair:frame", curr_hair_color * 8)
