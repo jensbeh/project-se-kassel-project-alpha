@@ -429,6 +429,7 @@ func mob_hurt():
 
 # Method is called when DIE animation is done
 func mob_killed():
+	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + 10)
 	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
 
 

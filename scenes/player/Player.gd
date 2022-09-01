@@ -771,19 +771,22 @@ func _on_DamageAreaRight_area_entered(area):
 # Method to simulate damage and behaviour to player
 func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to_player : int):
 	# Add damage
-	health -= damage_to_player
+	current_health -= damage_to_player
 	
-	print("health: " + str(health))
+	print("health: " + str(current_health))
 	print("max_health: " + str(max_health))
 	print("damage_to_player: " + str(damage_to_player))
 	print("knockback_to_player: " + str(knockback_to_player))
 	
 	
-	# TODO handle here healthbar
-	
+	# handle here healthbar
+	if current_health <= 0:
+		set_current_health(0)
+	else:
+		set_current_health(current_health)
 	
 	# Check if player is hurted or killed
-	if health <= 0:
+	if current_health <= 0:
 		kill_player()
 	else:
 		hurt_player()
@@ -838,7 +841,7 @@ func reset_player_after_dying():
 	# Add player to player layer so the mobs will recognize the player again
 	set_collision_layer_bit(1, true)
 	
-	health = 100
+	set_current_health(max_health)
 	hurting = false
 	dying = false
 	set_movment_animation(true)
