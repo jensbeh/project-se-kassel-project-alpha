@@ -177,7 +177,7 @@ func drop_data(_pos, data):
 				else:
 					PlayerData.equipment_data[origin_slot]["Stack"] = (PlayerData.equipment_dataa[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-				Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
+				Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 			# swaping
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
@@ -238,7 +238,7 @@ func drop_data(_pos, data):
 						Utils.get_current_player().set_light(0)
 				# Hotbar
 				else:
-					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
+					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 
 			# Update the texture and label of the origin
 			# stacking

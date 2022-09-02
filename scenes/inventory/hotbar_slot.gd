@@ -136,7 +136,7 @@ func drop_data(_pos, data):
 			show_tooltip()
 			show_hide_stack_label(data)
 	
-	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
+	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 	
 	Utils.get_current_player().set_dragging(false)
 
@@ -168,7 +168,7 @@ func SplitStack(split_amount, data):
 	else:
 		get_node("TextureRect/Stack").set_text("")
 		
-	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
+	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 	show_hide_stack_label(data)
 
 

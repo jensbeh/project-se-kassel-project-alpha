@@ -1,8 +1,21 @@
 extends TextureRect
 
 var item_slot = self
+var cooldown = Constants.COOLDOWN
+onready var time_label = get_node("TextureProgress/Time")
+onready var cooldown_texture = get_node("TextureProgress")
+var disabled = false
 
 func _ready():
+	time_label.hide()
+	$Timer.wait_time = cooldown
+	cooldown_texture.value = 0
+	set_process(false)
+	load_hotbar()
+	
+
+# (re)load hotbar item and stack
+func load_hotbar():
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
 		var texture = GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Texture"]
 		var frame = GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Frame"]
@@ -18,12 +31,31 @@ func _ready():
 		item_slot.get_node("Icon/Sprite").set_texture(icon_texture)
 		item_slot.get_node("Icon/Sprite").frame = frame
 		update_label()
+		if cooldown_texture.value != 0:
+			cooldown_texture.show()
+			time_label.show()
 	else:
 		item_slot.get_node("TextureRect/Stack").set_text(str(0))
 		item_slot.get_node("TextureRect").visible = false
 		item_slot.get_node("Icon/Sprite").set_texture(null)
+		
+		cooldown_texture.hide()
+		time_label.hide()
 
 
+func _process(_delta):
+	time_label.text = "%2.1f" % $Timer.time_left
+	cooldown_texture.value = int(($Timer.time_left / cooldown) * 100)
+
+
+func _on_Timer_timeout():
+	cooldown_texture.value = 0
+	disabled = false
+	time_label.hide()
+	set_process(false)
+
+
+# updates the label from the hotbar slot
 func update_label():
 	var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
 	if item_stack != null and item_stack > 1:
@@ -43,11 +75,16 @@ func _on_Hotbar_gui_input(event):
 
 # Use the item
 func use_item():
-	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
+	if PlayerData.equipment_data["Hotbar"]["Item"] != null and !disabled:
 		if PlayerData.equipment_data["Hotbar"]["Stack"] != null:
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
 			Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 			int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
+			if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
+				disabled = true
+				set_process(true)
+				$Timer.start()
+				time_label.show()
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
 				PlayerData.equipment_data["Hotbar"]["Item"] = null
@@ -61,8 +98,9 @@ func use_item():
 				item_slot.get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data["Hotbar"]["Stack"]))
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
-			var hotbar_slot = Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar")
+			var hotbar_slot = Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface")
 			if hotbar_slot != null:
+				hotbar_slot = hotbar_slot.find_node("Hotbar")
 				if item_stack != null and item_stack > 1:
 					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					hotbar_slot.get_node("Icon/TextureRect").visible = true

@@ -443,6 +443,7 @@ func start_game():
 	PlayerData._ready()
 	
 	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
+	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
 	
 	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
