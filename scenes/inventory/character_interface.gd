@@ -30,6 +30,11 @@ func _ready():
 				item_slot.get_node("Icon/Sprite").set_vframes(15)
 			item_slot.get_node("Icon/Sprite").set_texture(icon_texture)
 			item_slot.get_node("Icon/Sprite").frame = frame
+			if item == "Hotbar":
+				var item_stack = PlayerData.equipment_data[item]["Stack"]
+				if item_stack != null and item_stack > 1:
+					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
+					item_slot.get_node("Icon/TextureRect").visible = true
 	
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false

@@ -60,3 +60,12 @@ func use_item():
 			else:
 				item_slot.get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data["Hotbar"]["Stack"]))
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
+			var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
+			var hotbar_slot = Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar")
+			if hotbar_slot != null:
+				if item_stack != null and item_stack > 1:
+					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
+					hotbar_slot.get_node("Icon/TextureRect").visible = true
+				else:
+					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text("")
+					hotbar_slot.get_node("Icon/TextureRect").visible = false

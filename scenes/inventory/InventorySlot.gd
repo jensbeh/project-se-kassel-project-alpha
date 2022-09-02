@@ -479,7 +479,7 @@ func _on_Icon_gui_input(event):
 						get_node("../TextureRect/Stack").set_text("0")
 						get_node("../TextureRect").visible = false
 						get_node("../Icon/Sprite").set_texture(null)
-					elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
+					elif PlayerData.inv_data[slot]["Stack"] == 1:
 						get_node("../TextureRect/Stack").set_text("1")
 						get_node("../TextureRect").visible = false
 					else:

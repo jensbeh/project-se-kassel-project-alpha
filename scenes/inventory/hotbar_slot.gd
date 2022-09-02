@@ -235,15 +235,15 @@ func hide_tooltip():
 func _on_Icon_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
 		var slot = get_parent().get_name()
-		if PlayerData.inv_data[slot]["Item"] != null:
-			if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
-				if PlayerData.inv_data[slot]["Stack"] != null:
-					PlayerData.inv_data[slot]["Stack"] -= 1
+		if PlayerData.equipment_data[slot]["Item"] != null:
+			if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+				if PlayerData.equipment_data[slot]["Stack"] != null:
+					PlayerData.equipment_data[slot]["Stack"] -= 1
 					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
-					int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
-					if PlayerData.inv_data[slot]["Stack"] <= 0:
-						PlayerData.inv_data[slot]["Stack"] = null
-						PlayerData.inv_data[slot]["Item"] = null
+					int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
+					if PlayerData.equipment_data[slot]["Stack"] <= 0:
+						PlayerData.equipment_data[slot]["Stack"] = null
+						PlayerData.equipment_data[slot]["Item"] = null
 						get_node("TextureRect/Stack").set_text("0")
 						get_node("TextureRect").visible = false
 						get_node("Sprite").set_texture(null)
@@ -251,5 +251,7 @@ func _on_Icon_gui_input(event):
 						get_node("TextureRect/Stack").set_text("1")
 						get_node("TextureRect").visible = false
 					else:
-						get_node("TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
+						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
+					PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
+					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
 
