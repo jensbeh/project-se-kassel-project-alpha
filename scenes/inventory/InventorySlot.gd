@@ -303,8 +303,8 @@ func drop_data(_pos, data):
 					get_node("../TextureRect/Stack").set_text(str(data["origin_stack"]))
 				else:
 					get_node("../TextureRect/Stack").set_text("")
-				hide_tooltip()
-				show_tooltip()
+			hide_tooltip()
+			show_tooltip()
 					
 			show_hide_stack_label(data)
 			split = 0

@@ -1,6 +1,7 @@
 extends TextureRect
 
 var tool_tip = load(Constants.TOOLTIP)
+var split_popup = load(Constants.SPLIT_POPUP)
 
 
 # Get information about drag item
@@ -69,39 +70,106 @@ func drop_data(_pos, data):
 	if data["origin_node"] == self:
 		pass
 	else:
-		# Update the data of the origin
-		if data["origin_panel"] == "Inventory":
-			PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
-			PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
-		
-		# Update the texture and label of the origin
-		if data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
-			data["origin_node"].get_child(0).texture = null
-			data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+		if Input.is_action_pressed("secondary") and data["origin_stack"] > 1 or data["origin_stack"] == 0:
+			if data["origin_stackable"]:
+				var split_popup_instance = split_popup.instance()
+				split_popup_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(0,100)
+				split_popup_instance.data = data
+				add_child(split_popup_instance)
+				get_node("ItemSplitPopup").show()
+			else:
+				SplitStack(1,data)
 		else:
-			data["origin_node"].get_child(0).texture = data["target_texture"]
-			data["origin_node"].get_child(0).frame = data["target_frame"]
-			verify_origin_texture(data)
-			if data["target_stack"] != null and data["target_stack"] > 1:
-				data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
+			# Update the data of the origin
+			# stacking 
+			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+					PlayerData.inv_data[origin_slot]["Item"] = null
+					PlayerData.inv_data[origin_slot]["Stack"] = null
+				else:
+					PlayerData.inv_data[origin_slot]["Stack"] = (PlayerData.inv_data[origin_slot]["Stack"] - 
+					(Constants.MAX_STACK_SIZE - data["target_stack"]))
+			# swap
+			elif data["origin_panel"] == "Inventory":
+				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
+				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 			
-		# Update the texture, label and data of the target
-		PlayerData.equipment_data[target_slot]["Item"] = data["origin_item_id"]
-		verify_target_texture(data)
-		get_child(0).texture = data["origin_texture"]
-		get_child(0).frame = data["origin_frame"]
-		PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
-		if data["origin_stack"] != null and data["origin_stack"] > 1:
-			get_node("TextureRect/Stack").set_text(str(data["origin_stack"]))
-		else:
-			get_node("TextureRect/Stack").set_text("")
-		hide_tooltip()
-		show_tooltip()
-		show_hide_stack_label(data)
+			# Update the texture and label of the origin
+			# stacking
+			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+					data["origin_node"].get_child(0).texture = null
+					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+				else:
+					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
+					(Constants.MAX_STACK_SIZE - data["target_stack"])))
+			# swap
+			elif data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
+				data["origin_node"].get_child(0).texture = null
+				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+			else:
+				data["origin_node"].get_child(0).texture = data["target_texture"]
+				data["origin_node"].get_child(0).frame = data["target_frame"]
+				verify_origin_texture(data)
+				if data["target_stack"] != null and data["target_stack"] > 1:
+					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
+				
+			# Update the texture, label and data of the target
+			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+				var new_stack = 0
+				new_stack = data["target_stack"] + data["origin_stack"]
+				if new_stack > Constants.MAX_STACK_SIZE:
+						new_stack = Constants.MAX_STACK_SIZE
+				PlayerData.inv_data[target_slot]["Stack"] = new_stack
+				get_node("TextureRect/Stack").set_text(str(new_stack))
+			else:
+				PlayerData.equipment_data[target_slot]["Item"] = data["origin_item_id"]
+				verify_target_texture(data)
+				get_child(0).texture = data["origin_texture"]
+				get_child(0).frame = data["origin_frame"]
+				PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
+				if data["origin_stack"] != null and data["origin_stack"] > 1:
+					get_node("TextureRect/Stack").set_text(str(data["origin_stack"]))
+				else:
+					get_node("TextureRect/Stack").set_text("")
+			hide_tooltip()
+			show_tooltip()
+			show_hide_stack_label(data)
 	
 	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
 	
 	Utils.get_current_player().set_dragging(false)
+
+
+
+func SplitStack(split_amount, data):
+	var target_slot = get_parent().get_name()
+	var origin_slot = data["origin_node"].get_parent().get_name()
+	var new_stack_size
+	
+	PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+	PlayerData.equipment_data[target_slot]["Item"] = data["origin_item_id"]
+	if data["target_stack"] != null:
+		new_stack_size = data["target_stack"] + split_amount
+	else:
+		new_stack_size = split_amount
+	PlayerData.equipment_data[target_slot]["Stack"] = new_stack_size
+	verify_target_texture(data)
+	get_child(0).texture = data["origin_texture"]
+	get_child(0).frame = data["origin_frame"]
+	# origin label
+	if data["origin_stack"] - split_amount > 1:
+		data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+	else:
+		data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+	# target label
+	if new_stack_size > 1:
+		get_node("TextureRect/Stack").set_text(str(new_stack_size))
+	else:
+		get_node("TextureRect/Stack").set_text("")
+		
+	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar")._ready()
+	show_hide_stack_label(data)
 
 
 func verify_origin_texture(data):
