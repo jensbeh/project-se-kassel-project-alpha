@@ -4,6 +4,32 @@ var tool_tip = load(Constants.TOOLTIP)
 var split_popup = load(Constants.SPLIT_POPUP)
 var inv_slot = load(Constants.TRADE_INV_SLOT)
 
+var cooldown = Constants.COOLDOWN
+onready var time_label = get_node("TextureProgress/Time")
+onready var cooldown_texture = get_node("TextureProgress")
+var disabled = false
+onready var timer = get_node("../Timer")
+
+
+func _ready():
+	time_label.hide()
+	timer.wait_time = cooldown
+	cooldown_texture.value = 0
+	set_process(false)
+
+
+func _process(_delta):
+	time_label.text = "%2.1f" % timer.time_left
+	cooldown_texture.value = int((timer.time_left / cooldown) * 100)
+
+
+func _on_Timer_timeout():
+	cooldown_texture.value = 0
+	disabled = false
+	time_label.hide()
+	set_process(false)
+
+
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
@@ -467,12 +493,14 @@ func check_slots():
 func _on_Icon_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
 		var slot = get_parent().get_name()
-		if PlayerData.inv_data[slot]["Item"] != null:
+		if PlayerData.inv_data[slot]["Item"] != null and !disabled:
 			if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
 				if PlayerData.inv_data[slot]["Stack"] != null:
 					PlayerData.inv_data[slot]["Stack"] -= 1
 					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 					int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
+					if PlayerData.inv_data[slot]["Stack"] > 0:
+						set_cooldown()
 					if PlayerData.inv_data[slot]["Stack"] <= 0:
 						PlayerData.inv_data[slot]["Stack"] = null
 						PlayerData.inv_data[slot]["Item"] = null
@@ -484,3 +512,14 @@ func _on_Icon_gui_input(event):
 						get_node("../TextureRect").visible = false
 					else:
 						get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
+					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown()
+					Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar").get_node("Icon").set_cooldown()
+					Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown()
+
+
+func set_cooldown():
+	timer.wait_time = Constants.COOLDOWN
+	timer.start()
+	disabled = true
+	set_process(true)
+	time_label.show()

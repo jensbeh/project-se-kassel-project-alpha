@@ -49,3 +49,12 @@ func _on_Button_gui_input(event):
 			else:
 				Utils.get_scene_manager().get_node("UI").get_node("Inventory").queue_free()
 			PlayerData.save_inventory()
+
+
+func set_cooldown():
+	for i in range(1,31):
+		var slot = "Inv" + str(i)
+		if PlayerData.inv_data[slot]["Item"] != null:
+			if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+				gridcontainer.get_child(i-1).get_node("Icon").set_cooldown()
+			
