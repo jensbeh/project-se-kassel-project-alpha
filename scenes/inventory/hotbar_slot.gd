@@ -3,23 +3,24 @@ extends TextureRect
 var tool_tip = load(Constants.TOOLTIP)
 var split_popup = load(Constants.SPLIT_POPUP)
 
-var cooldown = Constants.COOLDOWN
 onready var time_label = get_node("TextureProgress/Time")
 onready var cooldown_texture = get_node("TextureProgress")
 var disabled = false
 onready var timer = get_node("../Timer")
+var swap = false
+var stack = false
 
 
 func _ready():
 	time_label.hide()
-	timer.wait_time = cooldown
+	timer.wait_time = Constants.COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
 
 
 func _process(_delta):
 	time_label.text = "%2.1f" % timer.time_left
-	cooldown_texture.value = int((timer.time_left / cooldown) * 100)
+	cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -125,6 +126,7 @@ func drop_data(_pos, data):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					data["origin_node"].get_child(0).texture = null
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+					stack = true
 				else:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"])))
@@ -157,9 +159,11 @@ func drop_data(_pos, data):
 					get_node("TextureRect/Stack").set_text(str(data["origin_stack"]))
 				else:
 					get_node("TextureRect/Stack").set_text("")
+				swap = true
 			hide_tooltip()
 			show_tooltip()
 			show_hide_stack_label(data)
+			check_cooldown(data)
 	
 	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 	
@@ -192,7 +196,9 @@ func SplitStack(split_amount, data):
 		get_node("TextureRect/Stack").set_text(str(new_stack_size))
 	else:
 		get_node("TextureRect/Stack").set_text("")
-		
+	
+	check_cooldown(data)
+	
 	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 	show_hide_stack_label(data)
 
@@ -267,7 +273,7 @@ func _on_Icon_gui_input(event):
 					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 					int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
-						set_cooldown()
+						set_cooldown(Constants.COOLDOWN)
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:
 						PlayerData.equipment_data[slot]["Stack"] = null
 						PlayerData.equipment_data[slot]["Item"] = null
@@ -281,13 +287,52 @@ func _on_Icon_gui_input(event):
 						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
 					PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
-					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown()
-					Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown()
+					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown(Constants.COOLDOWN)
+					Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 
-func set_cooldown():
-	timer.wait_time = Constants.COOLDOWN
+func set_cooldown(cooldown):
+	timer.wait_time = cooldown
 	timer.start()
 	disabled = true
 	set_process(true)
 	time_label.show()
 
+
+func check_cooldown(data):
+	var cooldown
+	var cooldown_origin
+	if stack:
+		cooldown = 0
+		cooldown_origin = timer.time_left
+		stack = false
+	elif swap:
+		cooldown = timer.time_left
+		cooldown_origin = data["origin_node"].get_node("../Timer").time_left
+		swap = false
+	else:
+		cooldown = data["origin_node"].get_node("../Timer").time_left
+		cooldown_origin = data["origin_node"].get_node("../Timer").time_left
+	if cooldown_origin != 0:
+		timer.wait_time = cooldown_origin
+		timer.start()
+		disabled = true
+		set_process(true)
+		time_label.show()
+	else:
+		disabled = false
+		set_process(false)
+		time_label.hide()
+		cooldown_texture.value = 0
+	if cooldown != 0:
+		data["origin_node"].get_node("../Timer").wait_time = cooldown
+		data["origin_node"].get_node("../Timer").start()
+		data["origin_node"].disabled = true
+		data["origin_node"].get_node("TextureProgress/Time").show()
+		data["origin_node"].set_process(true)
+	else:
+		data["origin_node"].disabled = false
+		data["origin_node"].get_node("TextureProgress").value = 0
+		data["origin_node"].get_node("TextureProgress/Time").hide()
+		data["origin_node"].set_process(false)
+	
+	

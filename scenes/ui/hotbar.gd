@@ -1,14 +1,13 @@
 extends TextureRect
 
 var item_slot = self
-var cooldown = Constants.COOLDOWN
 onready var time_label = get_node("TextureProgress/Time")
 onready var cooldown_texture = get_node("TextureProgress")
 var disabled = false
 
 func _ready():
 	time_label.hide()
-	$Timer.wait_time = cooldown
+	$Timer.wait_time = Constants.COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
 	load_hotbar()
@@ -45,7 +44,7 @@ func load_hotbar():
 
 func _process(_delta):
 	time_label.text = "%2.1f" % $Timer.time_left
-	cooldown_texture.value = int(($Timer.time_left / cooldown) * 100)
+	cooldown_texture.value = int(($Timer.time_left / Constants.COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -80,7 +79,7 @@ func use_item():
 			Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 			int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
 			if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
-				set_cooldown()
+				set_cooldown(Constants.COOLDOWN)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
 				PlayerData.equipment_data["Hotbar"]["Item"] = null
@@ -96,9 +95,9 @@ func use_item():
 			var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
 			var hotbar_slot = Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface")
 			if hotbar_slot != null:
-				hotbar_slot.find_node("Inventory").set_cooldown()
+				hotbar_slot.find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 				hotbar_slot = hotbar_slot.find_node("Hotbar")
-				hotbar_slot.get_node("Icon").set_cooldown()
+				hotbar_slot.get_node("Icon").set_cooldown(Constants.COOLDOWN)
 				if item_stack != null and item_stack > 1:
 					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					hotbar_slot.get_node("Icon/TextureRect").visible = true
@@ -107,7 +106,8 @@ func use_item():
 					hotbar_slot.get_node("Icon/TextureRect").visible = false
 
 
-func set_cooldown():
+func set_cooldown(cooldown):
+	$Timer.wait_time = cooldown
 	cooldown_texture.show()
 	$Timer.start()
 	disabled = true
