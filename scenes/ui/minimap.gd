@@ -15,10 +15,10 @@ var min_pos_grassland = Vector2(-4352,-2304) # offset grassland map
 var min_pos
 var min_camp_l = 310
 var min_camp_b = 1390
-var min_camp_t = 176
+var min_camp_t = 196
 var min_camp_r = 1985
 var min_grassland_l = -4402#-4352
-var min_grassland_b = 880
+var min_grassland_b = 840
 var min_grassland_t = -2100
 var min_grassland_r = 1910#1760
 var region = "camp"
