@@ -14,6 +14,7 @@ func _on_Back_to_Game_pressed():
 	Utils.get_game_menu().queue_free()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().set_player_can_interact(true)
 
 
 func _on_Settings_pressed():
