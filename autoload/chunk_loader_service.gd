@@ -10,6 +10,9 @@ var current_chunk
 var previouse_chunk
 var active_chunks = []
 var can_load_chunks = false
+var chunk_loader_timer
+var chunk_load_interval = 0.5
+var should_load_chunks = true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -34,7 +37,11 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	# Start chunkloader thread
 	chunkloader_thread.start(self, "load_chunks")
 	can_load_chunks = true
-
+	
+	chunk_loader_timer = Timer.new()
+	add_child(chunk_loader_timer)
+	chunk_loader_timer.connect("timeout", self, "_on_Timer_timeout")
+	should_load_chunks = true
 
 # Method to stop the chunkloader to change map
 func stop():
@@ -57,49 +64,59 @@ func cleanup():
 	current_chunk = null
 	previouse_chunk = null
 	active_chunks.clear()
+	chunk_loader_timer.stop()
 	
 	print("STOPPED CHUNK_LOADER_SERVICE")
 
 
+# Method to 
+func _on_Timer_timeout():
+	should_load_chunks = true
+
 # Method to load active chunks in background
 func load_chunks():
 	while can_load_chunks:
-		current_chunk = Utils.get_players_chunk(map_min_global_pos)
-		# Generate and update chunks
-		if current_chunk != null and previouse_chunk != current_chunk:
-			previouse_chunk = current_chunk
-			var render_bounds = Constants.render_distance * 2 + 1
-			var loading_chunks = []
-			for y in range(render_bounds):
-				for x in range(render_bounds):
-					var chunk_x = current_chunk.x - Constants.render_distance + x
-					var chunk_y = current_chunk.y - Constants.render_distance + y
-					
-					if chunk_x <= horizontal_chunks_count and chunk_y <= vertical_chunks_count and chunk_x >= 0 and chunk_y >= 0:
-						var chunk_coords = Vector2(chunk_x, chunk_y)
-						loading_chunks.append(chunk_coords)
+		if should_load_chunks == true:
+			should_load_chunks = false
+			chunk_loader_timer.set_wait_time(chunk_load_interval)
+			chunk_loader_timer.start()
+			
+			current_chunk = Utils.get_players_chunk(map_min_global_pos)
+			# Generate and update chunks
+			if current_chunk != null and previouse_chunk != current_chunk:
+				previouse_chunk = current_chunk
+				var render_bounds = Constants.render_distance * 2 + 1
+				var loading_chunks = []
+				for y in range(render_bounds):
+					for x in range(render_bounds):
+						var chunk_x = current_chunk.x - Constants.render_distance + x
+						var chunk_y = current_chunk.y - Constants.render_distance + y
 						
-						if active_chunks.find(chunk_coords) == -1:
-							# Set chunk to active ones
-							active_chunks.append(chunk_coords)
+						if chunk_x <= horizontal_chunks_count and chunk_y <= vertical_chunks_count and chunk_x >= 0 and chunk_y >= 0:
+							var chunk_coords = Vector2(chunk_x, chunk_y)
+							loading_chunks.append(chunk_coords)
+							
+							if active_chunks.find(chunk_coords) == -1:
+								# Set chunk to active ones
+								active_chunks.append(chunk_coords)
+				
+				var deleting_chunks = []
+				var new_chunks = active_chunks
+				for chunk in new_chunks:
+					if loading_chunks.find(chunk) == -1:
+						deleting_chunks.append(chunk)
+				for chunk in deleting_chunks:
+					if new_chunks.find(chunk) != -1:
+						var index = new_chunks.find(chunk)
+						new_chunks.remove(index)
+						
+				active_chunks = new_chunks
 			
-			var deleting_chunks = []
-			var new_chunks = active_chunks
-			for chunk in new_chunks:
-				if loading_chunks.find(chunk) == -1:
-					deleting_chunks.append(chunk)
-			for chunk in deleting_chunks:
-				if new_chunks.find(chunk) != -1:
-					var index = new_chunks.find(chunk)
-					new_chunks.remove(index)
-					
-			active_chunks = new_chunks
-		
-			# Make chunks visibel
-			send_chunks_to_world(deleting_chunks)
-			
-			# Update mobs to be active or not
-			update_mobs()
+				# Make chunks visibel
+				send_chunks_to_world(deleting_chunks)
+				
+				# Update mobs to be active or not
+				update_mobs()
 
 
 # Method to calculate mob activity
