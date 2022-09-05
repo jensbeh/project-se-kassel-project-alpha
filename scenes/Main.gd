@@ -45,6 +45,7 @@ func show_death_screen():
 		ui.add_child(load(Constants.DEATH_SCREEN_PATH).instance())
 
 
+# Method to add settings screen to view
 func add_settings():
 	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
 		# Called Settings from MainMenuScreen
@@ -55,5 +56,6 @@ func add_settings():
 	add_child(load(Constants.SETTINGS_PATH).instance())
 
 
+# Method to disable gui in viewport
 func disable_game_gui(disable_gui):
 	game_viewport.gui_disable_input = disable_gui

@@ -28,6 +28,7 @@ func _physics_process(_delta):
 		minimap_camera.zoom = Vector2(zoom_factor, zoom_factor)
 
 
+# Method to setup the viewport world2d with game_viewport world2d otherwise there is no content in minimap
 func setup_viewport(game_viewport):
 	# Set world / what game_viewport sees to minimap_viewport
 	minimap_viewport.world_2d = game_viewport.world_2d
@@ -74,14 +75,15 @@ func update_minimap():
 # Method to set new camera limits depending on scene type
 func set_camera_limits():
 	match Utils.get_scene_manager().get_current_scene_type():
-			Constants.SceneType.CAMP:
-				minimap_camera.limit_left = -10000000
-				minimap_camera.limit_top = 186
-				minimap_camera.limit_right = 10000000
-				minimap_camera.limit_bottom = 10000000
-			
-			Constants.SceneType.GRASSLAND:
-				minimap_camera.limit_left = -4335
-				minimap_camera.limit_top = -10000000
-				minimap_camera.limit_right = 10000000
-				minimap_camera.limit_bottom = 794
+		# Cameralimits from players in specific maps
+		Constants.SceneType.CAMP:
+			minimap_camera.limit_left = -10000000
+			minimap_camera.limit_top = 186
+			minimap_camera.limit_right = 10000000
+			minimap_camera.limit_bottom = 10000000
+		
+		Constants.SceneType.GRASSLAND:
+			minimap_camera.limit_left = -4335
+			minimap_camera.limit_top = -10000000
+			minimap_camera.limit_right = 10000000
+			minimap_camera.limit_bottom = 794

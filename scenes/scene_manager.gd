@@ -142,6 +142,7 @@ func finish_transition():
 		
 		# Update minimap
 		Utils.get_minimap().update_minimap()
+		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 

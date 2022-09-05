@@ -69,9 +69,10 @@ func cleanup():
 	print("STOPPED CHUNK_LOADER_SERVICE")
 
 
-# Method to 
+# Method to set should_load_chunks back to true
 func _on_Timer_timeout():
 	should_load_chunks = true
+
 
 # Method to load active chunks in background
 func load_chunks():
