@@ -17,10 +17,10 @@ var min_camp_l = 310
 var min_camp_b = 1390
 var min_camp_t = 196
 var min_camp_r = 1985
-var min_grassland_l = -4402
+var min_grassland_l = -4402#-4352
 var min_grassland_b = 800
 var min_grassland_t = -2030
-var min_grassland_r = 1910
+var min_grassland_r = 1910#1760
 var region = "camp"
 
 

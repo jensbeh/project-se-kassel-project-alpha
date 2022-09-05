@@ -78,8 +78,13 @@ func set_life(percent_player_health: int):
 		else:
 			life_bar.value = 84 + (percent_player_health - 81) / 1.3
 
+	if life_bar.value <= 0:
+		print("Spieler ist tot")
+
 
 func change_heart_number(number_heart):
 	hearts = number_heart
 	life_bar.texture_under = load("res://assets/ui/lifebar_background_" + str(number_heart) + ".png")
 	life_bar.texture_progress = load("res://assets/ui/lifebar_" + str(number_heart) + ".png")
+	
+	
