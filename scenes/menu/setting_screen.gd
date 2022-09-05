@@ -60,5 +60,8 @@ func _on_Back_pressed():
 	if (Utils.get_game_menu() != null):
 		Utils.get_game_menu()._ready()
 	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
+		# Called Settings from MainMenuScreen
+		# Need to enable gui in viewport of game again
+		Utils.get_main().disable_game_gui(false)
 		Utils.get_scene_manager().get_child(0).get_node("MainMenuScreen")._ready()
 	

@@ -17,7 +17,7 @@ func _on_Back_to_Game_pressed():
 
 
 func _on_Settings_pressed():
-	Utils.get_main().add_child(load(Constants.SETTINGS_PATH).instance())
+	Utils.get_main().add_settings()
 
 # Close game and go to main menu
 func _on_Back_to_Main_Menu_pressed():
