@@ -565,6 +565,7 @@ func start_game():
 	Utils.get_current_player().set_level(save_game_data.level)
 	Utils.get_current_player().set_exp(save_game_data.exp)
 	Utils.get_current_player().set_current_health(int(save_game_data.currentHP))
+	Utils.get_current_player().set_max_health(int(save_game_data.maxLP))
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)

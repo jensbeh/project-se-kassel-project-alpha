@@ -11,6 +11,7 @@ var attack_damage = 15
 var knockback = 0
 var spawn_time = Constants.SpawnTime.ALWAYS
 var mob_weight
+var experience = 10
 
 # Variables
 enum {
@@ -429,7 +430,7 @@ func mob_hurt():
 
 # Method is called when DIE animation is done
 func mob_killed():
-	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + 10)
+	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
 	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
 
 
