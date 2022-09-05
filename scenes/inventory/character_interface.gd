@@ -35,9 +35,9 @@ func _ready():
 				if item_stack != null and item_stack > 1:
 					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					item_slot.get_node("Icon/TextureRect").visible = true
-					var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").time_left
-					if cooldown != 0:
-						item_slot.get_node("Icon").set_cooldown(cooldown)
+				var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").time_left
+				if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").is_stopped():
+					item_slot.get_node("Icon").set_cooldown(cooldown)
 					
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false

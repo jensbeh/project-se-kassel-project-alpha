@@ -34,9 +34,8 @@ func _ready():
 	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + str(Utils.get_current_player().get_gold())
 	if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") == null:
 		var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").time_left
-		if cooldown != 0:
+		if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").is_stopped():
 			set_cooldown(cooldown)
-
 
 # Close the inventory
 func _on_Button_gui_input(event):

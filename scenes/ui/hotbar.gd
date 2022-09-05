@@ -11,6 +11,7 @@ func _ready():
 	cooldown_texture.value = 0
 	set_process(false)
 	load_hotbar()
+	$Timer.set_one_shot(true)
 	
 
 # (re)load hotbar item and stack
