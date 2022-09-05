@@ -502,12 +502,15 @@ func start_game():
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
 	Utils.get_current_player().set_data(data)
-	Utils.get_current_player().set_max_health(data.maxLP)
+	Utils.get_current_player().set_max_health(int(data.maxLP))
 	var item_id = PlayerData.equipment_data["Item"]
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_exp(data.exp)
-	Utils.get_current_player().set_gold(data_list[selected_character].gold)
+	Utils.get_current_player().set_gold(data.gold)
+	Utils.get_current_player().set_current_health(int(data.currentHP))
+	
+	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
 	
 	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)

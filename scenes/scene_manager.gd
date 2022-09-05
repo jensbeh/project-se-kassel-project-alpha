@@ -148,6 +148,7 @@ func finish_transition():
 			loading_screen_animation_player.play("MenuFadeToNormal")
 			Utils.get_scene_manager().get_UI().in_world(false)
 			
+		Utils.get_scene_manager().get_node("UI").get_node("Minimap").get_child(0).get_child(1).update_minimap()
 		# Mouse actions works now again
 		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 

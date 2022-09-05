@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scenes/ui/ControlNotes.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/scene_manager.gd" type="Script" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://scenes/light/light_manager.gd" type="Script" id=6]
 [ext_resource path="res://shader/night_sceen_shader.gdshader" type="Shader" id=7]
 [ext_resource path="res://scenes/ui.gd" type="Script" id=8]
+[ext_resource path="res://assets/ui/border_grey.png" type="Texture" id=9]
+[ext_resource path="res://scenes/ui/minimap.gd" type="Script" id=10]
 
 [sub_resource type="ShaderMaterial" id=22]
 shader = ExtResource( 7 )
@@ -17,6 +19,8 @@ shader_param/camera_zoom_factor = 1.0
 shader_param/night_screen_color = Color( 0.13, 0.13, 0.13, 1 )
 shader_param/default_light_color = null
 shader_param/light_strength_modifier = 1.0
+
+[sub_resource type="AtlasTexture" id=23]
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 3 )
@@ -315,6 +319,58 @@ script = ExtResource( 8 )
 [node name="PlayerUI" parent="UI" instance=ExtResource( 4 )]
 visible = false
 
+[node name="Minimap" type="NinePatchRect" parent="UI"]
+visible = false
+margin_left = 24.0
+margin_top = 848.0
+margin_right = 334.0
+margin_bottom = 1058.0
+rect_min_size = Vector2( 210, 210 )
+rect_clip_content = true
+texture = ExtResource( 9 )
+region_rect = Rect2( 5.28812, 4.95283, 93.7885, 95.1188 )
+patch_margin_left = 8
+patch_margin_top = 7
+patch_margin_right = 9
+patch_margin_bottom = 7
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Minimap"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -155.0
+margin_top = -105.0
+margin_right = 155.0
+margin_bottom = 105.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="ColorRect" type="ColorRect" parent="UI/Minimap/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 305.0
+margin_bottom = 205.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="TextureRect" type="TextureRect" parent="UI/Minimap/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 305.0
+margin_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 200, 200 )
+rect_clip_content = true
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource( 23 )
+expand = true
+stretch_mode = 7
+script = ExtResource( 10 )
+
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 
 [node name="BlackScreen" type="ColorRect" parent="LoadingScreen"]
@@ -338,3 +394,5 @@ anims/GameFadeToNormal = SubResource( 3 )
 anims/MenuFadeToBlack = SubResource( 19 )
 anims/MenuFadeToNormal = SubResource( 20 )
 anims/RESET = SubResource( 2 )
+
+[connection signal="gui_input" from="UI/Minimap/MarginContainer/TextureRect" to="UI/Minimap/MarginContainer/TextureRect" method="_on_TextureRect_gui_input"]

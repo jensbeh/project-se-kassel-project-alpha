@@ -564,6 +564,8 @@ func start_game():
 	Utils.get_current_player().set_gold(save_game_data.gold)
 	Utils.get_current_player().set_level(save_game_data.level)
 	Utils.get_current_player().set_exp(save_game_data.exp)
+	Utils.get_current_player().set_current_health(int(save_game_data.currentHP))
+	Utils.get_current_player().set_max_health(int(save_game_data.maxLP))
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -583,7 +585,7 @@ func create_player_inventory():
 	PlayerData._ready()
 
 	# sets lp & weapon
-	Utils.get_current_player().set_max_health(save_game_data.maxLP)
+	Utils.get_current_player().set_max_health(int(save_game_data.maxLP))
 	var item_id = PlayerData.equipment_data["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
 

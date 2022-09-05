@@ -59,8 +59,8 @@ var gold
 var attack_damage = 0
 var knockback = 0
 var attack_speed = 0
-var max_health
-var health = 100
+var max_health: int
+var current_health: int
 var data
 var level = 1
 var dragging = false
@@ -660,9 +660,20 @@ func get_max_health():
 	return max_health
 
 
-func set_max_health(new_max_health):
+func set_max_health(new_max_health: int):
 	max_health = new_max_health
 	data.maxLP = new_max_health
+
+
+func get_current_health():
+	return current_health
+
+
+func set_current_health(new_current_health: int):
+	current_health = new_current_health
+	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_life(new_current_health*100 / float(max_health))
+	print(new_current_health*100 / float(max_health))
+	data.currentHP = new_current_health
 
 
 func set_data(new_data):
@@ -760,19 +771,22 @@ func _on_DamageAreaRight_area_entered(area):
 # Method to simulate damage and behaviour to player
 func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to_player : int):
 	# Add damage
-	health -= damage_to_player
+	current_health -= damage_to_player
 	
-	print("health: " + str(health))
+	print("health: " + str(current_health))
 	print("max_health: " + str(max_health))
 	print("damage_to_player: " + str(damage_to_player))
 	print("knockback_to_player: " + str(knockback_to_player))
 	
 	
-	# TODO handle here healthbar
-	
+	# handle here healthbar
+	if current_health <= 0:
+		set_current_health(0)
+	else:
+		set_current_health(current_health)
 	
 	# Check if player is hurted or killed
-	if health <= 0:
+	if current_health <= 0:
 		kill_player()
 	else:
 		hurt_player()
@@ -827,7 +841,7 @@ func reset_player_after_dying():
 	# Add player to player layer so the mobs will recognize the player again
 	set_collision_layer_bit(1, true)
 	
-	health = 100
+	set_current_health(max_health)
 	hurting = false
 	dying = false
 	set_movment_animation(true)
