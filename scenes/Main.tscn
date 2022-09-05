@@ -22,14 +22,14 @@ render_target_update_mode = 3
 [node name="SceneManager" parent="Game/Viewport" instance=ExtResource( 1 )]
 
 [node name="Minimap" type="ViewportContainer" parent="."]
-margin_left = 1566.0
-margin_top = 38.0
-margin_right = 1866.0
-margin_bottom = 338.0
-rect_min_size = Vector2( 300, 300 )
+margin_left = 1495.0
+margin_top = 37.0
+margin_right = 1975.0
+margin_bottom = 307.0
+rect_min_size = Vector2( 384, 216 )
 
 [node name="Viewport" type="Viewport" parent="Minimap"]
-size = Vector2( 300, 300 )
+size = Vector2( 384, 216 )
 handle_input_locally = false
 hdr = false
 disable_3d = true
