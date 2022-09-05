@@ -518,11 +518,13 @@ func _on_Icon_gui_input(event):
 							get_node("../TextureRect").visible = false
 						else:
 							get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
+						# sync cooldown
 						Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown(Constants.COOLDOWN)
 						Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar").get_node("Icon").set_cooldown(Constants.COOLDOWN)
 						Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 
 
+# starts cooldwon
 func set_cooldown(cooldown):
 	timer.wait_time = cooldown
 	timer.start()
@@ -531,6 +533,7 @@ func set_cooldown(cooldown):
 	time_label.show()
 
 
+# cooldown by move an item
 func check_cooldown(data):
 	if data["origin_panel"] != "TradeInventory":
 		var cooldown

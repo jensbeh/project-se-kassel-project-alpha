@@ -110,6 +110,7 @@ func use_item():
 					hotbar_slot.get_node("Icon/TextureRect").visible = false
 
 
+# starts cooldown
 func set_cooldown(cooldown):
 	$Hotbar/Timer.wait_time = cooldown
 	cooldown_texture.show()

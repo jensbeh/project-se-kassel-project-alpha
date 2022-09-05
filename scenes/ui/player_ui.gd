@@ -85,6 +85,7 @@ func change_heart_number(number_heart):
 	life_bar.texture_progress = load("res://assets/ui/lifebar_" + str(number_heart) + ".png")
 
 
+# position for hotbar with or without minimap
 func in_dungeon(value):
 	if value:
 		get_node("Hotbar").rect_position = Vector2(-916,456)

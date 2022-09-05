@@ -190,7 +190,7 @@
 	"Attack-Speed":null,
     "Health": null,
 	"Stackable": false,
-	"Radius": 100,
+	"Radius": 75,
 	"Frame": 169,
 	"Texture": "item_icons_1",
 	"Worth": 200
@@ -204,7 +204,7 @@
 	"Attack-Speed":null,
     "Health": null,
 	"Stackable": false,
-	"Radius": 75,
+	"Radius": 60,
 	"Frame": 170,
 	"Texture": "item_icons_1",
 	"Worth": 100
@@ -218,7 +218,7 @@
 	"Attack-Speed":null,
     "Health": null,
 	"Stackable": false,
-	"Radius": 50,
+	"Radius": 45,
 	"Frame": 171,
 	"Texture": "item_icons_1",
 	"Worth": 30
