@@ -42,3 +42,5 @@ position = Vector2( 960, 0 )
 current = true
 editor_draw_limits = true
 editor_draw_drag_margin = true
+
+[connection signal="gui_input" from="Minimap" to="." method="_on_Minimap_gui_input"]

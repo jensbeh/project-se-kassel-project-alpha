@@ -8,6 +8,10 @@ onready var minimap_viewport = $Minimap/Viewport
 onready var minimap = $Minimap/Viewport/Camera2D
 onready var sc = $Game/Viewport/SceneManager/CurrentScene
 
+var zoom_factor = 1.0
+var max_zoom_factor = 1.5
+var min_zoom_factor = 1.0
+
 
 func _ready():
 	# Set world / what game_viewport sees to minimap_viewport
@@ -21,3 +25,20 @@ func _physics_process(_delta):
 	# Move map position with player position
 	if Utils.get_current_player() != null:
 		minimap.position = Utils.get_current_player().global_position
+	
+	# Handle minimap zoom
+	if minimap.zoom != Vector2(zoom_factor, zoom_factor):
+		minimap.zoom = Vector2(zoom_factor, zoom_factor)
+
+
+# Scroll over map to zoom in and out 
+func _on_Minimap_gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == BUTTON_WHEEL_DOWN:
+			zoom_factor += 0.05
+		if event.button_index == BUTTON_WHEEL_UP:
+			zoom_factor -= 0.05
+		if zoom_factor <= min_zoom_factor:
+			zoom_factor = min_zoom_factor
+		elif zoom_factor > max_zoom_factor:
+			zoom_factor = max_zoom_factor
