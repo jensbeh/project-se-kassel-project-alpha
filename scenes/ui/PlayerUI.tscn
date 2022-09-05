@@ -133,17 +133,23 @@ rounded = true
 texture_under = ExtResource( 6 )
 texture_progress = ExtResource( 7 )
 
-[node name="Hotbar" type="TextureRect" parent="."]
+[node name="Hotbar" type="Control" parent="."]
+anchor_bottom = 0.4
 margin_left = -574.0
 margin_top = 456.0
 margin_right = -486.0
-margin_bottom = 544.0
+margin_bottom = 528.0
+rect_min_size = Vector2( 64, 64 )
+script = ExtResource( 5 )
+
+[node name="Hotbar" type="TextureRect" parent="Hotbar"]
+margin_right = 88.0
+margin_bottom = 88.0
 rect_min_size = Vector2( 64, 64 )
 texture = ExtResource( 4 )
 expand = true
-script = ExtResource( 5 )
 
-[node name="Icon" type="TextureRect" parent="Hotbar"]
+[node name="Icon" type="TextureRect" parent="Hotbar/Hotbar"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -154,14 +160,14 @@ margin_right = 44.0
 margin_bottom = 44.0
 expand = true
 
-[node name="Sprite" type="Sprite" parent="Hotbar/Icon"]
+[node name="Sprite" type="Sprite" parent="Hotbar/Hotbar/Icon"]
 position = Vector2( 43, 44 )
 scale = Vector2( 2, 2 )
 hframes = 16
 vframes = 27
 frame = 98
 
-[node name="TextureProgress" type="TextureProgress" parent="Hotbar"]
+[node name="TextureProgress" type="TextureProgress" parent="Hotbar/Hotbar"]
 modulate = Color( 1, 1, 1, 0.705882 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -175,7 +181,7 @@ rect_scale = Vector2( 0.91, 0.91 )
 texture_progress = ExtResource( 9 )
 fill_mode = 5
 
-[node name="Time" type="Label" parent="Hotbar/TextureProgress"]
+[node name="Time" type="Label" parent="Hotbar/Hotbar/TextureProgress"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -189,7 +195,7 @@ custom_fonts/font = SubResource( 9 )
 align = 1
 valign = 1
 
-[node name="TextureRect" type="TextureRect" parent="Hotbar"]
+[node name="TextureRect" type="TextureRect" parent="Hotbar/Hotbar"]
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 47.0
 margin_top = 60.0
@@ -198,7 +204,7 @@ margin_bottom = 96.0
 texture = ExtResource( 8 )
 expand = true
 
-[node name="Stack" type="Label" parent="Hotbar/TextureRect"]
+[node name="Stack" type="Label" parent="Hotbar/Hotbar/TextureRect"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -212,7 +218,7 @@ custom_fonts/font = SubResource( 8 )
 align = 1
 valign = 1
 
-[node name="TextureRect2" type="TextureRect" parent="Hotbar"]
+[node name="TextureRect2" type="TextureRect" parent="Hotbar/Hotbar"]
 anchor_left = -0.08
 anchor_top = 0.727
 anchor_right = 0.273
@@ -226,7 +232,7 @@ size_flags_vertical = 0
 texture = ExtResource( 4 )
 expand = true
 
-[node name="Label" type="Label" parent="Hotbar/TextureRect2"]
+[node name="Label" type="Label" parent="Hotbar/Hotbar/TextureRect2"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -244,7 +250,7 @@ text = "Q"
 align = 1
 valign = 1
 
-[node name="Timer" type="Timer" parent="Hotbar"]
+[node name="Timer" type="Timer" parent="Hotbar/Hotbar"]
 
 [connection signal="gui_input" from="Hotbar" to="Hotbar" method="_on_Hotbar_gui_input"]
-[connection signal="timeout" from="Hotbar/Timer" to="Hotbar" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Hotbar/Hotbar/Timer" to="Hotbar" method="_on_Timer_timeout"]

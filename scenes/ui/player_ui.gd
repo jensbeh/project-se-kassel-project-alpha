@@ -83,3 +83,10 @@ func change_heart_number(number_heart):
 	hearts = number_heart
 	life_bar.texture_under = load("res://assets/ui/lifebar_background_" + str(number_heart) + ".png")
 	life_bar.texture_progress = load("res://assets/ui/lifebar_" + str(number_heart) + ".png")
+
+
+func in_dungeon(value):
+	if value:
+		get_node("Hotbar").rect_position = Vector2(-916,456)
+	else:
+		get_node("Hotbar").rect_position = Vector2(-574,456)

@@ -1,17 +1,17 @@
-extends TextureRect
+extends Control
 
-var item_slot = self
-onready var time_label = get_node("TextureProgress/Time")
-onready var cooldown_texture = get_node("TextureProgress")
+onready var item_slot = get_node("Hotbar")
+onready var time_label = get_node("Hotbar/TextureProgress/Time")
+onready var cooldown_texture = get_node("Hotbar/TextureProgress")
 var disabled = false
 
 func _ready():
 	time_label.hide()
-	$Timer.wait_time = Constants.COOLDOWN
+	$Hotbar/Timer.wait_time = Constants.COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
 	load_hotbar()
-	$Timer.set_one_shot(true)
+	$Hotbar/Timer.set_one_shot(true)
 	
 
 # (re)load hotbar item and stack
@@ -34,6 +34,9 @@ func load_hotbar():
 		if cooldown_texture.value != 0:
 			cooldown_texture.show()
 			time_label.show()
+		else:
+			cooldown_texture.hide()
+			time_label.hide()
 	else:
 		item_slot.get_node("TextureRect/Stack").set_text(str(0))
 		item_slot.get_node("TextureRect").visible = false
@@ -44,8 +47,8 @@ func load_hotbar():
 
 
 func _process(_delta):
-	time_label.text = "%2.1f" % $Timer.time_left
-	cooldown_texture.value = int(($Timer.time_left / Constants.COOLDOWN) * 100)
+	time_label.text = "%2.1f" % $Hotbar/Timer.time_left
+	cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -108,9 +111,10 @@ func use_item():
 
 
 func set_cooldown(cooldown):
-	$Timer.wait_time = cooldown
+	$Hotbar/Timer.wait_time = cooldown
 	cooldown_texture.show()
-	$Timer.start()
+	$Hotbar/Timer.start()
 	disabled = true
 	set_process(true)
 	time_label.show()
+

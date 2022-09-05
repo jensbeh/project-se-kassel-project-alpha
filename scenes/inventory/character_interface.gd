@@ -35,14 +35,14 @@ func _ready():
 				if item_stack != null and item_stack > 1:
 					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					item_slot.get_node("Icon/TextureRect").visible = true
-				var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").time_left
-				if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").get_node("Timer").is_stopped():
+				var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").time_left
+				if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").is_stopped():
 					item_slot.get_node("Icon").set_cooldown(cooldown)
 					
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
-	find_node("Damage").set_text(tr("ATTACK") + ": " + str(Utils.get_current_player().get_attack()))
+	find_node("Damage").set_text(tr("ATTACK") + ": " + str(Utils.get_current_player().get_attack_damage()))
 	find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(Utils.get_current_player().get_attack_speed()))
 	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
 	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))
