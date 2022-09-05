@@ -38,6 +38,14 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().set_movment_animation(false)
 		Utils.get_current_player().set_player_can_interact(false)
 	
+	# Cleanup UI
+	# Remove "ESC" Game Menu
+	if get_UI().get_node_or_null("GameMenu") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("GameMenu"))
+	# Remove "I" Inventory
+	if get_UI().get_node_or_null("CharacterInterface") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("CharacterInterface"))
+	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 		loading_screen_animation_player.play("GameFadeToBlack")
@@ -65,8 +73,8 @@ func _load_scene_in_background():
 			var scene = resource.instance()
 			pass_data_to_scene(scene)
 			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
-			if current_scene.get_child(0).find_node("CanvasModulate") != null:
-				current_scene.get_child(0).remove_child(current_scene.get_child(0).find_node("CanvasModulate"))
+			if get_current_scene().find_node("CanvasModulate") != null:
+				get_current_scene().remove_child(get_current_scene().find_node("CanvasModulate"))
 			
 			call_deferred("_on_load_scene_done", scene)
 			break
@@ -78,18 +86,24 @@ func _on_load_scene_done(scene):
 	thread.wait_to_finish()
 	
 	# Cleanup previous scene
-	if current_scene.get_child(0).has_method("destroy_scene"):
-		current_scene.get_child(0).destroy_scene()
-		print("----> destroyed scene: \"" + str(current_scene.get_child(0).name) + "\"")
+	if get_current_scene().has_method("destroy_scene"):
+		get_current_scene().destroy_scene()
+		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	else:
-		printerr("----> NOT destroyed scene: \"" + str(current_scene.get_child(0).name) + "\"")
+		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+	
+	# Cleanup UI
+	# Remove death screen
+	if get_UI().get_node_or_null("DeathScreen") != null:
+		get_UI().remove_child(get_UI().get_node_or_null("DeathScreen"))
+	
 	
 	# Cleanup player if coming from game_scene to menu
 	if current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE and Utils.get_current_player() != null:
 		Utils.set_current_player(null)
 	
 	# Add scene to current_scene
-	current_scene.get_child(0).call_deferred("queue_free")
+	get_current_scene().call_deferred("queue_free")
 	current_scene.call_deferred("add_child", scene)
 
 
@@ -122,16 +136,17 @@ func finish_transition():
 				Utils.get_current_player().set_visibility("Shadow", false)
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
-				
+			if Utils.get_current_player().is_player_dying() == true:
+				Utils.get_current_player().reset_player_after_dying()
 				
 			# Start fade to normal to game
 			loading_screen_animation_player.play("GameFadeToNormal")
-			Utils.get_scene_manager().get_node("UI").in_world(true)
+			Utils.get_scene_manager().get_UI().in_world(true)
 			
 		elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 			# Start fade to normal to menu
 			loading_screen_animation_player.play("MenuFadeToNormal")
-			Utils.get_scene_manager().get_node("UI").in_world(false)
+			Utils.get_scene_manager().get_UI().in_world(false)
 			
 		Utils.get_scene_manager().get_node("UI").get_node("Minimap").get_child(0).get_child(1).update_minimap()
 		# Mouse actions works now again
@@ -165,6 +180,23 @@ func update_previouse_scene_path():
 # Method returns true if day night cycle is enabled otherwise false FROM light_manager
 func is_day_night_cycle():
 	return darkness_lights_screen.get_is_day_night_cycle()
+
+
+# Method to return the current scene
+func get_current_scene():
+	return current_scene.get_child(0)
+
+
+# Method to return the UI node
+func get_UI():
+	return get_node("UI")
+
+
+# Method to show death screen
+func show_death_screen():
+	# Load death screen to ui
+	if get_UI() != null:
+		get_UI().add_child(load(Constants.DEATH_SCREEN_PATH).instance())
 
 
 # Methods and stuff for better debugging

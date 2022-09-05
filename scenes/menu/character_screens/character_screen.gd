@@ -413,7 +413,78 @@ func set_animation_data():
 	# Hairs
 	player.reset_attack_key("Hair:frame")
 	player._set_attack_key("Hair:frame", data.hair_color * 8)
-
+	
+	
+	# set the HURT animation colors
+	# Shoes
+	player.reset_hurt_key("Shoes:frame")
+	player._set_hurt_key("Shoes:frame", data.shoe_color * 8)
+	# Pants
+	player.reset_hurt_key("Pants:frame")
+	player._set_hurt_key("Pants:frame", data.legs_color * 8)
+	# Clothes
+	player.reset_hurt_key("Clothes:frame")
+	player._set_hurt_key("Clothes:frame", data.torso_color * 8)
+	# Blush
+	player.reset_hurt_key("Blush:frame")
+	if data.blush_color == 0:
+		player._set_hurt_key("Blush:frame", data.blush_color * 8)
+	else: 
+		player._set_hurt_key("Blush:frame", (data.blush_color - 1) * 8)
+	# Lipstick
+	player.reset_hurt_key("Lipstick:frame")
+	if data.lipstick_color == 0:
+		player._set_hurt_key("Lipstick:frame", data.lipstick_color * 8)
+	else: 
+		player._set_hurt_key("Lipstick:frame", (data.lipstick_color - 1) * 8)
+	# Beard
+	player.reset_hurt_key("Beard:frame")
+	if data.beard_color == 0:
+		player._set_hurt_key("Beard:frame", data.beard_color * 8)
+	else: 
+		player._set_hurt_key("Beard:frame", (data.beard_color - 1) * 8)
+	# Eyes
+	player.reset_hurt_key("Eyes:frame")
+	player._set_hurt_key("Eyes:frame", data.eyes_color * 8)
+	# Hairs
+	player.reset_hurt_key("Hair:frame")
+	player._set_hurt_key("Hair:frame", data.hair_color * 8)
+	
+	
+	# set the DIE animation colors
+	# Shoes
+	player.reset_die_key("Shoes:frame")
+	player._set_die_key("Shoes:frame", data.shoe_color * 8)
+	# Pants
+	player.reset_die_key("Pants:frame")
+	player._set_die_key("Pants:frame", data.legs_color * 8)
+	# Clothes
+	player.reset_die_key("Clothes:frame")
+	player._set_die_key("Clothes:frame", data.torso_color * 8)
+	# Blush
+	player.reset_die_key("Blush:frame")
+	if data.blush_color == 0:
+		player._set_die_key("Blush:frame", data.blush_color * 8)
+	else: 
+		player._set_die_key("Blush:frame", (data.blush_color - 1) * 8)
+	# Lipstick
+	player.reset_die_key("Lipstick:frame")
+	if data.lipstick_color == 0:
+		player._set_die_key("Lipstick:frame", data.lipstick_color * 8)
+	else: 
+		player._set_die_key("Lipstick:frame", (data.lipstick_color - 1) * 8)
+	# Beard
+	player.reset_die_key("Beard:frame")
+	if data.beard_color == 0:
+		player._set_die_key("Beard:frame", data.beard_color * 8)
+	else: 
+		player._set_die_key("Beard:frame", (data.beard_color - 1) * 8)
+	# Eyes
+	player.reset_die_key("Eyes:frame")
+	player._set_die_key("Eyes:frame", data.eyes_color * 8)
+	# Hairs
+	player.reset_die_key("Hair:frame")
+	player._set_die_key("Hair:frame", data.hair_color * 8)
 
 # Method to start game scene
 func start_game():
@@ -431,8 +502,8 @@ func start_game():
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
 	Utils.get_current_player().set_data(data)
-	Utils.get_current_player().set_max_health(data.maxLP)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
+	Utils.get_current_player().set_max_health(int(data.maxLP))
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_exp(data.exp)

@@ -45,11 +45,11 @@ func show_hide_control_notes():
 	if !control_tab.visible and !dialog.visible and !menu.visible and !inventory.visible and !trade.visible and !control.visible:
 		pass
 	elif control_tab.visible:
-		if Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
+		if Utils.get_scene_manager().get_UI().get_node_or_null("GameMenu") != null:
 			menu.visible = true
-		elif Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface") != null:
+		elif Utils.get_scene_manager().get_UI().get_node_or_null("CharacterInterface") != null:
 			inventory.visible = true
-		elif Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") != null:
+		elif Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null:
 			trade.visible = true
 		else:
 			control.visible = true
@@ -72,11 +72,11 @@ func update():
 		menu.visible = false
 		inventory.visible = false
 		trade.visible = false
-		if Utils.get_scene_manager().get_node("UI").get_node_or_null("GameMenu") != null:
+		if Utils.get_scene_manager().get_UI().get_node_or_null("GameMenu") != null:
 			menu.visible = true
-		elif Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface") != null:
+		elif Utils.get_scene_manager().get_UI().get_node_or_null("CharacterInterface") != null:
 			inventory.visible = true
-		elif Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") != null:
+		elif Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null:
 			trade.visible = true
 		else:
 			control.visible = true

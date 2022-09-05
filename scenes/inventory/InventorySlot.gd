@@ -170,7 +170,7 @@ func drop_data(_pos, data):
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * split)
 					else:
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
-				Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+				Utils.get_scene_manager().get_UI().get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			# Update the data of the origin
 			# stacking
@@ -354,7 +354,7 @@ func SplitStack(split_amount, data):
 			valid = true
 		else:
 			valid =  false
-		Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
+		Utils.get_scene_manager().get_UI().get_node("TradeInventory").find_node("Inventory").get_child(0).find_node("Gold").set_text(
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	# update only when payed
 	if valid:
@@ -473,7 +473,7 @@ func hide_tooltip():
 func check_slots():
 	var free = false
 	var free2 = false
-	var trade = Utils.get_scene_manager().get_node("UI").get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
+	var trade = Utils.get_scene_manager().get_UI().get_node("TradeInventory").get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
 	var slots = MerchantData.inv_data.size()
 	for i in MerchantData.inv_data:
 		if MerchantData.inv_data[i]["Item"] == null:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=2]
+[gd_scene load_steps=93 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -18,12 +18,18 @@
 [ext_resource path="res://scenes/light/CustomLight.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/player/attack_swing.png" type="Texture" id=17]
 [ext_resource path="res://assets/player/weapons/wooden_sword_10001.png" type="Texture" id=18]
+[ext_resource path="res://scenes/player/HitboxZone.tscn" type="PackedScene" id=19]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
 
+[sub_resource type="CapsuleShape2D" id=67]
+radius = 6.66667
+height = 2.22222
+
 [sub_resource type="Animation" id=40]
 resource_name = "AttackDown"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -322,13 +328,38 @@ tracks/24/keys = {
 "times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [ null ],
+"args": [  ],
 "method": "on_attack_finished"
 } ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 
 [sub_resource type="Animation" id=39]
 resource_name = "AttackLeft"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -631,9 +662,34 @@ tracks/24/keys = {
 "method": "on_attack_finished"
 } ]
 }
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [sub_resource type="Animation" id=41]
 resource_name = "AttackRight"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -936,9 +992,34 @@ tracks/24/keys = {
 "method": "on_attack_finished"
 } ]
 }
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [sub_resource type="Animation" id=42]
 resource_name = "AttackUp"
+length = 1.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("AttackSwing:frame")
 tracks/0/interp = 1
@@ -1239,6 +1320,936 @@ tracks/24/keys = {
 "values": [ {
 "args": [  ],
 "method": "on_attack_finished"
+} ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+
+[sub_resource type="Animation" id=87]
+resource_name = "Die"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 224, 225 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shoes:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2240, 2241 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Pants:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2240, 2241 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Clothes:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2240, 2241 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Blush:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1120, 1121 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Lipstick:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1120, 1121 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Beard:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 3136, 3137 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Eyes:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 3136, 3137 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Earring:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 224, 225 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Hair:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 3136, 3137 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Mask:frame")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 224, 225 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Glasses:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2240, 2241 ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Hat:frame")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 224, 225 ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("Hair:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Vector2( -15.778, -20.3329 ) ]
+}
+tracks/14/type = "value"
+tracks/14/path = NodePath("Mask:position")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( -14.8, -19.5 ), Vector2( -15.8, -19.5 ) ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("Glasses:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( -15.77, -16.778 ), Vector2( -14.8, -16.778 ) ]
+}
+tracks/16/type = "method"
+tracks/16/path = NodePath(".")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 1.8 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "player_killed"
+} ]
+}
+
+[sub_resource type="Animation" id=68]
+resource_name = "HurtDown"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 192 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shoes:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1920 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Pants:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1920 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Clothes:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1920 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Blush:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 960 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Lipstick:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 960 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Beard:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2688 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Eyes:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2688 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Earring:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 192 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Hair:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2688 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Mask:frame")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 192 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Glasses:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1920 ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Hat:frame")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 192 ]
+}
+tracks/13/type = "method"
+tracks/13/path = NodePath(".")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "player_hurt"
+} ]
+}
+
+[sub_resource type="Animation" id=71]
+resource_name = "HurtLeft"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 216 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shoes:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2160 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Pants:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2160 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Clothes:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2160 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Blush:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1080 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Lipstick:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1080 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Beard:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 3024 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Eyes:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 3024 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Earring:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 216 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Hair:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 3024 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Mask:frame")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 216 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Glasses:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2160 ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Hat:frame")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 216 ]
+}
+tracks/13/type = "method"
+tracks/13/path = NodePath(".")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "player_hurt"
+} ]
+}
+
+[sub_resource type="Animation" id=70]
+resource_name = "HurtRight"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 208 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shoes:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2080 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Pants:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2080 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Clothes:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2080 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Blush:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1040 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Lipstick:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1040 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Beard:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2912 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Eyes:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2912 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Earring:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 208 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Hair:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2912 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Mask:frame")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 208 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Glasses:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2080 ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Hat:frame")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 208 ]
+}
+tracks/13/type = "method"
+tracks/13/path = NodePath(".")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "player_hurt"
+} ]
+}
+
+[sub_resource type="Animation" id=69]
+resource_name = "HurtUp"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 200 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shoes:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2000 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Pants:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2000 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Clothes:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2000 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Blush:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1000 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Lipstick:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1000 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Beard:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2800 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Eyes:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2800 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Earring:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 200 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Hair:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2800 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("Mask:frame")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 200 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("Glasses:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 2000 ]
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("Hat:frame")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 200 ]
+}
+tracks/13/type = "method"
+tracks/13/path = NodePath(".")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "player_hurt"
 } ]
 }
 
@@ -2082,7 +3093,7 @@ tracks/16/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( -15.77, -18.778 ) ]
+"values": [ Vector2( -15.77, -17.6669 ) ]
 }
 tracks/17/type = "value"
 tracks/17/path = NodePath("Hat:position")
@@ -2107,6 +3118,114 @@ tracks/18/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( -15.7778, -20.4444 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:disabled")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("AttackSwing/DamageAreaBottom/CollisionShape2D:visible")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:disabled")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("AttackSwing/DamageAreaLeft/CollisionShape2D:visible")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:disabled")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("AttackSwing/DamageAreaTop/CollisionShape2D2:visible")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:disabled")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/26/type = "value"
+tracks/26/path = NodePath("AttackSwing/DamageAreaRight/CollisionShape2D2:visible")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/27/type = "value"
+tracks/27/path = NodePath("Weapon:visible")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -2778,13 +3897,58 @@ blend_point_3/pos = Vector2( -1, 0 )
 [sub_resource type="AnimationNodeTimeScale" id=56]
 
 [sub_resource type="AnimationNodeBlendTree" id=57]
-graph_offset = Vector2( -349.023, 0 )
+graph_offset = Vector2( -234.798, -15.4479 )
 nodes/AttackCases/node = SubResource( 62 )
 nodes/AttackCases/position = Vector2( -80, 100 )
 nodes/TimeScale/node = SubResource( 56 )
 nodes/TimeScale/position = Vector2( 280, 120 )
 nodes/output/position = Vector2( 480, 140 )
 node_connections = [ "output", 0, "TimeScale", "TimeScale", 0, "AttackCases" ]
+
+[sub_resource type="AnimationNodeAnimation" id=88]
+animation = "Die"
+
+[sub_resource type="AnimationNodeAnimation" id=79]
+animation = "HurtDown"
+
+[sub_resource type="AnimationNodeAnimation" id=80]
+animation = "HurtUp"
+
+[sub_resource type="AnimationNodeAnimation" id=81]
+animation = "HurtRight"
+
+[sub_resource type="AnimationNodeAnimation" id=82]
+animation = "HurtLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=83]
+animation = "HurtLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=84]
+animation = "HurtLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=85]
+animation = "HurtRight"
+
+[sub_resource type="AnimationNodeAnimation" id=86]
+animation = "HurtRight"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=72]
+blend_point_0/node = SubResource( 79 )
+blend_point_0/pos = Vector2( 0, 1 )
+blend_point_1/node = SubResource( 80 )
+blend_point_1/pos = Vector2( 0, -1 )
+blend_point_2/node = SubResource( 81 )
+blend_point_2/pos = Vector2( 1, 0 )
+blend_point_3/node = SubResource( 82 )
+blend_point_3/pos = Vector2( -1, 0 )
+blend_point_4/node = SubResource( 83 )
+blend_point_4/pos = Vector2( -1, 0.95 )
+blend_point_5/node = SubResource( 84 )
+blend_point_5/pos = Vector2( -1, -0.95 )
+blend_point_6/node = SubResource( 85 )
+blend_point_6/pos = Vector2( 1, 0.95 )
+blend_point_7/node = SubResource( 86 )
+blend_point_7/pos = Vector2( 1, -0.95 )
 
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "IdleLeft"
@@ -2885,14 +4049,38 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=66]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=73]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=74]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=75]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=76]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=77]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=78]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=89]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=90]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=91]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=92]
+
 [sub_resource type="AnimationNodeStateMachine" id=2]
 states/Attack/node = SubResource( 57 )
-states/Attack/position = Vector2( 330.956, 241 )
+states/Attack/position = Vector2( 240, 219 )
+states/Die/node = SubResource( 88 )
+states/Die/position = Vector2( 615.956, 148 )
+states/Hurt/node = SubResource( 72 )
+states/Hurt/position = Vector2( 431, 219 )
 states/Idle/node = SubResource( 17 )
 states/Idle/position = Vector2( 240, 73 )
 states/Walk/node = SubResource( 22 )
 states/Walk/position = Vector2( 431, 73 )
-transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 63 ), "Attack", "Idle", SubResource( 64 ), "Attack", "Walk", SubResource( 65 ), "Walk", "Attack", SubResource( 66 ) ]
+transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 63 ), "Attack", "Idle", SubResource( 64 ), "Attack", "Walk", SubResource( 65 ), "Walk", "Attack", SubResource( 66 ), "Idle", "Hurt", SubResource( 73 ), "Hurt", "Idle", SubResource( 74 ), "Attack", "Hurt", SubResource( 75 ), "Hurt", "Attack", SubResource( 76 ), "Hurt", "Walk", SubResource( 77 ), "Walk", "Hurt", SubResource( 78 ), "Idle", "Die", SubResource( 89 ), "Attack", "Die", SubResource( 90 ), "Hurt", "Die", SubResource( 91 ), "Walk", "Die", SubResource( 92 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -161.044, 0 )
 
@@ -2906,6 +4094,7 @@ collision_mask = 7
 script = ExtResource( 3 )
 
 [node name="Shadow" type="Sprite" parent="."]
+visible = false
 position = Vector2( -7.77778, -4.44444 )
 texture = ExtResource( 1 )
 centered = false
@@ -2946,7 +4135,6 @@ hframes = 80
 vframes = 49
 
 [node name="Blush" type="Sprite" parent="."]
-visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 9 )
 centered = false
@@ -2955,7 +4143,6 @@ hframes = 40
 vframes = 49
 
 [node name="Lipstick" type="Sprite" parent="."]
-visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 8 )
 centered = false
@@ -2964,6 +4151,7 @@ hframes = 40
 vframes = 49
 
 [node name="Beard" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 15 )
 centered = false
@@ -2972,6 +4160,7 @@ hframes = 112
 vframes = 49
 
 [node name="Eyes" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 7 )
 centered = false
@@ -3009,7 +4198,7 @@ region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Glasses" type="Sprite" parent="."]
 visible = false
-position = Vector2( -15.77, -18.778 )
+position = Vector2( -15.77, -17.6669 )
 scale = Vector2( 1, 0.875 )
 texture = ExtResource( 12 )
 centered = false
@@ -3034,39 +4223,51 @@ texture = ExtResource( 17 )
 vframes = 4
 
 [node name="DamageAreaBottom" type="Area2D" parent="AttackSwing"]
-visible = false
+collision_layer = 0
+collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaBottom"]
+visible = false
 position = Vector2( -16.8667, -3.72222 )
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="DamageAreaLeft" type="Area2D" parent="AttackSwing"]
-visible = false
+collision_layer = 0
+collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaLeft"]
+visible = false
 position = Vector2( 6.46667, -9.27778 )
 rotation = 1.5708
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="DamageAreaTop" type="Area2D" parent="AttackSwing"]
-visible = false
+collision_layer = 0
+collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaTop"]
+visible = false
 position = Vector2( 16.4667, 12.9444 )
 rotation = 3.14159
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="DamageAreaRight" type="Area2D" parent="AttackSwing"]
-visible = false
+collision_layer = 0
+collision_mask = 12
 monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionPolygon2D" parent="AttackSwing/DamageAreaRight"]
+visible = false
 position = Vector2( -6.86667, 24.0556 )
 rotation = 4.71239
 polygon = PoolVector2Array( 2.22222, 18.8889, 5.55555, 23.3333, 14.4444, 25.5556, 23.3333, 24.4444, 28.8889, 22.2222, 30, 20, 31.1111, 17.7778, 32.2222, 14.4444, 26.6667, 13.3333, 23.3333, 16.6667, 17.7778, 18.8889, 11.1111, 17.7778, 7.77778, 15.5556, 6.66667, 13.3333, 1.11111, 14.4444 )
+disabled = true
 
 [node name="Weapon" type="Sprite" parent="."]
 visible = false
@@ -3082,11 +4283,25 @@ visible = false
 position = Vector2( 0, 1.5 )
 shape = SubResource( 1 )
 
+[node name="HitboxZone" parent="." instance=ExtResource( 19 )]
+visible = false
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" parent="HitboxZone" index="0"]
+shape = SubResource( 67 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+method_call_mode = 1
 anims/AttackDown = SubResource( 40 )
 anims/AttackLeft = SubResource( 39 )
 anims/AttackRight = SubResource( 41 )
 anims/AttackUp = SubResource( 42 )
+anims/Die = SubResource( 87 )
+anims/HurtDown = SubResource( 68 )
+anims/HurtLeft = SubResource( 71 )
+anims/HurtRight = SubResource( 70 )
+anims/HurtUp = SubResource( 69 )
 anims/IdleDown = SubResource( 4 )
 anims/IdleLeft = SubResource( 5 )
 anims/IdleRight = SubResource( 6 )
@@ -3104,7 +4319,8 @@ active = true
 parameters/playback = SubResource( 3 )
 parameters/Attack/AttackCases/blend_position = Vector2( 0, 0 )
 parameters/Attack/TimeScale/scale = 1.0
-parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
+parameters/Hurt/blend_position = Vector2( 0, 0 )
+parameters/Idle/blend_position = Vector2( 0.00250626, -0.00227785 )
 parameters/Walk/blend_position = Vector2( -0.380349, 0.202312 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -3120,3 +4336,10 @@ cast_to = Vector2( 0, 8 )
 [node name="CustomLight" parent="." instance=ExtResource( 16 )]
 position = Vector2( -7.8, 8 )
 radius = 64
+
+[connection signal="area_entered" from="AttackSwing/DamageAreaBottom" to="." method="_on_DamageAreaBottom_area_entered"]
+[connection signal="area_entered" from="AttackSwing/DamageAreaLeft" to="." method="_on_DamageAreaLeft_area_entered"]
+[connection signal="area_entered" from="AttackSwing/DamageAreaTop" to="." method="_on_DamageAreaTop_area_entered"]
+[connection signal="area_entered" from="AttackSwing/DamageAreaRight" to="." method="_on_DamageAreaRight_area_entered"]
+
+[editable path="HitboxZone"]

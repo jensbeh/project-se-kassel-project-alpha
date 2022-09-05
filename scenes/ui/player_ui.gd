@@ -24,10 +24,16 @@ func set_exp(new_value):
 	exp_bar.value = int(new_value)
 	# Max exp for level
 	if exp_bar.value >= exp_bar.max_value:
-		var player_level = Utils.get_current_player().get_level()
+		var player_level = int(Utils.get_current_player().get_level())
 		Utils.get_current_player().set_level(int(player_level +1))
 		Utils.get_current_player().set_exp(new_value - exp_bar.max_value)
 		exp_bar.max_value = (player_level + 1) * 100
+		life_bar.value = 100
+		# increase max lp by 10 by level up
+		Utils.get_current_player().set_max_health(100 + player_level*10)
+		Utils.get_current_player().set_current_health(100 + player_level*10)
+		# save player
+		Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
 		if int(player_level +1) == 5:
 			change_heart_number(4)
 		elif int(player_level +1) == 10:
@@ -72,13 +78,8 @@ func set_life(percent_player_health: int):
 		else:
 			life_bar.value = 84 + (percent_player_health - 81) / 1.3
 
-	if life_bar.value <= 0:
-		print("Spieler ist tot")
-
 
 func change_heart_number(number_heart):
 	hearts = number_heart
 	life_bar.texture_under = load("res://assets/ui/lifebar_background_" + str(number_heart) + ".png")
 	life_bar.texture_progress = load("res://assets/ui/lifebar_" + str(number_heart) + ".png")
-	
-	

@@ -17,6 +17,19 @@ const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
 const PLAYER_MAX_LIGHT_ENERGY = 0.8
 const PLAYER_STAIR_SPEED_FACTOR = 0.6
+const CRITICAL_ATTACK_DAMAGE_FACTOR = 1.5
+const NORMAL_ATTACK_MIN_DAMAGE_FACTOR = 0.8
+const NORMAL_ATTACK_MAX_DAMAGE_FACTOR = 1.2
+const MAX_KNOCKBACK = 4
+enum AttackDamageStates {
+	NORMAL_ATTACK,
+	CRITICAL_ATTACK
+}
+const AttackDamageStatesWeights = {
+	AttackDamageStates.NORMAL_ATTACK: 0.9,
+	AttackDamageStates.CRITICAL_ATTACK: 0.1,
+}
+
 
 # Transition
 enum TransitionType {
@@ -71,6 +84,7 @@ const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
 const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
+const DEATH_SCREEN_PATH = "res://scenes/ui/DeathScreen.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999
