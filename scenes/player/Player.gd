@@ -151,7 +151,7 @@ func _physics_process(delta):
 
 # Method handles key inputs
 func _input(event):
-	Utils.get_scene_manager().get_UI().get_node("ControlNotes").update()
+	Utils.get_control_notes().update()
 	
 	if event.is_action_pressed("e"):
 		
@@ -159,8 +159,8 @@ func _input(event):
 			emit_signal("player_interact")
 			
 		# Remove the trade inventory
-		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") != null and !dragging:
-			Utils.get_scene_manager().get_UI().get_node("TradeInventory").queue_free()
+		if Utils.get_trade_inventory() != null and !dragging:
+			Utils.get_trade_inventory().queue_free()
 			set_player_can_interact(true)
 			set_movement(true)
 			set_movment_animation(true)
@@ -172,38 +172,38 @@ func _input(event):
 			MerchantData.save_merchant_inventory()
 	
 	# Open game menu with "esc"
-	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_scene_manager().get_UI().find_node("GameMenu") == null:
+	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
-		Utils.get_scene_manager().get_UI().add_child(load(Constants.GAME_MENU_PATH).instance())
+		Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
 		save_player_data(Utils.get_current_player().get_data())
 	# Close game menu with "esc" when game menu is open
-	elif event.is_action_pressed("esc") and !movement and Utils.get_scene_manager().get_UI().get_node_or_null("GameMenu") != null:
+	elif event.is_action_pressed("esc") and !movement and Utils.get_game_menu() != null:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
-		Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
+		Utils.get_game_menu().queue_free()
 	
 	# Open character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and movement and not hurting and not dying and Utils.get_scene_manager().get_UI().find_node("CharacterInterface") == null:
+	elif event.is_action_pressed("character_inventory") and movement and not hurting and not dying and Utils.get_character_interface() == null:
 		set_movement(false)
 		set_movment_animation(false)
 		set_player_can_interact(false)
-		Utils.get_scene_manager().get_UI().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+		Utils.get_ui().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
 	# Close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_scene_manager().get_UI().get_node_or_null("CharacterInterface") != null and !dragging:
+	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_character_interface() != null and !dragging:
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
 		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
-		Utils.get_scene_manager().get_UI().get_node("CharacterInterface").queue_free()
+		Utils.get_character_interface().queue_free()
 	
 	# Control Notes
 	elif event.is_action_pressed("control_notes") and !preview:
-		Utils.get_scene_manager().get_UI().get_node("ControlNotes").show_hide_control_notes()
+		Utils.get_control_notes().show_hide_control_notes()
 	
 	# Attack with "left_mouse"
 	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying:
@@ -671,7 +671,7 @@ func get_current_health():
 
 func set_current_health(new_current_health: int):
 	current_health = new_current_health
-	Utils.get_scene_manager().get_node("UI").get_node("PlayerUI").set_life(new_current_health*100 / float(max_health))
+	Utils.get_player_ui().set_life(new_current_health*100 / float(max_health))
 	print(new_current_health*100 / float(max_health))
 	data.currentHP = new_current_health
 
@@ -719,7 +719,7 @@ func get_exp():
 func set_exp(new_exp):
 	player_exp = int(new_exp)
 	# for ui update
-	Utils.get_scene_manager().get_UI().get_node("PlayerUI").set_exp(new_exp)
+	Utils.get_player_ui().set_exp(new_exp)
 	# for save
 	data.exp = player_exp
 
@@ -828,7 +828,7 @@ func kill_player():
 
 # Method is called when DIE animation is done
 func player_killed():
-	Utils.get_scene_manager().show_death_screen()
+	Utils.get_main().show_death_screen()
 
 
 # Method to return true if player is dying/died otherwise false -> called from scene_manager

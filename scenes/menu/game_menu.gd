@@ -11,19 +11,19 @@ func _ready():
 
 # Close game menu and set playermovemnt true
 func _on_Back_to_Game_pressed():
-	Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
+	Utils.get_game_menu().queue_free()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
 
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().add_child(load(Constants.SETTINGS_PATH).instance())
+	Utils.get_main().add_child(load(Constants.SETTINGS_PATH).instance())
 
 # Close game and go to main menu
 func _on_Back_to_Main_Menu_pressed():
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
-	Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
-	Utils.get_scene_manager().get_UI().in_world(false)
+	Utils.get_game_menu().queue_free()
+	Utils.get_ui().in_world(false)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 	
 	# Stop game

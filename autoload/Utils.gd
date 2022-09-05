@@ -43,9 +43,53 @@ func get_main():
 	return get_node("/root/Main")
 
 
-# Returns the scene_manager instance
+# Method to return the UI node
+func get_ui():
+	return get_node("/root/Main/UI")
+
+
 func get_minimap():
-	return get_node("/root/Main/Minimap")
+	return get_ui().get_node("/root/Main/UI/Minimap")
+
+
+func get_game_menu():
+	return get_ui().get_node_or_null("GameMenu")
+
+
+func remove_game_menu():
+	return get_ui().remove_child(get_game_menu())
+
+
+func get_character_interface():
+	return get_ui().get_node_or_null("CharacterInterface")
+
+
+func remove_character_interface():
+	return get_ui().remove_child(get_character_interface())
+
+
+func get_death_screen():
+	return get_ui().get_node_or_null("DeathScreen")
+
+
+func remove_death_screen():
+	return get_ui().remove_child(get_death_screen())
+
+
+func get_control_notes():
+	return get_ui().get_node_or_null("ControlNotes")
+
+
+func get_player_ui():
+	return get_ui().get_node_or_null("PlayerUI")
+
+
+func get_trade_inventory():
+	return get_ui().get_node_or_null("TradeInventory")
+
+
+func get_inventory():
+	return get_ui().get_node_or_null("Inventory")
 
 
 # Method to calculate the new player_position and view_direction with the transition_data and sets the spawn of the current player

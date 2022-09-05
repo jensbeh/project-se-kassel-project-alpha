@@ -42,7 +42,7 @@ func _on_Start_Game_pressed():
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().add_child(load(Constants.SETTINGS_PATH).instance())
+	Utils.get_main().add_child(load(Constants.SETTINGS_PATH).instance())
 
 func _on_Exit_to_Desktop_pressed():
 	# Stop game

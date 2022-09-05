@@ -22,11 +22,11 @@ func _ready():
 
 
 func _on_Button_pressed():
-	Utils.get_scene_manager().get_node("TradeInventory").queue_free()
+	Utils.get_trade_inventory().queue_free()
 	Utils.get_current_player().set_player_can_interact(true)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_scene_manager().find_node("Inventory").visible = false
+	Utils.get_inventory().visible = false
 	# reset npc interaction state
 	for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 		npc.set_interacted(false)

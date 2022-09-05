@@ -510,7 +510,7 @@ func start_game():
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_current_health(int(data.currentHP))
 	
-	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
+	Utils.get_player_ui().setup_ui()
 	
 	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
