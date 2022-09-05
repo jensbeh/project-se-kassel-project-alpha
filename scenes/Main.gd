@@ -3,7 +3,6 @@ extends Node2D
 
 onready var viewport1 = $Game/Viewport
 onready var viewport2 = $Minimap/Viewport
-onready var world = $Game/Viewport/Viewport/World
 onready var minimap = $Minimap/Viewport/Camera2D
 onready var sc = $Game/Viewport/SceneManager/CurrentScene
 
