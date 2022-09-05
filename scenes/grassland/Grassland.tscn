@@ -1553,10 +1553,10 @@ anims/RESET = SubResource( 13 )
 [node name="Player" parent="map_grassland/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 184, 570 )
 
-[node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="18"]
+[node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 15 )
 
-[node name="Camera2D" parent="map_grassland/entitylayer/playerlayer/Player" index="19"]
+[node name="Camera2D" parent="map_grassland/entitylayer/playerlayer/Player" index="20"]
 limit_left = -4335
 limit_bottom = 794
 
@@ -1569,3 +1569,4 @@ visible = false
 [editable path="map_grassland/npclayer/heinz"]
 [editable path="map_grassland/npclayer/heinz/DialogueBox"]
 [editable path="map_grassland/entitylayer/playerlayer/Player"]
+[editable path="map_grassland/entitylayer/playerlayer/Player/HitboxZone"]

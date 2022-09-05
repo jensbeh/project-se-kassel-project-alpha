@@ -5,30 +5,48 @@ var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
+
 func _ready():
 	pass
+
 
 # Returns the player in the loaded current_scene
 func get_player():
 	return get_node("/root/Main/Game/Viewport/SceneManager/CurrentScene").get_children().back().find_node("Player")
 
+
 # Sets a new current_player instance (firstly done when enter the game - not available in the menu)
 func set_current_player(new_current_player: KinematicBody2D):
 	current_player = new_current_player
-	
+
+
 # Returns the current_player instance
 func get_current_player():
 	return current_player
+
 
 # Returns the scene_manager instance
 func get_scene_manager():
 	return get_node("/root/Main/Game/Viewport/SceneManager")
 
+
 func set_language(lang):
 	language = lang
-	
+
+
 func get_language():
 	return language
+
+
+# Returns the scene_manager instance
+func get_main():
+	return get_node("/root/Main")
+
+
+# Returns the scene_manager instance
+func get_minimap():
+	return get_node("/root/Main/Minimap")
+
 
 # Method to calculate the new player_position and view_direction with the transition_data and sets the spawn of the current player
 func calculate_and_set_player_spawn(scene: Node, init_transition_data):
