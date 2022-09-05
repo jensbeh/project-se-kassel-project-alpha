@@ -10,7 +10,7 @@ func _ready():
 
 # Returns the player in the loaded current_scene
 func get_player():
-	return get_node("/root/SceneManager/CurrentScene").get_children().back().find_node("Player")
+	return get_node("/root/Main/Game/Viewport/SceneManager/CurrentScene").get_children().back().find_node("Player")
 
 # Sets a new current_player instance (firstly done when enter the game - not available in the menu)
 func set_current_player(new_current_player: KinematicBody2D):
@@ -22,7 +22,7 @@ func get_current_player():
 
 # Returns the scene_manager instance
 func get_scene_manager():
-	return get_node("/root/SceneManager")
+	return get_node("/root/Main/Game/Viewport/SceneManager")
 
 func set_language(lang):
 	language = lang
