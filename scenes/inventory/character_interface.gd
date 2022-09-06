@@ -10,7 +10,6 @@ var lipstick
 var beard
 var eyes
 var hair
-#todo all 3 slots
 
 func _ready():
 	# load weapon, light and hotbar

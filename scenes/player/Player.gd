@@ -861,6 +861,8 @@ func get_light_radius():
 	return player_light_radius
 
 func set_light(new_light):
+	if new_light == null:
+		new_light = 0
 	player_light_radius = new_light
 	data.light = player_light_radius
 	$CustomLight.min_radius = new_light * 0.96

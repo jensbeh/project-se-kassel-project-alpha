@@ -508,7 +508,7 @@ func start_game():
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_exp(data.exp)
 	Utils.get_current_player().set_gold(data.gold)
-	Utils.get_current_player().set_current_health(data.currentHP)
+	Utils.get_current_player().set_current_health(int(data.currentHP))
 	Utils.get_current_player().set_light(data.light)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
