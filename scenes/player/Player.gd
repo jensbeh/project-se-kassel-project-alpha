@@ -55,18 +55,18 @@ var movement
 var player_can_interact
 
 # player stats and values
-var gold
-var attack_damage = 0
-var knockback = 0
-var attack_speed = 0
+var gold: int
+var attack_damage: int = 0
+var knockback: int = 0
+var attack_speed: int = 0
 var max_health: int
 var current_health: int
 var data
-var level = 1
+var level: int = 1
 var dragging = false
 var preview = false
 var player_exp: int = 0
-var player_light_radius
+var player_light_radius: int
 
 # Variables
 var is_attacking = false
@@ -589,7 +589,7 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 
 
 # Method to set/save weapon and stats to player
-func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback):
+func set_weapon(new_weapon_id, new_attack_value: int, new_attack_speed: int, new_knockback: int):
 	if new_weapon_id != null:
 		var weapon_id_str = str(new_weapon_id)
 		can_attack = true
@@ -659,7 +659,7 @@ func get_gold():
 	return gold
 
 
-func set_gold(new_gold_value):
+func set_gold(new_gold_value: int):
 	gold = new_gold_value
 	data.gold = new_gold_value
 
@@ -711,7 +711,7 @@ func set_dragging(value):
 	dragging = value
 
 
-func set_level(new_level):
+func set_level(new_level: int):
 	level = new_level
 	data.level = new_level
 
@@ -725,7 +725,7 @@ func get_exp():
 
 
 # set a new exp value for the player
-func set_exp(new_exp):
+func set_exp(new_exp: int):
 	player_exp = int(new_exp)
 	# for ui update
 	Utils.get_scene_manager().get_UI().get_node("PlayerUI").set_exp(new_exp)
@@ -860,9 +860,7 @@ func reset_player_after_dying():
 func get_light_radius():
 	return player_light_radius
 
-func set_light(new_light):
-	if new_light == null:
-		new_light = 0
+func set_light(new_light: int):
 	player_light_radius = new_light
 	data.light = player_light_radius
 	$CustomLight.min_radius = new_light * 0.96

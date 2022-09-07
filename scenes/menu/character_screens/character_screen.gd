@@ -503,17 +503,18 @@ func start_game():
 	PlayerData._ready()
 	Utils.get_current_player().set_data(data)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
-	Utils.get_current_player().set_max_health(int(data.maxLP))
+	Utils.get_current_player().set_max_health(data.maxLP)
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
 	Utils.get_current_player().set_level(data.level)
+	Utils.get_current_player().set_current_health(data.currentHP)
+	# must call before set exp and after set lp and level
+	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
 	Utils.get_current_player().set_exp(data.exp)
 	Utils.get_current_player().set_gold(data.gold)
-	Utils.get_current_player().set_current_health(int(data.currentHP))
 	Utils.get_current_player().set_light(data.light)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
 	
-	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
 	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
 	
 	# Transition

@@ -16,6 +16,7 @@ func _ready():
 	timer.wait_time = Constants.COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
+	timer.set_one_shot(true)
 
 
 func _process(_delta):

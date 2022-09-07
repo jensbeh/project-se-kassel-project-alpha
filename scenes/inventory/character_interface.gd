@@ -41,7 +41,7 @@ func _ready():
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
-	find_node("Damage").set_text(tr("ATTACK") + ": " + str(Utils.get_current_player().get_attack_damage()))
+	find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Attack"]))
 	find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(Utils.get_current_player().get_attack_speed()))
 	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
 	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))

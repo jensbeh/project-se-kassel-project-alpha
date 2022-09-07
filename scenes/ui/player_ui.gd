@@ -9,23 +9,24 @@ var hearts = 3
 
 # Load the correct ui settings
 func setup_ui():
-	exp_bar.max_value = int(Utils.get_current_player().get_level()) * 100
-	if int(Utils.get_current_player().get_level()) >= 10:
+	exp_bar.max_value = Utils.get_current_player().get_level() * 100
+	if Utils.get_current_player().get_level() >= 10:
 			change_heart_number(5)
-	elif int(Utils.get_current_player().get_level()) >= 5:
+	elif Utils.get_current_player().get_level() >= 5:
 			change_heart_number(4)
 	else:
 		change_heart_number(3)
 
 
 # Set expbar value
-func set_exp(new_value):
+func set_exp(new_value: int):
 	exp_value.set_text("EXP: " + str(new_value))
-	exp_bar.value = int(new_value)
+	exp_bar.value = new_value
 	# Max exp for level
 	if exp_bar.value >= exp_bar.max_value:
-		var player_level = int(Utils.get_current_player().get_level())
-		Utils.get_current_player().set_level(int(player_level +1))
+		print("###here###")
+		var player_level = Utils.get_current_player().get_level()
+		Utils.get_current_player().set_level(player_level +1)
 		Utils.get_current_player().set_exp(new_value - exp_bar.max_value)
 		exp_bar.max_value = (player_level + 1) * 100
 		life_bar.value = 100
@@ -34,9 +35,9 @@ func set_exp(new_value):
 		Utils.get_current_player().set_current_health(100 + player_level*10)
 		# save player
 		Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
-		if int(player_level +1) == 5:
+		if player_level +1 == 5:
 			change_heart_number(4)
-		elif int(player_level +1) == 10:
+		elif player_level +1 == 10:
 			change_heart_number(5)
 
 # Clock

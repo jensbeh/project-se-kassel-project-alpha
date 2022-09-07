@@ -17,6 +17,7 @@ func _ready():
 	timer.wait_time = Constants.COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
+	timer.set_one_shot(true)
 
 
 func _process(_delta):
@@ -302,7 +303,7 @@ func drop_data(_pos, data):
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 				elif data["origin_panel"] == "Inventory" or data["origin_panel"] == "TradeInventory":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
-				else:
+				elif data["origin_node"].get_parent().get_name() == "Hotbar":
 					data["origin_node"].get_node("TextureRect/Stack").set_text("")
 				
 			# Update the texture, label and data of the target
@@ -411,16 +412,17 @@ func show_hide_stack_label(data):
 		else:
 			get_parent().get_node("TextureRect").visible = false
 	else:
-		if (int(data["origin_node"].get_node("TextureRect/Stack").get_text()) > 1 and 
-		data["origin_node"].get_node("TextureRect/Stack").get_text() != null):
-			data["origin_node"].get_node("TextureRect").visible = true
-		else:
-			data["origin_node"].get_node("TextureRect").visible = false
-		if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
-		get_parent().get_node("TextureRect/Stack").get_text() != null):
-			get_parent().get_node("TextureRect").visible = true
-		else:
-			get_parent().get_node("TextureRect").visible = false
+		if data["origin_node"].get_parent().get_name() != "Light" and data["origin_node"].get_parent().get_name() != "Weapon":
+			if (int(data["origin_node"].get_node("TextureRect/Stack").get_text()) > 1 and 
+			data["origin_node"].get_node("TextureRect/Stack").get_text() != null):
+				data["origin_node"].get_node("TextureRect").visible = true
+			else:
+				data["origin_node"].get_node("TextureRect").visible = false
+			if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+			get_parent().get_node("TextureRect/Stack").get_text() != null):
+				get_parent().get_node("TextureRect").visible = true
+			else:
+				get_parent().get_node("TextureRect").visible = false
 
 
 func verify_origin_texture(data):
@@ -535,7 +537,8 @@ func set_cooldown(cooldown):
 
 # cooldown by move an item
 func check_cooldown(data):
-	if data["origin_panel"] != "TradeInventory":
+	if (data["origin_panel"] != "TradeInventory" and data["origin_node"].get_parent().get_name() != "Light" and 
+	data["origin_node"].get_parent().get_name() != "Weapon"):
 		var cooldown
 		var cooldown_origin
 		if stack:

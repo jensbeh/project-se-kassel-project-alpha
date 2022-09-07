@@ -280,10 +280,10 @@ scale = Vector2( 10, 10 )
 [node name="CollisionShape2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="16"]
 disabled = true
 
-[node name="AnimationTree" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="18"]
+[node name="AnimationTree" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="19"]
 parameters/playback = SubResource( 2 )
 
-[node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="19"]
+[node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="20"]
 current = false
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]
@@ -509,3 +509,4 @@ patch_margin_bottom = 31
 [connection signal="timeout" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Timer" to="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon" method="_on_Timer_timeout"]
 
 [editable path="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player"]
+[editable path="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player/HitboxZone"]
