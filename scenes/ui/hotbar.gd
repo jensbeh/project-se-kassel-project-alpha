@@ -92,7 +92,7 @@ func use_item():
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
 				PlayerData.equipment_data["Hotbar"]["Item"] = null
-				item_slot.get_node("TextureRect/Stack").set_text("0")
+				item_slot.get_node("TextureRect/Stack").set_text("")
 				item_slot.get_node("TextureRect").visible = false
 				item_slot.get_node("Icon/Sprite").set_texture(null)
 				cooldown_texture.hide()

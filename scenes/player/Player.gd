@@ -850,6 +850,10 @@ func reset_player_after_dying():
 	# Add player to player layer so the mobs will recognize the player again
 	set_collision_layer_bit(1, true)
 	
+	# reset cooldown
+	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").stop()
+	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar")._on_Timer_timeout()
+	
 	set_current_health(max_health)
 	hurting = false
 	dying = false

@@ -278,11 +278,11 @@ func _on_Icon_gui_input(event):
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:
 						PlayerData.equipment_data[slot]["Stack"] = null
 						PlayerData.equipment_data[slot]["Item"] = null
-						get_node("TextureRect/Stack").set_text("0")
+						get_node("TextureRect/Stack").set_text("")
 						get_node("TextureRect").visible = false
 						get_node("Sprite").set_texture(null)
 					elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
-						get_node("TextureRect/Stack").set_text("1")
+						get_node("TextureRect/Stack").set_text("")
 						get_node("TextureRect").visible = false
 					else:
 						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
@@ -300,6 +300,11 @@ func set_cooldown(cooldown):
 	disabled = true
 	set_process(true)
 	time_label.show()
+	if  PlayerData.equipment_data["Hotbar"]["Item"] == null:
+		time_label.hide()
+		cooldown_texture.hide()
+	else:
+		cooldown_texture.show()
 
 
 # cooldown by moving an item
@@ -323,6 +328,7 @@ func check_cooldown(data):
 		disabled = true
 		set_process(true)
 		time_label.show()
+		cooldown_texture.show()
 	else:
 		disabled = false
 		set_process(false)
@@ -335,6 +341,7 @@ func check_cooldown(data):
 		data["origin_node"].get_node("TextureProgress/Time").show()
 		data["origin_node"].set_process(true)
 	else:
+		data["origin_node"].get_node("../Timer").stop()
 		data["origin_node"].disabled = false
 		data["origin_node"].get_node("TextureProgress").value = 0
 		data["origin_node"].get_node("TextureProgress/Time").hide()

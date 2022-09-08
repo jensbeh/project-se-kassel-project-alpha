@@ -512,17 +512,19 @@ func _on_Icon_gui_input(event):
 						if PlayerData.inv_data[slot]["Stack"] <= 0:
 							PlayerData.inv_data[slot]["Stack"] = null
 							PlayerData.inv_data[slot]["Item"] = null
-							get_node("../TextureRect/Stack").set_text("0")
+							get_node("../TextureRect/Stack").set_text("")
 							get_node("../TextureRect").visible = false
 							get_node("../Icon/Sprite").set_texture(null)
 						elif PlayerData.inv_data[slot]["Stack"] == 1:
-							get_node("../TextureRect/Stack").set_text("1")
+							get_node("../TextureRect/Stack").set_text("")
 							get_node("../TextureRect").visible = false
 						else:
 							get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
 						# sync cooldown
 						Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown(Constants.COOLDOWN)
 						Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar").get_node("Icon").set_cooldown(Constants.COOLDOWN)
+						if PlayerData.equipment_data["Hotbar"]["Item"] == null:
+							Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
 						Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 
 
