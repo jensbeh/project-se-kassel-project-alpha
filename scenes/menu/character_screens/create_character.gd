@@ -582,6 +582,10 @@ func create_player_inventory():
 	PlayerData.set_path(uuid)
 	PlayerData._ready()
 
+	# set hotbar & light
+	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
+	Utils.get_current_player().set_light(save_game_data.light)
+
 	# sets lp & weapon
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	Utils.get_current_player().set_gold(save_game_data.gold)

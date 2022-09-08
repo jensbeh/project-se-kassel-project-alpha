@@ -513,8 +513,6 @@ func start_game():
 	Utils.get_current_player().set_exp(data.exp)
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_light(data.light)
-	PlayerData.set_path(data.id)
-	PlayerData._ready()
 	
 	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
 	
