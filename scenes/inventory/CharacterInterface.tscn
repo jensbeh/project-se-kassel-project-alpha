@@ -36,12 +36,12 @@ font_data = ExtResource( 7 )
 size = 22
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFont" id=8]
-size = 18
-font_data = ExtResource( 7 )
-
 [sub_resource type="DynamicFont" id=9]
 size = 22
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 18
 font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -337,30 +337,6 @@ position = Vector2( 50, 52 )
 hframes = 16
 vframes = 27
 
-[node name="TextureRect" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon"]
-visible = false
-self_modulate = Color( 1, 1, 1, 0.823529 )
-margin_left = 64.0
-margin_top = 79.0
-margin_right = 114.0
-margin_bottom = 103.0
-texture = ExtResource( 12 )
-expand = true
-
-[node name="Stack" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon/TextureRect"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -16.5
-margin_top = -11.0
-margin_right = 16.5
-margin_bottom = 11.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 8 )
-align = 1
-valign = 1
-
 [node name="TextureProgress" type="TextureProgress" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon"]
 modulate = Color( 1, 1, 1, 0.705882 )
 anchor_left = 0.5
@@ -386,6 +362,30 @@ margin_right = 24.4835
 margin_bottom = 12.121
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 9 )
+align = 1
+valign = 1
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon"]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 64.0
+margin_top = 79.0
+margin_right = 114.0
+margin_bottom = 103.0
+texture = ExtResource( 12 )
+expand = true
+
+[node name="Stack" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/VBoxContainer2/HotbarBox/Hotbar/Icon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -16.5
+margin_top = -11.0
+margin_right = 16.5
+margin_bottom = 11.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 8 )
 align = 1
 valign = 1
 

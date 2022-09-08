@@ -38,7 +38,7 @@ func load_hotbar():
 			cooldown_texture.hide()
 			time_label.hide()
 	else:
-		item_slot.get_node("TextureRect/Stack").set_text(str(0))
+		item_slot.get_node("TextureRect/Stack").set_text("")
 		item_slot.get_node("TextureRect").visible = false
 		item_slot.get_node("Icon/Sprite").set_texture(null)
 		
@@ -61,7 +61,13 @@ func _on_Timer_timeout():
 # updates the label from the hotbar slot
 func update_label():
 	var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
-	if item_stack != null and item_stack > 1:
+	if item_stack == null:
+		item_slot.get_node("Icon/Sprite").set_texture(null)
+		item_slot.get_node("TextureRect/Stack").set_text("")
+		item_slot.get_node("TextureRect").visible = false
+		cooldown_texture.hide()
+		time_label.hide()
+	elif item_stack > 1:
 		item_slot.get_node("TextureRect/Stack").set_text(str(item_stack))
 		item_slot.get_node("TextureRect").visible = true
 	else:
@@ -82,16 +88,17 @@ func use_item():
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
 			Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 			int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
-			if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
-				set_cooldown(Constants.COOLDOWN)
+			set_cooldown(Constants.COOLDOWN)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
 				PlayerData.equipment_data["Hotbar"]["Item"] = null
 				item_slot.get_node("TextureRect/Stack").set_text("0")
 				item_slot.get_node("TextureRect").visible = false
 				item_slot.get_node("Icon/Sprite").set_texture(null)
+				cooldown_texture.hide()
+				time_label.hide()
 			elif PlayerData.equipment_data["Hotbar"]["Stack"] == 1:
-				item_slot.get_node("TextureRect/Stack").set_text("1")
+				item_slot.get_node("TextureRect/Stack").set_text("")
 				item_slot.get_node("TextureRect").visible = false
 			else:
 				item_slot.get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data["Hotbar"]["Stack"]))
@@ -101,13 +108,18 @@ func use_item():
 			if hotbar_slot != null:
 				hotbar_slot.find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 				hotbar_slot = hotbar_slot.find_node("Hotbar")
-				hotbar_slot.get_node("Icon").set_cooldown(Constants.COOLDOWN)
-				if item_stack != null and item_stack > 1:
+				if item_stack == null:
+					hotbar_slot.get_node("Icon/Sprite").set_texture(null)
+					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text("")
+					hotbar_slot.get_node("Icon/TextureRect").visible = false
+				elif item_stack > 1:
 					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					hotbar_slot.get_node("Icon/TextureRect").visible = true
+					hotbar_slot.get_node("Icon").set_cooldown(Constants.COOLDOWN)
 				else:
 					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text("")
 					hotbar_slot.get_node("Icon/TextureRect").visible = false
+					hotbar_slot.get_node("Icon").set_cooldown(Constants.COOLDOWN)
 
 
 # starts cooldown
