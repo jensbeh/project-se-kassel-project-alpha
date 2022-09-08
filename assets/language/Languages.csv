@@ -49,9 +49,9 @@ Legendary Sword,Legendary Sword,Legendäres Schwert
 Large Dagger,Large Dagger,Großer Dolch
 Normal Axe,Normal Axe,Normale Axt
 Greate Axe,Greate Axe,Großartige Axt
-Health Potion,Health Potion,Heil Trank
-Good Health Potion,Good Health Potion,Guter Heil Trank
-Rare Health Potion,Rare Health Potion,Seltener Heil Trank
+Health Potion,Health Potion,Heiltrank
+Good Health Potion,Good Health Potion,Guter Heiltrank
+Rare Health Potion,Rare Health Potion,Seltener Heiltrank
 Axe,Axe,Axt
 Pickaxe,Pickaxe,Spitzhacke
 Lantern,Lantern,Laterne
@@ -60,7 +60,7 @@ Candle,Candle,Kerze
 Treasure Key,Treasure Key,Schatztruhen Schlüssel
 Keys,Keys,Schlüssel
 Treasure,Treasure,Schatz
-Great Health Potion,Great Health Potion,Großer Heil Trank
+Great Health Potion,Great Health Potion,Großer Heiltrank
 Apple,Apple,Apfel
 Carrot,Carrot,Karotte
 Bread,Bread,Brot
@@ -99,16 +99,19 @@ Feather,Feather,Feder
 Great Empty Flask,Great Empty Flask,Große Leere Flasche
 Empty Flask,Empty Flask,Leere Flasche
 MOVEMENT,Movement,Bewegung
-RUN,Run, Rennen
+RUN,Run,Rennen
 INVENTORY,Inventory,Inventar
 MENU,Menu,Menü
 CONTROLLS,Controlls,Steuerung
-MOUSE,Left Mouse,Maustaste
+MOUSE,Left mouse,Maustaste
 INTERACTION,Interaction,Interagieren
-SPLITITEMS,Split Items,Aufteilen
+SPLITITEMS,Split items,Aufteilen
 CLOSE,Close,Schließen
-CLOSEMENU,Close Menu, Menü Schließen
+CLOSEMENU,Close menu, Menü schließen
 LEVEL,Lvl,Lvl
 DEATH_MESSAGE, YOU DIED!, DU BIST GESTORBEN!
 LIGHT,Light,Licht
 Radius,Radius,Radius
+USEITEM,Use item, Item benutzen
+RIGHTMOUSE,Right\nmouse,Rechte\nMaustaste
+USE_INV_ITEM,Use with right click,Nutzen mit Rechtsklick
