@@ -130,7 +130,11 @@ func can_drop_data(_pos, data):
 
 # Check for same category
 func check_category(data):
-	if GameData.item_data[str(data["target_item_id"])]["Category"] == GameData.item_data[str(data["origin_item_id"])]["Category"]:
+	if (GameData.item_data[str(PlayerData.inv_data[get_parent().get_name()]["Item"])]["Category"] in ["Potion", "Food"] and 
+	GameData.item_data[str(data["origin_item_id"])]["Category"] in ["Potion", "Food"]):
+		return true
+	elif (GameData.item_data[str(PlayerData.inv_data[get_parent().get_name()]["Item"])]["Category"] == 
+	GameData.item_data[str(data["origin_item_id"])]["Category"]):
 		return true
 	else:
 		return false
@@ -299,8 +303,10 @@ func drop_data(_pos, data):
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
 				verify_origin_texture(data)
-				if data["target_stack"] != null and data["target_stack"] > 1:
+				if data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] != "CharacterInterface":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
+				elif data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] == "CharacterInterface":
+					data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
 				elif data["origin_panel"] == "Inventory" or data["origin_panel"] == "TradeInventory":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 				elif data["origin_node"].get_parent().get_name() == "Hotbar":
