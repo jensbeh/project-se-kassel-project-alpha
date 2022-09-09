@@ -133,6 +133,7 @@ var save_game_data = {
 	"currentHP": 100,
 	"gold": 100,
 	"light": 0,
+	"cooldown": 0,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,

@@ -25,6 +25,11 @@ func _on_Back_to_Main_Menu_pressed():
 	Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
 	Utils.get_scene_manager().get_UI().in_world(false)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
+	var data = Utils.get_current_player().get_data()
+	data.cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").time_left
+	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").stop()
+	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar")._on_Timer_timeout()
+	Utils.get_current_player().save_player_data(data)
 	
 	# Stop game
 	Utils.stop_game()

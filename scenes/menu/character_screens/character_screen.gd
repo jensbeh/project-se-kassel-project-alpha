@@ -515,6 +515,8 @@ func start_game():
 	Utils.get_current_player().set_light(data.light)
 	
 	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
+	if data.has("cooldown") and data.cooldown != 0:
+		Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar").set_cooldown(data.cooldown)
 	
 	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)

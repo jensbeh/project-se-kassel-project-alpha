@@ -295,16 +295,17 @@ func _on_Icon_gui_input(event):
 
 # starts cooldown
 func set_cooldown(cooldown):
-	timer.wait_time = cooldown
-	timer.start()
-	disabled = true
-	set_process(true)
-	time_label.show()
-	if  PlayerData.equipment_data["Hotbar"]["Item"] == null:
-		time_label.hide()
-		cooldown_texture.hide()
-	else:
-		cooldown_texture.show()
+	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
+		timer.wait_time = cooldown
+		timer.start()
+		disabled = true
+		set_process(true)
+		time_label.show()
+		if  PlayerData.equipment_data["Hotbar"]["Item"] == null:
+			time_label.hide()
+			cooldown_texture.hide()
+		else:
+			cooldown_texture.show()
 
 
 # cooldown by moving an item

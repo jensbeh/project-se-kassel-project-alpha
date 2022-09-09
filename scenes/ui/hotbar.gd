@@ -83,7 +83,7 @@ func _on_Hotbar_gui_input(event):
 
 # Use the item
 func use_item():
-	if PlayerData.equipment_data["Hotbar"]["Item"] != null and !disabled:
+	if PlayerData.equipment_data["Hotbar"]["Item"] != null and !disabled and Utils.get_current_player() != null:
 		if PlayerData.equipment_data["Hotbar"]["Stack"] != null:
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
 			Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
