@@ -54,13 +54,13 @@ func update_minimap():
 		Constants.SceneType.CAMP:
 			max_zoom_factor = 1.8
 			min_zoom_factor = 1.0
-			zoom_factor = 1.8
+			zoom_factor = 1.0
 			visible = true
 		
 		Constants.SceneType.GRASSLAND:
 			max_zoom_factor = 2.1
 			min_zoom_factor = 1.3
-			zoom_factor = 2.1
+			zoom_factor = 1.3
 			visible = true
 		
 		Constants.SceneType.DUNGEON:
