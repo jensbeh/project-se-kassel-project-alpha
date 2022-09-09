@@ -52,15 +52,15 @@ func update_minimap():
 	Utils.get_player_ui().in_dungeon(false)
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.CAMP:
-			max_zoom_factor = 1.5
+			max_zoom_factor = 1.8
 			min_zoom_factor = 1.0
-			zoom_factor = 1.0
+			zoom_factor = 1.8
 			visible = true
 		
 		Constants.SceneType.GRASSLAND:
-			max_zoom_factor = 1.7
+			max_zoom_factor = 2.1
 			min_zoom_factor = 1.3
-			zoom_factor = 1.3
+			zoom_factor = 2.1
 			visible = true
 		
 		Constants.SceneType.DUNGEON:

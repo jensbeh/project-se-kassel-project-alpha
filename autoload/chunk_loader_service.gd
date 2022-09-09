@@ -159,3 +159,13 @@ func send_chunks_to_world(deleting_chunks):
 func clean_thread():
 	# Wait for thread to finish
 	chunkloader_thread.wait_to_finish()
+
+
+# Method to calculate mob activity -> called from every mob after instancing
+func update_mob(mob):
+	if is_instance_valid(mob) and mob.is_inside_tree():
+		var mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, mob.global_position)
+		if mob_chunk in active_chunks:
+			call_deferred("set_mob_activity_state", mob, true)
+		else:
+			call_deferred("set_mob_activity_state", mob, false)
