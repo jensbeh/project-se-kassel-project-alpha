@@ -2,6 +2,7 @@ extends Node
 
 # Variables
 const NAME_LENGTH = 15
+const COOLDOWN = 20
 
 # Tiles
 const tile_size = 16

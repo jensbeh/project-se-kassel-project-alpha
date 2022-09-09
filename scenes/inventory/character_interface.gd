@@ -11,31 +11,44 @@ var beard
 var eyes
 var hair
 
-
 func _ready():
-	# load weapon
-	if PlayerData.equipment_data["Item"] != null:
-		var weapon = find_node("WeaponBox")
-		var texture = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Texture"]
-		var frame = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Frame"]
-		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
-		if texture == "item_icons_1":
-			weapon.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
-			weapon.get_node("Icon/Sprite").set_hframes(16)
-			weapon.get_node("Icon/Sprite").set_vframes(27)
-		else:
-			weapon.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
-			weapon.get_node("Icon/Sprite").set_hframes(13)
-			weapon.get_node("Icon/Sprite").set_vframes(15)
-		weapon.get_node("Icon/Sprite").set_texture(icon_texture)
-		weapon.get_node("Icon/Sprite").frame = frame
+	# load weapon, light and hotbar
+	for item in ["Weapon", "Light", "Hotbar"]:
+		if PlayerData.equipment_data[item]["Item"] != null:
+			var item_slot = find_node(item)
+			var texture = GameData.item_data[str(PlayerData.equipment_data[item]["Item"])]["Texture"]
+			var frame = GameData.item_data[str(PlayerData.equipment_data[item]["Item"])]["Frame"]
+			var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+			if texture == "item_icons_1":
+				item_slot.get_node("Icon/Sprite").set_scale(Vector2(2.5,2.5))
+				item_slot.get_node("Icon/Sprite").set_hframes(16)
+				item_slot.get_node("Icon/Sprite").set_vframes(27)
+			else:
+				item_slot.get_node("Icon/Sprite").set_scale(Vector2(4.5,4.5))
+				item_slot.get_node("Icon/Sprite").set_hframes(13)
+				item_slot.get_node("Icon/Sprite").set_vframes(15)
+			item_slot.get_node("Icon/Sprite").set_texture(icon_texture)
+			item_slot.get_node("Icon/Sprite").frame = frame
+			if item == "Hotbar":
+				var item_stack = PlayerData.equipment_data[item]["Stack"]
+				if item_stack != null and item_stack > 1:
+					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
+					item_slot.get_node("Icon/TextureRect").visible = true
+				var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").time_left
+				if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").is_stopped():
+					item_slot.get_node("Icon").set_cooldown(cooldown)
+					
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false
-	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().max_health))
-	find_node("Damage").set_text(tr("ATTACK") + ": " + str(Utils.get_current_player().attack_damage))
-	find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(Utils.get_current_player().attack_speed))
-	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().knockback))
-	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().level))
+	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
+	if PlayerData.equipment_data["Weapon"]["Item"] != null:
+		find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Attack"]))
+	else:
+		find_node("Damage").set_text(tr("ATTACK") + ": " + str(0))
+	find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(Utils.get_current_player().get_attack_speed()))
+	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
+	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))
+	find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(Utils.get_current_player().get_light_radius()))
 	
 	data = Utils.get_current_player().get_data()
 	find_node("CharacterName").set_text(data.name)
@@ -140,6 +153,8 @@ func _on_Button_gui_input(event):
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
-			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
+			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
+			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
+			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			PlayerData.save_inventory()
 			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())

@@ -2,6 +2,7 @@ extends TextureRect
 
 var tool_tip = load(Constants.TOOLTIP)
 
+
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
@@ -40,11 +41,12 @@ func get_drag_data(_pos):
 		
 		return data
 
+
 # Check if we can drop an item to this slot
 func can_drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
 	# Move item
-	if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Weapon":
+	if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Light":
 		if PlayerData.equipment_data[target_slot]["Item"] == null:
 			data["target_item_id"] = null
 			data["target_texture"] = null
@@ -59,6 +61,7 @@ func can_drop_data(_pos, data):
 			return true
 	else:
 		return false
+
 
 func drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
@@ -88,21 +91,13 @@ func drop_data(_pos, data):
 		get_child(0).frame = data["origin_frame"]
 		verify_target_texture(data)
 		PlayerData.equipment_data[target_slot]["Stack"] = data["origin_stack"]
-
-		var item_id = PlayerData.equipment_data[target_slot]["Item"]
-		var attack_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Attack"]
-		var attack_speed = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Attack-Speed"]
-		var knockback_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Knockback"]
-
-		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("Damage").set_text(tr("ATTACK") + ": " + str(attack_value))
-		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("Attack-Speed").set_text(tr("ATTACK-SPEED") + ": " + str(attack_speed))
-		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(knockback_value))
 		
-
-		Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
-	
+		var light_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Radius"]
+		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(light_value))
+		Utils.get_current_player().set_light(light_value)
 	
 	Utils.get_current_player().set_dragging(false)
+
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
@@ -127,18 +122,25 @@ func verify_target_texture(data):
 			get_child(0).set_hframes(13)
 			get_child(0).set_vframes(15)
 
+
 # ToolTips
 func _on_Icon_mouse_entered():
+	show_tooltip()
+
+func _on_Icon_mouse_exited():
+	hide_tooltip()
+
+
+func show_tooltip():
 	var tool_tip_instance = tool_tip.instance()
 	tool_tip_instance.origin = "CharacterInterface"
 	tool_tip_instance.slot = get_parent().get_name()
 	
-	tool_tip_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(100,-50)
+	tool_tip_instance.rect_position = get_parent().get_global_transform_with_canvas().origin + Vector2(64,64)
 	
 	add_child(tool_tip_instance)
 	if has_node("ToolTip") and get_node("ToolTip").valid:
 		get_node("ToolTip").show()
 
-
-func _on_Icon_mouse_exited():
+func hide_tooltip():
 	get_node("ToolTip").free()

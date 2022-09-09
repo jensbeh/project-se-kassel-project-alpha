@@ -32,7 +32,10 @@ func _ready():
 	# Sets the name and the gold from the player
 	$Background/MarginContainer/VBox/TitleBox/Title/Titlename.text = tr("INVENTORY")
 	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + str(Utils.get_current_player().get_gold())
-
+	if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") == null:
+		var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").time_left
+		if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").is_stopped():
+			set_cooldown(cooldown)
 
 # Close the inventory
 func _on_Button_gui_input(event):
@@ -49,3 +52,12 @@ func _on_Button_gui_input(event):
 			else:
 				Utils.get_scene_manager().get_UI().get_node("Inventory").queue_free()
 			PlayerData.save_inventory()
+
+
+func set_cooldown(cooldown):
+	for i in range(1,31):
+		var slot = "Inv" + str(i)
+		if PlayerData.inv_data[slot]["Item"] != null:
+			if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+				gridcontainer.get_child(i-1).get_node("Icon").set_cooldown(cooldown)
+			

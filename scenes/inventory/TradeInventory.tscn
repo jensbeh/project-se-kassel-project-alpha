@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://scenes/npc/trade_inventory.gd" type="Script" id=2]
+[ext_resource path="res://scenes/inventory/trade_inventory.gd" type="Script" id=2]
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=3]
 [ext_resource path="res://scenes/inventory/Inventory.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/ui/checkbox_x_example.png" type="Texture" id=5]

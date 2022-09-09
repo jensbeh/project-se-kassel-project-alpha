@@ -13,8 +13,8 @@ func _ready():
 			item_id = str(PlayerData.inv_data[slot]["Item"])
 			valid = true
 	elif origin == "CharacterInterface":
-		if PlayerData.equipment_data["Item"] != null:
-			item_id = str(PlayerData.equipment_data["Item"])
+		if PlayerData.equipment_data[slot]["Item"] != null:
+			item_id = str(PlayerData.equipment_data[slot]["Item"])
 			valid = true
 	else:# merchant
 		if MerchantData.inv_data[slot]["Item"] != null:
@@ -28,26 +28,30 @@ func _ready():
 		for i in range(GameData.item_stats.size()):
 			var stat_name = GameData.item_stats[i]
 			var stat_label = GameData.item_stat_labels[i]
-			if GameData.item_data[item_id][stat_name] != null:
-				var stat_value = GameData.item_data[item_id][stat_name]
-				if stat_name != "Worth":
-					get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr(stat_label) + ": " + str(stat_value))
-				else:
-					get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr(stat_label) + ": " + str(stat_value) + " Gold")
-				
-				if GameData.item_data[item_id]["EquipmentSlot"] != null and (origin == "Inventory" or origin == "TradeInventory") and stat_name in GameData.compare_stats:
-					var stat_difference = CompareItems(item_id, stat_name, stat_value)
-					if stat_difference > 0:
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text("+" + str(stat_difference))
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("3eff00"))
-					elif stat_difference < 0:
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text(str(stat_difference))
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("ff0000"))
+			if stat_name in GameData.item_data[item_id].keys():
+				if GameData.item_data[item_id][stat_name] != null:
+					var stat_value = GameData.item_data[item_id][stat_name]
+					if stat_name != "Worth":
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr(stat_label) + ": " + str(stat_value))
 					else:
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text(str(stat_difference))
-					get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").show()
-				
-				item_stat += 1
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr(stat_label) + ": " + str(stat_value) + " Gold")
+					
+					if GameData.item_data[item_id]["EquipmentSlot"] != null and (origin == "Inventory" or origin == "TradeInventory") and stat_name in GameData.compare_stats:
+						var stat_difference = CompareItems(item_id, stat_name, stat_value)
+						if stat_difference > 0:
+							get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text("+" + str(stat_difference))
+							get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("3eff00"))
+						elif stat_difference < 0:
+							get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text(str(stat_difference))
+							get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set("custom_colors/font_color", Color("ff0000"))
+						else:
+							get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").set_text(str(stat_difference))
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").show()
+					
+					item_stat += 1
+		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") == null:
+			if GameData.item_data[item_id]["Category"] in ["Potion", "Food"]:
+				get_node("NinePatchRect/Margin/VBox/Stats5/Stat").set_text(str(tr("USE_INV_ITEM")))
 
 func CompareItems(item_id, stat_name, stat_value):
 	var stat_difference

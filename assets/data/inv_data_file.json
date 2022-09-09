@@ -1,15 +1,15 @@
 {
 	"Inv1": {
-		"Item": 10001,
-		"Stack": 1
+		"Item": null,
+		"Stack": null
 	},
 	"Inv2": {
-		"Item": 10002,
-		"Stack": 1
+		"Item": null,
+		"Stack": null
 	},
 	"Inv3": {
-		"Item": 10001,
-		"Stack": 1
+		"Item": null,
+		"Stack": null
 	},
 	"Inv4": {
 		"Item": null,
@@ -120,7 +120,15 @@
 		"Stack": null
 	},
 	"Weapon":{
-		"Item": 10001,
-		"Stack": 1
+		"Item": null,
+		"Stack": null
+	},
+	"Light":{
+		"Item": null,
+		"Stack": null
+	},
+	"Hotbar":{
+		"Item": null,
+		"Stack": null
 	},
 }

@@ -119,7 +119,7 @@
   "10011": {
     "Name": "Health Potion",
     "Category": "Potion",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -132,7 +132,7 @@
   "10013": {
     "Name": "Good Health Potion",
     "Category": "Potion",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -145,7 +145,7 @@
   "10015": {
     "Name": "Rare Health Potion",
     "Category": "Potion",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
  	"Knockback":null,
 	"Attack-Speed":null,
@@ -184,38 +184,41 @@
   "10019": {
     "Name": "Lantern",
     "Category": "Light",
-    "EquipmentSlot": "",
+    "EquipmentSlot": "Light",
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
     "Health": null,
-	"Stackable": true,
+	"Stackable": false,
+	"Radius": 75,
 	"Frame": 169,
 	"Texture": "item_icons_1",
-	"Worth": 100
+	"Worth": 200
   },
   "10020": {
     "Name": "Torch",
     "Category": "Light",
-    "EquipmentSlot": "",
+    "EquipmentSlot": "Light",
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
     "Health": null,
-	"Stackable": true,
+	"Stackable": false,
+	"Radius": 60,
 	"Frame": 170,
 	"Texture": "item_icons_1",
-	"Worth": 50
+	"Worth": 100
   },
   "10021": {
     "Name": "Candle",
     "Category": "Light",
-    "EquipmentSlot": "",
+    "EquipmentSlot": "Light",
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
     "Health": null,
-	"Stackable": true,
+	"Stackable": false,
+	"Radius": 45,
 	"Frame": 171,
 	"Texture": "item_icons_1",
 	"Worth": 30
@@ -223,7 +226,7 @@
   "10022": {
     "Name": "Treasure Key",
     "Category": "Key",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -236,7 +239,7 @@
   "10023": {
     "Name": "Keys",
     "Category": "Key",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -249,7 +252,7 @@
   "10024": {
     "Name": "Treasure",
     "Category": "Treasure",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -262,7 +265,7 @@
   "10025": {
     "Name": "Great Health Potion",
     "Category": "Potion",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -275,7 +278,7 @@
   "10026": {
     "Name": "Apple",
     "Category": "Food",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -288,7 +291,7 @@
   "10027": {
     "Name": "Carrot",
     "Category": "Food",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -301,7 +304,7 @@
   "10028": {
     "Name": "Bread",
     "Category": "Food",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -314,7 +317,7 @@
   "10029": {
     "Name": "Meat",
     "Category": "Food",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -327,7 +330,7 @@
   "10030": {
     "Name": "Fish",
     "Category": "Food",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -340,7 +343,7 @@
   "10031": {
     "Name": "Copper Sand",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -353,7 +356,7 @@
   "10032": {
     "Name": "Coal Sand",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -366,7 +369,7 @@
   "10033": {
     "Name": "Magic Ore Sand",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -379,7 +382,7 @@
   "10034": {
     "Name": "Magic Sand",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -392,7 +395,7 @@
   "10035": {
     "Name": "Iron Sand",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -405,7 +408,7 @@
   "10036": {
     "Name": "Iron",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -418,7 +421,7 @@
   "10037": {
     "Name": "Copper",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
  	"Knockback":null,
 	"Attack-Speed":null,
@@ -431,7 +434,7 @@
   "10038": {
     "Name": "Coal",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -444,7 +447,7 @@
   "10039": {
     "Name": "Magic Ore",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -457,7 +460,7 @@
   "10040": {
     "Name": "Magic Clump",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -470,7 +473,7 @@
   "10041": {
     "Name": "Magic Bars",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -483,7 +486,7 @@
   "10042": {
     "Name": "Magic Ore Bars",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -496,7 +499,7 @@
   "10043": {
     "Name": "Coal Bars",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -509,7 +512,7 @@
   "10044": {
     "Name": "Copper Bars",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -522,7 +525,7 @@
   "10045": {
     "Name": "Iron Bars",
     "Category": "Ore",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -535,7 +538,7 @@
   "10046": {
     "Name": "Diamond",
     "Category": "Jewel",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -548,7 +551,7 @@
   "10047": {
     "Name": "Rubin",
     "Category": "Jewel",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -561,7 +564,7 @@
   "10048": {
     "Name": "Smaragd",
     "Category": "Jewel",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -574,7 +577,7 @@
   "10049": {
     "Name": "Saphir",
     "Category": "Jewel",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
   	"Knockback":null,
 	"Attack-Speed":null,
@@ -587,7 +590,7 @@
   "10050": {
     "Name": "Type A Leaf",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -600,7 +603,7 @@
   "10051": {
     "Name": "Type B Leaf",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -613,7 +616,7 @@
   "10052": {
     "Name": "Type C Leaf",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -626,7 +629,7 @@
   "10053": {
     "Name": "Mushroom",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -639,7 +642,7 @@
   "10055": {
     "Name": "Plant Onion",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -652,7 +655,7 @@
   "10056": {
     "Name": "Root",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -665,7 +668,7 @@
   "10057": {
     "Name": "Pebble",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -678,7 +681,7 @@
   "10058": {
     "Name": "Fossil",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -691,7 +694,7 @@
   "10059": {
     "Name": "Animal Fur",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -704,7 +707,7 @@
   "10060": {
     "Name": "Monster Tooth",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -717,7 +720,7 @@
   "10061": {
     "Name": "Feather",
     "Category": "Ressource",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -730,7 +733,7 @@
   "10062": {
     "Name": "Great Empty Flask",
     "Category": "Potion",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,
@@ -743,7 +746,7 @@
   "10063": {
     "Name": "Empty Flask",
     "Category": "Potion",
-    "EquipmentSlot": "",
+    "EquipmentSlot": null,
     "Attack": null,
 	"Knockback":null,
 	"Attack-Speed":null,

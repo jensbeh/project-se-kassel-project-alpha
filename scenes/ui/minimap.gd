@@ -59,6 +59,7 @@ func _process(_delta):
 
 # Switch texture when change scene
 func update_minimap():
+	Utils.get_scene_manager().get_node("UI/PlayerUI").in_dungeon(false)
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.CAMP:
 			worldsize = Vector2(2816,1792)
@@ -81,6 +82,7 @@ func update_minimap():
 			worldsize = Vector2.ZERO
 			min_pos = Vector2.ZERO
 			region = ""
+			Utils.get_scene_manager().get_node("UI/PlayerUI").in_dungeon(true)
 		Constants.SceneType.MENU:
 			atlas.set_atlas(null)
 			worldsize = Vector2.ZERO

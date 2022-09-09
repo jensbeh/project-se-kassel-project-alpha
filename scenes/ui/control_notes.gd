@@ -22,6 +22,9 @@ func _ready():
 	get_node("Trade/Label2").set_text(tr("CLOSE"))
 	get_node("Trade/Label4").set_text(tr("SPLITITEMS"))
 	get_node("Menu/Label2").set_text(tr("CLOSEMENU"))
+	get_node("Control/Label7").set_text(tr("USEITEM"))
+	get_node("Inventory/Label5").set_text(tr("USEITEM"))
+	get_node("Inventory/Panel6/Label").set_text(tr("RIGHTMOUSE"))
 
 # makes all control notes invisible
 func hide():
