@@ -124,14 +124,16 @@ func get_sprites():
 
 var save_game_data = {
 	"name": charac_name,
-	"level": "1",
-	"exp": "0",
-	"maxLP": "100",
-	"attack": "0",
-	"attack_speed": "0",
-	"knockback": "0",
-	"currentHP": "100",
-	"gold": "100",
+	"level": 1,
+	"exp": 0,
+	"maxLP": 100,
+	"attack": 0,
+	"attack_speed": 0,
+	"knockback": 0,
+	"currentHP": 100,
+	"gold": 100,
+	"light": 0,
+	"cooldown": 0,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
@@ -188,6 +190,8 @@ var save_inventory = {
 	"Inv29": {"Item": null,"Stack": null},
 	"Inv30": {"Item": null,"Stack": null},
 	"Weapon": {"Item": null,"Stack": null},
+	"Light": {"Item": null,"Stack": null},
+	"Hotbar": {"Item": null,"Stack": null},
 }
 
 # save the player data
@@ -561,11 +565,6 @@ func start_game():
 	
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()
-	Utils.get_current_player().set_gold(save_game_data.gold)
-	Utils.get_current_player().set_level(save_game_data.level)
-	Utils.get_current_player().set_exp(save_game_data.exp)
-	Utils.get_current_player().set_current_health(int(save_game_data.currentHP))
-	Utils.get_current_player().set_max_health(int(save_game_data.maxLP))
 	
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -584,9 +583,17 @@ func create_player_inventory():
 	PlayerData.set_path(uuid)
 	PlayerData._ready()
 
+	# set hotbar & light
+	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
+	Utils.get_current_player().set_light(save_game_data.light)
+
 	# sets lp & weapon
-	Utils.get_current_player().set_max_health(int(save_game_data.maxLP))
-	var item_id = PlayerData.equipment_data["Item"]
+	Utils.get_current_player().set_max_health(save_game_data.maxLP)
+	Utils.get_current_player().set_gold(save_game_data.gold)
+	Utils.get_current_player().set_level(save_game_data.level)
+	Utils.get_current_player().set_exp(save_game_data.exp)
+	Utils.get_current_player().set_current_health(save_game_data.currentHP)
+	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
 
 

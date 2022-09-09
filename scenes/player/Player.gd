@@ -55,17 +55,18 @@ var movement
 var player_can_interact
 
 # player stats and values
-var gold
-var attack_damage = 0
-var knockback = 0
-var attack_speed = 0
+var gold: int
+var attack_damage: int = 0
+var knockback: int = 0
+var attack_speed: int = 0
 var max_health: int
 var current_health: int
 var data
-var level = 1
+var level: int = 1
 var dragging = false
 var preview = false
 var player_exp: int = 0
+var player_light_radius: int
 
 # Variables
 var is_attacking = false
@@ -178,6 +179,7 @@ func _input(event):
 		set_player_can_interact(false)
 		Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
 		save_player_data(Utils.get_current_player().get_data())
+		PlayerData.save_inventory()
 	# Close game menu with "esc" when game menu is open
 	elif event.is_action_pressed("esc") and !movement and Utils.get_game_menu() != null:
 		set_movement(true)
@@ -196,11 +198,17 @@ func _input(event):
 		set_movement(true)
 		set_movment_animation(true)
 		set_player_can_interact(true)
-		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data
+		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
+		PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
+		PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 		PlayerData.save_inventory()
 		save_player_data(Utils.get_current_player().get_data())
 		Utils.get_character_interface().queue_free()
 	
+	# Use Item from Hotbar
+	elif event.is_action_pressed("hotbar") and !preview:
+		Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").use_item()
+		
 	# Control Notes
 	elif event.is_action_pressed("control_notes") and !preview:
 		Utils.get_control_notes().show_hide_control_notes()
@@ -581,7 +589,7 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 
 
 # Method to set/save weapon and stats to player
-func set_weapon(new_weapon_id, new_attack_value, new_attack_speed, new_knockback):
+func set_weapon(new_weapon_id, new_attack_value: int, new_attack_speed: int, new_knockback: int):
 	if new_weapon_id != null:
 		var weapon_id_str = str(new_weapon_id)
 		can_attack = true
@@ -651,7 +659,7 @@ func get_gold():
 	return gold
 
 
-func set_gold(new_gold_value):
+func set_gold(new_gold_value: int):
 	gold = new_gold_value
 	data.gold = new_gold_value
 
@@ -671,8 +679,9 @@ func get_current_health():
 
 func set_current_health(new_current_health: int):
 	current_health = new_current_health
+	if current_health > int(max_health):
+		current_health = int(max_health)
 	Utils.get_player_ui().set_life(new_current_health*100 / float(max_health))
-	print(new_current_health*100 / float(max_health))
 	data.currentHP = new_current_health
 
 
@@ -702,7 +711,7 @@ func set_dragging(value):
 	dragging = value
 
 
-func set_level(new_level):
+func set_level(new_level: int):
 	level = new_level
 	data.level = new_level
 
@@ -716,7 +725,7 @@ func get_exp():
 
 
 # set a new exp value for the player
-func set_exp(new_exp):
+func set_exp(new_exp: int):
 	player_exp = int(new_exp)
 	# for ui update
 	Utils.get_player_ui().set_exp(new_exp)
@@ -841,9 +850,22 @@ func reset_player_after_dying():
 	# Add player to player layer so the mobs will recognize the player again
 	set_collision_layer_bit(1, true)
 	
+	# reset cooldown
+	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").stop()
+	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar")._on_Timer_timeout()
+	
 	set_current_health(max_health)
 	hurting = false
 	dying = false
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
+
+func get_light_radius():
+	return player_light_radius
+
+func set_light(new_light: int):
+	player_light_radius = new_light
+	data.light = player_light_radius
+	$CustomLight.min_radius = new_light * 0.96
+	$CustomLight.max_radius= new_light * 1.04

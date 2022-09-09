@@ -4,11 +4,39 @@ var tool_tip = load(Constants.TOOLTIP)
 var split_popup = load(Constants.SPLIT_POPUP)
 var inv_slot = load(Constants.TRADE_INV_SLOT)
 
+onready var time_label = get_node("TextureProgress/Time")
+onready var cooldown_texture = get_node("TextureProgress")
+var disabled = false
+onready var timer = get_node("../Timer")
+var swap = false
+var stack = false
+
+
+func _ready():
+	time_label.hide()
+	timer.wait_time = Constants.COOLDOWN
+	cooldown_texture.value = 0
+	set_process(false)
+	timer.set_one_shot(true)
+
+
+func _process(_delta):
+	time_label.text = "%2.1f" % timer.time_left
+	cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
+
+
+func _on_Timer_timeout():
+	cooldown_texture.value = 0
+	disabled = false
+	time_label.hide()
+	set_process(false)
+
+
 # Get information about drag item
 func get_drag_data(_pos):
-	Utils.get_current_player().set_dragging(true)
 	var slot = get_parent().get_name()
 	if PlayerData.inv_data[slot]["Item"] != null:
+		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Inventory"
@@ -64,7 +92,7 @@ func can_drop_data(_pos, data):
 			return true
 	# Swap item
 	else:
-		if data["origin_panel"] != "CharacterInterface" or GameData.item_data[str(data["target_item_id"])]["Category"] == "Weapon":
+		if data["origin_panel"] != "CharacterInterface" or check_category(data):
 			data["target_item_id"] = PlayerData.inv_data[target_slot]["Item"]
 			data["target_texture"] = get_child(0).texture
 			data["target_frame"] = get_child(0).frame
@@ -99,6 +127,18 @@ func can_drop_data(_pos, data):
 		else:
 			return false
 
+
+# Check for same category
+func check_category(data):
+	if (GameData.item_data[str(PlayerData.inv_data[get_parent().get_name()]["Item"])]["Category"] in ["Potion", "Food"] and 
+	GameData.item_data[str(data["origin_item_id"])]["Category"] in ["Potion", "Food"]):
+		return true
+	elif (GameData.item_data[str(PlayerData.inv_data[get_parent().get_name()]["Item"])]["Category"] == 
+	GameData.item_data[str(data["origin_item_id"])]["Category"]):
+		return true
+	else:
+		return false
+	
 
 func drop_data(_pos, data):
 	var target_slot = get_parent().get_name()
@@ -160,6 +200,17 @@ func drop_data(_pos, data):
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 				check_slots()
+			# stacking for hotbar
+			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
+			data["origin_panel"] == "CharacterInterface"):
+				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+					PlayerData.equipment_data[origin_slot]["Item"] = null
+					PlayerData.equipment_data[origin_slot]["Stack"] = null
+				else:
+					PlayerData.equipment_data[origin_slot]["Stack"] = (PlayerData.equipment_dataa[origin_slot]["Stack"] - 
+					(Constants.MAX_STACK_SIZE - data["target_stack"]))
+				Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
+			# swaping
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
@@ -178,42 +229,69 @@ func drop_data(_pos, data):
 				check_slots()
 			else:
 				# change equipment
-				PlayerData.equipment_data["Item"] = data["target_item_id"]
-				PlayerData.equipment_data["Stack"] = data["target_stack"]
-				if PlayerData.equipment_data["Item"] != null:
-					var item_id = PlayerData.equipment_data["Item"]
-					var attack_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack"]
-					var attack_speed = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Attack-Speed"]
-					var knockback_value = GameData.item_data[str(PlayerData.equipment_data["Item"])]["Knockback"]
+				PlayerData.equipment_data[origin_slot]["Item"] = data["target_item_id"]
+				PlayerData.equipment_data[origin_slot]["Stack"] = data["target_stack"]
+				# Weapon
+				if GameData.item_data[str(data["origin_item_id"])]["Category"] == "Weapon":
+					if PlayerData.equipment_data[origin_slot]["Item"] != null:
+						var item_id = PlayerData.equipment_data[origin_slot]["Item"]
+						var attack_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack"]
+						var attack_speed = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack-Speed"]
+						var knockback_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Knockback"]
+						
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+							tr("ATTACK") + ": " + str(attack_value))
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+							tr("ATTACK-SPEED") + ": " + str(attack_speed))
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+							tr("KNOCKBACK") + ": " + str(knockback_value))
+						
+						Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
 					
-					Utils.get_character_interface().find_node("Damage").set_text(
-						tr("ATTACK") + ": " + str(attack_value))
-					Utils.get_character_interface().find_node("Attack-Speed").set_text(
-						tr("ATTACK-SPEED") + ": " + str(attack_speed))
-					Utils.get_character_interface().find_node("Knockback").set_text(
-						tr("KNOCKBACK") + ": " + str(knockback_value))
-					
-					Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
-				
-				else:
-					Utils.get_character_interface().find_node("Damage").set_text(
-						tr("ATTACK") + ": " + "0")
-					Utils.get_character_interface().find_node("Attack-Speed").set_text(
-						tr("ATTACK-SPEED") + ": " + "0")
-					Utils.get_character_interface().find_node("Knockback").set_text(
-						tr("KNOCKBACK") + ": " + "0")
+					else:
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+							tr("ATTACK") + ": " + "0")
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+							tr("ATTACK-SPEED") + ": " + "0")
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+							tr("KNOCKBACK") + ": " + "0")
 
-					Utils.get_current_player().set_weapon(null, 0, 0, 0)
+						Utils.get_current_player().set_weapon(null, 0, 0, 0)
+				# Light
+				elif GameData.item_data[str(data["origin_item_id"])]["Category"] == "Light":
+					if PlayerData.equipment_data[origin_slot]["Item"] != null:
+						var light_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Radius"]
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("LightRadius").set_text(
+							tr("LIGHT") + ": " + str(light_value))
+						Utils.get_current_player().set_light(light_value)
+					else:
+						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("LightRadius").set_text(
+							tr("LIGHT") + ": " + "0")
+						Utils.get_current_player().set_light(0)
+				# Hotbar
+				else:
+					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
 
 			# Update the texture and label of the origin
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0:
-				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-					data["origin_node"].get_child(0).texture = null
-					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+				if data["origin_panel"] == "CharacterInterface":
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						data["origin_node"].get_child(0).texture = null
+						data["origin_node"].get_node("TextureRect/Stack").set_text("")
+						stack = true
+					else:
+						data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["origin_stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"])))
 				else:
-					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
-					(Constants.MAX_STACK_SIZE - data["target_stack"])))
+					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
+						data["origin_node"].get_child(0).texture = null
+						data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+						stack = true
+					else:
+						data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - 
+						(Constants.MAX_STACK_SIZE - data["target_stack"])))
+				
 			# swap
 			elif data["origin_panel"] == "TradeInventory" and data["target_item_id"] == null and split == 0:
 				data["origin_node"].get_child(0).texture = null
@@ -225,10 +303,14 @@ func drop_data(_pos, data):
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
 				verify_origin_texture(data)
-				if data["target_stack"] != null and data["target_stack"] > 1:
+				if data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] != "CharacterInterface":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
+				elif data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] == "CharacterInterface":
+					data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
 				elif data["origin_panel"] == "Inventory" or data["origin_panel"] == "TradeInventory":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+				elif data["origin_node"].get_parent().get_name() == "Hotbar":
+					data["origin_node"].get_node("TextureRect/Stack").set_text("")
 				
 			# Update the texture, label and data of the target
 			# stacking
@@ -257,12 +339,14 @@ func drop_data(_pos, data):
 					get_node("../TextureRect/Stack").set_text(str(data["origin_stack"]))
 				else:
 					get_node("../TextureRect/Stack").set_text("")
-				hide_tooltip()
-				show_tooltip()
-					
+				swap = true
+			hide_tooltip()
+			show_tooltip()
+			check_cooldown(data)
 			show_hide_stack_label(data)
 			split = 0
 	Utils.get_current_player().set_dragging(false)
+
 
 func SplitStack(split_amount, data):
 	var target_slot = get_parent().get_name()
@@ -281,12 +365,16 @@ func SplitStack(split_amount, data):
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	# update only when payed
 	if valid:
-		if MerchantData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "TradeInventory":
-			MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
-			MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
-			check_slots()
-		else:
+		if data["origin_panel"] == "TradeInventory":
+			if MerchantData.inv_data[origin_slot]["Stack"] != 0:
+				MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+				MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+				check_slots()
+		elif data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+		else:
+			PlayerData.equipment_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
+			Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
 		PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 		if data["target_stack"] != null:
 			new_stack_size = data["target_stack"] + split_amount
@@ -297,17 +385,25 @@ func SplitStack(split_amount, data):
 		get_child(0).texture = data["origin_texture"]
 		get_child(0).frame = data["origin_frame"]
 		# origin label
-		if data["origin_stack"] - split_amount > 1:
-			data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+		if data["origin_panel"] != "CharacterInterface":
+			if data["origin_stack"] - split_amount > 1:
+				data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+			else:
+				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 		else:
-			data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+			if data["origin_stack"] - split_amount > 1:
+				data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["origin_stack"] - split_amount))
+			else:
+				data["origin_node"].get_node("TextureRect/Stack").set_text("")
 		# target label
 		if new_stack_size > 1:
 			get_node("../TextureRect/Stack").set_text(str(new_stack_size))
 		else:
 			get_node("../TextureRect/Stack").set_text("")
-			
+		
+		check_cooldown(data)
 		show_hide_stack_label(data)
+
 
 func show_hide_stack_label(data):
 	if data["origin_panel"] != "CharacterInterface":
@@ -321,6 +417,19 @@ func show_hide_stack_label(data):
 			get_parent().get_node("TextureRect").visible = true
 		else:
 			get_parent().get_node("TextureRect").visible = false
+	else:
+		if data["origin_node"].get_parent().get_name() != "Light" and data["origin_node"].get_parent().get_name() != "Weapon":
+			if (int(data["origin_node"].get_node("TextureRect/Stack").get_text()) > 1 and 
+			data["origin_node"].get_node("TextureRect/Stack").get_text() != null):
+				data["origin_node"].get_node("TextureRect").visible = true
+			else:
+				data["origin_node"].get_node("TextureRect").visible = false
+			if (int(get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+			get_parent().get_node("TextureRect/Stack").get_text() != null):
+				get_parent().get_node("TextureRect").visible = true
+			else:
+				get_parent().get_node("TextureRect").visible = false
+
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
@@ -345,12 +454,14 @@ func verify_target_texture(data):
 			get_child(0).set_hframes(13)
 			get_child(0).set_vframes(15)
 
+
 # ToolTips
 func _on_Icon_mouse_entered():
 	show_tooltip()
 
 func _on_Icon_mouse_exited():
 	hide_tooltip()
+	
 	
 func show_tooltip():
 	var tool_tip_instance = tool_tip.instance()
@@ -365,6 +476,7 @@ func show_tooltip():
 
 func hide_tooltip():
 	get_node("ToolTip").free()
+	
 	
 func check_slots():
 	var free = false
@@ -389,3 +501,88 @@ func check_slots():
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+
+
+func _on_Icon_gui_input(event):
+	if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") == null:
+		if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
+			var slot = get_parent().get_name()
+			if PlayerData.inv_data[slot]["Item"] != null and !disabled:
+				if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
+					if PlayerData.inv_data[slot]["Stack"] != null:
+						PlayerData.inv_data[slot]["Stack"] -= 1
+						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+						int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
+						if PlayerData.inv_data[slot]["Stack"] > 0:
+							set_cooldown(Constants.COOLDOWN)
+						if PlayerData.inv_data[slot]["Stack"] <= 0:
+							PlayerData.inv_data[slot]["Stack"] = null
+							PlayerData.inv_data[slot]["Item"] = null
+							get_node("../TextureRect/Stack").set_text("")
+							get_node("../TextureRect").visible = false
+							get_node("../Icon/Sprite").set_texture(null)
+						elif PlayerData.inv_data[slot]["Stack"] == 1:
+							get_node("../TextureRect/Stack").set_text("")
+							get_node("../TextureRect").visible = false
+						else:
+							get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
+						# sync cooldown
+						Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown(Constants.COOLDOWN)
+						Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar").get_node("Icon").set_cooldown(Constants.COOLDOWN)
+						if PlayerData.equipment_data["Hotbar"]["Item"] == null:
+							Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
+						Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+
+
+# starts cooldwon
+func set_cooldown(cooldown):
+	timer.wait_time = cooldown
+	timer.start()
+	disabled = true
+	set_process(true)
+	time_label.show()
+
+
+# cooldown by move an item
+func check_cooldown(data):
+	if (data["origin_panel"] != "TradeInventory" and data["origin_node"].get_parent().get_name() != "Light" and 
+	data["origin_node"].get_parent().get_name() != "Weapon"):
+		var cooldown
+		var cooldown_origin
+		if stack:
+			cooldown = 0
+			cooldown_origin = timer.time_left
+			stack = false
+		elif swap:
+			cooldown = timer.time_left
+			cooldown_origin = data["origin_node"].get_node("../Timer").time_left
+			swap = false
+		else:
+			cooldown = data["origin_node"].get_node("../Timer").time_left
+			cooldown_origin = data["origin_node"].get_node("../Timer").time_left
+		if cooldown_origin != 0:
+			timer.wait_time = cooldown_origin
+			timer.start()
+			disabled = true
+			set_process(true)
+			time_label.show()
+		else:
+			timer.stop()
+			disabled = false
+			set_process(false)
+			time_label.hide()
+			cooldown_texture.value = 0
+		if cooldown != 0:
+			data["origin_node"].get_node("../Timer").wait_time = cooldown
+			data["origin_node"].get_node("../Timer").start()
+			data["origin_node"].disabled = true
+			data["origin_node"].get_node("TextureProgress/Time").show()
+			data["origin_node"].set_process(true)
+		else:
+			data["origin_node"].get_node("../Timer").stop()
+			data["origin_node"].disabled = false
+			data["origin_node"].get_node("TextureProgress").value = 0
+			data["origin_node"].get_node("TextureProgress/Time").hide()
+			data["origin_node"].set_process(false)
+	
+	

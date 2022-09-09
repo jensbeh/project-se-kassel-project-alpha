@@ -1,11 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/inventory/InventorySlot.gd" type="Script" id=1]
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=2]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/ui/panel_background.png" type="Texture" id=4]
+[ext_resource path="res://assets/ui/cooldown.png" type="Texture" id=5]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=9]
+size = 22
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=8]
 size = 18
 font_data = ExtResource( 3 )
 
@@ -33,6 +38,34 @@ hframes = 16
 vframes = 27
 frame = 16
 
+[node name="TextureProgress" type="TextureProgress" parent="Icon"]
+modulate = Color( 1, 1, 1, 0.705882 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -24.0
+margin_top = -25.0
+margin_right = 64.0
+margin_bottom = 63.0
+rect_scale = Vector2( 0.55, 0.57 )
+texture_progress = ExtResource( 5 )
+fill_mode = 5
+
+[node name="Time" type="Label" parent="Icon/TextureProgress"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -27.5165
+margin_top = -14.879
+margin_right = 24.4835
+margin_bottom = 12.121
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 9 )
+align = 1
+valign = 1
+
 [node name="TextureRect" type="TextureRect" parent="."]
 visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
@@ -53,9 +86,13 @@ margin_top = -11.0
 margin_right = 16.5
 margin_bottom = 11.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 8 )
 align = 1
 valign = 1
 
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="gui_input" from="Icon" to="Icon" method="_on_Icon_gui_input"]
 [connection signal="mouse_entered" from="Icon" to="Icon" method="_on_Icon_mouse_entered"]
 [connection signal="mouse_exited" from="Icon" to="Icon" method="_on_Icon_mouse_exited"]
+[connection signal="timeout" from="Timer" to="Icon" method="_on_Timer_timeout"]

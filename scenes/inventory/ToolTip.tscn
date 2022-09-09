@@ -14,9 +14,9 @@ size = 20
 font_data = ExtResource( 1 )
 
 [node name="ToolTip" type="Popup"]
-margin_right = -1620.0
-margin_bottom = -880.0
-rect_min_size = Vector2( 300, 200 )
+margin_right = 310.0
+margin_bottom = 206.0
+rect_min_size = Vector2( 310, 206 )
 mouse_filter = 2
 script = ExtResource( 3 )
 
@@ -24,6 +24,8 @@ script = ExtResource( 3 )
 self_modulate = Color( 0.470588, 0.478431, 0.454902, 0.823529 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = 1.0
 texture = ExtResource( 2 )
 patch_margin_left = 15
 patch_margin_top = 15
@@ -33,6 +35,8 @@ patch_margin_bottom = 15
 [node name="Margin" type="MarginContainer" parent="NinePatchRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = -1.0
 mouse_filter = 2
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
@@ -42,117 +46,119 @@ custom_constants/margin_bottom = 20
 [node name="VBox" type="VBoxContainer" parent="NinePatchRect/Margin"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 280.0
+margin_right = 292.0
 margin_bottom = 187.0
 mouse_filter = 2
+custom_constants/separation = 4
 
 [node name="ItemName" type="Label" parent="NinePatchRect/Margin/VBox"]
-margin_right = 260.0
-margin_bottom = 29.0
+margin_right = 272.0
+margin_bottom = 27.0
 custom_colors/font_color = Color( 0.701961, 0.886275, 0.615686, 1 )
 custom_fonts/font = SubResource( 1 )
 text = "ItemName"
 align = 1
 
 [node name="Stats1" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
-margin_top = 33.0
-margin_right = 260.0
-margin_bottom = 58.0
+margin_top = 31.0
+margin_right = 272.0
+margin_bottom = 55.0
 mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats1"]
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats1"]
 margin_left = 15.0
 margin_right = 15.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Stats2" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
-margin_top = 62.0
-margin_right = 260.0
-margin_bottom = 87.0
+margin_top = 59.0
+margin_right = 272.0
+margin_bottom = 83.0
 mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats2"]
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats2"]
 margin_left = 15.0
 margin_right = 15.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Stats3" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
-margin_top = 91.0
-margin_right = 260.0
-margin_bottom = 116.0
+margin_top = 87.0
+margin_right = 272.0
+margin_bottom = 111.0
 mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats3"]
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats3"]
 margin_left = 15.0
 margin_right = 15.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Stats4" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
-margin_top = 120.0
-margin_right = 260.0
-margin_bottom = 145.0
+margin_top = 115.0
+margin_right = 272.0
+margin_bottom = 139.0
 mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats4"]
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats4"]
 margin_left = 15.0
 margin_right = 15.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Stats5" type="HBoxContainer" parent="NinePatchRect/Margin/VBox"]
-margin_top = 149.0
-margin_right = 260.0
-margin_bottom = 174.0
+margin_top = 143.0
+margin_right = 272.0
+margin_bottom = 167.0
 mouse_filter = 2
 custom_constants/separation = 15
 
 [node name="Stat" type="Label" parent="NinePatchRect/Margin/VBox/Stats5"]
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="Difference" type="Label" parent="NinePatchRect/Margin/VBox/Stats5"]
 margin_left = 15.0
 margin_right = 15.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 custom_colors/font_color = Color( 0.862745, 0.862745, 0.862745, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="foreground" type="NinePatchRect" parent="."]
 self_modulate = Color( 1, 1, 1, 0.823529 )
-margin_right = 300.0
-margin_bottom = 200.0
+margin_left = -1.0
+margin_right = 309.0
+margin_bottom = 206.0
 texture = ExtResource( 4 )
 patch_margin_left = 15
 patch_margin_top = 15
