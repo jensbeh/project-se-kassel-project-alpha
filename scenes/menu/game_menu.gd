@@ -36,6 +36,13 @@ func _on_Back_to_Main_Menu_pressed():
 	Utils.stop_game()
 
 func _on_Exit_Game_pressed():
+	# Save cooldown to player
+	var data = Utils.get_current_player().get_data()
+	data.cooldown = Utils.get_hotbar().get_node("Hotbar/Timer").time_left
+	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
+	Utils.get_hotbar()._on_Timer_timeout()
+	Utils.get_current_player().save_player_data(data)
+	
 	# Stop game
 	Utils.stop_game()
 	
