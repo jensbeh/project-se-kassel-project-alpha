@@ -508,15 +508,15 @@ func start_game():
 	Utils.get_current_player().set_level(data.level)
 	Utils.get_current_player().set_current_health(data.currentHP)
 	# must call before set exp and after set lp and level
-	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").setup_ui()
+	Utils.get_player_ui().setup_ui()
 	
 	Utils.get_current_player().set_exp(data.exp)
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_light(data.light)
 	
-	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
+	Utils.get_hotbar().load_hotbar()
 	if data.has("cooldown") and data.cooldown != 0:
-		Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar").set_cooldown(data.cooldown)
+		Utils.get_hotbar().set_cooldown(data.cooldown)
 	
 	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)

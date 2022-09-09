@@ -166,7 +166,7 @@ func drop_data(_pos, data):
 			show_hide_stack_label(data)
 			check_cooldown(data)
 	
-	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
+	Utils.get_hotbar().load_hotbar()
 	
 	Utils.get_current_player().set_dragging(false)
 
@@ -200,7 +200,7 @@ func SplitStack(split_amount, data):
 	
 	check_cooldown(data)
 	
-	Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
+	Utils.get_hotbar().load_hotbar()
 	show_hide_stack_label(data)
 
 
@@ -288,9 +288,9 @@ func _on_Icon_gui_input(event):
 						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
 					PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 					# sync cooldown
-					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown(Constants.COOLDOWN)
-					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
-					Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+					Utils.get_hotbar().set_cooldown(Constants.COOLDOWN)
+					Utils.get_hotbar().update_label()
+					Utils.get_character_interface().find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 
 
 # starts cooldown

@@ -209,7 +209,7 @@ func drop_data(_pos, data):
 				else:
 					PlayerData.equipment_data[origin_slot]["Stack"] = (PlayerData.equipment_dataa[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-				Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
+				Utils.get_hotbar().load_hotbar()
 			# swaping
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
@@ -239,21 +239,21 @@ func drop_data(_pos, data):
 						var attack_speed = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Attack-Speed"]
 						var knockback_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Knockback"]
 						
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+						Utils.get_character_interface().find_node("Damage").set_text(
 							tr("ATTACK") + ": " + str(attack_value))
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+						Utils.get_character_interface().find_node("Attack-Speed").set_text(
 							tr("ATTACK-SPEED") + ": " + str(attack_speed))
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+						Utils.get_character_interface().find_node("Knockback").set_text(
 							tr("KNOCKBACK") + ": " + str(knockback_value))
 						
 						Utils.get_current_player().set_weapon(item_id, attack_value, attack_speed, knockback_value)
 					
 					else:
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Damage").set_text(
+						Utils.get_character_interface().find_node("Damage").set_text(
 							tr("ATTACK") + ": " + "0")
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Attack-Speed").set_text(
+						Utils.get_character_interface().find_node("Attack-Speed").set_text(
 							tr("ATTACK-SPEED") + ": " + "0")
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("Knockback").set_text(
+						Utils.get_character_interface().find_node("Knockback").set_text(
 							tr("KNOCKBACK") + ": " + "0")
 
 						Utils.get_current_player().set_weapon(null, 0, 0, 0)
@@ -261,16 +261,16 @@ func drop_data(_pos, data):
 				elif GameData.item_data[str(data["origin_item_id"])]["Category"] == "Light":
 					if PlayerData.equipment_data[origin_slot]["Item"] != null:
 						var light_value = GameData.item_data[str(PlayerData.equipment_data[origin_slot]["Item"])]["Radius"]
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("LightRadius").set_text(
+						Utils.get_character_interface().find_node("LightRadius").set_text(
 							tr("LIGHT") + ": " + str(light_value))
 						Utils.get_current_player().set_light(light_value)
 					else:
-						Utils.get_scene_manager().get_node("UI").get_node("CharacterInterface").find_node("LightRadius").set_text(
+						Utils.get_character_interface().find_node("LightRadius").set_text(
 							tr("LIGHT") + ": " + "0")
 						Utils.get_current_player().set_light(0)
 				# Hotbar
 				else:
-					Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").load_hotbar()
+					Utils.get_hotbar().load_hotbar()
 
 			# Update the texture and label of the origin
 			# stacking
@@ -374,7 +374,7 @@ func SplitStack(split_amount, data):
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 		else:
 			PlayerData.equipment_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
-			Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
+			Utils.get_hotbar().update_label()
 		PlayerData.inv_data[target_slot]["Item"] = data["origin_item_id"]
 		if data["target_stack"] != null:
 			new_stack_size = data["target_stack"] + split_amount
@@ -504,7 +504,7 @@ func check_slots():
 
 
 func _on_Icon_gui_input(event):
-	if Utils.get_scene_manager().get_node("UI").get_node_or_null("TradeInventory") == null:
+	if Utils.get_trade_inventory() == null:
 		if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
 			var slot = get_parent().get_name()
 			if PlayerData.inv_data[slot]["Item"] != null and !disabled:
@@ -527,11 +527,11 @@ func _on_Icon_gui_input(event):
 						else:
 							get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
 						# sync cooldown
-						Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").set_cooldown(Constants.COOLDOWN)
-						Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface").find_node("Hotbar").get_node("Icon").set_cooldown(Constants.COOLDOWN)
+						Utils.get_hotbar().set_cooldown(Constants.COOLDOWN)
+						Utils.get_character_interface().find_node("Hotbar").get_node("Icon").set_cooldown(Constants.COOLDOWN)
 						if PlayerData.equipment_data["Hotbar"]["Item"] == null:
-							Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").update_label()
-						Utils.get_scene_manager().get_node("UI/CharacterInterface").find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+							Utils.get_hotbar().update_label()
+						Utils.get_character_interface().find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 
 
 # starts cooldwon

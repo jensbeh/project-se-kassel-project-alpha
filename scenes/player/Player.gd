@@ -207,7 +207,7 @@ func _input(event):
 	
 	# Use Item from Hotbar
 	elif event.is_action_pressed("hotbar") and !preview:
-		Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar").use_item()
+		Utils.get_hotbar().use_item()
 		
 	# Control Notes
 	elif event.is_action_pressed("control_notes") and !preview:
@@ -851,8 +851,8 @@ func reset_player_after_dying():
 	set_collision_layer_bit(1, true)
 	
 	# reset cooldown
-	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").stop()
-	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar")._on_Timer_timeout()
+	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
+	Utils.get_hotbar()._on_Timer_timeout()
 	
 	set_current_health(max_health)
 	hurting = false

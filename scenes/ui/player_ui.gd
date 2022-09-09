@@ -90,4 +90,4 @@ func in_dungeon(value):
 	if value:
 		get_node("Hotbar").rect_position = Vector2(-916,456)
 	else:
-		get_node("Hotbar").rect_position = Vector2(-574,456)
+		get_node("Hotbar").rect_position = Vector2(-504,456)

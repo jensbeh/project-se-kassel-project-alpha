@@ -584,7 +584,7 @@ func create_player_inventory():
 	PlayerData._ready()
 
 	# set hotbar & light
-	Utils.get_scene_manager().get_node("UI").find_node("PlayerUI").get_node("Hotbar").load_hotbar()
+	Utils.get_hotbar().load_hotbar()
 	Utils.get_current_player().set_light(save_game_data.light)
 
 	# sets lp & weapon

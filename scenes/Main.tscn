@@ -328,6 +328,10 @@ script = ExtResource( 9 )
 visible = false
 
 [node name="Minimap" parent="UI" instance=ExtResource( 5 )]
+margin_left = 13.0
+margin_top = 841.0
+margin_right = 410.0
+margin_bottom = 1067.0
 
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 

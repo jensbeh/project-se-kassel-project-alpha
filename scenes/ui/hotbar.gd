@@ -104,7 +104,7 @@ func use_item():
 				item_slot.get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data["Hotbar"]["Stack"]))
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
-			var hotbar_slot = Utils.get_scene_manager().get_node("UI").get_node_or_null("CharacterInterface")
+			var hotbar_slot = Utils.get_character_interface()
 			if hotbar_slot != null:
 				hotbar_slot.find_node("Inventory").set_cooldown(Constants.COOLDOWN)
 				hotbar_slot = hotbar_slot.find_node("Hotbar")
