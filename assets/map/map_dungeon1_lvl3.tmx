@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="14" nextobjectid="11">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="16" nextobjectid="16">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
- <objectgroup id="13" name="mobSpawns"/>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">
@@ -267,5 +266,20 @@
     <property name="to_spawn_area_id" value="ps_dungeon1-lvl2-from-dungeon1-lvl3"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="13" name="mobSpawns">
+  <object id="12" type="area" x="560" y="-32">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="20"/>
+   </properties>
+   <polygon points="32,-80 -16,-96 -80,-112 -240,-112 -368,-112 -448,-96 -544,-64 -608,16 -640,64 -640,160 -608,240 -176,240 -48,240 32,176 32,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="14" name="bossSpawn">
+  <object id="13" name="boss_spawn_area" type="area" x="32" y="-80" width="200" height="240"/>
+ </objectgroup>
+ <objectgroup id="15" name="safeArea">
+  <object id="15" type="area" x="704" y="-32" width="160" height="80"/>
  </objectgroup>
 </map>

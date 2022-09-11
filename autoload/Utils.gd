@@ -358,6 +358,17 @@ func get_chunk_from_position(map_min_global_pos, global_position):
 	return chunk
 
 
+# Method to generate random vector2 position in rectangle Area2D
+func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
+	var rectangle_shape = rectangle_area.get_child(0).shape
+	var top_left = rectangle_area.position
+	var bottom_right = top_left + (rectangle_shape.extents * 2)
+	rng.randomize()
+	var rand_x = rng.randi_range(top_left.x, bottom_right.x)
+	var rand_y = rng.randi_range(top_left.y, bottom_right.y)
+	var position = Vector2(rand_x, rand_y)
+	return position
+
 # Method to stop the game
 	# Stops all threads which are still running like ChunkLoaderService, PathfindingService, ...
 func stop_game():

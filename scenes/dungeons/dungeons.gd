@@ -59,8 +59,32 @@ func _on_setup_scene_done():
 	# Spawn all mobs without new thread
 	spawn_mobs()
 	
+	# Check if boss room
+	if is_boss_room():
+		print("boss_room")
+		# Spawn boss
+		spawn_boss()
+	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+
+
+# Method to check if current dungeon is boss room
+func is_boss_room() -> bool:
+	if find_node("bossSpawn") != null:
+		return true
+	else:
+		return false
+
+
+# Method to spawn boss in dungeon
+func spawn_boss():
+	# TODO - Take random boss
+	var mob_instance = load("res://scenes/mobs/Boss_SkeletonWhite.tscn").instance()
+	# Generate spawn position
+	var spawn_position = Utils.get_random_position_in_rectangle_area(find_node("boss_spawn_area"))
+	mob_instance.init(spawn_position, mobsNavigationTileMap)
+	mobsLayer.call_deferred("add_child", mob_instance)
 
 
 # Method to destroy the scene
