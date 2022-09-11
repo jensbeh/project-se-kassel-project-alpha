@@ -34,8 +34,8 @@ func _ready():
 				if item_stack != null and item_stack > 1:
 					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					item_slot.get_node("Icon/TextureRect").visible = true
-				var cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").time_left
-				if cooldown != 0 and !Utils.get_scene_manager().get_node("UI/PlayerUI").get_node("Hotbar/Hotbar").get_node("Timer").is_stopped():
+				var cooldown = Utils.get_hotbar().get_node("Hotbar").get_node("Timer").time_left
+				if cooldown != 0 and !Utils.get_hotbar().get_node("Hotbar").get_node("Timer").is_stopped():
 					item_slot.get_node("Icon").set_cooldown(cooldown)
 					
 	# stat values
@@ -149,7 +149,7 @@ func set_animation_data():
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			Utils.get_scene_manager().get_UI().get_node("CharacterInterface").queue_free()
+			Utils.get_character_interface().queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)

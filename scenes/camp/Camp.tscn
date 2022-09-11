@@ -10623,10 +10623,10 @@ position = Vector2( 1176, 600 )
 [node name="CollisionShape2D" parent="map_camp/playerlayer/Player" index="16"]
 visible = true
 
-[node name="AnimationTree" parent="map_camp/playerlayer/Player" index="18"]
+[node name="AnimationTree" parent="map_camp/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 
-[node name="Camera2D" parent="map_camp/playerlayer/Player" index="19"]
+[node name="Camera2D" parent="map_camp/playerlayer/Player" index="20"]
 zoom = Vector2( 0.2, 0.2 )
 limit_top = 186
 
@@ -10648,3 +10648,4 @@ limit_top = 186
 [editable path="map_camp/npclayer/octavia"]
 [editable path="map_camp/npclayer/octavia/DialogueBox"]
 [editable path="map_camp/playerlayer/Player"]
+[editable path="map_camp/playerlayer/Player/HitboxZone"]

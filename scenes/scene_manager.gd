@@ -11,18 +11,11 @@ var current_transition_data = null
 
 # Nodes CurrentScreen
 onready var current_scene = $CurrentScene
-# Nodes LoadingScreen
-onready var black_screen = $LoadingScreen/BlackScreen
-onready var loading_screen_animation_player = $LoadingScreen/AnimationPlayerBlackScreen
-# Node DayNight Cycle
-onready var darkness_lights_screen = $DarknessLightsCanvasLayer/DarknessLightsScreen
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Set size of fade screen
-	black_screen.rect_size = Vector2(ProjectSettings.get_setting("display/window/size/width"),ProjectSettings.get_setting("display/window/size/height"))
-
+	pass
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
@@ -30,7 +23,7 @@ func transition_to_scene(transition_data):
 	current_transition_data = transition_data
 	
 	# Mouse actions will be stopped until transition is done
-	black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
+	Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_STOP)
 	
 	# Disabel movment & interaction of player
 	if Utils.get_current_player() != null:
@@ -40,18 +33,17 @@ func transition_to_scene(transition_data):
 	
 	# Cleanup UI
 	# Remove "ESC" Game Menu
-	if get_UI().get_node_or_null("GameMenu") != null:
-		get_UI().remove_child(get_UI().get_node_or_null("GameMenu"))
+	if Utils.get_game_menu() != null:
+		Utils.remove_game_menu()
 	# Remove "I" Inventory
-	if get_UI().get_node_or_null("CharacterInterface") != null:
-		get_UI().remove_child(get_UI().get_node_or_null("CharacterInterface"))
+	if Utils.get_character_interface() != null:
+		Utils.remove_character_interface()
 	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
-		loading_screen_animation_player.play("GameFadeToBlack")
+		Utils.get_main().play_loading_screen_animation("GameFadeToBlack")
 	elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
-		loading_screen_animation_player.play("MenuFadeToBlack")
-
+		Utils.get_main().play_loading_screen_animation("MenuFadeToBlack")
 
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
@@ -94,8 +86,8 @@ func _on_load_scene_done(scene):
 	
 	# Cleanup UI
 	# Remove death screen
-	if get_UI().get_node_or_null("DeathScreen") != null:
-		get_UI().remove_child(get_UI().get_node_or_null("DeathScreen"))
+	if Utils.get_death_screen() != null:
+		Utils.remove_death_screen()
 	
 	
 	# Cleanup player if coming from game_scene to menu
@@ -140,18 +132,19 @@ func finish_transition():
 				Utils.get_current_player().reset_player_after_dying()
 				
 			# Start fade to normal to game
-			loading_screen_animation_player.play("GameFadeToNormal")
-			Utils.get_scene_manager().get_UI().in_world(true)
+			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")
+			Utils.get_ui().in_world(true)
 			
 		elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 			# Start fade to normal to menu
-			loading_screen_animation_player.play("MenuFadeToNormal")
-			Utils.get_scene_manager().get_UI().in_world(false)
-			
-		Utils.get_scene_manager().get_node("UI").get_node("Minimap").get_child(0).get_child(1).update_minimap()
+			Utils.get_main().play_loading_screen_animation("MenuFadeToNormal")
+			Utils.get_ui().in_world(false)
+		
+		# Update minimap
+		Utils.get_minimap().update_minimap()
+		
 		# Mouse actions works now again
-		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
+		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 
 # Method to update the current_scene_type and emits a signal
 func update_scene_type(new_transition_data):
@@ -177,26 +170,9 @@ func update_previouse_scene_path():
 		previouse_scene_path = "res://scenes/MainMenuScreen.tscn" # On start up
 
 
-# Method returns true if day night cycle is enabled otherwise false FROM light_manager
-func is_day_night_cycle():
-	return darkness_lights_screen.get_is_day_night_cycle()
-
-
 # Method to return the current scene
 func get_current_scene():
 	return current_scene.get_child(0)
-
-
-# Method to return the UI node
-func get_UI():
-	return get_node("UI")
-
-
-# Method to show death screen
-func show_death_screen():
-	# Load death screen to ui
-	if get_UI() != null:
-		get_UI().add_child(load(Constants.DEATH_SCREEN_PATH).instance())
 
 
 # Methods and stuff for better debugging

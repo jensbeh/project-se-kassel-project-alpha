@@ -94,6 +94,9 @@ func _ready():
 	# Setup attacking radius around player variables
 	max_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.95
 	min_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.85
+	
+	# Update mobs activity depending on is in active chunk or not
+	ChunkLoaderService.update_mob(self)
 
 
 # Method to init variables, typically called after instancing
@@ -140,6 +143,7 @@ func _physics_process(delta):
 			# handle knockback
 			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 			velocity = move_and_slide(velocity)
+		
 		
 		DYING:
 			# handle knockback

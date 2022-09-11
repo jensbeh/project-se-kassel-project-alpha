@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Project Alpha"
-run/main_scene="res://scenes/SceneManager.tscn"
+run/main_scene="res://scenes/Main.tscn"
 config/use_custom_user_dir=true
 config/icon="res://icon.png"
 
@@ -164,6 +164,7 @@ batching/options/use_batching=false
 batching/options/use_batching_in_editor=false
 batching/lights/max_join_items=1
 quality/depth/hdr=false
+quality/dynamic_fonts/use_oversampling=false
 
 [tiled_importer]
 

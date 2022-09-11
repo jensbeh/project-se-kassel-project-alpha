@@ -49,7 +49,7 @@ func _ready():
 						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").show()
 					
 					item_stat += 1
-		if Utils.get_scene_manager().get_UI().get_node_or_null("TradeInventory") == null:
+		if Utils.get_trade_inventory() == null:
 			if GameData.item_data[item_id]["Category"] in ["Potion", "Food"]:
 				get_node("NinePatchRect/Margin/VBox/Stats5/Stat").set_text(str(tr("USE_INV_ITEM")))
 

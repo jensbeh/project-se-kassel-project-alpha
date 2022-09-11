@@ -4135,6 +4135,7 @@ hframes = 80
 vframes = 49
 
 [node name="Blush" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 9 )
 centered = false
@@ -4143,6 +4144,7 @@ hframes = 40
 vframes = 49
 
 [node name="Lipstick" type="Sprite" parent="."]
+visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 8 )
 centered = false
@@ -4151,7 +4153,6 @@ hframes = 40
 vframes = 49
 
 [node name="Beard" type="Sprite" parent="."]
-visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 15 )
 centered = false
@@ -4160,7 +4161,6 @@ hframes = 112
 vframes = 49
 
 [node name="Eyes" type="Sprite" parent="."]
-visible = false
 position = Vector2( -15.7778, -20.4444 )
 texture = ExtResource( 7 )
 centered = false

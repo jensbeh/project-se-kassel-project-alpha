@@ -47,7 +47,9 @@ func _ready():
 	
 	# Setup sprite
 	mobSprite.flip_h = rng.randi_range(0,1)
-
+	
+	# Update mobs activity depending on is in active chunk or not
+	ChunkLoaderService.update_mob(self)
 
 
 # Method to init variables, typically called after instancing

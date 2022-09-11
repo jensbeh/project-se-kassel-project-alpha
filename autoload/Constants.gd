@@ -10,7 +10,7 @@ const tile_size = 16
 # Chunks
 const chunk_size_tiles = 10 # In tiles -> if changing need reimport of maps!
 const chunk_size_pixel = chunk_size_tiles * tile_size # In pixel
-const render_distance = 2 # Loaded chunks each direction except the one where the player stands -> min 2 !!!
+const render_distance = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
 
 # Player
 const PLAYER_WALK_SPEED = 70

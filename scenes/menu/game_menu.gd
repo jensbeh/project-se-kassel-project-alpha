@@ -11,30 +11,38 @@ func _ready():
 
 # Close game menu and set playermovemnt true
 func _on_Back_to_Game_pressed():
-	Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
+	Utils.get_game_menu().queue_free()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().set_player_can_interact(true)
 
 
 func _on_Settings_pressed():
-	Utils.get_scene_manager().add_child(load(Constants.SETTINGS_PATH).instance())
+	Utils.get_main().add_settings()
 
 # Close game and go to main menu
 func _on_Back_to_Main_Menu_pressed():
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
-	Utils.get_scene_manager().get_UI().get_node("GameMenu").queue_free()
-	Utils.get_scene_manager().get_UI().in_world(false)
+	Utils.get_game_menu().queue_free()
+	Utils.get_ui().in_world(false)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 	var data = Utils.get_current_player().get_data()
-	data.cooldown = Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").time_left
-	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar/Hotbar/Timer").stop()
-	Utils.get_scene_manager().get_node("UI/PlayerUI/Hotbar")._on_Timer_timeout()
+	data.cooldown = Utils.get_hotbar().get_node("Hotbar/Timer").time_left
+	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
+	Utils.get_hotbar()._on_Timer_timeout()
 	Utils.get_current_player().save_player_data(data)
 	
 	# Stop game
 	Utils.stop_game()
 
 func _on_Exit_Game_pressed():
+	# Save cooldown to player
+	var data = Utils.get_current_player().get_data()
+	data.cooldown = Utils.get_hotbar().get_node("Hotbar/Timer").time_left
+	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
+	Utils.get_hotbar()._on_Timer_timeout()
+	Utils.get_current_player().save_player_data(data)
+	
 	# Stop game
 	Utils.stop_game()
 	

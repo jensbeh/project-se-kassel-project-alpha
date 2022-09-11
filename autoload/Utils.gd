@@ -5,30 +5,110 @@ var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
+
 func _ready():
 	pass
 
+
 # Returns the player in the loaded current_scene
 func get_player():
-	return get_node("/root/SceneManager/CurrentScene").get_children().back().find_node("Player")
+	return get_node("/root/Main/Game/Viewport/SceneManager/CurrentScene").get_children().back().find_node("Player")
+
 
 # Sets a new current_player instance (firstly done when enter the game - not available in the menu)
 func set_current_player(new_current_player: KinematicBody2D):
 	current_player = new_current_player
-	
+
+
 # Returns the current_player instance
 func get_current_player():
 	return current_player
 
+
 # Returns the scene_manager instance
 func get_scene_manager():
-	return get_node("/root/SceneManager")
+	return get_node("/root/Main/Game/Viewport/SceneManager")
 
+
+# Sets the current language
 func set_language(lang):
 	language = lang
-	
+
+
+# Returns the current language
 func get_language():
 	return language
+
+
+# Returns the scene_manager instance
+func get_main():
+	return get_node("/root/Main")
+
+
+# Method to return the UI node
+func get_ui():
+	return get_node("/root/Main/UI")
+
+
+# Method to return the minimap node
+func get_minimap():
+	return get_ui().get_node("/root/Main/UI/Minimap")
+
+
+# Method to return the game menu node
+func get_game_menu():
+	return get_ui().get_node_or_null("GameMenu")
+
+
+# Method to remove the game menu node
+func remove_game_menu():
+	return get_ui().remove_child(get_game_menu())
+
+
+# Method to return the character interface node
+func get_character_interface():
+	return get_ui().get_node_or_null("CharacterInterface")
+
+
+# Method to remove the character interface node
+func remove_character_interface():
+	return get_ui().remove_child(get_character_interface())
+
+
+# Method to return the death screen node
+func get_death_screen():
+	return get_ui().get_node_or_null("DeathScreen")
+
+
+# Method to remove the death screen node
+func remove_death_screen():
+	return get_ui().remove_child(get_death_screen())
+
+
+# Method to return the control notes node
+func get_control_notes():
+	return get_ui().get_node_or_null("ControlNotes")
+
+
+# Method to return the player ui node
+func get_player_ui():
+	return get_ui().get_node_or_null("PlayerUI")
+
+
+# Method to return the trade inventory node
+func get_trade_inventory():
+	return get_ui().get_node_or_null("TradeInventory")
+
+
+# Method to return the inventory node
+func get_inventory():
+	return get_ui().get_node_or_null("Inventory")
+
+
+# Method to return the hotbar node
+func get_hotbar():
+	return get_player_ui().get_node_or_null("Hotbar")
+
 
 # Method to calculate the new player_position and view_direction with the transition_data and sets the spawn of the current player
 func calculate_and_set_player_spawn(scene: Node, init_transition_data):

@@ -135,9 +135,9 @@ texture_progress = ExtResource( 7 )
 
 [node name="Hotbar" type="Control" parent="."]
 anchor_bottom = 0.4
-margin_left = -574.0
+margin_left = -504.0
 margin_top = 456.0
-margin_right = -486.0
+margin_right = -416.0
 margin_bottom = 528.0
 rect_min_size = Vector2( 64, 64 )
 script = ExtResource( 5 )
