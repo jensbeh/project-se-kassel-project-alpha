@@ -121,7 +121,6 @@ func _physics_process(delta):
 			# Check if player is nearby
 			var player = playerDetectionZone.player
 			if player != null:
-				print("HUNTING")
 				# Follow path
 				if path.size() > 0:
 					move_to_position(delta)
@@ -214,13 +213,10 @@ func move_to_position(delta):
 		# Update line
 		line2D.points = path
 	else:
-		print("MOVE MOB")
 		# Move mob
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
-		print(direction)
-		print(velocity)
 		# Update anmination
 		update_animations()
 		

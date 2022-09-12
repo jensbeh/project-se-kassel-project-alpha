@@ -683,16 +683,19 @@ parameters/IDLE/blend_position = Vector2( -0.00155038, -0.017341 )
 parameters/WALK/blend_position = Vector2( 0.00155044, 0.00578034 )
 
 [node name="Collision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, -3 )
 shape = SubResource( 7 )
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 1 )]
+visible = false
 position = Vector2( 0, -3 )
 
 [node name="DetectionShape" parent="PlayerDetectionZone" index="0"]
 shape = SubResource( 8 )
 
 [node name="PlayerAttackZone" parent="." instance=ExtResource( 2 )]
+visible = false
 position = Vector2( 0, -3 )
 
 [node name="AttackShape" parent="PlayerAttackZone" index="0"]
