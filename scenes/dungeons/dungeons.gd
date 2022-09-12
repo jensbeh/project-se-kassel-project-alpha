@@ -80,7 +80,7 @@ func is_boss_room() -> bool:
 # Method to spawn boss in dungeon
 func spawn_boss():
 	# TODO - Take random boss
-	var mob_instance = load("res://scenes/mobs/Boss_SkeletonWhite.tscn").instance()
+	var mob_instance = load("res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn").instance()
 	# Generate spawn position
 	var spawn_position = Utils.get_random_position_in_rectangle_area(find_node("boss_spawn_area"))
 	mob_instance.init(spawn_position, mobsNavigationTileMap)
