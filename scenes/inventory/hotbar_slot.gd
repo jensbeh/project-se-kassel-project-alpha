@@ -141,7 +141,9 @@ func drop_data(_pos, data):
 				verify_origin_texture(data)
 				if data["target_stack"] != null and data["target_stack"] > 1:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
-				
+				else:
+					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+					
 			# Update the texture, label and data of the target
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 				var new_stack = 0
