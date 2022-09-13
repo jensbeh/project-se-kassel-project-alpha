@@ -3,6 +3,7 @@ extends Node
 # Variables
 const NAME_LENGTH = 15
 const COOLDOWN = 20
+const LOOTING_TIME = 60
 
 # Tiles
 const tile_size = 16
@@ -86,6 +87,7 @@ const LOOT_DATA_PATH = "res://assets/data/LootData.json"
 const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
 const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
 const DEATH_SCREEN_PATH = "res://scenes/ui/DeathScreen.tscn"
+const LOOT_PANEL_PATH = "res://scenes/looting/LootPanel.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999

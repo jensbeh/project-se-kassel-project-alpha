@@ -244,7 +244,7 @@
 	"Knockback":null,
 	"Attack-Speed":null,
     "Health": null,
-	"Stackable": true,
+	"Stackable": false,
 	"Frame": 186,
 	"Texture": "item_icons_1",
 	"Worth": 20
@@ -257,7 +257,7 @@
 	"Knockback":null,
 	"Attack-Speed":null,
     "Health": null,
-	"Stackable": true,
+	"Stackable": false,
 	"Frame": 187,
 	"Texture": "item_icons_1",
 	"Worth": 50

@@ -1,14 +1,16 @@
 extends Control
-#4h + 2h + 2h
+# 11,5h
 var loot_dict = {}
-var mob_type
+var loot_type
 var loot_count
-# mob_type can be treasure, boss or mob1-3 with diffrent loots
-# show loot symbol and interacting with "e" for open loot panel
-# pickup and animtate ore, leafes and other loots
-# disappear the completely lootet symbols and items
-# random spawn from treasures in dungeons and ores and leafs etc
+var max_loot = 6
 
+# todos
+# pickup and animtate ore, leafes and other loots --
+# disappear the completely lootet symbols and items --
+# random spawn from treasures in dungeons and ores and leafs etc --
+
+# setup the looting panel
 func _ready():
 	get_node("Border/Background/VBoxContainer/HBoxContainer/Close").set_text(tr("LOOTALL"))
 	get_node("Border/Background/VBoxContainer/HBoxContainer/LootAll").set_text(tr("CLOSE"))
@@ -16,18 +18,29 @@ func _ready():
 	PopulatePanel()
 
 
+# specify the looting table
+func set_loot_type(type, dungeon: bool):
+	loot_type = type
+	if dungeon:
+		max_loot = 6
+	else:
+		max_loot = 3
+
+
+# randomize the loot with drop chance
 func LootSelector():
-	for i in range(1, 7):
+	for i in range(1, max_loot + 1):
 		randomize()
 		var loot_selector = randi() % 100 + 1
-		if loot_selector <= GameData.loot_data[mob_type]["Item" + str(i) + "Chance"]:
+		if loot_selector <= GameData.loot_data[loot_type]["Item" + str(i) + "Chance"]:
 			var loot = []
-			loot.append(GameData.loot_data[mob_type]["Item" + str(i) + "ID"])
+			loot.append(GameData.loot_data[loot_type]["Item" + str(i) + "ID"])
 			randomize()
-			loot.append(int(rand_range(float(GameData.loot_data[mob_type]["Item" + str(i) + "MinQ"]), float(GameData.loot_data[mob_type]["Item" + str(i) + "MaxQ"]))))
+			loot.append(int(rand_range(float(GameData.loot_data[loot_type]["Item" + str(i) + "MinQ"]), float(GameData.loot_data[loot_type]["Item" + str(i) + "MaxQ"]))))
 			loot_dict[loot_dict.size() + 1] = loot
 	
 
+# add drops to the looting panel
 func PopulatePanel():
 	var counter = loot_dict.size()
 	for i in get_tree().get_nodes_in_group("LootPanelSlots"):
@@ -60,15 +73,46 @@ func PopulatePanel():
 			counter -= 1
 
 
+# looting with click on item
 func _on_Icon_gui_input(event, lootpanelslot):
 	if event.is_pressed():
 		if loot_dict.has(lootpanelslot):
-			if loot_dict[lootpanelslot][0] == "Gold":
-				Utils.get_current_player().set_gold(Utils.get_current_player().get_gold() + loot_dict[lootpanelslot][1])
-				loot_dict.erase(lootpanelslot)
-				var loot_slot = "Border/Background/VBoxContainer/Lootslots/VBoxContainer" + str(lootpanelslot)
-				get_node(loot_slot + "/LootIcon/Icon/Sprite").texture = null
-				get_node(loot_slot + "LootIcon/TextureRect/Stack").set_text("")
-				get_node(loot_slot + "Name").set_text("")
-	pass
+			loot_item(lootpanelslot)
 
+
+# close the loot panel
+func _on_Close_pressed():
+	Utils.get_ui().get_node("LootPanel").queue_free()
+	Utils.get_current_player().set_movement(true)
+	Utils.get_current_player().set_movment_animation(true)
+
+
+func _on_LootAll_pressed():
+	for i in range(1,7):
+		loot_item(i)
+	Utils.get_ui().get_node("LootPanel").queue_free()
+	Utils.get_current_player().set_movement(true)
+	Utils.get_current_player().set_movment_animation(true)
+
+
+func loot_item(item_idx):
+	# gold
+	if loot_dict[item_idx][0] == 10064:
+		Utils.get_current_player().set_gold(Utils.get_current_player().get_gold() + loot_dict[item_idx][1])
+	# items
+	else:
+		if GameData.item_data[str(loot_dict[item_idx][0])]["Stackable"]:
+			for i in range(1,31):
+				if PlayerData.inv_data["Inv" + str(i)]["Item"] == loot_dict[item_idx][0]:
+					PlayerData.inv_data["Inv" + str(i)]["Stack"] += loot_dict[item_idx][1]
+		else:
+			for i in range(1,31):
+				if PlayerData.inv_data["Inv" + str(i)]["Item"] == null:
+					PlayerData.inv_data["Inv" + str(i)]["Item"] = loot_dict[item_idx][0]
+					PlayerData.inv_data["Inv" + str(i)]["Stack"] = loot_dict[item_idx][1]
+	# remove from looting panel
+	loot_dict.erase(item_idx)
+	var loot_slot = "Border/Background/VBoxContainer/Lootslots/VBoxContainer" + str(item_idx)
+	get_node(loot_slot + "/LootIcon/Icon/Sprite").texture = null
+	get_node(loot_slot + "LootIcon/TextureRect/Stack").set_text("")
+	get_node(loot_slot + "Name").set_text("")

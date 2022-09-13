@@ -457,3 +457,5 @@ text = "Close"
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 4 ]]
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 5 ]]
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 6 ]]
+[connection signal="pressed" from="Border/Background/VBoxContainer/HBoxContainer/LootAll" to="." method="_on_LootAll_pressed"]
+[connection signal="pressed" from="Border/Background/VBoxContainer/HBoxContainer/Close" to="." method="_on_Close_pressed"]
