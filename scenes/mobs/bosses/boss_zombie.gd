@@ -163,7 +163,7 @@ func update_behaviour(new_behaviour):
 				change_animations(PRE_ATTACKING)
 				
 				# Disable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
-				damageAreaShape.disabled = true
+				damageAreaShape.set_deferred("disabled", true)
 			
 			
 			ATTACKING:
@@ -185,7 +185,7 @@ func update_behaviour(new_behaviour):
 				change_animations(ATTACKING)
 				
 				# Enable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
-				damageAreaShape.disabled = false
+				damageAreaShape.set_deferred("disabled", false)
 
 
 func _on_DamageArea_area_entered(area):
