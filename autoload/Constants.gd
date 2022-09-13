@@ -99,6 +99,10 @@ const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 const SAVE_PATH = "user://character/"
 const DATA_PATH = "user://data/"
 
+# Boss enemies pathes
+const BossPathes = [
+	"res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn",
+]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

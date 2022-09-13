@@ -14,10 +14,10 @@ var previouse_global_position
 func _ready():
 	# Setup mob
 	# Mob specific
-	max_health = 100
-	health = 100
+	max_health = 300
+	health = 300
 	attack_damage = 40
-	knockback = 3
+	knockback = 4
 	mob_weight = 40
 	spawn_time = Constants.SpawnTime.ALWAYS
 	max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
@@ -96,13 +96,13 @@ func _physics_process(delta):
 		ATTACKING:
 			# Move mob
 			if attack:
-				global_position = global_position.move_toward(previouse_player_global_position, delta * 80)
+				global_position = global_position.move_toward(previouse_player_global_position, delta * 150)
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_player_global_position:
 					attack = false
 			else:
-				global_position = global_position.move_toward(previouse_global_position, delta * 80)
+				global_position = global_position.move_toward(previouse_global_position, delta * 150)
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_global_position:
