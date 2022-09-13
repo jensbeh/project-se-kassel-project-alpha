@@ -10,6 +10,7 @@ var spawning_areas = {}
 var mob_list : Array
 var groundChunks
 var higherChunks
+var boss_spawn_area = null
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -83,8 +84,7 @@ func spawn_boss():
 	var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
 	var boss_instance = load(boss_path).instance()
 	# Generate spawn position and spawn boss
-	var spawn_position = Utils.get_random_position_in_rectangle_area(find_node("boss_spawn_area"))
-	boss_instance.init(spawn_position, mobsNavigationTileMap)
+	boss_instance.init(boss_spawn_area, mobsNavigationTileMap)
 	mobsLayer.call_deferred("add_child", boss_instance)
 
 
@@ -199,7 +199,11 @@ func setup_spawning_areas():
 		
 		# Save spawning area
 		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
-
+	
+	# Check if is boss room to generate boss spawning area
+	if is_boss_room():
+		var boss_area = find_node("bossSpawn").get_child(0)
+		boss_spawn_area = Utils.generate_mob_spawn_area_from_polygon(boss_area.position, boss_area.get_child(0).polygon)
 
 # Method to spawn all mobs to map
 func spawn_mobs():

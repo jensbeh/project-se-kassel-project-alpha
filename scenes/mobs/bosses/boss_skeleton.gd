@@ -18,7 +18,7 @@ func _ready():
 	health = 300
 	attack_damage = 40
 	knockback = 4
-	mob_weight = 40
+	mob_weight = 100
 	spawn_time = Constants.SpawnTime.ALWAYS
 	max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
 	

@@ -14,7 +14,7 @@ var mob_weight
 var experience = 10
 
 # Variables
-var spawn_position
+var boss_spawn_area
 enum {
 	SLEEPING,
 	IDLING,
@@ -30,7 +30,6 @@ var velocity = Vector2(0, 0)
 var behaviour_state = IDLING
 var previous_behaviour_state = IDLING
 var collision_radius
-var spawnArea
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
 var update_path_time = 0.0
@@ -67,7 +66,9 @@ onready var line2D = $Line2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set spawn position
-	global_position = spawn_position
+	collision_radius = collision.shape.radius
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(boss_spawn_area, navigation_tile_map, collision_radius, true)
+	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
@@ -95,8 +96,8 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(new_spawn_position, new_navigation_tile_map):
-	spawn_position = new_spawn_position
+func init(new_boss_spawn_area, new_navigation_tile_map):
+	boss_spawn_area = new_boss_spawn_area
 	navigation_tile_map = new_navigation_tile_map
 
 
@@ -183,6 +184,9 @@ func _process(delta):
 			if player == null:
 				# Lose player
 				update_behaviour(SEARCHING)
+				
+				# Start healing
+				# TODO
 		
 		
 		SEARCHING:
@@ -232,6 +236,9 @@ func search_player():
 	if playerDetectionZone.mob_can_see_player():
 		# Player in detection zone of this mob
 		update_behaviour(HUNTING)
+		
+		# Stop healing
+		# TODO
 
 
 # Method to update the behaviour of the mob
@@ -353,7 +360,7 @@ func get_target_position():
 	
 	# Return next wandering position
 	elif behaviour_state == WANDERING:
-		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, false)
+		return Utils.generate_position_in_mob_area(boss_spawn_area, navigation_tile_map, collision_radius, false)
 			
 	# Return next searching position
 	elif behaviour_state == SEARCHING:
