@@ -5,6 +5,7 @@
 [ext_resource path="res://assets/ui/panel_grey.png" type="Texture" id=3]
 [ext_resource path="res://assets/ui/#1 - Transparent Icons.png" type="Texture" id=4]
 
+
 [sub_resource type="DynamicFont" id=3]
 size = 32
 font_data = ExtResource( 2 )

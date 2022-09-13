@@ -1,0 +1,459 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/ui/border.png" type="Texture" id=2]
+[ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/panel_grey.png" type="Texture" id=4]
+[ext_resource path="res://assets/ui/panel_background.png" type="Texture" id=5]
+[ext_resource path="res://scenes/looting/loot_panel.gd" type="Script" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 18
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxTexture" id=4]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 105, 105 )
+margin_left = 13.0
+margin_right = 15.0
+
+[node name="LootPanel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 203.0
+margin_top = 117.0
+margin_right = -1210.0
+margin_bottom = -463.0
+script = ExtResource( 6 )
+
+[node name="Border" type="NinePatchRect" parent="."]
+margin_right = 508.0
+margin_bottom = 502.0
+texture = ExtResource( 2 )
+region_rect = Rect2( 2.11349, 4.3695, 99.275, 98.3725 )
+patch_margin_left = 15
+patch_margin_top = 16
+patch_margin_right = 21
+patch_margin_bottom = 11
+
+[node name="Background" type="NinePatchRect" parent="Border"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+region_rect = Rect2( 4, 5, 96, 97 )
+patch_margin_left = 10
+patch_margin_top = 13
+patch_margin_right = 10
+patch_margin_bottom = 11
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Border/Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 19.0
+margin_top = 17.0
+margin_right = -19.0
+margin_bottom = -18.0
+custom_constants/separation = 10
+
+[node name="Lootslots" type="ScrollContainer" parent="Border/Background/VBoxContainer"]
+margin_right = 470.0
+margin_bottom = 407.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Border/Background/VBoxContainer/Lootslots"]
+margin_right = 109.0
+margin_bottom = 650.0
+
+[node name="Loot1" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+margin_right = 109.0
+margin_bottom = 105.0
+
+[node name="LootIcon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1"]
+margin_right = 105.0
+margin_bottom = 105.0
+rect_pivot_offset = Vector2( -497, 110 )
+texture = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -52.5
+margin_top = -52.5
+margin_right = 52.5
+margin_bottom = 52.5
+expand = true
+
+[node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon/Icon"]
+position = Vector2( 52, 51 )
+scale = Vector2( 2, 2 )
+hframes = 16
+vframes = 27
+frame = 98
+
+[node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon"]
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 60.0
+margin_top = 74.0
+margin_right = 124.0
+margin_bottom = 110.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Stack" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -12.0
+margin_right = 20.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1"]
+margin_left = 109.0
+margin_top = 38.0
+margin_right = 109.0
+margin_bottom = 67.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Loot2" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+margin_top = 109.0
+margin_right = 109.0
+margin_bottom = 214.0
+
+[node name="LootIcon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2"]
+margin_right = 105.0
+margin_bottom = 105.0
+rect_pivot_offset = Vector2( -497, 110 )
+texture = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+
+[node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon/Icon"]
+position = Vector2( 43, 44 )
+scale = Vector2( 2, 2 )
+hframes = 16
+vframes = 27
+frame = 98
+
+[node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon"]
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 60.0
+margin_top = 74.0
+margin_right = 124.0
+margin_bottom = 110.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Stack" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -12.0
+margin_right = 20.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2"]
+margin_left = 109.0
+margin_top = 38.0
+margin_right = 109.0
+margin_bottom = 67.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Loot3" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+margin_top = 218.0
+margin_right = 109.0
+margin_bottom = 323.0
+
+[node name="LootIcon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3"]
+margin_right = 105.0
+margin_bottom = 105.0
+rect_pivot_offset = Vector2( -497, 110 )
+texture = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+
+[node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon/Icon"]
+position = Vector2( 43, 44 )
+scale = Vector2( 2, 2 )
+hframes = 16
+vframes = 27
+frame = 98
+
+[node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon"]
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 60.0
+margin_top = 74.0
+margin_right = 124.0
+margin_bottom = 110.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Stack" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -12.0
+margin_right = 20.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3"]
+margin_left = 109.0
+margin_top = 38.0
+margin_right = 109.0
+margin_bottom = 67.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Loot4" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+margin_top = 327.0
+margin_right = 109.0
+margin_bottom = 432.0
+
+[node name="LootIcon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4"]
+margin_right = 105.0
+margin_bottom = 105.0
+rect_pivot_offset = Vector2( -497, 110 )
+texture = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+
+[node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon/Icon"]
+position = Vector2( 43, 44 )
+scale = Vector2( 2, 2 )
+hframes = 16
+vframes = 27
+frame = 98
+
+[node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon"]
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 60.0
+margin_top = 74.0
+margin_right = 124.0
+margin_bottom = 110.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Stack" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -12.0
+margin_right = 20.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4"]
+margin_left = 109.0
+margin_top = 38.0
+margin_right = 109.0
+margin_bottom = 67.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Loot5" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+margin_top = 436.0
+margin_right = 109.0
+margin_bottom = 541.0
+
+[node name="LootIcon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5"]
+margin_right = 105.0
+margin_bottom = 105.0
+rect_pivot_offset = Vector2( -497, 110 )
+texture = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+
+[node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon/Icon"]
+position = Vector2( 43, 44 )
+scale = Vector2( 2, 2 )
+hframes = 16
+vframes = 27
+frame = 98
+
+[node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon"]
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 60.0
+margin_top = 74.0
+margin_right = 124.0
+margin_bottom = 110.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Stack" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -12.0
+margin_right = 20.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5"]
+margin_left = 109.0
+margin_top = 38.0
+margin_right = 109.0
+margin_bottom = 67.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="Loot6" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+margin_top = 545.0
+margin_right = 109.0
+margin_bottom = 650.0
+
+[node name="LootIcon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6"]
+margin_right = 105.0
+margin_bottom = 105.0
+rect_pivot_offset = Vector2( -497, 110 )
+texture = ExtResource( 3 )
+
+[node name="Icon" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+
+[node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon/Icon"]
+position = Vector2( 43, 44 )
+scale = Vector2( 2, 2 )
+hframes = 16
+vframes = 27
+frame = 98
+
+[node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon"]
+self_modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 60.0
+margin_top = 74.0
+margin_right = 124.0
+margin_bottom = 110.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Stack" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -12.0
+margin_right = 20.0
+margin_bottom = 12.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 1 )
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6"]
+margin_left = 109.0
+margin_top = 38.0
+margin_right = 109.0
+margin_bottom = 67.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Border/Background/VBoxContainer"]
+margin_top = 417.0
+margin_right = 470.0
+margin_bottom = 467.0
+custom_constants/separation = 70
+
+[node name="LootAll" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 50 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color_focus = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+text = "Collect All"
+
+[node name="Cancle" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
+margin_left = 270.0
+margin_right = 470.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 100, 50 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color_focus = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+text = "Cancle"
+
+[connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 1 ]]
+[connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 2 ]]
+[connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 3 ]]
+[connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 4 ]]
+[connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 5 ]]
+[connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 6 ]]
