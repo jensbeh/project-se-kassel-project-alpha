@@ -30,6 +30,7 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
 		Utils.get_current_player().set_player_can_interact(false)
+		Utils.get_current_player().make_player_invisible(true)
 	
 	# Cleanup UI
 	# Remove "ESC" Game Menu
@@ -130,6 +131,8 @@ func finish_transition():
 				Utils.get_current_player().set_player_can_interact(true)
 			if Utils.get_current_player().is_player_dying() == true:
 				Utils.get_current_player().reset_player_after_dying()
+			if Utils.get_current_player().is_player_invisible() == true:
+				Utils.get_current_player().make_player_invisible(false)
 				
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")

@@ -143,22 +143,22 @@ func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 func update_current_scene_type(transition_data):
 	# Menu
 	if Constants.MENU_FOLDER in transition_data.get_scene_path():
-		print("Menu state")
+#		print("Menu state")
 		return Constants.SceneType.MENU
 	
 	# Camp
 	if Constants.CAMP_FOLDER in transition_data.get_scene_path():
-		print("Camp state")
+#		print("Camp state")
 		return Constants.SceneType.CAMP
 	
 	# Grassland
 	elif Constants.GRASSLAND_FOLDER in transition_data.get_scene_path():
-		print("Grassland state")
+#		print("Grassland state")
 		return Constants.SceneType.GRASSLAND
 	
 	# Dungeons
 	elif Constants.DUNGEONS_FOLDER in transition_data.get_scene_path():
-		print("Dungeons state")
+#		print("Dungeons state")
 		return Constants.SceneType.DUNGEON
 
 
