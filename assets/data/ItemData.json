@@ -756,4 +756,17 @@
 	"Texture": "item_icons_1",
 	"Worth": 10
   },
+  "10064": {
+	"Name": "Gold",
+    "Category": "Gold",
+    "EquipmentSlot": null,
+    "Attack": null,
+	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": 0,
+	"Stackable": false,
+	"Frame": 203,
+	"Texture": "item_icons_1",
+	"Worth": null
+  },
 }

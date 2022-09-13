@@ -73,7 +73,7 @@ size_flags_vertical = 3
 margin_right = 109.0
 margin_bottom = 650.0
 
-[node name="Loot1" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+[node name="Loot1" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer" groups=["LootPanelSlots"]]
 margin_right = 109.0
 margin_bottom = 105.0
 
@@ -95,8 +95,8 @@ margin_bottom = 52.5
 expand = true
 
 [node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon/Icon"]
-position = Vector2( 52, 51 )
-scale = Vector2( 2, 2 )
+position = Vector2( 50, 51 )
+scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 98
@@ -134,7 +134,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 
-[node name="Loot2" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+[node name="Loot2" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer" groups=["LootPanelSlots"]]
 margin_top = 109.0
 margin_right = 109.0
 margin_bottom = 214.0
@@ -151,8 +151,8 @@ anchor_bottom = 1.0
 expand = true
 
 [node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon/Icon"]
-position = Vector2( 43, 44 )
-scale = Vector2( 2, 2 )
+position = Vector2( 50, 51 )
+scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 98
@@ -190,7 +190,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 
-[node name="Loot3" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+[node name="Loot3" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer" groups=["LootPanelSlots"]]
 margin_top = 218.0
 margin_right = 109.0
 margin_bottom = 323.0
@@ -207,8 +207,8 @@ anchor_bottom = 1.0
 expand = true
 
 [node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon/Icon"]
-position = Vector2( 43, 44 )
-scale = Vector2( 2, 2 )
+position = Vector2( 50, 51 )
+scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 98
@@ -246,7 +246,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 
-[node name="Loot4" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+[node name="Loot4" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer" groups=["LootPanelSlots"]]
 margin_top = 327.0
 margin_right = 109.0
 margin_bottom = 432.0
@@ -263,8 +263,8 @@ anchor_bottom = 1.0
 expand = true
 
 [node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon/Icon"]
-position = Vector2( 43, 44 )
-scale = Vector2( 2, 2 )
+position = Vector2( 50, 51 )
+scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 98
@@ -302,7 +302,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 
-[node name="Loot5" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+[node name="Loot5" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer" groups=["LootPanelSlots"]]
 margin_top = 436.0
 margin_right = 109.0
 margin_bottom = 541.0
@@ -319,8 +319,8 @@ anchor_bottom = 1.0
 expand = true
 
 [node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon/Icon"]
-position = Vector2( 43, 44 )
-scale = Vector2( 2, 2 )
+position = Vector2( 50, 51 )
+scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 98
@@ -358,7 +358,7 @@ custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 
-[node name="Loot6" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer"]
+[node name="Loot6" type="HBoxContainer" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer" groups=["LootPanelSlots"]]
 margin_top = 545.0
 margin_right = 109.0
 margin_bottom = 650.0
@@ -375,8 +375,8 @@ anchor_bottom = 1.0
 expand = true
 
 [node name="Sprite" type="Sprite" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon/Icon"]
-position = Vector2( 43, 44 )
-scale = Vector2( 2, 2 )
+position = Vector2( 50, 51 )
+scale = Vector2( 2.5, 2.5 )
 hframes = 16
 vframes = 27
 frame = 98
@@ -433,9 +433,9 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
-text = "Collect All"
+text = "Loot All"
 
-[node name="Cancle" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
+[node name="Close" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
 margin_left = 270.0
 margin_right = 470.0
 margin_bottom = 50.0
@@ -449,7 +449,7 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
-text = "Cancle"
+text = "Close"
 
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 1 ]]
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 2 ]]
