@@ -101,7 +101,32 @@ const DATA_PATH = "user://data/"
 
 # Boss enemies pathes
 const BossPathes = [
+	"res://scenes/mobs/bosses/Boss_FungusBlue.tscn",
+	"res://scenes/mobs/bosses/Boss_FungusBrown.tscn",
+	"res://scenes/mobs/bosses/Boss_FungusPurple.tscn",
+	"res://scenes/mobs/bosses/Boss_FungusRed.tscn",
+
+	"res://scenes/mobs/bosses/Boss_GhostGreen.tscn",
+	"res://scenes/mobs/bosses/Boss_GhostPurple.tscn",
+	"res://scenes/mobs/bosses/Boss_GhostWhite.tscn",
+
+	"res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn",
+	"res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn",
+	"res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn",
+	"res://scenes/mobs/bosses/Boss_OrbinautRed.tscn",
+
+	"res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn",
+	"res://scenes/mobs/bosses/Boss_SkeletonRed.tscn",
 	"res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn",
+
+	"res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn",
+	"res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn",
+	"res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn",
+	"res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn",
+
+	"res://scenes/mobs/bosses/Boss_ZombieBlue.tscn",
+	"res://scenes/mobs/bosses/Boss_ZombieGreen.tscn",
+	"res://scenes/mobs/bosses/Boss_ZombieGrey.tscn"
 ]
 
 # Called when the node enters the scene tree for the first time.

@@ -2,8 +2,8 @@
 
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/mobs/bosses/boss_skeleton.gd" type="Script" id=3]
-[ext_resource path="res://assets/mobs/SkeletonWhite.png" type="Texture" id=4]
+[ext_resource path="res://scenes/mobs/bosses/boss_zombie.gd" type="Script" id=3]
+[ext_resource path="res://assets/mobs/ZombieGreen.png" type="Texture" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/mobs/DamageArea.tscn" type="PackedScene" id=9]
 
@@ -20,7 +20,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 9 ]
+"values": [ 5 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -62,7 +62,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 19 ]
+"values": [ 11 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -104,7 +104,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 29 ]
+"values": [ 17 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -146,7 +146,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 39 ]
+"values": [ 23 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -189,7 +189,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 8 ]
+"values": [ 4 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -220,7 +220,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 18 ]
+"values": [ 10 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -251,7 +251,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 28 ]
+"values": [ 16 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -282,7 +282,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 38 ]
+"values": [ 22 ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath("..")
@@ -332,7 +332,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 10, 11, 12, 13 ]
+"values": [ 6, 7, 8, 9 ]
 }
 
 [sub_resource type="Animation" id=98]
@@ -350,7 +350,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 20, 21, 22, 23 ]
+"values": [ 12, 13, 14, 15 ]
 }
 
 [sub_resource type="Animation" id=99]
@@ -368,7 +368,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 30, 31, 32, 33 ]
+"values": [ 18, 19, 20, 21 ]
 }
 
 [sub_resource type="Animation" id=100]
@@ -384,6 +384,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=101]
@@ -401,7 +413,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 40, 41, 42, 43 ]
+"values": [ 24, 25, 26, 27 ]
 }
 
 [sub_resource type="Animation" id=102]
@@ -419,7 +431,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 50, 51, 52, 53 ]
+"values": [ 30, 31, 32, 33 ]
 }
 
 [sub_resource type="Animation" id=103]
@@ -437,7 +449,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 60, 61, 62, 63 ]
+"values": [ 36, 37, 38, 39 ]
 }
 
 [sub_resource type="Animation" id=104]
@@ -455,7 +467,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 70, 71, 72, 73 ]
+"values": [ 42, 43, 44, 45 ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=105]
@@ -641,7 +653,7 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id=135]
 radius = 8.0
 
-[node name="Boss_SkeletonWhite" type="KinematicBody2D" groups=["Enemy"]]
+[node name="ZombieGreen" type="KinematicBody2D" groups=["Enemy"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
 script = ExtResource( 3 )
@@ -649,8 +661,8 @@ script = ExtResource( 3 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -3 )
 texture = ExtResource( 4 )
-hframes = 10
-vframes = 16
+hframes = 6
+vframes = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -703,7 +715,6 @@ shape = SubResource( 40 )
 
 [node name="Line2D" type="Line2D" parent="."]
 visible = false
-scale = Vector2( 0.33, 0.33 )
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
 

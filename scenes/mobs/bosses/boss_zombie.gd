@@ -20,13 +20,13 @@ func _ready():
 	health = 300
 	attack_damage = 40
 	knockback = 4
-	mob_weight = 100
+	mob_weight = 80
 	spawn_time = Constants.SpawnTime.ALWAYS
 	max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
 	
 	# Constants
-	HUNTING_SPEED = 25
-	WANDERING_SPEED = 20
+	HUNTING_SPEED = 20
+	WANDERING_SPEED = 10
 	PRE_ATTACKING_SPEED = 3 * HUNTING_SPEED
 	
 	# Animations
@@ -99,13 +99,13 @@ func _physics_process(delta):
 		ATTACKING:
 			# Move mob
 			if attack:
-				global_position = global_position.move_toward(previouse_player_global_position, delta * 150)
+				global_position = global_position.move_toward(previouse_player_global_position, delta * 80)
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_player_global_position:
 					attack = false
 			else:
-				global_position = global_position.move_toward(previouse_global_position, delta * 150)
+				global_position = global_position.move_toward(previouse_global_position, delta * 80)
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_global_position:

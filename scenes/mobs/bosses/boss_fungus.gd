@@ -11,7 +11,6 @@ var previouse_player_global_position
 var previouse_global_position
 var is_attacking = false
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup mob
@@ -26,7 +25,7 @@ func _ready():
 	
 	# Constants
 	HUNTING_SPEED = 25
-	WANDERING_SPEED = 20
+	WANDERING_SPEED = 12
 	PRE_ATTACKING_SPEED = 3 * HUNTING_SPEED
 	
 	# Animations
@@ -99,13 +98,13 @@ func _physics_process(delta):
 		ATTACKING:
 			# Move mob
 			if attack:
-				global_position = global_position.move_toward(previouse_player_global_position, delta * 150)
+				global_position = global_position.move_toward(previouse_player_global_position, delta * 80)
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_player_global_position:
 					attack = false
 			else:
-				global_position = global_position.move_toward(previouse_global_position, delta * 150)
+				global_position = global_position.move_toward(previouse_global_position, delta * 80)
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_global_position:
@@ -164,7 +163,7 @@ func update_behaviour(new_behaviour):
 				
 				# Disable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
 				damageAreaShape.disabled = true
-			
+	
 			
 			ATTACKING:
 				if behaviour_state != ATTACKING:

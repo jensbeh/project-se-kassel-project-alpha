@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Constants
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
+var PRE_ATTACKING_SPEED
 
 # Mob specific
 var max_health = 100
@@ -60,6 +61,7 @@ onready var playerDetectionZone = $PlayerDetectionZone
 onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
 onready var playerAttackZone = $PlayerAttackZone
 onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
+onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 
 

@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/mobs/bosses/boss_skeleton.gd" type="Script" id=3]
-[ext_resource path="res://assets/mobs/SkeletonWhite.png" type="Texture" id=4]
+[ext_resource path="res://assets/mobs/SkeletonBlue.png" type="Texture" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/mobs/DamageArea.tscn" type="PackedScene" id=9]
 
@@ -299,7 +299,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=96]
+[sub_resource type="Animation" id=41]
 resource_name = "Idle_Down"
 length = 0.8
 loop = true
@@ -317,7 +317,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3 ]
 }
 
-[sub_resource type="Animation" id=97]
+[sub_resource type="Animation" id=11]
 resource_name = "Idle_Left"
 length = 0.8
 loop = true
@@ -335,7 +335,7 @@ tracks/0/keys = {
 "values": [ 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=98]
+[sub_resource type="Animation" id=13]
 resource_name = "Idle_Right"
 length = 0.8
 loop = true
@@ -353,7 +353,7 @@ tracks/0/keys = {
 "values": [ 20, 21, 22, 23 ]
 }
 
-[sub_resource type="Animation" id=99]
+[sub_resource type="Animation" id=42]
 resource_name = "Idle_Up"
 length = 0.8
 loop = true
@@ -371,7 +371,7 @@ tracks/0/keys = {
 "values": [ 30, 31, 32, 33 ]
 }
 
-[sub_resource type="Animation" id=100]
+[sub_resource type="Animation" id=10]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
@@ -386,7 +386,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=101]
+[sub_resource type="Animation" id=52]
 resource_name = "Walk_Down"
 length = 0.8
 loop = true
@@ -404,7 +404,7 @@ tracks/0/keys = {
 "values": [ 40, 41, 42, 43 ]
 }
 
-[sub_resource type="Animation" id=102]
+[sub_resource type="Animation" id=53]
 resource_name = "Walk_Left"
 length = 0.8
 loop = true
@@ -422,7 +422,7 @@ tracks/0/keys = {
 "values": [ 50, 51, 52, 53 ]
 }
 
-[sub_resource type="Animation" id=103]
+[sub_resource type="Animation" id=54]
 resource_name = "Walk_Right"
 length = 0.8
 loop = true
@@ -440,7 +440,7 @@ tracks/0/keys = {
 "values": [ 60, 61, 62, 63 ]
 }
 
-[sub_resource type="Animation" id=104]
+[sub_resource type="Animation" id=55]
 resource_name = "Walk_Up"
 length = 0.8
 loop = true
@@ -635,13 +635,13 @@ radius = 100.0
 [sub_resource type="CircleShape2D" id=40]
 radius = 40.0
 
-[sub_resource type="CircleShape2D" id=131]
+[sub_resource type="CircleShape2D" id=96]
 radius = 8.0
 
-[sub_resource type="CircleShape2D" id=135]
+[sub_resource type="CircleShape2D" id=134]
 radius = 8.0
 
-[node name="Boss_SkeletonWhite" type="KinematicBody2D" groups=["Enemy"]]
+[node name="SkeletonBlue" type="KinematicBody2D" groups=["Enemy"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
 script = ExtResource( 3 )
@@ -662,15 +662,15 @@ anims/Hurt_Down = SubResource( 92 )
 anims/Hurt_Left = SubResource( 93 )
 anims/Hurt_Right = SubResource( 94 )
 anims/Hurt_Up = SubResource( 95 )
-anims/Idle_Down = SubResource( 96 )
-anims/Idle_Left = SubResource( 97 )
-anims/Idle_Right = SubResource( 98 )
-anims/Idle_Up = SubResource( 99 )
-anims/RESET = SubResource( 100 )
-anims/Walk_Down = SubResource( 101 )
-anims/Walk_Left = SubResource( 102 )
-anims/Walk_Right = SubResource( 103 )
-anims/Walk_Up = SubResource( 104 )
+anims/Idle_Down = SubResource( 41 )
+anims/Idle_Left = SubResource( 11 )
+anims/Idle_Right = SubResource( 13 )
+anims/Idle_Up = SubResource( 42 )
+anims/RESET = SubResource( 10 )
+anims/Walk_Down = SubResource( 52 )
+anims/Walk_Left = SubResource( 53 )
+anims/Walk_Right = SubResource( 54 )
+anims/Walk_Up = SubResource( 55 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 129 )
@@ -703,7 +703,6 @@ shape = SubResource( 40 )
 
 [node name="Line2D" type="Line2D" parent="."]
 visible = false
-scale = Vector2( 0.33, 0.33 )
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
 
@@ -712,14 +711,14 @@ visible = false
 position = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
-shape = SubResource( 131 )
+shape = SubResource( 96 )
 
 [node name="DamageArea" parent="." instance=ExtResource( 9 )]
 visible = false
 position = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" parent="DamageArea" index="0"]
-shape = SubResource( 135 )
+shape = SubResource( 134 )
 
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 

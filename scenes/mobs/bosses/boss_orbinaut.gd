@@ -6,9 +6,6 @@ onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 
 # Variables
-var attack = false
-var previouse_player_global_position
-var previouse_global_position
 var is_attacking = false
 
 
@@ -20,13 +17,13 @@ func _ready():
 	health = 300
 	attack_damage = 40
 	knockback = 4
-	mob_weight = 100
+	mob_weight = 70
 	spawn_time = Constants.SpawnTime.ALWAYS
-	max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
+	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 	
 	# Constants
-	HUNTING_SPEED = 25
-	WANDERING_SPEED = 20
+	HUNTING_SPEED = 45
+	WANDERING_SPEED = 8
 	PRE_ATTACKING_SPEED = 3 * HUNTING_SPEED
 	
 	# Animations
@@ -36,23 +33,7 @@ func _ready():
 # Method to setup the animations
 func setup_animations():
 	animationTree.active = true
-	update_animations()
-
-
-# Method to update the animation with velocity for direction
-func update_animations():
-	animationTree.set("parameters/IDLE/blend_position", velocity)
-	animationTree.set("parameters/WALK/blend_position", velocity)
-	animationTree.set("parameters/HURT/blend_position", velocity)
-	animationTree.set("parameters/DIE/blend_position", velocity)
-
-
-# Method to update the view direction with custom value
-func set_view_direction(view_direction):
-	animationTree.set("parameters/IDLE/blend_position", view_direction)
-	animationTree.set("parameters/WALK/blend_position", view_direction)
-	animationTree.set("parameters/HURT/blend_position", view_direction)
-	animationTree.set("parameters/DIE/blend_position", view_direction)
+	animationState.start("MOVE")
 
 
 # Method to change the animations dependent on behaviour state
@@ -60,27 +41,36 @@ func change_animations(animation_behaviour_state):
 	# Handle animation_behaviour_state
 	match animation_behaviour_state:
 		IDLING:
-			animationState.start("IDLE")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.start("MOVE")
 		
 		WANDERING:
-			animationState.start("WALK")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.start("MOVE")
 		
 		HUNTING:
-			animationState.start("WALK")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
 		
 		SEARCHING:
-			animationState.start("WALK")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.start("MOVE")
 		
 		PRE_ATTACKING:
-			animationState.start("WALK")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
 		
 		ATTACKING:
-			animationState.start("WALK")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 2)
+			animationState.start("MOVE")
 		
 		HURTING:
-			animationState.start("HURT")
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
+			animationState.start("MOVE")
+			mob_hurt()
 		
 		DYING:
+			animationTree.set("parameters/MOVE/TimeScale/scale", 1)
 			animationState.start("DIE")
 
 
@@ -98,22 +88,15 @@ func _physics_process(delta):
 		
 		ATTACKING:
 			# Move mob
-			if attack:
-				global_position = global_position.move_toward(previouse_player_global_position, delta * 150)
-				var view_direction = global_position.direction_to(previouse_player_global_position)
-				set_view_direction(view_direction)
-				if global_position == previouse_player_global_position:
-					attack = false
-			else:
-				global_position = global_position.move_toward(previouse_global_position, delta * 150)
-				var view_direction = global_position.direction_to(previouse_player_global_position)
-				set_view_direction(view_direction)
-				if global_position == previouse_global_position:
-					is_attacking = false
-					if playerAttackZone.mob_can_attack:
-						update_behaviour(PRE_ATTACKING)
-					else:
-						update_behaviour(HUNTING)
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
+			
+			if velocity == Vector2.ZERO:
+				is_attacking = false
+				if playerAttackZone.mob_can_attack:
+					update_behaviour(PRE_ATTACKING)
+				else:
+					update_behaviour(HUNTING)
 
 
 func _process(delta):
@@ -127,14 +110,9 @@ func _process(delta):
 			pre_attack_time += delta
 			
 			if not mob_need_path:
-				if path.size() == 0:
-					# Set view direction to player
-					var view_direction = global_position.direction_to(Utils.get_current_player().global_position)
-					set_view_direction(view_direction)
-				
 				if path.size() == 0 and pre_attack_time > max_pre_attack_time:
 					pre_attack_time = 0.0
-					max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
+					max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 					update_behaviour(ATTACKING)
 
 
@@ -175,10 +153,8 @@ func update_behaviour(new_behaviour):
 					line2D.points = []
 				
 				# Move Mob to player and further more
-				update_animations()
-				attack = true
-				previouse_global_position = global_position
-				previouse_player_global_position = Utils.get_current_player().global_position
+				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
+				change_animations(ATTACKING)
 #				print("ATTACKING")
 				behaviour_state = ATTACKING
 				mob_need_path = false

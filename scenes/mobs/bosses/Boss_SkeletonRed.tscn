@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/mobs/bosses/boss_skeleton.gd" type="Script" id=3]
-[ext_resource path="res://assets/mobs/SkeletonWhite.png" type="Texture" id=4]
+[ext_resource path="res://assets/mobs/SkeletonRed.png" type="Texture" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/mobs/DamageArea.tscn" type="PackedScene" id=9]
 
@@ -641,7 +641,7 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id=135]
 radius = 8.0
 
-[node name="Boss_SkeletonWhite" type="KinematicBody2D" groups=["Enemy"]]
+[node name="SkeletonRed" type="KinematicBody2D" groups=["Enemy"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
 script = ExtResource( 3 )
@@ -703,7 +703,6 @@ shape = SubResource( 40 )
 
 [node name="Line2D" type="Line2D" parent="."]
 visible = false
-scale = Vector2( 0.33, 0.33 )
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
 
