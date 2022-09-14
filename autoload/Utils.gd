@@ -379,4 +379,5 @@ func stop_game():
 	ChunkLoaderService.stop()
 	# Stop Pathfinder
 	PathfindingService.stop()
-	
+	# Stop Mobspawner
+	MobSpawnerService.stop()

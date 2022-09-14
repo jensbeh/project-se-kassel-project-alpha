@@ -2,17 +2,12 @@ extends Node2D
 
 
 # Map specific
-var current_ambient_mobs = 0
 var max_ambient_mobs = 50
 
 # Variables
 var thread
 var player_in_change_scene_area = false
 var current_area : Area2D = null
-var mob_list : Array
-var mobs_to_remove : Array
-var check_spawn_despawn_timer = 0.0
-var max_check_spawn_despawn_time = 15.0
 var spawning_areas = {}
 var ambientMobsSpawnArea
 
@@ -63,18 +58,18 @@ func _setup_scene_in_background():
 	# Setup spawning areas
 	setup_spawning_areas()
 	
-	# Connect signals
-	var _error1 = DayNightCycle.connect("change_to_sunrise", self, "on_change_to_sunrise")
-	var _error2 = DayNightCycle.connect("change_to_night", self, "on_change_to_night")
+	# Spawn mobs
+	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsLayer, max_ambient_mobs, true)
 	
 	call_deferred("_on_setup_scene_done")
-	
+
+
 # Method is called when thread is done and the scene is setup
 func _on_setup_scene_done():
 	thread.wait_to_finish()
 	
-	# Spawn all mobs without new thread
-	spawn_mobs()
+	# Spawn all mobs
+	MobSpawnerService.spawn_mobs()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -89,28 +84,13 @@ func destroy_scene():
 	# Stop chunkloader
 	ChunkLoaderService.stop()
 	
-	# Clean mobs
-	for mob in mob_list:
-		mob.queue_free()
+	# Stop mobspawner
+	MobSpawnerService.stop()
 
 
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
-
-
-func _physics_process(delta):
-	check_spawn_despawn_timer += delta
-	# Spawn new mobs and remove old mobs/mobs which should despawn
-	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
-		check_spawn_despawn_timer = 0.0
-		print("-------------------------> REMOVE MOBS & SPAWN MOBS")
-		spawn_despawn_mobs(mobs_to_remove)
-
-
-func spawn_despawn_mobs(remove_mobs):
-	remove_mobs(remove_mobs)
-	spawn_mobs()
 
 
 # Method to setup the player with all informations
@@ -160,15 +140,6 @@ func setup_spawning_areas():
 	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
 
 
-# Method to spawn all mobs
-func spawn_mobs():
-	# Spawn area mobs
-	spawn_area_mobs()
-	
-	# Spawn ambient mobs
-	spawn_ambient_mobs()
-
-
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if player_in_change_scene_area:
@@ -192,15 +163,12 @@ func body_entered_change_scene_area(body, changeSceneArea):
 			player_in_change_scene_area = true
 			current_area = changeSceneArea
 
+
 # Method to disconnect all signals
 func clear_signals():
 	# Player
 	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
 	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
-	
-	# DayNightCycle
-	DayNightCycle.disconnect("change_to_sunrise", self, "on_change_to_sunrise")
-	DayNightCycle.disconnect("change_to_night", self, "on_change_to_night")
 	
 	# Change scene areas
 	for child in changeScenesObject.get_children():
@@ -261,127 +229,6 @@ func setup_stair_areas():
 					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
 
 
-# Method to recognize sunrise
-func on_change_to_sunrise():
-	# Spawn specific day mobs and remove specific night mobs
-	print("day")
-	# Remove mobs
-	var remove_mobs : Array = []
-	for mob in mob_list:
-		if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
-			remove_mobs.append(mob)
-	# Despawn and spawn mobs
-	spawn_despawn_mobs(remove_mobs)
-
-
-# Method to recognize night
-func on_change_to_night():
-	# Spawn specific night mobs and remove specific day mobs
-	print("night")
-	# Remove mobs
-	var remove_mobs : Array = []
-	for mob in mob_list:
-		if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
-			remove_mobs.append(mob)
-	# Despawn and spawn mobs
-	spawn_despawn_mobs(remove_mobs)
-
-
-# Method to remove mobs if despawning
-func remove_mobs(mobs : Array):
-	if mobs.size() > 0:
-		for mob in mobs:
-			# Remove mob if it is not in camera screen
-			if not Utils.is_position_in_camera_screen(mob.global_position):
-				if mob.is_in_group("Ambient Mob"):
-					current_ambient_mobs -= 1
-					print("removed ambient mob: " + str(current_ambient_mobs))
-				elif mob.is_in_group("Enemy"):
-					spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-					print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
-				mob.get_parent().call_deferred("remove_child", mob)
-				
-				mob.queue_free()
-				mob_list.remove(mob_list.find(mob))
-				if mob in mobs_to_remove:
-					mobs_to_remove.remove(mobs_to_remove.find(mob))
-				
-			else:
-				# Add mob to list where is will be removed when its not visible in screen anymore
-				if not mob in mobs_to_remove:
-					mobs_to_remove.append(mob)
-
-
-# Method to spawn ambient mobs
-func spawn_ambient_mobs():
-	# Spawn only if needed
-	if current_ambient_mobs < max_ambient_mobs:
-		# Spawn ambient mobs
-		# Check time
-		if DayNightCycle.is_night:
-			# NIGHT
-			# Spawn moths
-			var mobScene : Resource = Constants.PreloadedMobScenes["Moth"]
-			if mobScene != null:
-				while current_ambient_mobs < max_ambient_mobs:
-					var mob_instance = mobScene.instance()
-					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
-					ambientMobsLayer.call_deferred("add_child", mob_instance)
-					mob_list.append(mob_instance)
-					current_ambient_mobs += 1
-			else:
-				printerr("\"Moth\" scene can't be loaded!")
-		
-		else:
-			# DAY
-			# Spawn butterflies
-			var mobScene : Resource = Constants.PreloadedMobScenes["Butterfly"]
-			if mobScene != null:
-				while current_ambient_mobs < max_ambient_mobs:
-					var mob_instance = mobScene.instance()
-					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_DAY)
-					ambientMobsLayer.call_deferred("add_child", mob_instance)
-					mob_list.append(mob_instance)
-					current_ambient_mobs += 1
-			else:
-				printerr("\"Butterfly\" scene can't be loaded!")
-
-
-# Method to spawn mobs
-func spawn_area_mobs():
-	for current_spawn_area in spawning_areas.keys():
-		# Spawn area informations
-		var biome_mobs_count = spawning_areas[current_spawn_area]["biome_mobs_count"]
-		var max_mobs = spawning_areas[current_spawn_area]["max_mobs"]
-		var biome_mobs = spawning_areas[current_spawn_area]["biome_mobs"]
-		print(spawning_areas[current_spawn_area]["biome_mobs"])
-		# Get count of mobs to spawn
-		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
-		
-		# Spawn only if needed
-		if spawn_mobs_counter > 0:
-			var mobs_to_spawn : Array = []
-			mobs_to_spawn = Utils.get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter)
-			# Iterate over diffent mobs classes
-			for mob in range(biome_mobs.size()):
-				# Check if mob should be spawned
-				if mob in mobs_to_spawn:
-					# Load and spawn mobs
-					var mobScene : PackedScene = Constants.PreloadedMobScenes[biome_mobs[mob]]
-					
-					if mobScene != null:
-						# Spawn the mob as often as it is in the list
-						for mob_id in mobs_to_spawn:
-							if mob == mob_id:
-								var mob_instance = mobScene.instance()
-								mob_instance.init(current_spawn_area, mobsNavigationTileMap)
-								mobsLayer.call_deferred("add_child", mob_instance)
-								mob_list.append(mob_instance)
-								spawning_areas[current_spawn_area]["current_mobs_count"] += 1
-					else:
-						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
-
-
 # Method to update the chunks with active and deleted chunks to make them visible or not
 func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
@@ -401,19 +248,3 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false
-
-
-# Method to despawn/remove mob
-func despawn_mob(mob):
-	# Remove from variables
-	if mob_list.find(mob) != -1:
-		mob_list.remove(mob_list.find(mob))
-	if mobs_to_remove.find(mob) != -1:
-		mobs_to_remove.remove(mobs_to_remove.find(mob))
-	
-	# Remove from nodes
-	if mobsLayer.get_node_or_null(mob.name) != null:
-		spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-		mobsLayer.remove_child(mob)
-		mob.queue_free()
-		print("----------> Mob \"" + mob.name + "\" removed")
