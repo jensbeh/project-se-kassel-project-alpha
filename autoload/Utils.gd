@@ -369,6 +369,7 @@ func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
 	var position = Vector2(rand_x, rand_y)
 	return position
 
+
 # Method to stop the game
 	# Stops all threads which are still running like ChunkLoaderService, PathfindingService, ...
 func stop_game():

@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 # Constants
 var DETECTION_RADIUS_IN_GRASSLAND = 60
+var ATTACK_RADIUS_IN_GRASSLAND = 20
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 var PRE_ATTACKING_SPEED
@@ -72,6 +73,7 @@ func _ready():
 	# Set detection radius depending on grassland or not
 	if in_grassland:
 		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_GRASSLAND
+		playerAttackZoneShape.shape.radius = ATTACK_RADIUS_IN_GRASSLAND
 	
 	# Set spawn position
 	collision_radius = collision.shape.radius

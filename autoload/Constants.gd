@@ -58,7 +58,6 @@ const SUNSET_COLOR = Color("ff8f53")
 const NIGHT_COLOR = Color("212121")
 const SUNRISE_COLOR = Color("ff8f53")
 const DUNGEON_COLOR = Color("000000")
-#const BOSS_ROOM_COLOR = Color("e6000000")
 
 # NPC Walk Speed
 const NPC_NORMAL_SPEED = 30
