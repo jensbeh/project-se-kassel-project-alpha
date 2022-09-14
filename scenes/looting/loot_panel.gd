@@ -8,9 +8,9 @@ var loot_count
 var max_loot = 6
 
 # todos
-# pickup and animtate ore, leafes and other loots --
-# disappear the completely lootet symbols and items --
-# random spawn from treasures in dungeons and ores and leafs etc --
+# animate pickup and loot drop
+# random? spawn from treasures in dungeons --
+# random spawn from ores and leafs etc --
 
 # setup the looting panel
 func _ready():
@@ -21,7 +21,6 @@ func _ready():
 # generate loot
 func loot():
 	LootSelector()
-	PopulatePanel()
 
 
 # reopen generated loot
@@ -45,7 +44,7 @@ func set_loot_type(type, dungeon: bool):
 func LootSelector():
 	for i in range(1, max_loot + 1):
 		randomize()
-		var loot_selector = randi() % 100 + 1
+		var loot_selector = (randi() % 100) + 1
 		if loot_selector <= GameData.loot_data[loot_type]["Item" + str(i) + "Chance"]:
 			var loot = []
 			loot.append(GameData.loot_data[loot_type]["Item" + str(i) + "ID"])
@@ -53,6 +52,9 @@ func LootSelector():
 			loot.append(int(rand_range(float(GameData.loot_data[loot_type]["Item" + str(i) + "MinQ"]), float(GameData.loot_data[loot_type]["Item" + str(i) + "MaxQ"]))))
 			loot_dict[loot_dict.size() + 1] = loot
 	
+	# show in panel
+	PopulatePanel()
+
 
 # add drops to the looting panel
 func PopulatePanel():
@@ -98,21 +100,21 @@ func _on_Icon_gui_input(event, lootpanelslot):
 
 # close the loot panel
 func _on_Close_pressed():
+	queue_free()
 	emit_signal("looted", loot_dict)
-	Utils.get_ui().get_node("LootPanel").queue_free()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
 
 
+# loot all items and close the panel
 func _on_LootAll_pressed():
-	for i in range(1,7):
-		if i < loot_dict.size():
-			loot_item(i)
-	emit_signal("looted", {})
-	Utils.get_ui().get_node("LootPanel").queue_free()
+	var size = loot_dict.size()
+	queue_free()
+	for i in range(1,size + 1):
+		loot_item(i)
+	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
-	
 
 
 func loot_item(item_idx):
@@ -122,18 +124,26 @@ func loot_item(item_idx):
 	# items
 	else:
 		if GameData.item_data[str(loot_dict[item_idx][0])]["Stackable"]:
+			var stored = false
 			for i in range(1,31):
 				var slot = "Inv" + str(i)
 				if PlayerData.inv_data[slot]["Item"] == loot_dict[item_idx][0]:
 					PlayerData.inv_data[slot]["Stack"] += loot_dict[item_idx][1]
+					stored = true
 					break
+			if !stored:
+				for i in range(1,31):
+					var slot = "Inv" + str(i)
+					if PlayerData.inv_data[slot]["Item"] == null:
+						PlayerData.inv_data[slot]["Item"] = loot_dict[item_idx][0]
+						PlayerData.inv_data[slot]["Stack"] = loot_dict[item_idx][1]
+						break
 		else:
 			for i in range(1,31):
 				var slot = "Inv" + str(i)
 				if PlayerData.inv_data[slot]["Item"] == null:
 					PlayerData.inv_data[slot]["Item"] = loot_dict[item_idx][0]
 					PlayerData.inv_data[slot]["Stack"] = loot_dict[item_idx][1]
-					print("added")
 					break
 		print(PlayerData.inv_data)
 	# remove from looting panel

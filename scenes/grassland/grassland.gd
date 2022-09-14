@@ -411,7 +411,7 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 
 # Method to despawn/remove mob
 func despawn_mob(mob):
-	spawn_loot(mob.global_position)
+	spawn_loot(mob.global_position, mob.get_name())
 	
 	# Remove from variables
 	if mob_list.find(mob) != -1:
@@ -427,7 +427,7 @@ func despawn_mob(mob):
 
 
 # Method to spawn loot after monster died
-func spawn_loot(position):
+func spawn_loot(position, mob_name):
 	var loot = load(Constants.LOOT_DROP).instance()
-	loot.init(position)
+	loot.init(position, mob_name)
 	lootLayer.call_deferred("add_child", loot)

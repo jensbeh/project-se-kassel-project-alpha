@@ -12,7 +12,6 @@ var eyes
 var hair
 
 func _ready():
-	print(PlayerData.inv_data)
 	# load weapon, light and hotbar
 	for item in ["Weapon", "Light", "Hotbar"]:
 		if PlayerData.equipment_data[item]["Item"] != null:

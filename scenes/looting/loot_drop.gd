@@ -20,8 +20,9 @@ func _ready():
 	$Timer.start()
 
 
-func init(new_spawn_position):
+func init(new_spawn_position, mob_name):
 	spawn_position = new_spawn_position
+	print(mob_name)
 	
 
 # When player enter zone, player can interact
@@ -34,7 +35,6 @@ func _on_Area2D_body_entered(body):
 func _on_Area2D_body_exited(body):
 	if body == Utils.get_current_player():
 		player_in_looting_zone = false
-		interacted = false
 
 
 # when interacted, open loot panel for looting
@@ -43,27 +43,29 @@ func interaction():
 		interacted = true
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
-		Utils.get_ui().add_child(load(Constants.LOOT_PANEL_PATH).instance())
+		var loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+		Utils.get_ui().add_child(loot_panel)
+		loot_panel.connect("looted", self, "save_loot")
 		if !looted:
+			looted = true
 			if mob_type:
 				randomize()
 				loot_type = "Mob" + str((randi() % 3) + 1)
 			else:
 				loot_type = "Boss"
-			Utils.get_ui().get_node("LootPanel").set_loot_type(loot_type, in_dungeon)
-			Utils.get_ui().get_node("LootPanel").loot()
-			looted = true
-			Utils.get_ui().get_node("LootPanel").connect("looted", self, "save_loot")
-		elif content != {}:
-			Utils.get_ui().get_node("LootPanel").set_up_content(content)
-			Utils.get_ui().get_node("LootPanel").connect("looted", self, "save_loot")
+			loot_panel.set_loot_type(loot_type, in_dungeon)
+			loot_panel.loot()
+		elif !content.empty():
+			loot_panel.set_up_content(content)
 
 
 func save_loot(loot):
+	interacted = false
 	content = loot
-#	if content == {}:
-#		queue_free()
+	if content.empty():
+		queue_free()
 
-# loot diassapper when time is up
+
+# loot disappear when time is up
 func _on_Timer_timeout():
 	queue_free()
