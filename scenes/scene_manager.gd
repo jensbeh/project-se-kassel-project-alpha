@@ -63,7 +63,7 @@ func _load_scene_in_background():
 		if err == ERR_FILE_EOF: # Finished loading.
 #			var resource = thread.wait_to_finish()
 			var resource = loader.get_resource()
-			var scene = resource.instance()
+			var scene = resource.instance() # !!! Takes very long time and freezes main thread
 			pass_data_to_scene(scene)
 			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
 			if get_current_scene().find_node("CanvasModulate") != null:

@@ -7,7 +7,6 @@ var max_ambient_mobs = 50
 
 # Variables
 var thread
-var spawn_despawn_thread
 var player_in_change_scene_area = false
 var current_area : Area2D = null
 var mob_list : Array
@@ -32,12 +31,12 @@ onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup scene in background
 	thread = Thread.new()
 	thread.start(self, "_setup_scene_in_background")
-	spawn_despawn_thread = Thread.new()
 
 
 # Method to setup this scene with a thread in background
@@ -102,21 +101,16 @@ func set_transition_data(transition_data):
 
 func _physics_process(delta):
 	check_spawn_despawn_timer += delta
+	# Spawn new mobs and remove old mobs/mobs which should despawn
 	if check_spawn_despawn_timer >= max_check_spawn_despawn_time:
 		check_spawn_despawn_timer = 0.0
-		print("-------------------------> REMOVE MOBS")
-		spawn_despawn_thread.start(self, "spawn_despawn_in_background", mobs_to_remove)
+		print("-------------------------> REMOVE MOBS & SPAWN MOBS")
+		spawn_despawn_mobs(mobs_to_remove)
 
 
-func spawn_despawn_in_background(remove_mobs_list):
-	remove_mobs(remove_mobs_list)
+func spawn_despawn_mobs(remove_mobs):
+	remove_mobs(remove_mobs)
 	spawn_mobs()
-	
-	call_deferred("_on_spawn_despawn_done")
-	
-# Method is called when thread is done and the scene is setup
-func _on_spawn_despawn_done():
-	spawn_despawn_thread.wait_to_finish()
 
 
 # Method to setup the player with all informations
@@ -277,7 +271,7 @@ func on_change_to_sunrise():
 		if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
 			remove_mobs.append(mob)
 	# Despawn and spawn mobs
-	spawn_despawn_thread.start(self, "spawn_despawn_in_background", remove_mobs)
+	spawn_despawn_mobs(remove_mobs)
 
 
 # Method to recognize night
@@ -290,7 +284,7 @@ func on_change_to_night():
 		if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
 			remove_mobs.append(mob)
 	# Despawn and spawn mobs
-	spawn_despawn_thread.start(self, "spawn_despawn_in_background", remove_mobs)
+	spawn_despawn_mobs(remove_mobs)
 
 
 # Method to remove mobs if despawning
@@ -327,7 +321,7 @@ func spawn_ambient_mobs():
 		if DayNightCycle.is_night:
 			# NIGHT
 			# Spawn moths
-			var mobScene : Resource = load("res://scenes/mobs/Moth.tscn")
+			var mobScene : Resource = Constants.PreloadedMobScenes["Moth"]
 			if mobScene != null:
 				while current_ambient_mobs < max_ambient_mobs:
 					var mob_instance = mobScene.instance()
@@ -341,7 +335,7 @@ func spawn_ambient_mobs():
 		else:
 			# DAY
 			# Spawn butterflies
-			var mobScene : Resource = load("res://scenes/mobs/Butterfly.tscn")
+			var mobScene : Resource = Constants.PreloadedMobScenes["Butterfly"]
 			if mobScene != null:
 				while current_ambient_mobs < max_ambient_mobs:
 					var mob_instance = mobScene.instance()
@@ -360,7 +354,7 @@ func spawn_area_mobs():
 		var biome_mobs_count = spawning_areas[current_spawn_area]["biome_mobs_count"]
 		var max_mobs = spawning_areas[current_spawn_area]["max_mobs"]
 		var biome_mobs = spawning_areas[current_spawn_area]["biome_mobs"]
-		
+		print(spawning_areas[current_spawn_area]["biome_mobs"])
 		# Get count of mobs to spawn
 		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
 		
@@ -373,7 +367,8 @@ func spawn_area_mobs():
 				# Check if mob should be spawned
 				if mob in mobs_to_spawn:
 					# Load and spawn mobs
-					var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[mob] + ".tscn")
+					var mobScene : PackedScene = Constants.PreloadedMobScenes[biome_mobs[mob]]
+					
 					if mobScene != null:
 						# Spawn the mob as often as it is in the list
 						for mob_id in mobs_to_spawn:

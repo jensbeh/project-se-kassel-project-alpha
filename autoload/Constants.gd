@@ -129,6 +129,52 @@ const BossPathes = [
 	"res://scenes/mobs/bosses/Boss_ZombieGrey.tscn"
 ]
 
+# Mobs
+const PreloadedMobScenes = {
+	"Butterfly": preload("res://scenes/mobs/Butterfly.tscn"),
+	"Moth": preload("res://scenes/mobs/Moth.tscn"),
+	
+	"BatBlue": preload("res://scenes/mobs/BatBlue.tscn"),
+	"BatPurple" : preload("res://scenes/mobs/BatPurple.tscn"),
+	"BatRed" : preload("res://scenes/mobs/BatRed.tscn"),
+	
+	"FungusBlue" : preload("res://scenes/mobs/FungusBlue.tscn"),
+	"FungusBrown" : preload("res://scenes/mobs/FungusBrown.tscn"),
+	"FungusPurple" : preload("res://scenes/mobs/FungusPurple.tscn"),
+	"FungusRed" : preload("res://scenes/mobs/FungusRed.tscn"),
+	
+	"GhostGreen" : preload("res://scenes/mobs/GhostGreen.tscn"),
+	"GhostPurple" : preload("res://scenes/mobs/GhostPurple.tscn"),
+	"GhostWhite" : preload("res://scenes/mobs/GhostWhite.tscn"),
+	
+	"OrbinautBlue" : preload("res://scenes/mobs/OrbinautBlue.tscn"),
+	"OrbinautGreen" : preload("res://scenes/mobs/OrbinautGreen.tscn"),
+	"OrbinautOrange" : preload("res://scenes/mobs/OrbinautOrange.tscn"),
+	"OrbinautRed" : preload("res://scenes/mobs/OrbinautRed.tscn"),
+	
+	"RatGrey" : preload("res://scenes/mobs/RatGrey.tscn"),
+	"RatRed" : preload("res://scenes/mobs/RatRed.tscn"),
+	"RatWhite" : preload("res://scenes/mobs/RatWhite.tscn"),
+	
+	"SkeletonBlue" : preload("res://scenes/mobs/SkeletonBlue.tscn"),
+	"SkeletonRed" : preload("res://scenes/mobs/SkeletonRed.tscn"),
+	"SkeletonWhite" : preload("res://scenes/mobs/SkeletonWhite.tscn"),
+	
+	"SmallSlimeGreen" : preload("res://scenes/mobs/SmallSlimeGreen.tscn"),
+	"SmallSlimeOrange" : preload("res://scenes/mobs/SmallSlimeOrange.tscn"),
+	"SmallSlimePurple" : preload("res://scenes/mobs/SmallSlimePurple.tscn"),
+	"SmallSlimeRed" : preload("res://scenes/mobs/SmallSlimeRed.tscn"),
+	
+	"SnakeGreen" : preload("res://scenes/mobs/SnakeGreen.tscn"),
+	"SnakeGrey" : preload("res://scenes/mobs/SnakeGrey.tscn"),
+	"SnakePurple" : preload("res://scenes/mobs/SnakePurple.tscn"),
+	
+	"ZombieBlue" : preload("res://scenes/mobs/ZombieBlue.tscn"),
+	"ZombieGreen" : preload("res://scenes/mobs/ZombieGreen.tscn"),
+	"ZombieGrey" : preload("res://scenes/mobs/ZombieGrey.tscn"),
+}
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
