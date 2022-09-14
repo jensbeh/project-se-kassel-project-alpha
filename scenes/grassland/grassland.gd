@@ -71,8 +71,42 @@ func _on_setup_scene_done():
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
 	
+	# Spawn bosses
+	spawn_bosses()
+	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+
+
+# Method to spawn bosses in grassland
+func spawn_bosses():
+	for current_spawn_area in spawning_areas.keys():
+		# Spawn area informations
+		var biome_name = spawning_areas[current_spawn_area]["biome"]
+		# Generate 2 bosses in mountain
+		if biome_name == "mountain":
+			for _i in range(2):
+				# Take random boss
+				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
+				var boss_instance = load(boss_path).instance()
+				# Generate spawn position and spawn boss
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap)
+				boss_instance.is_boss_in_grassland(true)
+				mobsLayer.call_deferred("add_child", boss_instance)
+				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
+		
+		# Generate bosses with little chance in other biomes
+		else:
+			var random_float = randf()
+			if random_float <= 0.1:
+				# Take random boss
+				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
+				var boss_instance = load(boss_path).instance()
+				# Generate spawn position and spawn boss
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap)
+				boss_instance.is_boss_in_grassland(true)
+				mobsLayer.call_deferred("add_child", boss_instance)
+				print("SPAWNED BOSS \""+ str(boss_path) +"\" with 10% chance in " + str(biome_name))
 
 
 # Method to destroy the scene
@@ -248,3 +282,12 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false
+
+
+# Method to despawn/remove boss
+func despawn_boss(boss_node):
+	# Remove from nodes
+	if mobsLayer.get_node_or_null(boss_node.name) != null:
+		mobsLayer.remove_child(boss_node)
+		boss_node.queue_free()
+		print("----------> Boss \"" + boss_node.name + "\" removed")

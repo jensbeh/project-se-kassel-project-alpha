@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 # Constants
+var DETECTION_RADIUS_IN_GRASSLAND = 60
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 var PRE_ATTACKING_SPEED
@@ -42,6 +43,7 @@ var max_attacking_radius_around_player
 var min_attacking_radius_around_player
 var pre_attack_time = 0.0
 var max_pre_attack_time
+var in_grassland = false
 
 # Mob movment
 var acceleration = 350
@@ -67,6 +69,10 @@ onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Set detection radius depending on grassland or not
+	if in_grassland:
+		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_GRASSLAND
+	
 	# Set spawn position
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(boss_spawn_area, navigation_tile_map, collision_radius, true)
@@ -459,3 +465,8 @@ func get_attack_damage(mob_attack_damage):
 		var normal_attack_factor = rng.randf_range(Constants.NORMAL_ATTACK_MIN_DAMAGE_FACTOR, Constants.NORMAL_ATTACK_MAX_DAMAGE_FACTOR)
 		var damage = int(round(mob_attack_damage * normal_attack_factor))
 		return damage
+
+
+# Method to set if boss is in grassland or not
+func is_boss_in_grassland(new_in_grassland):
+	in_grassland = new_in_grassland
