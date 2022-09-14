@@ -92,10 +92,10 @@ func cleanup():
 		mob.queue_free()
 	mob_list.clear()
 	
-	
 	print("STOPPED MOB_SPAWNER_SERVICE")
 
 
+# Method to activate spawn mobs
 func spawn_mobs():
 	should_spawn_mobs = true
 
@@ -125,6 +125,7 @@ func clean_thread():
 	mobspawner_thread.wait_to_finish()
 
 
+# Method to despawn mobs if mobs_to_despawn > 0
 func despawn_mobs():
 	var removed_mobs = []
 	for mob in mobs_to_despawn:
@@ -158,11 +159,9 @@ func spawn_area_mobs():
 		var biome_mobs_count = spawning_areas[current_spawn_area]["biome_mobs_count"]
 		var max_mobs = spawning_areas[current_spawn_area]["max_mobs"]
 		var biome_mobs = spawning_areas[current_spawn_area]["biome_mobs"]
-		print(spawning_areas[current_spawn_area]["biome_mobs"])
+		
 		# Get count of mobs to spawn
 		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
-		
-		print("spawn_mobs_counter: " + str(spawn_mobs_counter))
 		
 		# Spawn only if needed
 		if spawn_mobs_counter > 0:
@@ -239,6 +238,7 @@ func despawn_mob(mob):
 		print("----------> Mob \"" + mob.name + "\" removed")
 
 
+# Method is called from mob_spawner_timer -> new mobs should be spawned or  mobs should be removed
 func spawn_despawn_mobs():
 #	remove_mobs(remove_mobs)
 	if can_spawn_mobs:
