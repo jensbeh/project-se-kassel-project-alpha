@@ -31,6 +31,7 @@ onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_n
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
+onready var lootLayer = $map_grassland/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -410,6 +411,8 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 
 # Method to despawn/remove mob
 func despawn_mob(mob):
+	spawn_loot(mob.global_position)
+	
 	# Remove from variables
 	if mob_list.find(mob) != -1:
 		mob_list.remove(mob_list.find(mob))
@@ -421,3 +424,10 @@ func despawn_mob(mob):
 		mobsLayer.remove_child(mob)
 		mob.queue_free()
 		print("----------> Mob \"" + mob.name + "\" removed")
+
+
+# Method to spawn loot after monster died
+func spawn_loot(position):
+	var loot = load(Constants.LOOT_DROP).instance()
+	loot.init(position)
+	lootLayer.call_deferred("add_child", loot)

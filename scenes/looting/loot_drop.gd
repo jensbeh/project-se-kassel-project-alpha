@@ -2,21 +2,27 @@ extends Control
 
 var player_in_looting_zone = false
 var interacted = false
-var mob_type 
+var mob_type = true
 var in_dungeon: bool
 var loot_type
+var looted = false
+var content = {}
+var spawn_position
 
 # todos:
-# positon from died mob
-# show when mob died
 # where was this mob and was it a boss? -> mob_type
 
 # start timer for looting time and connect interaction signal with player
 func _ready():
+	rect_position = spawn_position
 	$Timer.wait_time = Constants.LOOTING_TIME
-	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction")
 	$Timer.start()
 
+
+func init(new_spawn_position):
+	spawn_position = new_spawn_position
+	
 
 # When player enter zone, player can interact
 func _on_Area2D_body_entered(body):
@@ -38,13 +44,25 @@ func interaction():
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
 		Utils.get_ui().add_child(load(Constants.LOOT_PANEL_PATH).instance())
-		if mob_type:
-			randomize()
-			loot_type = "Mob" + str((randi() % 3) + 1)
-		else:
-			loot_type = "Boss"
-		Utils.get_ui().get_node("LootPanel").set_loot_type(loot_type, in_dungeon)
+		if !looted:
+			if mob_type:
+				randomize()
+				loot_type = "Mob" + str((randi() % 3) + 1)
+			else:
+				loot_type = "Boss"
+			Utils.get_ui().get_node("LootPanel").set_loot_type(loot_type, in_dungeon)
+			Utils.get_ui().get_node("LootPanel").loot()
+			looted = true
+			Utils.get_ui().get_node("LootPanel").connect("looted", self, "save_loot")
+		elif content != {}:
+			Utils.get_ui().get_node("LootPanel").set_up_content(content)
+			Utils.get_ui().get_node("LootPanel").connect("looted", self, "save_loot")
 
+
+func save_loot(loot):
+	content = loot
+#	if content == {}:
+#		queue_free()
 
 # loot diassapper when time is up
 func _on_Timer_timeout():

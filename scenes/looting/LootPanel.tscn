@@ -28,15 +28,15 @@ margin_right = 15.0
 [node name="LootPanel" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 203.0
-margin_top = 117.0
-margin_right = -1210.0
-margin_bottom = -463.0
+margin_left = 36.0
+margin_top = 190.0
+margin_right = -1414.0
+margin_bottom = -390.0
 script = ExtResource( 6 )
 
 [node name="Border" type="NinePatchRect" parent="."]
-margin_right = 508.0
-margin_bottom = 502.0
+margin_right = 470.0
+margin_bottom = 500.0
 texture = ExtResource( 2 )
 region_rect = Rect2( 2.11349, 4.3695, 99.275, 98.3725 )
 patch_margin_left = 15
@@ -64,8 +64,8 @@ margin_bottom = -18.0
 custom_constants/separation = 10
 
 [node name="Lootslots" type="ScrollContainer" parent="Border/Background/VBoxContainer"]
-margin_right = 470.0
-margin_bottom = 407.0
+margin_right = 432.0
+margin_bottom = 405.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -102,6 +102,7 @@ vframes = 27
 frame = 98
 
 [node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 60.0
 margin_top = 74.0
@@ -158,6 +159,7 @@ vframes = 27
 frame = 98
 
 [node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 60.0
 margin_top = 74.0
@@ -214,6 +216,7 @@ vframes = 27
 frame = 98
 
 [node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot3/LootIcon"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 60.0
 margin_top = 74.0
@@ -270,6 +273,7 @@ vframes = 27
 frame = 98
 
 [node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot4/LootIcon"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 60.0
 margin_top = 74.0
@@ -326,6 +330,7 @@ vframes = 27
 frame = 98
 
 [node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot5/LootIcon"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 60.0
 margin_top = 74.0
@@ -382,6 +387,7 @@ vframes = 27
 frame = 98
 
 [node name="TextureRect" type="TextureRect" parent="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot6/LootIcon"]
+visible = false
 self_modulate = Color( 1, 1, 1, 0.823529 )
 margin_left = 60.0
 margin_top = 74.0
@@ -415,13 +421,13 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Border/Background/VBoxContainer"]
-margin_top = 417.0
-margin_right = 470.0
-margin_bottom = 467.0
+margin_top = 415.0
+margin_right = 432.0
+margin_bottom = 465.0
 custom_constants/separation = 70
 
 [node name="LootAll" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
-margin_right = 200.0
+margin_right = 181.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 3
@@ -436,8 +442,8 @@ custom_styles/normal = SubResource( 4 )
 text = "Loot All"
 
 [node name="Close" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
-margin_left = 270.0
-margin_right = 470.0
+margin_left = 251.0
+margin_right = 432.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 3

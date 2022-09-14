@@ -3,8 +3,6 @@ extends Control
 var player_in_looting_zone = false
 var interacted = false
 
-# todo random spawn in dungeons
-
 # connect interaction signal with player
 func _ready():
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")

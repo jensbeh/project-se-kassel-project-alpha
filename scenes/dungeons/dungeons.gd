@@ -242,3 +242,11 @@ func despawn_mob(mob):
 		mobsLayer.remove_child(mob)
 		mob.queue_free()
 		print("----------> Mob \"" + mob.name + "\" removed")
+	
+	spawn_loot()
+
+
+# Method to spawn loot after monster died
+func spawn_loot():
+	var loot = load(Constants.LOOT_DROP).instance()
+	mobsLayer.call_deferred("add_child", loot)
