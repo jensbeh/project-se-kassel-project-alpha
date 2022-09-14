@@ -272,3 +272,19 @@ func on_change_to_night():
 				mobs_to_despawn.append(mob)
 		# Despawn and spawn mobs
 		should_spawn_mobs = true
+
+
+# Method to enable or disable mob respawning
+func disable_mob_respawning(disable):
+	print("disable: " + str(disable))
+	can_spawn_mobs = !disable
+	
+	# Disble mob respawn
+	if disable:
+		can_spawn_mobs = false
+		mob_spawner_timer.stop()
+	# Enable mob respawn
+	else:
+		can_spawn_mobs = true
+		mob_spawner_timer.set_wait_time(mob_spawn_interval)
+		mob_spawner_timer.start()

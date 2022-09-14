@@ -238,3 +238,6 @@ func despawn_boss(boss_node):
 		mobsLayer.remove_child(boss_node)
 		boss_node.queue_free()
 		print("----------> Boss \"" + boss_node.name + "\" removed")
+	
+	# Disable mobs respawning
+	MobSpawnerService.disable_mob_respawning(true)
