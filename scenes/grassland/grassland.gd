@@ -418,6 +418,7 @@ func despawn_mob(mob):
 	
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(mob.name) != null:
+		spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
 		mobsLayer.remove_child(mob)
 		mob.queue_free()
 		print("----------> Mob \"" + mob.name + "\" removed")

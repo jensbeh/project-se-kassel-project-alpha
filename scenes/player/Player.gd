@@ -808,7 +808,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		else:
 			if not is_attacking:
 				hurt_player()
-			
+		
 		# Add knockback
 		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
 		var min_knockback_velocity_factor = 25
