@@ -806,7 +806,8 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		if current_health <= 0:
 			kill_player()
 		else:
-			hurt_player()
+			if not is_attacking:
+				hurt_player()
 			
 		# Add knockback
 		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
@@ -840,6 +841,10 @@ func kill_player():
 	set_movement(false)
 	if not animation_tree.active: # Show "Die" animation in all states to call "player_killed"
 		animation_tree.active = true
+	if is_attacking:
+		is_attacking = false
+		set_movement(true)
+	animation_player.stop(true)
 	animation_state.travel("Die")
 
 
@@ -865,6 +870,7 @@ func reset_player_after_dying():
 	set_current_health(max_health)
 	hurting = false
 	dying = false
+	is_attacking = false
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
