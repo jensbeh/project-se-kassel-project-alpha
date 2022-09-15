@@ -59,7 +59,7 @@ func PopulatePanel():
 	var counter = 1
 	for i in get_tree().get_nodes_in_group("LootPanelSlots"):
 		if counter <= loot_dict.size():
-			if str(loot_dict[counter][0]) in ["jewel", "potion", "weapon"]:
+			if str(loot_dict[counter][0]) in ["Jewel", "Potion", "Weapon"]:
 				randomize()
 				if loot_dict[counter][0] == "Jewel":
 					loot_dict[counter][0] = GameData.jewel_IDs[randi() % 4]

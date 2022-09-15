@@ -18,7 +18,7 @@ func _ready():
 
 func init(new_spawn_position, mob_name):
 	spawn_position = new_spawn_position
-	for i in ["Bat", "Fungus", "Ghost", "Orbinaut", "Rat", "Skeleton", "SmallSlime", "Snake", "Zombie"]:
+	for i in ["Bat", "Fungus", "Ghost", "Orbinaut", "Rat", "Skeleton", "SmallSlime", "Snake", "Zombie", "Boss"]:
 		if i in mob_name:
 			mob_type = i
 
@@ -55,9 +55,11 @@ func save_loot(loot):
 	interacted = false
 	content = loot
 	if content.empty():
+		Utils.get_current_player().disconnect("player_interact", self, "interaction")
 		queue_free()
 
 
 # loot disappear when time is up
 func _on_Timer_timeout():
+	Utils.get_current_player().disconnect("player_interact", self, "interaction")
 	queue_free()

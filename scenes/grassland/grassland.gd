@@ -428,6 +428,14 @@ func despawn_mob(mob):
 
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
-	var loot = load(Constants.LOOT_DROP).instance()
-	loot.init(position, mob_name)
-	lootLayer.call_deferred("add_child", loot)
+	if "Boss" in mob_name:
+		var loot = load(Constants.LOOT_DROP).instance()
+		loot.init(position, mob_name)
+		lootLayer.call_deferred("add_child", loot)
+	else:
+		randomize()
+		var chance = ((randi() % 10) +1)
+		if chance > 3:
+			var loot = load(Constants.LOOT_DROP).instance()
+			loot.init(position, mob_name)
+			lootLayer.call_deferred("add_child", loot)
