@@ -66,6 +66,8 @@ onready var playerAttackZone = $PlayerAttackZone
 onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
+onready var healthBar = $NinePatchRect/ProgressBar
+onready var healthBarBackground = $NinePatchRect
 
 
 # Called when the node enters the scene tree for the first time.
@@ -96,6 +98,9 @@ func _ready():
 	
 	# Healthbar
 	# TODO
+	healthBar.value = 100
+	healthBar.visible = false
+	healthBarBackground.visible = false
 	
 	# Setup attacking radius around player variables
 	max_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.95
@@ -417,6 +422,11 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	
 	# Healthbar
 	# TODO
+	var healthbar_value_in_percent = (100.0 / max_health) * health
+	healthBar.value = healthbar_value_in_percent
+	if not healthBar.visible:
+		healthBar.visible = true
+		healthBarBackground.visible = true
 	
 	# Mob is killed
 	if health <= 0:
