@@ -31,6 +31,10 @@ func _ready():
 	
 	# Animations
 	setup_animations()
+	
+	# Setup healthbar in player_ui if in dungeon
+	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+		Utils.get_player_ui().set_boss_name_to_hp_bar(self)
 
 
 # Method to setup the animations
@@ -196,3 +200,8 @@ func _on_DamageArea_area_entered(area):
 			if player.has_method("simulate_damage"):
 				var damage = get_attack_damage(attack_damage)
 				player.simulate_damage(global_position, damage, knockback)
+
+
+# Method to return boss name
+func get_boss_name():
+	return tr("BOSS_ZOMBIE")

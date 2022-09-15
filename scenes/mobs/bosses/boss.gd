@@ -6,6 +6,7 @@ var ATTACK_RADIUS_IN_GRASSLAND = 20
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 var PRE_ATTACKING_SPEED
+var REGENERATION_HP_AMOUNT
 
 # Mob specific
 var max_health = 100
@@ -45,6 +46,9 @@ var min_attacking_radius_around_player
 var pre_attack_time = 0.0
 var max_pre_attack_time
 var in_grassland = false
+var regenerate_hp = false
+var regeneration_interval = 0.0
+var max_regeneration_interval
 
 # Mob movment
 var acceleration = 350
@@ -67,7 +71,7 @@ onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 onready var healthBar = $NinePatchRect/ProgressBar
-onready var healthBarBackground = $NinePatchRect
+onready var healthBarNode = $NinePatchRect
 
 
 # Called when the node enters the scene tree for the first time.
@@ -96,11 +100,12 @@ func _ready():
 	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
 	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
 	
-	# Healthbar
-	# TODO
+	# Setup Healthbar
 	healthBar.value = 100
-	healthBar.visible = false
-	healthBarBackground.visible = false
+	healthBarNode.visible = false
+	max_regeneration_interval = 0.1 # every 0.1 sek
+	REGENERATION_HP_AMOUNT = 20 * max_regeneration_interval  # 20 health every 1 sec == 2 health every max_regeneration_interval
+	
 	
 	# Setup attacking radius around player variables
 	max_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.95
@@ -160,10 +165,15 @@ func _physics_process(delta):
 			# handle knockback
 			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 			velocity = move_and_slide(velocity)
+	
+	
+	# Regenerate hp bar if enabled
+	if regenerate_hp:
+		regenerate_hp_bar(delta)
 
 
 func _process(delta):
-		# Handle behaviour
+	# Handle behaviour
 	match behaviour_state:
 		
 		IDLING:
@@ -251,9 +261,6 @@ func search_player():
 	if playerDetectionZone.mob_can_see_player():
 		# Player in detection zone of this mob
 		update_behaviour(HUNTING)
-		
-		# Stop healing
-		# TODO
 
 
 # Method to update the behaviour of the mob
@@ -273,6 +280,9 @@ func update_behaviour(new_behaviour):
 			SLEEPING:
 				behaviour_state = SLEEPING
 				mob_need_path = false
+				
+				# Start regeneration of hp
+				should_regenerate_hp(true)
 			
 			
 			IDLING:
@@ -284,6 +294,9 @@ func update_behaviour(new_behaviour):
 				behaviour_state = IDLING
 				mob_need_path = false
 				change_animations(IDLING)
+				
+				# Start regeneration of hp
+				should_regenerate_hp(true)
 			
 			
 			WANDERING:
@@ -300,6 +313,9 @@ func update_behaviour(new_behaviour):
 				behaviour_state = WANDERING
 				mob_need_path = true
 				change_animations(WANDERING)
+				
+				# Start regeneration of hp
+				should_regenerate_hp(true)
 			
 			
 			HUNTING:
@@ -315,6 +331,9 @@ func update_behaviour(new_behaviour):
 				behaviour_state = HUNTING
 				mob_need_path = true
 				change_animations(HUNTING)
+				
+				# Stop regeneration of hp
+				should_regenerate_hp(false)
 			
 			
 			SEARCHING:
@@ -335,6 +354,9 @@ func update_behaviour(new_behaviour):
 				behaviour_state = SEARCHING
 				mob_need_path = false
 				change_animations(SEARCHING)
+				
+				# Start regeneration of hp
+				should_regenerate_hp(true)
 			
 			
 			HURTING:
@@ -343,6 +365,9 @@ func update_behaviour(new_behaviour):
 					behaviour_state = HURTING
 					# Show hurt animation if not already played
 					change_animations(HURTING)
+					
+					# Stop regeneration of hp
+					should_regenerate_hp(false)
 			
 			
 			DYING:
@@ -351,6 +376,9 @@ func update_behaviour(new_behaviour):
 					behaviour_state = DYING
 					# Show hurt animation if not already played
 					change_animations(DYING)
+					
+					# Start regeneration of hp
+					should_regenerate_hp(false)
 
 
 # Method to update the animation with velocity for direction -> needs to code in child
@@ -420,13 +448,16 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	# Add damage
 	health -= damage_to_mob
 	
-	# Healthbar
-	# TODO
-	var healthbar_value_in_percent = (100.0 / max_health) * health
-	healthBar.value = healthbar_value_in_percent
-	if not healthBar.visible:
-		healthBar.visible = true
-		healthBarBackground.visible = true
+	# Update healthbar in boss
+	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND:
+		var healthbar_value_in_percent = (100.0 / max_health) * health
+		healthBar.value = healthbar_value_in_percent
+		if not healthBarNode.visible:
+			healthBarNode.visible = true
+	# Update healthbar in player ui
+	elif Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON:
+		var healthbar_value_in_percent = (100.0 / max_health) * health
+		Utils.get_player_ui().set_boss_health(healthbar_value_in_percent)
 	
 	# Mob is killed
 	if health <= 0:
@@ -453,6 +484,7 @@ func mob_hurt():
 func mob_killed():
 	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
 	Utils.get_scene_manager().get_current_scene().despawn_boss(self)
+	Utils.get_player_ui().show_boss_health(false)
 
 
 # Method to return a random time between min_time and max_time
@@ -482,3 +514,43 @@ func get_attack_damage(mob_attack_damage):
 # Method to set if boss is in grassland or not
 func is_boss_in_grassland(new_in_grassland):
 	in_grassland = new_in_grassland
+
+
+# Method to enable or disable hp regeneration
+func should_regenerate_hp(should_regenerate):
+	# Start regenerate hp
+	if should_regenerate and health < max_health:
+		regenerate_hp = true
+	
+	# Stop regenerate hp
+	else:
+		regenerate_hp = false
+
+
+# Method to generate hp with delta time
+func regenerate_hp_bar(delta):
+	print("regenerate_hp_bar")
+	regeneration_interval += delta
+	if regeneration_interval > max_regeneration_interval:
+		regeneration_interval = 0.0
+		
+		# Update health
+		if health < max_health:
+			health = health + REGENERATION_HP_AMOUNT
+		if health > max_health:
+			health = max_health
+		
+		# Update healthbar in boss
+		if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND:
+			var healthbar_value_in_percent = (100.0 / max_health) * health
+			healthBar.value = healthbar_value_in_percent
+			if not healthBarNode.visible and health < max_health:
+				# Enable healthbar visibility if getting damage
+				healthBarNode.visible = true
+			elif healthBarNode.visible and health == max_health:
+				# Disable healthbar visibility if full hp
+				healthBarNode.visible = false
+		# Update healthbar in player ui
+		elif Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON:
+			var healthbar_value_in_percent = (100.0 / max_health) * health
+			Utils.get_player_ui().set_boss_health(healthbar_value_in_percent)

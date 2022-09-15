@@ -141,14 +141,14 @@ percent_visible = false
 [node name="BossName" type="Label" parent="BossHpBar/ProgressBar"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -283.314
+margin_left = -399.722
 margin_top = 1.8927
-margin_right = 267.686
+margin_right = 400.278
 margin_bottom = 39.8927
-rect_pivot_offset = Vector2( 20, 7 )
+rect_pivot_offset = Vector2( 400, 19 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 13 )
-text = "BOSS NAME"
+text = "DANGEROUS FUNGUS"
 align = 1
 valign = 1
 
