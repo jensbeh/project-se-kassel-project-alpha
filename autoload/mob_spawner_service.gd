@@ -89,7 +89,8 @@ func cleanup():
 		DayNightCycle.disconnect("change_to_night", self, "on_change_to_night")
 	# -> Clean mobs
 	for mob in mob_list:
-		mob.queue_free()
+		if is_instance_valid(mob) and mob.is_inside_tree():
+			mob.queue_free()
 	mob_list.clear()
 	
 	print("STOPPED MOB_SPAWNER_SERVICE")
@@ -129,21 +130,22 @@ func clean_thread():
 func despawn_mobs():
 	var removed_mobs = []
 	for mob in mobs_to_despawn:
-		# Remove mob if it is not in camera screen
-		if not Utils.is_position_in_camera_screen(mob.global_position):
-			if mob.is_in_group("Ambient Mob"):
-				current_ambient_mobs -= 1
-#				print("removed ambient mob: " + str(current_ambient_mobs))
-			elif mob.is_in_group("Enemy"):
-				spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-#				print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
-			mob.get_parent().call_deferred("remove_child", mob)
-			
-			if mob in mobs_to_despawn:
-				removed_mobs.append(mobs_to_despawn.find(mob))
-			
-			mob.queue_free()
-			mob_list.remove(mob_list.find(mob))
+		if is_instance_valid(mob) and mob.is_inside_tree():
+			# Remove mob if it is not in camera screen
+			if not Utils.is_position_in_camera_screen(mob.global_position):
+				if mob.is_in_group("Ambient Mob"):
+					current_ambient_mobs -= 1
+	#				print("removed ambient mob: " + str(current_ambient_mobs))
+				elif mob.is_in_group("Enemy"):
+					spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
+	#				print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
+				mob.get_parent().call_deferred("remove_child", mob)
+				
+				if mob in mobs_to_despawn:
+					removed_mobs.append(mobs_to_despawn.find(mob))
+				
+				mob.queue_free()
+				mob_list.remove(mob_list.find(mob))
 	
 	var i = 0
 	for removed_mob in removed_mobs:
@@ -178,11 +180,12 @@ func spawn_area_mobs():
 						# Spawn the mob as often as it is in the list
 						for mob_id in mobs_to_spawn:
 							if mob == mob_id:
-								var mob_instance = mobScene.instance()
-								mob_instance.init(current_spawn_area, mobsNavigationTileMap)
-								mobsLayer.call_deferred("add_child", mob_instance)
-								mob_list.append(mob_instance)
-								spawning_areas[current_spawn_area]["current_mobs_count"] += 1
+								if is_instance_valid(mobsLayer) and mobsLayer.is_inside_tree():
+									var mob_instance = mobScene.instance()
+									mob_instance.init(current_spawn_area, mobsNavigationTileMap)
+									mobsLayer.call_deferred("add_child", mob_instance)
+									mob_list.append(mob_instance)
+									spawning_areas[current_spawn_area]["current_mobs_count"] += 1
 					else:
 						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
 
@@ -198,12 +201,13 @@ func spawn_ambient_mobs():
 			# Spawn moths
 			var mobScene : Resource = Constants.PreloadedMobScenes["Moth"]
 			if mobScene != null:
-				while current_ambient_mobs < max_ambient_mobs:
-					var mob_instance = mobScene.instance()
-					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
-					ambientMobsLayer.call_deferred("add_child", mob_instance)
-					mob_list.append(mob_instance)
-					current_ambient_mobs += 1
+				if is_instance_valid(ambientMobsLayer) and ambientMobsLayer.is_inside_tree():
+					while current_ambient_mobs < max_ambient_mobs:
+						var mob_instance = mobScene.instance()
+						mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
+						ambientMobsLayer.call_deferred("add_child", mob_instance)
+						mob_list.append(mob_instance)
+						current_ambient_mobs += 1
 			else:
 				printerr("\"Moth\" scene can't be loaded!")
 		
@@ -224,18 +228,19 @@ func spawn_ambient_mobs():
 
 # Method to despawn/remove mob
 func despawn_mob(mob):
-	# Remove from variables
-	if mob_list.find(mob) != -1:
-		mob_list.remove(mob_list.find(mob))
-	if mobs_to_despawn.find(mob) != -1:
-		mobs_to_despawn.remove(mobs_to_despawn.find(mob))
+	if is_instance_valid(mob) and mob.is_inside_tree():
+		# Remove from variables
+		if mob_list.find(mob) != -1:
+			mob_list.remove(mob_list.find(mob))
+		if mobs_to_despawn.find(mob) != -1:
+			mobs_to_despawn.remove(mobs_to_despawn.find(mob))
 
-	# Remove from nodes
-	if mobsLayer.get_node_or_null(mob.name) != null:
-		spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-		mobsLayer.remove_child(mob)
-		mob.queue_free()
-		print("----------> Mob \"" + mob.name + "\" removed")
+		# Remove from nodes
+		if mobsLayer.get_node_or_null(mob.name) != null:
+			spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
+			mobsLayer.remove_child(mob)
+			mob.queue_free()
+			print("----------> Mob \"" + mob.name + "\" removed")
 
 
 # Method is called from mob_spawner_timer -> new mobs should be spawned or  mobs should be removed
@@ -255,8 +260,9 @@ func on_change_to_sunrise():
 		print("day")
 		# Remove mobs
 		for mob in mob_list:
-			if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
-				mobs_to_despawn.append(mob)
+			if is_instance_valid(mob) and mob.is_inside_tree():
+				if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
+					mobs_to_despawn.append(mob)
 		# Despawn and spawn mobs
 		should_spawn_mobs = true
 
@@ -268,8 +274,9 @@ func on_change_to_night():
 		print("night")
 		# Remove mobs
 		for mob in mob_list:
-			if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
-				mobs_to_despawn.append(mob)
+			if is_instance_valid(mob) and mob.is_inside_tree():
+				if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
+					mobs_to_despawn.append(mob)
 		# Despawn and spawn mobs
 		should_spawn_mobs = true
 
