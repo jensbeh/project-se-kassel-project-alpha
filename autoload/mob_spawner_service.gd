@@ -46,7 +46,7 @@ func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with
 		var _error1 = DayNightCycle.connect("change_to_sunrise", self, "on_change_to_sunrise")
 		var _error2 = DayNightCycle.connect("change_to_night", self, "on_change_to_night")
 	
-	# Start chunkloader thread
+	# Start mobspawner thread
 	mobspawner_thread.start(self, "handle_mob_spawns")
 	can_spawn_mobs = true
 	
@@ -58,13 +58,13 @@ func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with
 	mob_spawner_timer.start()
 
 
-# Method to stop the chunkloader to change map
+# Method to stop the mobspawner to change map
 func stop():
 	# Reset variables
 	call_deferred("cleanup")
 
 
-# Method to cleanup the chunkloader
+# Method to cleanup the mobspawner
 func cleanup():
 	# Check if thread is active wait to stop
 	can_spawn_mobs = false

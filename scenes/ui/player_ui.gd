@@ -4,7 +4,15 @@ onready var exp_bar = get_node("NinePatchRect/ProgressBar")
 onready var clock = get_node("Clock/clock")
 onready var exp_value = get_node("NinePatchRect/ProgressBar/EXPValue")
 onready var life_bar = get_node("Lifebar")
+onready var bossHpNode = get_node("BossHpBar")
+onready var bossHpBar = get_node("BossHpBar/ProgressBar")
+onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
 var hearts = 3
+
+
+func _ready():
+	# Disbale bossHpBar at startup
+	bossHpNode.visible = false
 
 
 # Load the correct ui settings
