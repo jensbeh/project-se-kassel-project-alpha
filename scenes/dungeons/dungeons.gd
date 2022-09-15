@@ -19,6 +19,7 @@ onready var mobsNavigation2d = find_node("mobs_navigation2d")
 onready var mobsNavigationTileMap = find_node("NavigationTileMap")
 onready var mobSpawns = find_node("mobSpawns")
 onready var mobsLayer = find_node("mobslayer")
+onready var lootLayer = find_node("lootLayer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -233,6 +234,8 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 
 # Method to despawn/remove mob
 func despawn_mob(mob):
+	spawn_loot(mob.global_position, mob.get_name())
+	
 	# Remove from variables
 	if mob_list.find(mob) != -1:
 		mob_list.remove(mob_list.find(mob))
@@ -242,11 +245,10 @@ func despawn_mob(mob):
 		mobsLayer.remove_child(mob)
 		mob.queue_free()
 		print("----------> Mob \"" + mob.name + "\" removed")
-	
-	spawn_loot()
 
 
 # Method to spawn loot after monster died
-func spawn_loot():
+func spawn_loot(position, mob_name):
 	var loot = load(Constants.LOOT_DROP).instance()
-	mobsLayer.call_deferred("add_child", loot)
+	loot.init(position, mob_name)
+	lootLayer.call_deferred("add_child", loot)

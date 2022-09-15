@@ -1,20 +1,16 @@
-extends Control
+extends Node2D
 
 var player_in_looting_zone = false
 var interacted = false
-var mob_type = true
+var mob_type
 var in_dungeon: bool
-var loot_type
 var looted = false
 var content = {}
 var spawn_position
 
-# todos:
-# where was this mob and was it a boss? -> mob_type
-
 # start timer for looting time and connect interaction signal with player
 func _ready():
-	rect_position = spawn_position
+	position = spawn_position
 	$Timer.wait_time = Constants.LOOTING_TIME
 	Utils.get_current_player().connect("player_interact", self, "interaction")
 	$Timer.start()
@@ -22,8 +18,9 @@ func _ready():
 
 func init(new_spawn_position, mob_name):
 	spawn_position = new_spawn_position
-	print(mob_name)
-	
+	for i in ["Bat", "Fungus", "Ghost", "Orbinaut", "Rat", "Skeleton", "SmallSlime", "Snake", "Zombie"]:
+		if i in mob_name:
+			mob_type = i
 
 # When player enter zone, player can interact
 func _on_Area2D_body_entered(body):
@@ -48,12 +45,7 @@ func interaction():
 		loot_panel.connect("looted", self, "save_loot")
 		if !looted:
 			looted = true
-			if mob_type:
-				randomize()
-				loot_type = "Mob" + str((randi() % 3) + 1)
-			else:
-				loot_type = "Boss"
-			loot_panel.set_loot_type(loot_type, in_dungeon)
+			loot_panel.set_loot_type(mob_type, in_dungeon)
 			loot_panel.loot()
 		elif !content.empty():
 			loot_panel.set_up_content(content)

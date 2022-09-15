@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="6">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="13" nextobjectid="6">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
  <objectgroup id="11" name="mobSpawns">
   <object id="3" type="area" x="16" y="-608">
@@ -830,6 +830,7 @@
    <data encoding="csv"/>
   </layer>
  </group>
+ <group id="12" name="lootLayer"/>
  <group id="3" name="entitylayer">
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>

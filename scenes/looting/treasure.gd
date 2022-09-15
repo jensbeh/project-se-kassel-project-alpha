@@ -1,4 +1,4 @@
-extends Control
+extends Node2D
 
 var player_in_looting_zone = false
 var interacted = false

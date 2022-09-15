@@ -21,6 +21,7 @@ func _ready():
 # generate loot
 func loot():
 	LootSelector()
+	PopulatePanel()
 
 
 # reopen generated loot
@@ -51,9 +52,6 @@ func LootSelector():
 			randomize()
 			loot.append(int(rand_range(float(GameData.loot_data[loot_type]["Item" + str(i) + "MinQ"]), float(GameData.loot_data[loot_type]["Item" + str(i) + "MaxQ"]))))
 			loot_dict[loot_dict.size() + 1] = loot
-	
-	# show in panel
-	PopulatePanel()
 
 
 # add drops to the looting panel
@@ -63,11 +61,11 @@ func PopulatePanel():
 		if counter <= loot_dict.size():
 			if str(loot_dict[counter][0]) in ["jewel", "potion", "weapon"]:
 				randomize()
-				if loot_dict[counter][0] == "jewel":
+				if loot_dict[counter][0] == "Jewel":
 					loot_dict[counter][0] = GameData.jewel_IDs[randi() % 4]
-				elif loot_dict[counter][0] == "potion":
-					loot_dict[counter][0] = GameData.potion_IDs[randi() % 5]
-				elif loot_dict[counter][0] == "weapon":
+				elif loot_dict[counter][0] == "Potion":
+					loot_dict[counter][0] = GameData.potion_IDs[randi() % 4]
+				elif loot_dict[counter][0] == "Weapon":
 					loot_dict[counter][0] = GameData.weapon_IDs[randi() % 4]
 			get_node(str(i.get_path()) + "/Name").set_text(tr(str(GameData.item_data[str(loot_dict[counter][0])]["Name"])))
 			var texture = GameData.item_data[str(loot_dict[counter][0])]["Texture"]
@@ -145,7 +143,6 @@ func loot_item(item_idx):
 					PlayerData.inv_data[slot]["Item"] = loot_dict[item_idx][0]
 					PlayerData.inv_data[slot]["Stack"] = loot_dict[item_idx][1]
 					break
-		print(PlayerData.inv_data)
 	# remove from looting panel
 	loot_dict.erase(item_idx)
 	var loot_slot = "Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot" + str(item_idx)
