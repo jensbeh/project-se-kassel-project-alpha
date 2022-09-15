@@ -67,7 +67,6 @@ func _on_setup_scene_done():
 	
 	# Check if boss room
 	if is_boss_room():
-		print("boss_room")
 		# Spawn boss
 		spawn_boss()
 	
@@ -241,3 +240,18 @@ func despawn_boss(boss_node):
 	
 	# Disable mobs respawning
 	MobSpawnerService.disable_mob_respawning(true)
+
+
+# Method is called from boss on death when key to open the door should be spawned
+func spawn_key_at_death(death_position):
+	var key_instance = load("res://scenes/items/golden_key.tscn").instance()
+	key_instance.init(death_position)
+	find_node("keylayer").call_deferred("add_child", key_instance)
+
+
+# Method is called from golden key when player collected it
+func on_key_collected():
+	# Remove locked door
+	var lockedDoorsNode = find_node("locked_doors")
+	for child in lockedDoorsNode.get_children():
+		child.call_deferred("queue_free")
