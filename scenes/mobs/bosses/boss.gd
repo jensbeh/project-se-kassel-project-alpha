@@ -529,7 +529,6 @@ func should_regenerate_hp(should_regenerate):
 
 # Method to generate hp with delta time
 func regenerate_hp_bar(delta):
-	print("regenerate_hp_bar")
 	regeneration_interval += delta
 	if regeneration_interval > max_regeneration_interval:
 		regeneration_interval = 0.0
