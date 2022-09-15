@@ -120,22 +120,22 @@ func get_screen_color():
 
 # Method is called when day is started to call some actions
 func change_to_daytime():
-	print("TO DAYTIME")
+#	print("TO DAYTIME")
 	emit_signal("change_to_daytime")
 
 # Method is called when sunset is started to call some actions
 func change_to_sunset():
-	print("TO SUNSET")
+#	print("TO SUNSET")
 	emit_signal("change_to_sunset")
 
 # Method is called when night is started to call some actions
 func change_to_night():
-	print("TO NIGHT")
+#	print("TO NIGHT")
 	emit_signal("change_to_night")
 
 # Method is called when sunrise is started to call some actions
 func change_to_sunrise():
-	print("TO SUNRISE")
+#	print("TO SUNRISE")
 	emit_signal("change_to_sunrise")
 	
 # Method is called every minute to update the ui

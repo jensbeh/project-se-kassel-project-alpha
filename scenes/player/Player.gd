@@ -73,6 +73,7 @@ var is_attacking = false
 var can_attack = false
 var hurting = false
 var dying = false
+var is_invincible = false
 
 
 func _ready():
@@ -107,6 +108,12 @@ func _ready():
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
+	
+	# Set invisibility of player
+	make_player_invisible(false)
+	
+	# Set invincibility of player
+	make_player_invincible(false)
 
 
 func _physics_process(delta):
@@ -779,34 +786,36 @@ func _on_DamageAreaRight_area_entered(area):
 
 # Method to simulate damage and behaviour to player
 func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to_player : int):
-	# Add damage
-	current_health -= damage_to_player
-	
-	print("health: " + str(current_health))
-	print("max_health: " + str(max_health))
-	print("damage_to_player: " + str(damage_to_player))
-	print("knockback_to_player: " + str(knockback_to_player))
-	
-	
-	# handle here healthbar
-	if current_health <= 0:
-		set_current_health(0)
-	else:
-		set_current_health(current_health)
-	
-	# Check if player is hurted or killed
-	if current_health <= 0:
-		kill_player()
-	else:
-		hurt_player()
+	if not is_invincible:
+		# Add damage
+		current_health -= damage_to_player
 		
-	# Add knockback
-	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-	var min_knockback_velocity_factor = 25
-	var max_knockback_velocity_factor = 100
-	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
-	var knockback_velocity_factor = m * knockback_to_player + min_knockback_velocity_factor
-	velocity = enemy_global_position.direction_to(global_position) * knockback_velocity_factor
+#		print("health: " + str(current_health))
+#		print("max_health: " + str(max_health))
+#		print("damage_to_player: " + str(damage_to_player))
+#		print("knockback_to_player: " + str(knockback_to_player))
+		
+		
+		# handle here healthbar
+		if current_health <= 0:
+			set_current_health(0)
+		else:
+			set_current_health(current_health)
+		
+		# Check if player is hurted or killed
+		if current_health <= 0:
+			kill_player()
+		else:
+			if not is_attacking:
+				hurt_player()
+		
+		# Add knockback
+		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
+		var min_knockback_velocity_factor = 25
+		var max_knockback_velocity_factor = 100
+		var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
+		var knockback_velocity_factor = m * knockback_to_player + min_knockback_velocity_factor
+		velocity = enemy_global_position.direction_to(global_position) * knockback_velocity_factor
 
 
 # Method is called when hurting player
@@ -825,13 +834,17 @@ func player_hurt():
 
 # Method is called when killing player
 func kill_player():
-	# Remove player from player layer so the mobs wont recognize the player anymore
-	set_collision_layer_bit(1, false)
+	# Make player invisible to mobs
+	make_player_invisible(true)
 	
 	dying = true
 	set_movement(false)
 	if not animation_tree.active: # Show "Die" animation in all states to call "player_killed"
 		animation_tree.active = true
+	if is_attacking:
+		is_attacking = false
+		set_movement(true)
+	animation_player.stop(true)
 	animation_state.travel("Die")
 
 
@@ -847,8 +860,8 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
-	# Add player to player layer so the mobs will recognize the player again
-	set_collision_layer_bit(1, true)
+	# Make player visible again to mobs
+	make_player_invisible(false)
 	
 	# reset cooldown
 	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
@@ -857,6 +870,7 @@ func reset_player_after_dying():
 	set_current_health(max_health)
 	hurting = false
 	dying = false
+	is_attacking = false
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
@@ -869,3 +883,36 @@ func set_light(new_light: int):
 	data.light = player_light_radius
 	$CustomLight.min_radius = new_light * 0.96
 	$CustomLight.max_radius= new_light * 1.04
+
+
+# Method to make to player invisible to mobs or not -> no recognizing/chasing/seeing
+func make_player_invisible(invisible : bool):
+	if invisible:
+		# Remove player from player layer so the mobs wont recognize the player anymore
+		set_collision_layer_bit(1, false)
+		print("---> PLAYER VISIBILITY: False")
+	else:
+		# Add player to player layer so the mobs will recognize the player again
+		set_collision_layer_bit(1, true)
+		print("---> PLAYER VISIBILITY: True")
+
+
+# Method to get player invisibility
+func is_player_invisible():
+	if get_collision_layer_bit(1) == true:
+		# Player is visible
+		return false
+	else:
+		# Player is invisible
+		return true 
+
+
+# Method to make to player invincible to mobs or not -> no damage
+func make_player_invincible(invincible : bool):
+	is_invincible = invincible
+	print("---> PLAYER INVINCIBILITY: " + str(is_invincible))
+
+
+# Method to get player invincibility
+func is_player_invincible():
+	return is_invincible

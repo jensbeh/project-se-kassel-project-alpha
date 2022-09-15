@@ -41,6 +41,7 @@ MerchantData="*res://autoload/merchant_data.gd"
 PlayerData="*res://autoload/player_data.gd"
 PathfindingService="*res://autoload/pathfinding_service.gd"
 ChunkLoaderService="*res://autoload/chunk_loader_service.gd"
+MobSpawnerService="*res://autoload/mob_spawner_service.gd"
 
 [debug]
 

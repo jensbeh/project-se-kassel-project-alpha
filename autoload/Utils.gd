@@ -143,22 +143,22 @@ func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 func update_current_scene_type(transition_data):
 	# Menu
 	if Constants.MENU_FOLDER in transition_data.get_scene_path():
-		print("Menu state")
+#		print("Menu state")
 		return Constants.SceneType.MENU
 	
 	# Camp
 	if Constants.CAMP_FOLDER in transition_data.get_scene_path():
-		print("Camp state")
+#		print("Camp state")
 		return Constants.SceneType.CAMP
 	
 	# Grassland
 	elif Constants.GRASSLAND_FOLDER in transition_data.get_scene_path():
-		print("Grassland state")
+#		print("Grassland state")
 		return Constants.SceneType.GRASSLAND
 	
 	# Dungeons
 	elif Constants.DUNGEONS_FOLDER in transition_data.get_scene_path():
-		print("Dungeons state")
+#		print("Dungeons state")
 		return Constants.SceneType.DUNGEON
 
 
@@ -358,6 +358,18 @@ func get_chunk_from_position(map_min_global_pos, global_position):
 	return chunk
 
 
+# Method to generate random vector2 position in rectangle Area2D
+func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
+	var rectangle_shape = rectangle_area.get_child(0).shape
+	var top_left = rectangle_area.position
+	var bottom_right = top_left + (rectangle_shape.extents * 2)
+	rng.randomize()
+	var rand_x = rng.randi_range(top_left.x, bottom_right.x)
+	var rand_y = rng.randi_range(top_left.y, bottom_right.y)
+	var position = Vector2(rand_x, rand_y)
+	return position
+
+
 # Method to stop the game
 	# Stops all threads which are still running like ChunkLoaderService, PathfindingService, ...
 func stop_game():
@@ -368,4 +380,5 @@ func stop_game():
 	ChunkLoaderService.stop()
 	# Stop Pathfinder
 	PathfindingService.stop()
-	
+	# Stop Mobspawner
+	MobSpawnerService.stop()

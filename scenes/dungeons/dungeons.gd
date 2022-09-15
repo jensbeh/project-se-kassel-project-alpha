@@ -10,6 +10,7 @@ var spawning_areas = {}
 var mob_list : Array
 var groundChunks
 var higherChunks
+var boss_spawn_area = null
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -20,12 +21,14 @@ onready var mobsNavigationTileMap = find_node("NavigationTileMap")
 onready var mobSpawns = find_node("mobSpawns")
 onready var mobsLayer = find_node("mobslayer")
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup scene in background
 	thread = Thread.new()
 	thread.start(self, "_setup_scene_in_background")
-	
+
+
 # Method to setup this scene with a thread in background
 func _setup_scene_in_background():
 	# Setup player
@@ -49,6 +52,9 @@ func _setup_scene_in_background():
 	# Setup spawning areas
 	setup_spawning_areas()
 	
+	# Spawn mobs
+	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, 0, false)
+	
 	call_deferred("_on_setup_scene_done")
 
 
@@ -56,11 +62,35 @@ func _setup_scene_in_background():
 func _on_setup_scene_done():
 	thread.wait_to_finish()
 	
-	# Spawn all mobs without new thread
-	spawn_mobs()
+	# Spawn all mobs
+	MobSpawnerService.spawn_mobs()
+	
+	# Check if boss room
+	if is_boss_room():
+		print("boss_room")
+		# Spawn boss
+		spawn_boss()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+
+
+# Method to check if current dungeon is boss room
+func is_boss_room() -> bool:
+	if find_node("bossSpawn") != null:
+		return true
+	else:
+		return false
+
+
+# Method to spawn boss in dungeon
+func spawn_boss():
+	# Take random boss
+	var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
+	var boss_instance = load(boss_path).instance()
+	# Generate spawn position and spawn boss
+	boss_instance.init(boss_spawn_area, mobsNavigationTileMap)
+	mobsLayer.call_deferred("add_child", boss_instance)
 
 
 # Method to destroy the scene
@@ -72,9 +102,8 @@ func destroy_scene():
 	# Stop chunkloader
 	ChunkLoaderService.stop()
 	
-	# Clean mobs
-	for mob in mob_list:
-		mob.queue_free()
+	# Stop mobspawner
+	MobSpawnerService.stop()
 
 
 # Method to setup the player with all informations
@@ -174,40 +203,11 @@ func setup_spawning_areas():
 		
 		# Save spawning area
 		spawning_areas[spawnArea] = {"biome": biome, "max_mobs": max_mobs, "current_mobs_count": current_mobs_count, "biome_mobs": biome_mobs, "biome_mobs_count": biome_mobs_count}
-
-
-# Method to spawn all mobs to map
-func spawn_mobs():
-	for current_spawn_area in spawning_areas.keys():
-		# Spawn area informations
-		var biome_mobs_count = spawning_areas[current_spawn_area]["biome_mobs_count"]
-		var max_mobs = spawning_areas[current_spawn_area]["max_mobs"]
-		var biome_mobs = spawning_areas[current_spawn_area]["biome_mobs"]
-		
-		# Get count of mobs to spawn
-		var spawn_mobs_counter = max_mobs - spawning_areas[current_spawn_area]["current_mobs_count"]
-		
-		# Spawn only if needed
-		if spawn_mobs_counter > 0:
-			var mobs_to_spawn : Array = []
-			mobs_to_spawn = Utils.get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter)
-			# Iterate over diffent mobs classes
-			for mob in range(biome_mobs.size()):
-				# Check if mob should be spawned
-				if mob in mobs_to_spawn:
-					# Load and spawn mobs
-					var mobScene : Resource = load("res://scenes/mobs/" + biome_mobs[mob] + ".tscn")
-					if mobScene != null:
-						# Spawn the mob as often as it is in the list
-						for mob_id in mobs_to_spawn:
-							if mob == mob_id:
-								var mob_instance = mobScene.instance()
-								mob_instance.init(current_spawn_area, mobsNavigationTileMap)
-								mobsLayer.call_deferred("add_child", mob_instance)
-								mob_list.append(mob_instance)
-								spawning_areas[current_spawn_area]["current_mobs_count"] += 1
-					else:
-						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
+	
+	# Check if is boss room to generate boss spawning area
+	if is_boss_room():
+		var boss_area = find_node("bossSpawn").get_child(0)
+		boss_spawn_area = Utils.generate_mob_spawn_area_from_polygon(boss_area.position, boss_area.get_child(0).polygon)
 
 
 # Method to update the chunks with active and deleted chunks to make them visible or not
@@ -231,14 +231,13 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 			higher_chunk.visible = false
 
 
-# Method to despawn/remove mob
-func despawn_mob(mob):
-	# Remove from variables
-	if mob_list.find(mob) != -1:
-		mob_list.remove(mob_list.find(mob))
-	
+# Method to despawn/remove boss
+func despawn_boss(boss_node):
 	# Remove from nodes
-	if mobsLayer.get_node_or_null(mob.name) != null:
-		mobsLayer.remove_child(mob)
-		mob.queue_free()
-		print("----------> Mob \"" + mob.name + "\" removed")
+	if mobsLayer.get_node_or_null(boss_node.name) != null:
+		mobsLayer.remove_child(boss_node)
+		boss_node.queue_free()
+		print("----------> Boss \"" + boss_node.name + "\" removed")
+	
+	# Disable mobs respawning
+	MobSpawnerService.disable_mob_respawning(true)

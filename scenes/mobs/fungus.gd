@@ -9,6 +9,8 @@ onready var animationState = animationTree.get("parameters/playback")
 var attack = false
 var previouse_player_global_position
 var previouse_global_position
+var is_attacking = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,6 +27,7 @@ func _ready():
 	# Constants
 	HUNTING_SPEED = 25
 	WANDERING_SPEED = 12
+	PRE_ATTACKING_SPEED = 2 * HUNTING_SPEED
 	
 	# Animations
 	setup_animations()
@@ -106,6 +109,7 @@ func _physics_process(delta):
 				var view_direction = global_position.direction_to(previouse_player_global_position)
 				set_view_direction(view_direction)
 				if global_position == previouse_global_position:
+					is_attacking = false
 					if playerAttackZone.mob_can_attack:
 						update_behaviour(PRE_ATTACKING)
 					else:
@@ -146,7 +150,7 @@ func update_behaviour(new_behaviour):
 		# Handle new bahaviour
 		match new_behaviour:
 			PRE_ATTACKING:
-				speed = HUNTING_SPEED
+				speed = PRE_ATTACKING_SPEED
 				if behaviour_state != PRE_ATTACKING:
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
@@ -157,6 +161,9 @@ func update_behaviour(new_behaviour):
 				behaviour_state = PRE_ATTACKING
 				mob_need_path = true
 				change_animations(PRE_ATTACKING)
+				
+				# Disable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
+				damageAreaShape.set_deferred("disabled", true)
 			
 			
 			ATTACKING:
@@ -176,14 +183,16 @@ func update_behaviour(new_behaviour):
 				behaviour_state = ATTACKING
 				mob_need_path = false
 				change_animations(ATTACKING)
+				
+				# Enable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
+				damageAreaShape.set_deferred("disabled", false)
 
 
 func _on_DamageArea_area_entered(area):
-	if behaviour_state == ATTACKING:
+	if behaviour_state == ATTACKING and not is_attacking:
+		is_attacking = true
 		if area.name == "HitboxZone" and area.owner.name == "Player":
 			var player = area.owner
-			print("PLAYER \"" + str(player.name) + "\" DAMAGE ----> " + str(area.name))
-			
 			if player.has_method("simulate_damage"):
 				var damage = get_attack_damage(attack_damage)
 				player.simulate_damage(global_position, damage, knockback)
