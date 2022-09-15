@@ -11,6 +11,7 @@ var previouse_player_global_position
 var previouse_global_position
 var is_attacking = false
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Setup mob

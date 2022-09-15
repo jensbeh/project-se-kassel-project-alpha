@@ -118,6 +118,18 @@ tracks/3/keys = {
 "method": "mob_killed"
 } ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("../NinePatchRect:rect_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=53]
 resource_name = "Die_Right"
@@ -170,6 +182,18 @@ tracks/3/keys = {
 "args": [  ],
 "method": "mob_killed"
 } ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../NinePatchRect:rect_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=54]
