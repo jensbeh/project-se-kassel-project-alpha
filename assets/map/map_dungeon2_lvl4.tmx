@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="13" nextobjectid="3">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="14" nextobjectid="33">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
- <objectgroup id="11" name="mobSpawns"/>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">
@@ -339,6 +338,32 @@
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>
+  <objectgroup id="13" name="lights">
+   <object id="7" type="light" gid="274" x="256" y="416" width="16" height="16"/>
+   <object id="8" type="light" gid="274" x="432" y="400" width="16" height="16"/>
+   <object id="9" type="light" gid="274" x="400" y="272" width="16" height="16"/>
+   <object id="12" type="light" gid="274" x="256" y="224" width="16" height="16"/>
+   <object id="13" type="light" gid="274" x="64" y="208" width="16" height="16"/>
+   <object id="14" type="light" gid="274" x="48" y="64" width="16" height="16"/>
+   <object id="15" type="light" gid="274" x="0" y="-96" width="16" height="16"/>
+   <object id="16" type="light" gid="274" x="144" y="-192" width="16" height="16"/>
+   <object id="17" type="light" gid="274" x="288" y="-192" width="16" height="16"/>
+   <object id="18" type="light" gid="274" x="464" y="-192" width="16" height="16"/>
+   <object id="19" type="light" gid="274" x="640" y="-192" width="16" height="16"/>
+   <object id="20" type="light" gid="274" x="768" y="-144" width="16" height="16"/>
+   <object id="21" type="light" gid="274" x="816" y="-16" width="16" height="16"/>
+   <object id="22" type="light" gid="274" x="720" y="160" width="16" height="16"/>
+   <object id="23" type="light" gid="274" x="592" y="224" width="16" height="16"/>
+   <object id="24" type="light" gid="274" x="624" y="48" width="16" height="16"/>
+   <object id="25" type="light" gid="274" x="624" y="-80" width="16" height="16"/>
+   <object id="26" type="light" gid="274" x="464" y="-64" width="16" height="16"/>
+   <object id="27" type="light" gid="274" x="464" y="112" width="16" height="16"/>
+   <object id="28" type="light" gid="274" x="176" y="112" width="16" height="16"/>
+   <object id="29" type="light" gid="274" x="144" y="-64" width="16" height="16"/>
+   <object id="30" type="light" gid="274" x="-32" y="144" width="16" height="16"/>
+   <object id="31" type="light" gid="274" x="304" y="-64" width="16" height="16"/>
+   <object id="32" type="light" gid="274" x="336" y="80" width="16" height="16"/>
+  </objectgroup>
  </group>
  <group id="12" name="lootLayer"/>
  <group id="3" name="entitylayer">
@@ -393,6 +418,20 @@
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon2-lvl1-from-dungeon2-lvl2"/>
    </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="11" name="mobSpawns" visible="0">
+  <object id="5" type="area" x="256" y="-176">
+   <properties>
+    <property name="biome" value="dungeon"/>
+    <property name="max_mobs" type="int" value="20"/>
+   </properties>
+   <polygon points="0,0 -96,0 -144,48 -224,80 -256,128 -256,288 -256,320 -272,336 -272,368 -224,432 112,432 496,432 528,368 528,320 560,256 560,192 496,32 448,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="12" name="bossSpawn" visible="0">
+  <object id="6" name="boss_spawn_area" type="area" x="256" y="-176">
+   <polygon points="0,0 -96,0 -144,48 -224,80 -256,128 -256,288 -256,320 -272,336 -272,368 -224,432 112,432 496,432 528,368 528,320 560,256 560,192 496,32 448,0"/>
   </object>
  </objectgroup>
 </map>

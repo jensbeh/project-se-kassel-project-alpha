@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Constants
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
+var PRE_ATTACKING_SPEED
 
 # Mob specific
 var max_health = 100
@@ -60,6 +61,7 @@ onready var playerDetectionZone = $PlayerDetectionZone
 onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
 onready var playerAttackZone = $PlayerAttackZone
 onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
+onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
@@ -435,7 +437,7 @@ func mob_hurt():
 # Method is called when DIE animation is done
 func mob_killed():
 	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-	Utils.get_scene_manager().get_current_scene().despawn_mob(self)
+	MobSpawnerService.despawn_mob(self)
 
 
 # Method to return a random time between min_time and max_time

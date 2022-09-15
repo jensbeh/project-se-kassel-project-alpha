@@ -493,8 +493,12 @@ func start_game():
 
 	# Set spawn
 	var player_position = Vector2(1128,616) # Camp
-#	var player_position = Vector2(768,752) # Grassland
+#	var player_position = Vector2(768,752) # Grassland - Dungeon1
+#	var player_position = Vector2(-816,-496) # Grassland - Mountain
 #	var player_position = Vector2(336,-62) # Dungeon1-1
+#	var player_position = Vector2(784,16) # Dungeon1-3
+#	var player_position = Vector2(240,480) # Dungeon2-4
+#	var player_position = Vector2(-384,176) # Dungeon3-4
 	var view_direction = Vector2(0,1)
 
 	# Set data
@@ -522,6 +526,9 @@ func start_game():
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

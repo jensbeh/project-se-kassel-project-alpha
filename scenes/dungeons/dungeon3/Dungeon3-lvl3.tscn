@@ -14,6 +14,7 @@ margin_left = -1016.0
 margin_top = -1024.0
 margin_right = 1392.0
 margin_bottom = 1064.0
+mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 
 [node name="map_dungeon3_lvl3" parent="." instance=ExtResource( 2 )]
@@ -21,8 +22,12 @@ color = Color( 0, 0, 0, 1 )
 [node name="Player" parent="map_dungeon3_lvl3/entitylayer/playerlayer" index="0" instance=ExtResource( 1 )]
 position = Vector2( -280, 552 )
 
-[node name="AnimationTree" parent="map_dungeon3_lvl3/entitylayer/playerlayer/Player" index="16"]
+[node name="Body" parent="map_dungeon3_lvl3/entitylayer/playerlayer/Player" index="1"]
+frame = 0
+
+[node name="AnimationTree" parent="map_dungeon3_lvl3/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 
 [editable path="map_dungeon3_lvl3"]
 [editable path="map_dungeon3_lvl3/entitylayer/playerlayer/Player"]
+[editable path="map_dungeon3_lvl3/entitylayer/playerlayer/Player/HitboxZone"]

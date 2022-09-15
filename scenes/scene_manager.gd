@@ -30,6 +30,7 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
 		Utils.get_current_player().set_player_can_interact(false)
+		Utils.get_current_player().make_player_invisible(true)
 	
 	# Cleanup UI
 	# Remove "ESC" Game Menu
@@ -62,7 +63,7 @@ func _load_scene_in_background():
 		if err == ERR_FILE_EOF: # Finished loading.
 #			var resource = thread.wait_to_finish()
 			var resource = loader.get_resource()
-			var scene = resource.instance()
+			var scene = resource.instance() # !!! Takes very long time and freezes main thread
 			pass_data_to_scene(scene)
 			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
 			if get_current_scene().find_node("CanvasModulate") != null:
@@ -130,6 +131,8 @@ func finish_transition():
 				Utils.get_current_player().set_player_can_interact(true)
 			if Utils.get_current_player().is_player_dying() == true:
 				Utils.get_current_player().reset_player_after_dying()
+			if Utils.get_current_player().is_player_invisible() == true:
+				Utils.get_current_player().make_player_invisible(false)
 				
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")

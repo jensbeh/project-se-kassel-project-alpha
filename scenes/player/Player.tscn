@@ -1,4 +1,4 @@
-[gd_scene load_steps=93 format=2]
+[gd_scene load_steps=89 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -4053,19 +4053,11 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=74]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=75]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=76]
-
 [sub_resource type="AnimationNodeStateMachineTransition" id=77]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=78]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=89]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=90]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=91]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=92]
 
@@ -4080,7 +4072,7 @@ states/Idle/node = SubResource( 17 )
 states/Idle/position = Vector2( 240, 73 )
 states/Walk/node = SubResource( 22 )
 states/Walk/position = Vector2( 431, 73 )
-transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 63 ), "Attack", "Idle", SubResource( 64 ), "Attack", "Walk", SubResource( 65 ), "Walk", "Attack", SubResource( 66 ), "Idle", "Hurt", SubResource( 73 ), "Hurt", "Idle", SubResource( 74 ), "Attack", "Hurt", SubResource( 75 ), "Hurt", "Attack", SubResource( 76 ), "Hurt", "Walk", SubResource( 77 ), "Walk", "Hurt", SubResource( 78 ), "Idle", "Die", SubResource( 89 ), "Attack", "Die", SubResource( 90 ), "Hurt", "Die", SubResource( 91 ), "Walk", "Die", SubResource( 92 ) ]
+transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 63 ), "Attack", "Idle", SubResource( 64 ), "Attack", "Walk", SubResource( 65 ), "Walk", "Attack", SubResource( 66 ), "Idle", "Hurt", SubResource( 73 ), "Hurt", "Idle", SubResource( 74 ), "Hurt", "Walk", SubResource( 77 ), "Walk", "Hurt", SubResource( 78 ), "Idle", "Die", SubResource( 89 ), "Walk", "Die", SubResource( 92 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -161.044, 0 )
 
@@ -4106,6 +4098,7 @@ centered = false
 offset = Vector2( -8, -20 )
 hframes = 8
 vframes = 49
+frame = 8
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Shoes" type="Sprite" parent="."]
@@ -4271,12 +4264,11 @@ disabled = true
 
 [node name="Weapon" type="Sprite" parent="."]
 visible = false
-position = Vector2( 0.2, -8.2 )
+position = Vector2( -0.911102, -8.39999 )
 scale = Vector2( 0.031, 0.031 )
 texture = ExtResource( 18 )
 hframes = 4
 vframes = 4
-frame = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -4292,7 +4284,6 @@ collision_mask = 0
 shape = SubResource( 67 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-method_call_mode = 1
 anims/AttackDown = SubResource( 40 )
 anims/AttackLeft = SubResource( 39 )
 anims/AttackRight = SubResource( 41 )

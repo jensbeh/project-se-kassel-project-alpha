@@ -93,23 +93,23 @@ func update_shader_transformation():
 func update_shader_color():
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.MENU:
-			print("LIGHT MANAGER SCENE TYPE CHANGED ----> MENU")
+#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> MENU")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 			update_lights(false)
 			
 		Constants.SceneType.CAMP:
-			print("LIGHT MANAGER SCENE TYPE CHANGED ----> CAMP")
+#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> CAMP")
 			is_day_night_cycle = true
 			update_lights(true)
 			
 		Constants.SceneType.GRASSLAND:
-			print("LIGHT MANAGER SCENE TYPE CHANGED ----> GRASSLAND")
+#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> GRASSLAND")
 			is_day_night_cycle = true
 			update_lights(true)
 			
 		Constants.SceneType.DUNGEON:
-			print("LIGHT MANAGER SCENE TYPE CHANGED ----> DUNGEON")
+#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> DUNGEON")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DUNGEON_COLOR)
 			update_lights(true)

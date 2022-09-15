@@ -12,6 +12,7 @@ margin_left = -632.0
 margin_top = -608.0
 margin_right = 1480.0
 margin_bottom = 824.0
+mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 
 [node name="map_dungeon1_lvl3" parent="." instance=ExtResource( 1 )]
