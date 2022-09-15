@@ -85,8 +85,10 @@ func cleanup():
 	mob_spawner_timer.stop()
 	# -> Disconnect signals
 	if is_time_sensitiv:
-		DayNightCycle.disconnect("change_to_sunrise", self, "on_change_to_sunrise")
-		DayNightCycle.disconnect("change_to_night", self, "on_change_to_night")
+		if DayNightCycle.is_connected("change_to_sunrise", self, "on_change_to_sunrise"):
+			DayNightCycle.disconnect("change_to_sunrise", self, "on_change_to_sunrise")
+		if DayNightCycle.is_connected("change_to_night", self, "on_change_to_night"):
+			DayNightCycle.disconnect("change_to_night", self, "on_change_to_night")
 	# -> Clean mobs
 	for mob in mob_list:
 		if is_instance_valid(mob) and mob.is_inside_tree():
