@@ -144,5 +144,3 @@ func set_boss_name_to_hp_bar(new_boss):
 # Method to update language
 func update_language():
 	bossName.set_text(boss.get_boss_name())
-	print("update_language")
-	print(boss.get_boss_name())

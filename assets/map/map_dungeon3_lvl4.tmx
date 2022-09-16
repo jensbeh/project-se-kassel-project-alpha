@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="14" nextobjectid="30">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="16" nextobjectid="36">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
@@ -97,11 +97,11 @@
 </chunk>
     <chunk x="-32" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,102,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,102,61,
-0,0,0,0,0,0,0,0,0,0,0,0,102,60,61,6,
-0,0,102,60,60,60,60,60,60,21,60,60,61,28,6,6,
+0,0,0,0,0,0,0,102,60,60,60,101,0,0,0,0,
+0,0,0,0,0,0,0,40,6,6,6,62,0,0,0,102,
+0,0,0,0,0,0,0,40,6,6,6,38,0,0,102,61,
+0,0,0,0,0,0,0,40,6,6,6,38,102,60,61,6,
+0,0,102,60,60,60,60,65,132,28,134,65,61,28,6,6,
 0,0,84,7,6,6,6,6,6,7,6,6,6,6,28,7,
 0,102,61,6,6,28,6,6,6,6,6,6,6,6,6,6,
 0,40,6,6,28,28,6,6,6,6,6,28,6,6,6,6,
@@ -300,11 +300,11 @@
     <chunk x="-32" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,194,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,194,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,111,0,113,0,0,0,0,0,
+0,0,0,0,0,194,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -321,7 +321,7 @@
    <data encoding="csv"/>
   </layer>
   <objectgroup id="13" name="lights">
-   <object id="8" type="light" gid="274" x="-432" y="96" width="16" height="16"/>
+   <object id="8" type="light" gid="274" x="-448" y="96" width="16" height="16"/>
    <object id="9" type="light" gid="274" x="-272" y="64" width="16" height="16"/>
    <object id="10" type="light" gid="274" x="-144" y="-64" width="16" height="16"/>
    <object id="11" type="light" gid="274" x="16" y="-112" width="16" height="16"/>
@@ -343,9 +343,17 @@
    <object id="27" type="light" gid="274" x="352" y="48" width="16" height="16"/>
    <object id="28" type="light" gid="274" x="256" y="144" width="16" height="16"/>
    <object id="29" type="light" gid="274" x="-304" y="240" width="16" height="16"/>
+   <object id="32" type="light" gid="274" x="-336" y="96" width="16" height="16"/>
+   <object id="33" type="light" gid="274" x="-384" y="32" width="16" height="16"/>
+   <object id="34" type="light" gid="274" x="-352" y="32" width="16" height="16"/>
+  </objectgroup>
+  <objectgroup id="14" name="locked_doors">
+   <object id="30" gid="170" x="-368" y="96" width="16" height="16"/>
+   <object id="31" x="-368" y="80" width="16" height="16"/>
   </objectgroup>
  </group>
  <group id="3" name="entitylayer">
+  <group id="15" name="keylayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>
  </group>
@@ -357,11 +365,11 @@
    <data encoding="csv">
     <chunk x="-32" y="0" width="16" height="16">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,173,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,173,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,90,91,92,0,0,0,0,0,
+0,0,0,0,0,173,0,0,0,112,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -377,23 +385,23 @@
   </layer>
  </group>
  <objectgroup id="11" name="playerSpawns">
-  <object id="11" name="player_spawn_from_dungeon3-lvl3" type="area" x="-404" y="103" width="24" height="16">
+  <object id="11" name="player_spawn_from_dungeon3-lvl3" type="area" x="-436" y="103" width="24" height="16">
    <properties>
     <property name="spawn_area_id" value="ps_dungeon3-lvl4-from-dungeon3-lvl3"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="12" name="changeScenes">
-  <object id="13" name="changeScene dungeon3-lvl3" type="area" x="-404" y="96" width="24" height="16">
+  <object id="13" name="changeScene dungeon3-lvl3" type="area" x="-436" y="96" width="24" height="16">
    <properties>
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon3/Dungeon3-lvl3.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon3-lvl3-from-dungeon3-lvl4"/>
    </properties>
   </object>
-  <object id="14" name="changeScene dungeon3-lvl1" type="area" x="752" y="32" width="24" height="16">
+  <object id="35" name="changeScene dungeon3-lvl1" type="area" x="-372" y="32" width="24" height="16">
    <properties>
-    <property name="need_to_press_button_for_change" type="bool" value="false"/>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon3/Dungeon3-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon3-lvl1-from-dungeon3-lvl2"/>
    </properties>

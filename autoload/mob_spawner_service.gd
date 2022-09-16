@@ -108,7 +108,6 @@ func handle_mob_spawns():
 	while can_spawn_mobs:
 		if should_spawn_mobs == true:
 			should_spawn_mobs = false
-			print("----> handle_mob_spawns")
 			
 			# Despawn mobs if necessary
 			if mobs_to_despawn.size() > 0:
@@ -137,10 +136,8 @@ func despawn_mobs():
 			if not Utils.is_position_in_camera_screen(mob.global_position):
 				if mob.is_in_group("Ambient Mob"):
 					current_ambient_mobs -= 1
-	#				print("removed ambient mob: " + str(current_ambient_mobs))
 				elif mob.is_in_group("Enemy"):
 					spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-	#				print("removed enemy mob: " + str(spawning_areas[mob.spawnArea]["current_mobs_count"]))
 				mob.get_parent().call_deferred("remove_child", mob)
 				
 				if mob in mobs_to_despawn:
@@ -249,7 +246,6 @@ func despawn_mob(mob):
 func spawn_despawn_mobs():
 #	remove_mobs(remove_mobs)
 	if can_spawn_mobs:
-		print("-------------------------> REMOVE MOBS & SPAWN MOBS")
 		should_spawn_mobs = true
 		mob_spawner_timer.set_wait_time(mob_spawn_interval)
 		mob_spawner_timer.start()
@@ -259,7 +255,6 @@ func spawn_despawn_mobs():
 func on_change_to_sunrise():
 	if can_spawn_mobs:
 		# Spawn specific day mobs and remove specific night mobs
-		print("day")
 		# Remove mobs
 		for mob in mob_list:
 			if is_instance_valid(mob) and mob.is_inside_tree():
@@ -273,7 +268,6 @@ func on_change_to_sunrise():
 func on_change_to_night():
 	if can_spawn_mobs:
 		# Spawn specific night mobs and remove specific day mobs
-		print("night")
 		# Remove mobs
 		for mob in mob_list:
 			if is_instance_valid(mob) and mob.is_inside_tree():
@@ -285,7 +279,6 @@ func on_change_to_night():
 
 # Method to enable or disable mob respawning
 func disable_mob_respawning(disable):
-	print("disable: " + str(disable))
 	can_spawn_mobs = !disable
 	
 	# Disble mob respawn

@@ -482,9 +482,13 @@ func mob_hurt():
 
 # Method is called when DIE animation is done
 func mob_killed():
+	# Spawn way to first lvl in dungeon if boss is killed in dungeon's boss room
+	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+		Utils.get_scene_manager().get_current_scene().spawn_key_at_death(global_position)
+	
+	Utils.get_player_ui().show_boss_health(false)
 	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
 	Utils.get_scene_manager().get_current_scene().despawn_boss(self)
-	Utils.get_player_ui().show_boss_health(false)
 
 
 # Method to return a random time between min_time and max_time
