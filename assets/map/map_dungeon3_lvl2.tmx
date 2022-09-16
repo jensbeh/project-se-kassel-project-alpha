@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="13" nextobjectid="5">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="14" nextobjectid="14">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <tileset firstgid="337" source="../tilesets/animated_decorations.tsx"/>
  <objectgroup id="11" name="mobSpawns">
   <object id="3" type="area" x="288" y="-496">
    <properties>
@@ -873,6 +874,41 @@
 </chunk>
    </data>
   </layer>
+  <objectgroup id="13" name="treasure">
+   <object id="5" gid="346" x="-368.689" y="48.2422" width="16" height="16">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+   <object id="6" gid="346" x="383.989" y="-303.504" width="16" height="16">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+   <object id="7" gid="354" x="-464.078" y="94.4462" width="16" height="16">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="3"/>
+    </properties>
+   </object>
+   <object id="8" name="pos_treasure_1" x="-464.375" y="78.25" width="16.25" height="16.125"/>
+   <object id="9" name="treasure_1" type="area" x="-471" y="72.625" width="28.5" height="28">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="3"/>
+    </properties>
+   </object>
+   <object id="10" name="pos_treasure_2" x="383.75" y="-319.625" width="16.375" height="16.25"/>
+   <object id="11" name="treasure_2" type="area" x="379.375" y="-324.875" width="24.5" height="27">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+   <object id="12" name="pos_treasure_3" x="-368.875" y="32.125" width="16" height="16.125"/>
+   <object id="13" name="treasure_3" type="area" x="-373.75" y="27" width="27" height="26.125">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+  </objectgroup>
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>

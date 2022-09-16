@@ -8,9 +8,8 @@ var loot_count
 var max_loot = 6
 
 # todos
-# animate pickup and loot drop
-# random? spawn from treasures in dungeons --
-# random spawn from ores and leafs etc --
+# animate pickup and loot drop --
+# random spawn from ores and leafs, mushrooms --
 
 # setup the looting panel
 func _ready():
@@ -65,6 +64,8 @@ func PopulatePanel():
 					loot_dict[counter][0] = GameData.jewel_IDs[randi() % 4]
 				elif loot_dict[counter][0] == "Potion":
 					loot_dict[counter][0] = GameData.potion_IDs[randi() % 4]
+					if loot_type == "Treasure":
+						loot_dict[counter][0] = GameData.potion_IDs[(randi() % 2) + 4]
 				elif loot_dict[counter][0] == "Weapon":
 					loot_dict[counter][0] = GameData.weapon_IDs[randi() % 4]
 			get_node(str(i.get_path()) + "/Name").set_text(tr(str(GameData.item_data[str(loot_dict[counter][0])]["Name"])))
@@ -98,6 +99,7 @@ func _on_Icon_gui_input(event, lootpanelslot):
 
 # close the loot panel
 func _on_Close_pressed():
+	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
@@ -107,6 +109,7 @@ func _on_Close_pressed():
 # loot all items and close the panel
 func _on_LootAll_pressed():
 	var size = loot_dict.size()
+	get_parent().remove_child(self)
 	queue_free()
 	for i in range(1,size + 1):
 		loot_item(i)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="18" nextobjectid="19">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="19" nextobjectid="24">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <tileset firstgid="337" source="../tilesets/animated_decorations.tsx"/>
  <objectgroup id="16" name="mobSpawns">
   <object id="16" type="area" x="224" y="320">
    <properties>
@@ -430,6 +431,15 @@
 </chunk>
    </data>
   </layer>
+  <objectgroup id="18" name="treasures">
+   <object id="19" gid="346" x="496" y="-81.5" width="16" height="16"/>
+   <object id="22" name="pos_treasure_1" x="495.875" y="-97.5625" width="16.125" height="15.875"/>
+   <object id="23" name="treasure_1" type="area" x="493.188" y="-99.625" width="22.8125" height="26.125">
+    <properties>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+  </objectgroup>
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>

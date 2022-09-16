@@ -7,6 +7,7 @@ var in_dungeon: bool
 var looted = false
 var content = {}
 var spawn_position
+var loot_panel
 
 # start timer for looting time and connect interaction signal with player
 func _ready():
@@ -40,13 +41,13 @@ func interaction():
 		interacted = true
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
-		var loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+		loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
 		Utils.get_ui().add_child(loot_panel)
 		loot_panel.connect("looted", self, "save_loot")
 		if !looted:
-			looted = true
 			loot_panel.set_loot_type(mob_type, in_dungeon)
 			loot_panel.loot()
+			looted = true
 		elif !content.empty():
 			loot_panel.set_up_content(content)
 
@@ -54,12 +55,15 @@ func interaction():
 func save_loot(loot):
 	interacted = false
 	content = loot
+	loot_panel.disconnect("looted", self, "save_loot")
 	if content.empty():
 		Utils.get_current_player().disconnect("player_interact", self, "interaction")
+		get_parent().remove_child(self)
 		queue_free()
 
 
 # loot disappear when time is up
 func _on_Timer_timeout():
 	Utils.get_current_player().disconnect("player_interact", self, "interaction")
+	get_parent().remove_child(self)
 	queue_free()

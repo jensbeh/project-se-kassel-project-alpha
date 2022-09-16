@@ -12,6 +12,10 @@ var groundChunks
 var higherChunks
 var boss_spawn_area = null
 
+var treasure_dict = {}
+var interacted = false
+var loot_panel
+
 # Variables - Data passed from scene before
 var init_transition_data = null
 
@@ -52,6 +56,9 @@ func _setup_scene_in_background():
 	
 	# Setup spawning areas
 	setup_spawning_areas()
+	
+	# Setup Treasures
+	setup_treasure_areas()
 	
 	# Spawn mobs
 	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, 0, false)
@@ -124,6 +131,7 @@ func setup_player():
 	
 	# Connect signals
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction")
 
 
 # Method to set transition_data which contains stuff about the player and the transition
@@ -167,6 +175,16 @@ func clear_signals():
 			# connect Area2D with functions to handle body action
 			child.disconnect("body_entered", self, "body_entered_change_scene_area")
 			child.disconnect("body_exited", self, "body_exited_change_scene_area")
+	
+	# Treasures
+	for chunk in groundChunks.get_children():
+		var treasure_object = chunk.find_node("treasures")
+		if treasure_object != null:
+			for treasure in treasure_object.get_children():
+				if "treasure" in treasure.name:
+					# connect Area2D with functions to handle body action
+					treasure.disconnect("body_entered", self, "body_entered_treasure", [treasure])
+					treasure.disconnect("body_exited", self, "body_exited_treasure", [treasure])
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -257,3 +275,100 @@ func spawn_loot(position, mob_name):
 			var loot = load(Constants.LOOT_DROP).instance()
 			loot.init(position, mob_name)
 			lootLayer.call_deferred("add_child", loot)
+
+
+# Method which is called when a body has entered a doorArea
+func body_entered_treasure(body, treasureArea):
+	if body.name == "Player":
+		treasure_dict[treasureArea][0] = true
+
+# Method which is called when a body has exited a doorArea
+func body_exited_treasure(body, treasureArea):
+	if body.name == "Player":
+		treasure_dict[treasureArea][0] = false
+		interacted = false
+
+
+# Setup all treasure objectes/Area2D's on start
+func setup_treasure_areas():
+	for chunk in groundChunks.get_children():
+		var treasure_object = chunk.find_node("treasures")
+		if treasure_object != null:
+			for treasure in treasure_object.get_children():
+				if "treasure" in treasure.name and !"pos" in treasure.name:
+					var treasure_data = []
+					treasure_data.append(false) # in range
+					treasure_data.append(false) # looted
+					treasure_data.append({}) # loot list
+					treasure_data.append(treasure.get_meta("selected_treasure_sprite")) # treasure type
+					treasure_dict[treasure] = treasure_data
+					# connect Area2D with functions to handle body action
+					treasure.connect("body_entered", self, "body_entered_treasure", [treasure])
+					treasure.connect("body_exited", self, "body_exited_treasure", [treasure])
+
+
+# when interacted, open loot panel for looting
+func interaction():
+	var treasure
+	for i in treasure_dict.keys():
+		if treasure_dict[i][0]:
+			treasure = i
+	if treasure != null:
+		if treasure_dict[treasure][0] and !interacted and player_has_key(treasure):
+			interacted = true
+			Utils.get_current_player().set_movement(false)
+			Utils.get_current_player().set_movment_animation(false)
+			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+			Utils.get_ui().add_child(loot_panel)
+			loot_panel.connect("looted", self, "save_loot")
+			if !treasure_dict[treasure][1]:
+				treasure_dict[treasure][1] = true
+				for child in treasure.get_children():
+					if "animationPlayer" in child.name:
+						# Start treasure animation
+						child.play("openTreasure")
+				loot_panel.set_loot_type("Treasure" + str(treasure_dict[treasure][3]), true)
+				loot_panel.loot()
+			else:
+				loot_panel.set_up_content(treasure_dict[treasure][2])
+
+
+func save_loot(loot):
+	var treasure
+	for i in treasure_dict.keys():
+		if treasure_dict[i][0]:
+			treasure = i
+	interacted = false
+	treasure_dict[treasure][2] = loot
+	loot_panel.disconnect("looted", self, "save_loot")
+
+
+# check if the player has a key to open the cheest
+func player_has_key(treasureArea):
+	if treasure_dict[treasureArea][1]:
+		return true
+	if treasure_dict[treasureArea][3] == 1:
+		for i in range(1,31):
+			if PlayerData.inv_data["Inv" + str(i)]["Item"] == 10022:
+				if PlayerData.inv_data["Inv" + str(i)]["Stack"] > 1:
+					PlayerData.inv_data["Inv" + str(i)]["Stack"] -= 1
+				else:
+					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
+				return true
+		return false
+	elif treasure_dict[treasureArea][3] == 2:
+		for i in range(1,31):
+			if PlayerData.inv_data["Inv" + str(i)]["Item"] == 10023:
+				if PlayerData.inv_data["Inv" + str(i)]["Stack"] > 1:
+					PlayerData.inv_data["Inv" + str(i)]["Stack"] -= 1
+				else:
+					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
+				return true
+		return false
+	else:
+		return true
+
+# tield shapes
+# import right pos
+# tiled names
+# loot panel bug

@@ -113,7 +113,7 @@ func _ready():
 	make_player_invisible(false)
 	
 	# Set invincibility of player
-	make_player_invincible(false)
+	make_player_invincible(true)
 
 
 func _physics_process(delta):
