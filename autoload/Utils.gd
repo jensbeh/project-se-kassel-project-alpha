@@ -10,6 +10,12 @@ func _ready():
 	pass
 
 
+# Method to update language in game
+func update_language():
+	# Update language in player ui
+	Utils.get_player_ui().update_language()
+
+
 # Returns the player in the loaded current_scene
 func get_player():
 	return get_node("/root/Main/Game/Viewport/SceneManager/CurrentScene").get_children().back().find_node("Player")

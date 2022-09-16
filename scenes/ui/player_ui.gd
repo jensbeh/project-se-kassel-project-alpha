@@ -4,7 +4,17 @@ onready var exp_bar = get_node("NinePatchRect/ProgressBar")
 onready var clock = get_node("Clock/clock")
 onready var exp_value = get_node("NinePatchRect/ProgressBar/EXPValue")
 onready var life_bar = get_node("Lifebar")
+onready var bossHpNode = get_node("BossHpBar")
+onready var bossHpBar = get_node("BossHpBar/ProgressBar")
+onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
 var hearts = 3
+var boss
+
+
+func _ready():
+	# Setup bossHpBar at startup
+	bossHpNode.visible = false
+	bossHpBar.value = 100
 
 
 # Load the correct ui settings
@@ -91,3 +101,48 @@ func in_dungeon(value):
 		get_node("Hotbar").rect_position = Vector2(-916,456)
 	else:
 		get_node("Hotbar").rect_position = Vector2(-504,456)
+
+
+# Method to toggel visibility of boss hp bar
+func show_boss_health(is_visible):
+	bossHpNode.visible = is_visible
+
+
+# Method to toggel visibility of boss hp bar
+func is_boss_health_visible():
+	return bossHpNode.visible
+
+
+# Method to reset boss hp in ui
+func update_boss_health_bar():
+	# Show boss health bar only in dungeon -> boss room
+	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+		bossHpNode.visible = true
+		bossHpBar.value = 100
+	else:
+		bossHpNode.visible = false
+		bossHpBar.value = 100
+		bossName.set_text("")
+		boss = null
+
+
+# Method to set boss hp value in ui
+func set_boss_health(healthbar_value_in_percent):
+	bossHpBar.value = healthbar_value_in_percent
+	
+	# Show healthbar on damage if under 100%
+	if not is_boss_health_visible():
+		show_boss_health(true)
+
+
+# Method to set boss_name to health bar text
+func set_boss_name_to_hp_bar(new_boss):
+	boss = new_boss
+	bossName.set_text(boss.get_boss_name())
+
+
+# Method to update language
+func update_language():
+	bossName.set_text(boss.get_boss_name())
+	print("update_language")
+	print(boss.get_boss_name())

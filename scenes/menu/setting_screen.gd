@@ -52,6 +52,7 @@ func _on_OptionButton_item_selected(index):
 	TranslationServer.set_locale(Utils.get_language())
 	_ready()
 	save_settings()
+	Utils.update_language()
 
 # Close settings and resetup the scene
 func _on_Back_pressed():

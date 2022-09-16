@@ -1,10 +1,13 @@
-[gd_scene load_steps=71 format=2]
+[gd_scene load_steps=77 format=2]
 
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/mobs/bosses/boss_fungus.gd" type="Script" id=3]
 [ext_resource path="res://assets/mobs/FungusBlue.png" type="Texture" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=7]
+[ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=8]
 [ext_resource path="res://scenes/mobs/DamageArea.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Animation" id=114]
@@ -48,6 +51,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=115]
 resource_name = "Die_Left"
@@ -89,6 +104,18 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=116]
@@ -132,6 +159,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=117]
 resource_name = "Die_Up"
@@ -173,6 +212,18 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("../NinePatchRect:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=118]
@@ -653,6 +704,17 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id=150]
 radius = 8.0
 
+[sub_resource type="DynamicFont" id=151]
+size = 24
+font_data = ExtResource( 6 )
+
+[sub_resource type="StyleBoxTexture" id=152]
+texture = ExtResource( 7 )
+region_rect = Rect2( 13.5209, 10.9816, 376.731, 18.6612 )
+margin_right = 3.58902
+
+[sub_resource type="StyleBoxTexture" id=153]
+
 [node name="Boss_FungusBlue" type="KinematicBody2D" groups=["Enemy"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
@@ -732,6 +794,32 @@ position = Vector2( 0, -2 )
 
 [node name="CollisionShape2D" parent="DamageArea" index="0"]
 shape = SubResource( 150 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_left = -424.0
+margin_top = -36.0
+margin_right = 424.0
+margin_bottom = 11.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 424, 23 )
+texture = ExtResource( 8 )
+region_rect = Rect2( 3, 4.5077, 95, 95.4923 )
+patch_margin_left = 10
+patch_margin_top = 9
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="ProgressBar" type="ProgressBar" parent="NinePatchRect"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 843.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 151 )
+custom_styles/fg = SubResource( 152 )
+custom_styles/bg = SubResource( 153 )
+value = 100.0
+allow_greater = true
+percent_visible = false
 
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 
