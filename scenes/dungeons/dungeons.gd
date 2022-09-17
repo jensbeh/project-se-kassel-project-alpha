@@ -266,14 +266,14 @@ func despawn_boss(boss_node):
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
 		var loot = load(Constants.LOOT_DROP).instance()
-		loot.init(position, mob_name)
+		loot.init(position, mob_name, true)
 		lootLayer.call_deferred("add_child", loot)
 	else:
 		randomize()
 		var chance = ((randi() % 10) +1)
 		if chance > 3:
 			var loot = load(Constants.LOOT_DROP).instance()
-			loot.init(position, mob_name)
+			loot.init(position, mob_name, true)
 			lootLayer.call_deferred("add_child", loot)
 
 
@@ -367,8 +367,3 @@ func player_has_key(treasureArea):
 		return false
 	else:
 		return true
-
-# tield shapes
-# import right pos
-# tiled names
-# loot panel bug

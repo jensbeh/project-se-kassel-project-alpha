@@ -298,12 +298,12 @@ func despawn_boss(boss_node):
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
 		var loot = load(Constants.LOOT_DROP).instance()
-		loot.init(position, mob_name)
+		loot.init(position, mob_name, false)
 		lootLayer.call_deferred("add_child", loot)
 	else:
 		randomize()
 		var chance = ((randi() % 10) +1)
 		if chance > 3:
 			var loot = load(Constants.LOOT_DROP).instance()
-			loot.init(position, mob_name)
+			loot.init(position, mob_name, false)
 			lootLayer.call_deferred("add_child", loot)

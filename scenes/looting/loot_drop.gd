@@ -17,8 +17,9 @@ func _ready():
 	$Timer.start()
 
 
-func init(new_spawn_position, mob_name):
+func init(new_spawn_position, mob_name, dungeon: bool):
 	spawn_position = new_spawn_position
+	in_dungeon = dungeon
 	for i in ["Bat", "Fungus", "Ghost", "Orbinaut", "Rat", "Skeleton", "SmallSlime", "Snake", "Zombie", "Boss"]:
 		if i in mob_name:
 			mob_type = i
@@ -38,18 +39,19 @@ func _on_Area2D_body_exited(body):
 # when interacted, open loot panel for looting
 func interaction():
 	if player_in_looting_zone and !interacted:
-		interacted = true
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
-		loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
-		Utils.get_ui().add_child(loot_panel)
-		loot_panel.connect("looted", self, "save_loot")
-		if !looted:
-			loot_panel.set_loot_type(mob_type, in_dungeon)
-			loot_panel.loot()
-			looted = true
-		elif !content.empty():
-			loot_panel.set_up_content(content)
+		if Utils.get_ui().get_node_or_null("LootPanel") == null:
+			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+			Utils.get_ui().add_child(loot_panel)
+			loot_panel.connect("looted", self, "save_loot")
+			if !looted:
+				interacted = true
+				loot_panel.set_loot_type(mob_type, in_dungeon)
+				loot_panel.loot()
+				looted = true
+			elif !content.empty():
+				loot_panel.set_up_content(content)
 
 
 func save_loot(loot):

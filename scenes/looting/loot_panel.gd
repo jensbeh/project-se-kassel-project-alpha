@@ -9,7 +9,7 @@ var max_loot = 6
 
 # todos
 # animate pickup and loot drop --
-# random spawn from ores and leafs, mushrooms --
+# random spawn from treasures, mushrooms --
 
 # setup the looting panel
 func _ready():
