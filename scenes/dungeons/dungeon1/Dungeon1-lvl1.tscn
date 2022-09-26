@@ -22,9 +22,6 @@ color = Color( 0, 0, 0, 1 )
 [node name="Player" parent="map_dungeon1_lvl1/entitylayer/playerlayer" index="0" instance=ExtResource( 1 )]
 position = Vector2( -8, 112 )
 
-[node name="Body" parent="map_dungeon1_lvl1/entitylayer/playerlayer/Player" index="1"]
-frame = 0
-
 [node name="AnimationTree" parent="map_dungeon1_lvl1/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 

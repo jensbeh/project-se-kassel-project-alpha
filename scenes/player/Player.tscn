@@ -4098,7 +4098,6 @@ centered = false
 offset = Vector2( -8, -20 )
 hframes = 8
 vframes = 49
-frame = 8
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Shoes" type="Sprite" parent="."]

@@ -1563,6 +1563,8 @@ graph_offset = Vector2( -161.044, 0 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=53]
 
 [node name="NPC" type="KinematicBody2D"]
+collision_layer = 10
+collision_mask = 2
 script = ExtResource( 15 )
 
 [node name="Shadow" type="Sprite" parent="."]
@@ -1694,6 +1696,7 @@ position = Vector2( 8, 2 )
 shape = SubResource( 25 )
 
 [node name="interactionZone NPC" type="Area2D" parent="."]
+collision_mask = 2
 
 [node name="InteractionArea" type="CollisionShape2D" parent="interactionZone NPC"]
 position = Vector2( 8, 5.875 )

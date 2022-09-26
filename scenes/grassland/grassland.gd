@@ -75,6 +75,9 @@ func _on_setup_scene_done():
 	# Spawn bosses
 	spawn_bosses()
 	
+	# Spawn random treasures
+	spawn_treasures()
+	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 
@@ -307,3 +310,21 @@ func spawn_loot(position, mob_name):
 			var loot = load(Constants.LOOT_DROP).instance()
 			loot.init(position, mob_name, false)
 			lootLayer.call_deferred("add_child", loot)
+
+
+func spawn_treasures():
+	for current_spawn_area in spawning_areas.keys():
+		randomize()
+		var quantity = randi() % 3
+		while quantity != 0:
+			# Spawn area informations
+			randomize()
+			var random_float = randf()
+			if random_float <= 0.4:
+				# load treasure
+				var treasure = load(Constants.TreasurePath).instance()
+				# Generate spawn position and spawn treasure
+				treasure.init(current_spawn_area, mobsNavigationTileMap)
+				lootLayer.call_deferred("add_child", treasure)
+				print(spawning_areas[current_spawn_area]["biome"])
+			quantity -= 1

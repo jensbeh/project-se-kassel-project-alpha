@@ -2,10 +2,20 @@ extends Node2D
 
 var player_in_looting_zone = false
 var interacted = false
+var spawn_position
+var loot_panel
+var looted = false
+var content = {}
 
 # connect interaction signal with player
 func _ready():
-	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction")
+	position = spawn_position
+
+
+func init(current_spawn_area, navigation_tile_map):
+	var collision_radius = get_node("Area2D2/CollisionShape2D").shape.radius
+	spawn_position = Utils.generate_position_in_mob_area(current_spawn_area, navigation_tile_map, collision_radius, true)
 
 
 # When player enter zone, player can interact
@@ -23,21 +33,23 @@ func _on_Area2D_body_exited(body):
 
 # when interacted, open loot panel for looting
 func interaction():
-	if player_in_looting_zone and !interacted and player_has_key():
+	if player_in_looting_zone and !interacted:
 		interacted = true
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_movment_animation(false)
-		Utils.get_ui().add_child(load(Constants.LOOT_PANEL_PATH).instance())
-		Utils.get_ui().get_node("LootPanel").set_loot_type("treasure", true)
+		get_node("AnimationPlayer").play("OpenTreasure")
+		loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+		Utils.get_ui().add_child(loot_panel)
+		loot_panel.connect("looted", self, "save_loot")
+		if !looted:
+			looted = true
+			loot_panel.set_loot_type("Treasure3", false)
+			loot_panel.loot()
+		else:
+			loot_panel.set_up_content(content)
 
 
-# check if the player has a key to open the chest
-func player_has_key():
-	for i in range(1,31):
-		if PlayerData.inv_data["Inv" + str(i)]["Item"] == 10022:
-			if PlayerData.inv_data["Inv" + str(i)]["Stack"] > 1:
-				PlayerData.inv_data["Inv" + str(i)]["Stack"] -= 1
-			else:
-				PlayerData.inv_data["Inv" + str(i)]["Item"] = null
-			return true
-	return false
+func save_loot(loot):
+	interacted = false
+	content = loot
+	loot_panel.disconnect("looted", self, "save_loot")
