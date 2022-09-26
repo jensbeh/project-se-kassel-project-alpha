@@ -407,7 +407,7 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	health -= damage_to_mob
 	
 	# Healthbar
-	var healthbar_value_in_percent = (100 / max_health) * health
+	var healthbar_value_in_percent = (100.0 / max_health) * health
 	healthBar.value = healthbar_value_in_percent
 	if not healthBar.visible:
 		healthBar.visible = true
