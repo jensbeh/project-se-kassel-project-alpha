@@ -40,7 +40,6 @@ func _on_Area2D_body_exited(body):
 func interaction():
 	if player_in_looting_zone and !interacted:
 		Utils.get_current_player().set_movement(false)
-		Utils.get_current_player().set_movment_animation(false)
 		if Utils.get_ui().get_node_or_null("LootPanel") == null:
 			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
 			Utils.get_ui().add_child(loot_panel)

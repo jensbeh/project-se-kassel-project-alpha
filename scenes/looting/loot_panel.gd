@@ -13,6 +13,7 @@ var max_loot = 6
 
 # setup the looting panel
 func _ready():
+	Utils.get_current_player().player_collect_loot()
 	get_node("Border/Background/VBoxContainer/HBoxContainer/Close").set_text(tr("CLOSE"))
 	get_node("Border/Background/VBoxContainer/HBoxContainer/LootAll").set_text(tr("LootAll"))
 
@@ -103,7 +104,7 @@ func _on_Close_pressed():
 	queue_free()
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().player_looted()
 
 
 # loot all items and close the panel
@@ -115,7 +116,7 @@ func _on_LootAll_pressed():
 		loot_item(i)
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().player_looted()
 
 
 func loot_item(item_idx):

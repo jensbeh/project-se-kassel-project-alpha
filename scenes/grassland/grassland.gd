@@ -326,5 +326,4 @@ func spawn_treasures():
 				# Generate spawn position and spawn treasure
 				treasure.init(current_spawn_area, mobsNavigationTileMap)
 				lootLayer.call_deferred("add_child", treasure)
-				print(spawning_areas[current_spawn_area]["biome"])
 			quantity -= 1

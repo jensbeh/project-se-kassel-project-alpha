@@ -36,7 +36,6 @@ func interaction():
 	if player_in_looting_zone and !interacted:
 		interacted = true
 		Utils.get_current_player().set_movement(false)
-		Utils.get_current_player().set_movment_animation(false)
 		get_node("AnimationPlayer").play("OpenTreasure")
 		loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
 		Utils.get_ui().add_child(loot_panel)

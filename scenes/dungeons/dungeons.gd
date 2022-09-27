@@ -331,7 +331,6 @@ func interaction():
 		if treasure_dict[treasure][0] and !interacted and player_has_key(treasure):
 			interacted = true
 			Utils.get_current_player().set_movement(false)
-			Utils.get_current_player().set_movment_animation(false)
 			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
 			Utils.get_ui().add_child(loot_panel)
 			loot_panel.connect("looted", self, "save_loot")
