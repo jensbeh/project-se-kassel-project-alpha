@@ -104,7 +104,6 @@ func _on_Close_pressed():
 	queue_free()
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().player_looted()
 
 
 # loot all items and close the panel
@@ -116,7 +115,6 @@ func _on_LootAll_pressed():
 		loot_item(i)
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().player_looted()
 
 
 func loot_item(item_idx):
