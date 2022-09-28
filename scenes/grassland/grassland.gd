@@ -322,7 +322,7 @@ func spawn_treasures():
 			var random_float = randf()
 			if random_float <= 0.4:
 				# load treasure
-				var treasure = load(Constants.TreasurePath).instance()
+				var treasure = load(Constants.TREASUREPATH).instance()
 				# Generate spawn position and spawn treasure
 				treasure.init(current_spawn_area, mobsNavigationTileMap)
 				lootLayer.call_deferred("add_child", treasure)

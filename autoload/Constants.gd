@@ -92,7 +92,8 @@ const LOOT_DROP = "res://scenes/looting/LootDrop.tscn"
 const TREASURE1_SCRIPT_PATH = "res://scenes/looting/treasure1.gd"
 const TREASURE2_SCRIPT_PATH = "res://scenes/looting/treasure2.gd"
 const TREASURE3_SCRIPT_PATH = "res://scenes/looting/treasure3.gd"
-const TreasurePath = "res://scenes/looting/Treasure.tscn"
+const TREASUREPATH = "res://scenes/looting/Treasure.tscn"
+const LOCKED_TREASURE_LABEL = "res://scenes/looting/Locked_Treasure.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999

@@ -180,10 +180,10 @@ func clear_signals():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
 			for treasure in treasure_object.get_children():
-				if "treasure" in treasure.name:
+				if "treasure" in treasure.name and !"pos" in treasure.name:
 					# connect Area2D with functions to handle body action
-					treasure.disconnect("body_entered", self, "body_entered_treasure", [treasure])
-					treasure.disconnect("body_exited", self, "body_exited_treasure", [treasure])
+					treasure.disconnect("body_entered", self, "body_entered_treasure")
+					treasure.disconnect("body_exited", self, "body_exited_treasure")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -368,6 +368,7 @@ func player_has_key(treasureArea):
 				else:
 					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
 				return true
+		Utils.get_ui().add_child(load(Constants.LOCKED_TREASURE_LABEL).instance())
 		return false
 	elif treasure_dict[treasureArea][3] == 2:
 		for i in range(1,31):
@@ -377,6 +378,7 @@ func player_has_key(treasureArea):
 				else:
 					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
 				return true
+		Utils.get_ui().add_child(load(Constants.LOCKED_TREASURE_LABEL).instance())
 		return false
 	else:
 		return true

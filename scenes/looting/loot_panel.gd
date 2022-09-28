@@ -6,10 +6,7 @@ var loot_dict = {}
 var loot_type
 var loot_count
 var max_loot = 6
-
-# todos
-# animate pickup and loot drop --
-# random spawn from treasures, mushrooms --
+var all = false
 
 # setup the looting panel
 func _ready():
@@ -56,9 +53,11 @@ func LootSelector():
 
 # add drops to the looting panel
 func PopulatePanel():
-	var counter = 1
+	var num = 1
+	var keys = loot_dict.keys()
 	for i in get_tree().get_nodes_in_group("LootPanelSlots"):
-		if counter <= loot_dict.size():
+		if num <= loot_dict.size():
+			var counter = keys[num -1]
 			if str(loot_dict[counter][0]) in ["Jewel", "Potion", "Weapon"]:
 				randomize()
 				if loot_dict[counter][0] == "Jewel":
@@ -87,15 +86,20 @@ func PopulatePanel():
 			if loot_dict[counter][1] > 1:
 				get_node(str(i.get_path()) + "/LootIcon/TextureRect").show()
 				get_node(str(i.get_path()) + "/LootIcon/TextureRect/Stack").set_text(str(loot_dict[counter][1]))
-			counter += 1
+			num += 1
+			i.show()
+		else:
+			i.hide()
 
 
 # looting with click on item
 func _on_Icon_gui_input(event, lootpanelslot):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			if loot_dict.has(lootpanelslot):
-				loot_item(lootpanelslot)
+			var keys = loot_dict.keys()
+			var item_idx = keys[lootpanelslot -1]
+			if loot_dict.has(item_idx):
+				loot_item(item_idx)
 
 
 # close the loot panel
@@ -104,17 +108,21 @@ func _on_Close_pressed():
 	queue_free()
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
+	Utils.get_current_player().set_movment_animation(true)
 
 
 # loot all items and close the panel
 func _on_LootAll_pressed():
+	all = true
 	var size = loot_dict.size()
+	var keys = loot_dict.keys()
 	get_parent().remove_child(self)
 	queue_free()
 	for i in range(1,size + 1):
-		loot_item(i)
+		loot_item(keys[i -1])
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
+	Utils.get_current_player().set_movment_animation(true)
 
 
 func loot_item(item_idx):
@@ -152,3 +160,5 @@ func loot_item(item_idx):
 	get_node(loot_slot + "/LootIcon/TextureRect").hide()
 	get_node(loot_slot + "/LootIcon/TextureRect/Stack").set_text("")
 	get_node(loot_slot + "/Name").set_text("")
+	if loot_dict.size() == 0 and !all:
+		_on_Close_pressed()

@@ -915,6 +915,8 @@ func player_collect_loot():
 # method is called after collect animation is done
 func player_looted():
 	collecting = false
+	if Utils.get_ui().get_node_or_null("LootPanel") != null:
+		set_movment_animation(false)
 
 
 # Method is called when DIE animation is done
