@@ -10,7 +10,7 @@ var current_chunk
 var previouse_chunk
 var active_chunks = []
 var can_load_chunks = false
-var chunk_loader_timer
+var chunk_loader_timer = Timer.new()
 var chunk_load_interval = 0.5
 var should_load_chunks = true
 
@@ -38,7 +38,6 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	chunkloader_thread.start(self, "load_chunks")
 	can_load_chunks = true
 	
-	chunk_loader_timer = Timer.new()
 	add_child(chunk_loader_timer)
 	chunk_loader_timer.connect("timeout", self, "_on_Timer_timeout")
 	should_load_chunks = true

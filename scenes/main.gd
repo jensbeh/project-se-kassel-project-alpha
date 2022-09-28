@@ -59,3 +59,10 @@ func add_settings():
 # Method to disable gui in viewport
 func disable_game_gui(disable_gui):
 	game_viewport.gui_disable_input = disable_gui
+
+
+# Handle notifications
+func _notification(notification):
+	# If game is closed
+	if (notification == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
+		Utils.stop_game()

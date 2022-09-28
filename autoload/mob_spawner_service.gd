@@ -3,7 +3,7 @@ extends Node
 # Variables
 var mobspawner_thread = Thread.new()
 var can_spawn_mobs = false
-var mob_spawner_timer
+var mob_spawner_timer = Timer.new()
 var mob_spawn_interval = 20.0 # in sec
 var should_spawn_mobs = true
 var spawning_areas = null
@@ -51,7 +51,6 @@ func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with
 	can_spawn_mobs = true
 	
 	# Create Timer to respawn mobs
-	mob_spawner_timer = Timer.new()
 	add_child(mob_spawner_timer)
 	mob_spawner_timer.connect("timeout", self, "spawn_despawn_mobs")
 	mob_spawner_timer.set_wait_time(mob_spawn_interval)
