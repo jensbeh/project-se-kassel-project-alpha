@@ -5,6 +5,7 @@ var constants = preload("res://autoload/Constants.gd")
 
 var compressed_tilemap = TileMap.new()
 var mobs_nav_tilemap = TileMap.new()
+var ambient_mobs_nav_tilemap = TileMap.new()
 
 var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
@@ -43,39 +44,60 @@ func post_import(scene):
 	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195
 	# Also in every TileMap all TileSets are stored
 	var dirtLvl0TileMap : TileMap = scene.find_node("dirt lvl0")
-	mobs_nav_tilemap = compressed_tilemap
+	mobs_nav_tilemap = compressed_tilemap.duplicate()
 	mobs_nav_tilemap.tile_set = dirtLvl0TileMap.tile_set
 	mobs_nav_tilemap.cell_quadrant_size = 1
 	mobs_nav_tilemap.cell_y_sort = false
 	mobs_nav_tilemap.cell_clip_uv = true
 	mobs_nav_tilemap.cell_size = Vector2(16,16)
-	mobs_nav_tilemap.name = "NavigationTileMap"
+	mobs_nav_tilemap.name = "mobs_navigation_tilemap"
 	mobs_nav_tilemap.visible = false
 	
 	# merge all tilemaps and collisionshapes from "ground" together
 	remove_collisionshapes_from_tilemap(mobs_nav_tilemap, scene.find_node("ground"))
 	
-	# Setup Navigation2D for mobs
+	# Setup NavigationTileMap for mobs
 	var navigation : Node2D = scene.find_node("navigation")
-	var mobs_navigation2d = Navigation2D.new()
-	mobs_navigation2d.name = "mobs_navigation2d"
-	mobs_navigation2d.visible = false
-	navigation.replace_by(mobs_navigation2d, true)
-	scene.find_node("mobs_navigation2d").add_child(mobs_nav_tilemap)
+	navigation.name = "mobs_navigation"
+	navigation.visible = false
+	navigation.add_child(mobs_nav_tilemap)
 	mobs_nav_tilemap.set_owner(scene)
 	
 	
 	
+	# Add navigation tilemap for ambient_mobs
+	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195
+	# Also in every TileMap all TileSets are stored
+	ambient_mobs_nav_tilemap = compressed_tilemap.duplicate()
+	ambient_mobs_nav_tilemap.tile_set = dirtLvl0TileMap.tile_set
+	ambient_mobs_nav_tilemap.cell_quadrant_size = 1
+	ambient_mobs_nav_tilemap.cell_y_sort = false
+	ambient_mobs_nav_tilemap.cell_clip_uv = true
+	ambient_mobs_nav_tilemap.cell_size = Vector2(16,16)
+	ambient_mobs_nav_tilemap.name = "ambient_mobs_navigation_tilemap"
+	ambient_mobs_nav_tilemap.visible = false
+
 	# Setup Navigation2D for ambient mobs
 	var ambient_mobs_navigation : Node2D = scene.find_node("ambientMobs navigation")
-	var ambient_mobs_navigation2d = Navigation2D.new()
-	ambient_mobs_navigation2d.name = "ambient_mobs_navigation2d"
-	ambient_mobs_navigation2d.visible = false
-	ambient_mobs_navigation.replace_by(ambient_mobs_navigation2d, true)
+	ambient_mobs_navigation.name = "ambient_mobs_navigation"
+	ambient_mobs_navigation.visible = false
+	ambient_mobs_navigation.add_child(ambient_mobs_nav_tilemap)
+	ambient_mobs_nav_tilemap.set_owner(scene)
 	
-	# Add navigation polygon for ambient mobs
-	var navigation_polygon_instance = NavigationPolygonInstance.new()
-	var navigation_polygon = NavigationPolygon.new()
+	
+	
+	# Add collision polygon to area2d for ambient mobs
+	var ambient_mobs_polygon_area_instance = Area2D.new()
+	ambient_mobs_polygon_area_instance.monitoring = false
+	ambient_mobs_polygon_area_instance.monitorable = false
+	ambient_mobs_polygon_area_instance.set_collision_layer_bit(0, false)
+	ambient_mobs_polygon_area_instance.set_collision_mask_bit(0, false)
+	ambient_mobs_navigation.add_child(ambient_mobs_polygon_area_instance)
+	ambient_mobs_polygon_area_instance.set_owner(scene)
+	
+	var ambient_mobs_polygon = CollisionPolygon2D.new()
+	ambient_mobs_polygon.build_mode = CollisionPolygon2D.BUILD_SEGMENTS
+	ambient_mobs_polygon.disabled = true
 	
 	var tile_polygon = PoolVector2Array()
 	var rec = compressed_tilemap.get_used_rect()
@@ -88,11 +110,9 @@ func post_import(scene):
 	tile_polygon.append(topright)
 	tile_polygon.append(bottomright)
 	tile_polygon.append(bottomleft)
-	navigation_polygon.add_outline(tile_polygon)
-	navigation_polygon.make_polygons_from_outlines()
-	navigation_polygon_instance.navpoly = navigation_polygon
-	ambient_mobs_navigation2d.add_child(navigation_polygon_instance)
-	navigation_polygon_instance.set_owner(scene)
+	ambient_mobs_polygon.polygon = tile_polygon
+	ambient_mobs_polygon_area_instance.add_child(ambient_mobs_polygon)
+	ambient_mobs_polygon.set_owner(scene)
 	
 	
 	# Setup entitylayer to YSorts
@@ -166,6 +186,7 @@ func generate_chunks(scene):
 	ground_chunks_node.set_meta("vertical_chunks_count", vertical_chunks_count)
 	ground_chunks_node.set_meta("horizontal_chunks_count", horizontal_chunks_count)
 	ground_chunks_node.set_meta("map_min_global_pos", map_min_global_pos)
+	ground_chunks_node.set_meta("map_size_in_tiles", Vector2(map_width, map_height))
 	# Add ground_chunks_node to ground
 	scene.find_node("ground").add_child(ground_chunks_node)
 	ground_chunks_node.set_owner(scene)
@@ -463,4 +484,4 @@ func remove_collisionshapes_from_tilemap(tilemap, node_with_collisionshapes):
 					
 				for x in (child.shape.extents.x * xExtentsFactor):
 					for y in (child.shape.extents.y * yExtentsFactor):
-						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), constants.EMPTY_TILE_ID)
+						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), constants.PSEUDO_OBSTACLE_TILE_ID)

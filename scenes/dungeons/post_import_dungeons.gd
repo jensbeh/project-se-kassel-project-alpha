@@ -123,6 +123,7 @@ func generate_chunks(scene):
 	ground_chunks_node.set_meta("vertical_chunks_count", vertical_chunks_count)
 	ground_chunks_node.set_meta("horizontal_chunks_count", horizontal_chunks_count)
 	ground_chunks_node.set_meta("map_min_global_pos", map_min_global_pos)
+	ground_chunks_node.set_meta("map_size_in_tiles", Vector2(map_width, map_height))
 	# Add ground_chunks_node to ground
 	scene.find_node("groundlayer").add_child(ground_chunks_node)
 	ground_chunks_node.set_owner(scene)

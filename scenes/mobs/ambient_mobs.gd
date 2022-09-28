@@ -13,6 +13,7 @@ var velocity = Vector2(0, 0)
 var behaviour_state = IDLING
 var previous_behaviour_state = IDLING
 var ambientMobsSpawnArea
+var ambientMobsNavigationTileMap : TileMap
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
 var update_path_time = 0.0
@@ -38,7 +39,7 @@ onready var line2D = $Line2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set spawn_position
-	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING
@@ -53,8 +54,9 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_ambientMobsSpawnArea, init_spawn_time):
+func init(init_ambientMobsSpawnArea, init_ambientMobsNavigationTileMap, init_spawn_time):
 	ambientMobsSpawnArea = init_ambientMobsSpawnArea
+	ambientMobsNavigationTileMap = init_ambientMobsNavigationTileMap
 	spawn_time = init_spawn_time
 
 
@@ -88,7 +90,7 @@ func move_to_position(delta):
 		path.remove(0)
 		
 		# Update line
-#		line2D.points = path
+		line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
@@ -99,10 +101,10 @@ func move_to_position(delta):
 		mobSprite.flip_h = velocity.x > 0
 		
 		# Update line position
-#		line2D.global_position = Vector2(0,0)
+		line2D.global_position = Vector2(0,0)
 		
-#	if path.size() == 0:
-#		line2D.points = []
+	if path.size() == 0:
+		line2D.points = []
 
 
 func update_behaviour(new_behaviour):
@@ -136,7 +138,7 @@ func update_behaviour(new_behaviour):
 				path.resize(0)
 				
 				# Update line path
-#				line2D.points = []
+				line2D.points = []
 			
 #			print("WANDERING")
 			behaviour_state = WANDERING
@@ -156,7 +158,7 @@ func update_path(new_path):
 	mob_need_path = false
 	
 	# Update line path
-#	line2D.points = path
+	line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity

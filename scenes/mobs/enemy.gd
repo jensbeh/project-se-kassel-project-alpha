@@ -218,7 +218,7 @@ func move_to_position(delta):
 		path.remove(0)
 		
 		# Update line
-#		line2D.points = path
+		line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
@@ -229,10 +229,10 @@ func move_to_position(delta):
 		update_animations()
 		
 		# Update line position
-#		line2D.global_position = Vector2(0,0)
-#
-#	if path.size() == 0:
-#		line2D.points = []
+		line2D.global_position = Vector2(0,0)
+
+	if path.size() == 0:
+		line2D.points = []
 
 
 # Method to search for player
@@ -280,7 +280,7 @@ func update_behaviour(new_behaviour):
 					path.resize(0)
 					
 					# Update line path
-	#				line2D.points = []
+					line2D.points = []
 				
 #				print("WANDERING")
 				behaviour_state = WANDERING
@@ -296,7 +296,7 @@ func update_behaviour(new_behaviour):
 					path.resize(0)
 					
 					# Update line path
-	#				line2D.points = []
+					line2D.points = []
 #				print("HUNTING")
 				behaviour_state = HUNTING
 				mob_need_path = true

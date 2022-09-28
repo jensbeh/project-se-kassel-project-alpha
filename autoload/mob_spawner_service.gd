@@ -12,6 +12,7 @@ var mobsLayer : Node2D = null
 var with_ambient_mobs : bool = false
 var mob_list : Array
 var ambientMobsSpawnArea = null
+var ambientMobsNavigationTileMap : TileMap = null
 var ambientMobsLayer = null
 var current_ambient_mobs : int
 var max_ambient_mobs : int
@@ -29,7 +30,7 @@ func _ready():
 
 
 # Method to init all important variables
-func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv):
+func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv):
 	print("INIT MOB_SPAWNER_SERVICE")
 	# Check if thread is active wait to stop
 	if mobspawner_thread.is_active():
@@ -41,6 +42,7 @@ func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with
 	mobsLayer = new_mobsLayer
 	with_ambient_mobs = new_with_ambient_mobs
 	ambientMobsSpawnArea = new_ambientMobsSpawnArea
+	ambientMobsNavigationTileMap = new_ambientMobsNavigationTileMap
 	ambientMobsLayer = new_ambientMobsLayer
 	max_ambient_mobs = new_max_ambient_mobs
 	is_time_sensitiv = new_is_time_sensitiv
@@ -79,6 +81,7 @@ func cleanup():
 	mobsLayer = null
 	with_ambient_mobs = false
 	ambientMobsSpawnArea = null
+	ambientMobsNavigationTileMap = null
 	ambientMobsLayer = null
 	max_ambient_mobs = 0
 	mobs_to_despawn.clear()
@@ -117,9 +120,9 @@ func handle_mob_spawns():
 			# Spawn area mobs
 			spawn_area_mobs()
 			
-#			if with_ambient_mobs:
-#				# Spawn ambient mobs
-#				spawn_ambient_mobs()
+			if with_ambient_mobs:
+				# Spawn ambient mobs
+				spawn_ambient_mobs()
 
 
 # Method is called when thread finished
@@ -204,7 +207,7 @@ func spawn_ambient_mobs():
 				if is_instance_valid(ambientMobsLayer) and ambientMobsLayer.is_inside_tree():
 					while current_ambient_mobs < max_ambient_mobs:
 						var mob_instance = mobScene.instance()
-						mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
+						mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, Constants.SpawnTime.ONLY_NIGHT)
 						ambientMobsLayer.call_deferred("add_child", mob_instance)
 						mob_list.append(mob_instance)
 						current_ambient_mobs += 1
@@ -218,7 +221,7 @@ func spawn_ambient_mobs():
 			if mobScene != null:
 				while current_ambient_mobs < max_ambient_mobs:
 					var mob_instance = mobScene.instance()
-					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_DAY)
+					mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, Constants.SpawnTime.ONLY_DAY)
 					ambientMobsLayer.call_deferred("add_child", mob_instance)
 					mob_list.append(mob_instance)
 					current_ambient_mobs += 1

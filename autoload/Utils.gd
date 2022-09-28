@@ -220,7 +220,15 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 	
 	# Check if cells / position with enough space around are perfect
 	var generate_again = false
-	if cell != -1 and cellBottom != -1 and cellBottomRight != -1 and cellRight != -1 and cellTopRight != -1 and cellTop != -1 and cellTopLeft != -1 and cellLeft != -1 and cellBottomLeft != -1:
+	if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
+	 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
+	 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
+	 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
+	 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
+	 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
+	 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
+	 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
+	 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
 		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
 		for cell_to_check in cells:
 			var shapes = tile_set.tile_get_shapes(cell_to_check)
@@ -273,7 +281,15 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 	
 	# Check if cells / position with enough space around are perfect
 	var generate_again = false
-	if cell != -1 and cellBottom != -1 and cellBottomRight != -1 and cellRight != -1 and cellTopRight != -1 and cellTop != -1 and cellTopLeft != -1 and cellLeft != -1 and cellBottomLeft != -1:
+	if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
+	 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
+	 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
+	 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
+	 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
+	 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
+	 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
+	 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
+	 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
 		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
 		for cell_to_check in cells:
 			var shapes = tile_set.tile_get_shapes(cell_to_check)

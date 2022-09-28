@@ -18,10 +18,9 @@ var init_transition_data = null
 onready var changeScenesObject = $map_grassland/changeScenes
 onready var groundChunks = $map_grassland/ground/Chunks
 onready var higherChunks = $map_grassland/higher/Chunks
-onready var mobsNavigation2d = $map_grassland/mobs_navigation2d
-onready var mobsNavigationTileMap = $map_grassland/mobs_navigation2d/NavigationTileMap
-onready var ambientMobsNavigation2d = $map_grassland/ambient_mobs_navigation2d
-onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_navigation2d/NavigationPolygonInstance
+onready var mobsNavigationTileMap = $map_grassland/mobs_navigation/mobs_navigation_tilemap
+onready var ambientMobsNavigationTileMap = $map_grassland/ambient_mobs_navigation/ambient_mobs_navigation_tilemap
+onready var ambientMobsNavigationPolygon = $map_grassland/ambient_mobs_navigation/Area2D/CollisionPolygon2D
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
@@ -44,6 +43,7 @@ func _setup_scene_in_background():
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
 	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
 	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
@@ -53,13 +53,13 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-	PathfindingService.init(mobsNavigationTileMap, map_min_global_pos)
+	PathfindingService.init(mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
 	
 	# Spawn mobs
-	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, ambientMobsSpawnArea, ambientMobsLayer, max_ambient_mobs, true)
+	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true)
 	
 	call_deferred("_on_setup_scene_done")
 
@@ -169,9 +169,7 @@ func setup_spawning_areas():
 	
 	
 	# AmbientMobs spawning area
-	var polygon = Polygon2D.new()
-	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
-	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
+	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(ambientMobsNavigationPolygon.position, ambientMobsNavigationPolygon.polygon)
 
 
 # Method to handle collision detetcion dependent of the collision object type

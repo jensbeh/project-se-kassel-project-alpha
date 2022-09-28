@@ -1563,9 +1563,6 @@ parameters/playback = SubResource( 15 )
 limit_left = -4335
 limit_bottom = 794
 
-[node name="NavigationPolygonInstance" parent="map_grassland/ambient_mobs_navigation2d" index="0"]
-visible = false
-
 [editable path="map_grassland"]
 [editable path="map_grassland/npclayer/roan"]
 [editable path="map_grassland/npclayer/roan/DialogueBox"]
