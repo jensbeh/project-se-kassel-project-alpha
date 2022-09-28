@@ -18,6 +18,10 @@ var should_load_chunks = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("START CHUNK_LOADER_SERVICE")
+	
+	# Add chunk_loader_timer
+	add_child(chunk_loader_timer)
+	chunk_loader_timer.connect("timeout", self, "_on_Timer_timeout")
 
 
 # Method to init all important variables
@@ -38,8 +42,6 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	chunkloader_thread.start(self, "load_chunks")
 	can_load_chunks = true
 	
-	add_child(chunk_loader_timer)
-	chunk_loader_timer.connect("timeout", self, "_on_Timer_timeout")
 	should_load_chunks = true
 
 # Method to stop the chunkloader to change map

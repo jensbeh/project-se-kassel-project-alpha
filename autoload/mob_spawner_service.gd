@@ -22,6 +22,10 @@ var mobs_to_despawn : Array
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("START MOB_SPAWNER_SERVICE")
+	
+	# Add mob_spawner_timer
+	add_child(mob_spawner_timer)
+	mob_spawner_timer.connect("timeout", self, "spawn_despawn_mobs")
 
 
 # Method to init all important variables
@@ -50,9 +54,7 @@ func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with
 	mobspawner_thread.start(self, "handle_mob_spawns")
 	can_spawn_mobs = true
 	
-	# Create Timer to respawn mobs
-	add_child(mob_spawner_timer)
-	mob_spawner_timer.connect("timeout", self, "spawn_despawn_mobs")
+	# Init timer to respawn mobs
 	mob_spawner_timer.set_wait_time(mob_spawn_interval)
 	mob_spawner_timer.start()
 
@@ -115,9 +117,9 @@ func handle_mob_spawns():
 			# Spawn area mobs
 			spawn_area_mobs()
 			
-			if with_ambient_mobs:
-				# Spawn ambient mobs
-				spawn_ambient_mobs()
+#			if with_ambient_mobs:
+#				# Spawn ambient mobs
+#				spawn_ambient_mobs()
 
 
 # Method is called when thread finished
