@@ -1553,6 +1553,9 @@ anims/RESET = SubResource( 13 )
 [node name="Player" parent="map_grassland/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 184, 570 )
 
+[node name="Body" parent="map_grassland/entitylayer/playerlayer/Player" index="1"]
+frame = 0
+
 [node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 15 )
 

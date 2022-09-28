@@ -1,7 +1,9 @@
 extends Node
 
+var constants = preload("res://autoload/Constants.gd")
 
-var chunk_size = Constants.chunk_size_tiles # Chunk tiles width/height in tiles
+
+var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
@@ -362,8 +364,8 @@ func get_chunk_from_position(global_position):
 	new_position.x = abs(map_min_global_pos.x) + global_position.x
 	new_position.y = abs(map_min_global_pos.y) + global_position.y
 	
-	chunk.x = floor(new_position.x / Constants.chunk_size_pixel)
-	chunk.y = floor(new_position.y / Constants.chunk_size_pixel)
+	chunk.x = floor(new_position.x / constants.chunk_size_pixel)
+	chunk.y = floor(new_position.y / constants.chunk_size_pixel)
 	return chunk
 
 

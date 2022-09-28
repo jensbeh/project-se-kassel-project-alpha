@@ -86,12 +86,12 @@ func load_chunks():
 			# Generate and update chunks
 			if current_chunk != null and previouse_chunk != current_chunk:
 				previouse_chunk = current_chunk
-				var render_bounds = Constants.render_distance * 2 + 1
+				var render_bounds = Constants.RENDER_DISTANCE * 2 + 1
 				var loading_chunks = []
 				for y in range(render_bounds):
 					for x in range(render_bounds):
-						var chunk_x = current_chunk.x - Constants.render_distance + x
-						var chunk_y = current_chunk.y - Constants.render_distance + y
+						var chunk_x = current_chunk.x - Constants.RENDER_DISTANCE + x
+						var chunk_y = current_chunk.y - Constants.RENDER_DISTANCE + y
 						
 						if chunk_x <= horizontal_chunks_count and chunk_y <= vertical_chunks_count and chunk_x >= 0 and chunk_y >= 0:
 							var chunk_coords = Vector2(chunk_x, chunk_y)

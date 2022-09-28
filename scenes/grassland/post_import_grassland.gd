@@ -1,13 +1,16 @@
 extends Node
 
+var constants = preload("res://autoload/Constants.gd")
+
 
 var compressed_tilemap = TileMap.new()
 var mobs_nav_tilemap = TileMap.new()
 
-var chunk_size = Constants.chunk_size_tiles # Chunk tiles width/height in tiles
+var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
+
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
@@ -350,8 +353,8 @@ func get_chunk_from_position(global_position):
 	new_position.x = abs(map_min_global_pos.x) + global_position.x
 	new_position.y = abs(map_min_global_pos.y) + global_position.y
 	
-	chunk.x = floor(new_position.x / Constants.chunk_size_pixel)
-	chunk.y = floor(new_position.y / Constants.chunk_size_pixel)
+	chunk.x = floor(new_position.x / constants.chunk_size_pixel)
+	chunk.y = floor(new_position.y / constants.chunk_size_pixel)
 	return chunk
 
 
@@ -460,4 +463,4 @@ func remove_collisionshapes_from_tilemap(tilemap, node_with_collisionshapes):
 					
 				for x in (child.shape.extents.x * xExtentsFactor):
 					for y in (child.shape.extents.y * yExtentsFactor):
-						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), -1)
+						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), constants.EMPTY_TILE_ID)

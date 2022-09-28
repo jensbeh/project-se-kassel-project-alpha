@@ -53,13 +53,13 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
+	PathfindingService.init(mobsNavigationTileMap, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
 	
 	# Spawn mobs
-	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsLayer, max_ambient_mobs, true)
+	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, ambientMobsSpawnArea, ambientMobsLayer, max_ambient_mobs, true)
 	
 	call_deferred("_on_setup_scene_done")
 

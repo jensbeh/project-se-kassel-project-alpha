@@ -5,12 +5,13 @@ const NAME_LENGTH = 15
 const COOLDOWN = 20
 
 # Tiles
-const tile_size = 16
+const TILE_SIZE = 16
+const EMPTY_TILE_ID = 22
 
 # Chunks
-const chunk_size_tiles = 10 # In tiles -> if changing need reimport of maps!
-const chunk_size_pixel = chunk_size_tiles * tile_size # In pixel
-const render_distance = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
+const CHUNK_SIZE_TILES = 10 # In tiles -> if changing need reimport of maps!
+const chunk_size_pixel = CHUNK_SIZE_TILES * TILE_SIZE # In pixel
+const RENDER_DISTANCE = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
 
 # Player
 const PLAYER_WALK_SPEED = 70
