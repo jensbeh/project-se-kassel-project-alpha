@@ -6,16 +6,21 @@ var dialog
 var trade = false
 var phraseNum = 0
 var finished = false
+var origin
+var key
+
 
 func _ready():
-	var _error = get_parent().connect("interacted", self, "start")
 	$TextureRect.visible = false
 	$HSeparator.visible = false
 	$Button.visible = false
 	$Name.visible = false
 	$Text.visible = false
 
-func start():
+
+func start(origin_obj, key_value):
+	key = key_value
+	origin = origin_obj
 	Utils.get_control_notes().hide()
 	$TextureRect.visible = true
 	$HSeparator.visible = true
@@ -25,7 +30,7 @@ func start():
 	$Timer.wait_time = textSpeed
 	# Get language
 	var lang = TranslationServer.get_locale()
-	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
+	dialogPath = "res://assets/dialogue/"+ origin.name + "_" + lang + ".json"
 	dialog = getDialog()
 	nextPhrase()
 
@@ -37,6 +42,7 @@ func _process(_delta):
 			nextPhrase()
 		else:
 			$Text.visible_characters = len($Text.text)
+
 
 # Open dialog text
 func getDialog():
@@ -69,7 +75,10 @@ func nextPhrase():
 		phraseNum += 1
 	
 	if phraseNum >= len(dialog):
-		if get_parent().name in ["bella", "sam", "lea", "heinz"]:
+		if origin.name in ["bella", "sam", "lea", "heinz"]:
+			$Trade.visible = true
+			trade = true
+		elif "treasure" in origin.name and key:
 			$Trade.visible = true
 			trade = true
 
@@ -80,6 +89,7 @@ func _on_Button_pressed():
 		trade = false
 	else:
 		$Text.visible_characters = len($Text.text)
+
 
 func close_dialog():
 	$TextureRect.visible = false
@@ -95,16 +105,21 @@ func close_dialog():
 		Utils.get_current_player().set_movement(true)
 		Utils.get_current_player().set_movment_animation(true)
 		# reset npc interaction state
-		for npc in get_parent().get_parent().get_children():
-			npc.set_interacted(false)
+		if !"treasure" in origin.name:#empty#######################################
+			for npc in origin.get_parent().get_children():
+				npc.set_interacted(false)
 	Utils.get_control_notes().show()
+	get_parent().remove_child(self)
+	queue_free()
 
-func _on_Trade_pressed():
+# add dialog box by treasures ################################################
+#todo remove dialog box by npcs #####################################################
+func _on_Trade_pressed():#todo loot_panel and key remove###############################
 	Utils.get_control_notes().show()
-	MerchantData.set_path(get_parent().name)
+	MerchantData.set_path(origin.name)
 	MerchantData._ready()
 	PlayerData._ready()
 	close_dialog()
 	# Show trade inventory
 	Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
-	Utils.get_trade_inventory().set_name(get_parent().name)
+	Utils.get_trade_inventory().set_name(origin.name)

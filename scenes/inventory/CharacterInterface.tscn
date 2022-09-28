@@ -14,7 +14,6 @@
 [ext_resource path="res://assets/ui/panel_background.png" type="Texture" id=12]
 [ext_resource path="res://assets/ui/cooldown.png" type="Texture" id=13]
 
-
 [sub_resource type="DynamicFont" id=1]
 size = 36
 font_data = ExtResource( 7 )
@@ -286,6 +285,9 @@ parameters/playback = SubResource( 2 )
 
 [node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="20"]
 current = false
+
+[node name="CustomLight" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="22"]
+radius = 0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]
 margin_left = 350.0

@@ -909,12 +909,14 @@ func kill_player():
 # Method is called when player collect loot
 func player_collect_loot():
 	collecting = true
-	animation_state.start("Collect")
+	set_movement(false)
+	animation_state.travel("Collect")
 
 
 # method is called after collect animation is done
 func player_looted():
 	collecting = false
+	set_movement(true)
 	if Utils.get_ui().get_node_or_null("LootPanel") != null:
 		set_movment_animation(false)
 

@@ -368,7 +368,7 @@ func player_has_key(treasureArea):
 				else:
 					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
 				return true
-		Utils.get_ui().add_child(load(Constants.LOCKED_TREASURE_LABEL).instance())
+		Utils.get_ui().add_child(load(Constants.DIALOG_PATH).instance())
 		return false
 	elif treasure_dict[treasureArea][3] == 2:
 		for i in range(1,31):
@@ -378,7 +378,7 @@ func player_has_key(treasureArea):
 				else:
 					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
 				return true
-		Utils.get_ui().add_child(load(Constants.LOCKED_TREASURE_LABEL).instance())
+		Utils.get_ui().add_child(load(Constants.DIALOG_PATH).instance())
 		return false
 	else:
 		return true

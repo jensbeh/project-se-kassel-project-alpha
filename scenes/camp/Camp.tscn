@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=2]
+[gd_scene load_steps=102 format=2]
 
 [ext_resource path="res://assets/map/map_camp.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/camp/camp.gd" type="Script" id=2]
@@ -1484,22 +1484,6 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
-[sub_resource type="Animation" id=33]
-resource_name = "RESET"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Skip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
-}
-
 [sub_resource type="RectangleShape2D" id=78]
 extents = Vector2( 40, 26.9375 )
 
@@ -2943,22 +2927,6 @@ tracks/12/keys = {
 }
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=43]
-
-[sub_resource type="Animation" id=44]
-resource_name = "RESET"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Skip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
-}
 
 [sub_resource type="Animation" id=3]
 resource_name = "IdleDown"
@@ -5845,22 +5813,6 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=54]
 
-[sub_resource type="Animation" id=55]
-resource_name = "RESET"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Skip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
-}
-
 [sub_resource type="RectangleShape2D" id=80]
 extents = Vector2( 40, 27 )
 
@@ -8746,22 +8698,6 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=65]
 
-[sub_resource type="Animation" id=66]
-resource_name = "RESET"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Skip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
-}
-
 [sub_resource type="Animation" id=67]
 resource_name = "IdleDown"
 tracks/0/type = "value"
@@ -10203,22 +10139,6 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=76]
 
-[sub_resource type="Animation" id=77]
-resource_name = "RESET"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Skip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
-}
-
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [node name="Camp" type="Node2D"]
@@ -10342,9 +10262,6 @@ anims/WalkUp = SubResource( 31 )
 parameters/playback = SubResource( 32 )
 parameters/Walk/blend_position = Vector2( 0.998333, 0.910072 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/anna/DialogueBox/Skip" index="0"]
-anims/RESET = SubResource( 33 )
-
 [node name="lea" parent="map_camp/npclayer" index="2" instance=ExtResource( 4 )]
 position = Vector2( 1216, 515 )
 
@@ -10389,9 +10306,6 @@ anims/WalkUp = SubResource( 42 )
 
 [node name="AnimationTree" parent="map_camp/npclayer/lea" index="17"]
 parameters/playback = SubResource( 43 )
-
-[node name="AnimationPlayer" parent="map_camp/npclayer/lea/DialogueBox/Skip" index="0"]
-anims/RESET = SubResource( 44 )
 
 [node name="steven" parent="map_camp/npclayer" index="3" instance=ExtResource( 4 )]
 position = Vector2( 1744, 856 )
@@ -10475,9 +10389,6 @@ anims/WalkUp = SubResource( 53 )
 
 [node name="AnimationTree" parent="map_camp/npclayer/sam" index="17"]
 parameters/playback = SubResource( 54 )
-
-[node name="AnimationPlayer" parent="map_camp/npclayer/sam/DialogueBox/Skip" index="0"]
-anims/RESET = SubResource( 55 )
 
 [node name="bella" parent="map_camp/npclayer" index="5" instance=ExtResource( 4 )]
 position = Vector2( 1074, 531 )
@@ -10573,9 +10484,6 @@ anims/WalkUp = SubResource( 64 )
 [node name="AnimationTree" parent="map_camp/npclayer/murphy" index="17"]
 parameters/playback = SubResource( 65 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/murphy/DialogueBox/Skip" index="0"]
-anims/RESET = SubResource( 66 )
-
 [node name="octavia" parent="map_camp/npclayer" index="7" instance=ExtResource( 4 )]
 position = Vector2( 1360, 784 )
 
@@ -10617,14 +10525,8 @@ anims/WalkUp = SubResource( 75 )
 [node name="AnimationTree" parent="map_camp/npclayer/octavia" index="17"]
 parameters/playback = SubResource( 76 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/octavia/DialogueBox/Skip" index="0"]
-anims/RESET = SubResource( 77 )
-
 [node name="Player" parent="map_camp/playerlayer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 1176, 600 )
-
-[node name="Body" parent="map_camp/playerlayer/Player" index="1"]
-frame = 0
 
 [node name="CollisionShape2D" parent="map_camp/playerlayer/Player" index="16"]
 visible = true
@@ -10638,20 +10540,12 @@ limit_top = 186
 
 [editable path="map_camp"]
 [editable path="map_camp/npclayer/clarke"]
-[editable path="map_camp/npclayer/clarke/DialogueBox"]
 [editable path="map_camp/npclayer/anna"]
-[editable path="map_camp/npclayer/anna/DialogueBox"]
 [editable path="map_camp/npclayer/lea"]
-[editable path="map_camp/npclayer/lea/DialogueBox"]
 [editable path="map_camp/npclayer/steven"]
-[editable path="map_camp/npclayer/steven/DialogueBox"]
 [editable path="map_camp/npclayer/sam"]
-[editable path="map_camp/npclayer/sam/DialogueBox"]
 [editable path="map_camp/npclayer/bella"]
-[editable path="map_camp/npclayer/bella/DialogueBox"]
 [editable path="map_camp/npclayer/murphy"]
-[editable path="map_camp/npclayer/murphy/DialogueBox"]
 [editable path="map_camp/npclayer/octavia"]
-[editable path="map_camp/npclayer/octavia/DialogueBox"]
 [editable path="map_camp/playerlayer/Player"]
 [editable path="map_camp/playerlayer/Player/HitboxZone"]

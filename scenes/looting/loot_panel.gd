@@ -109,6 +109,7 @@ func _on_Close_pressed():
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().player_looted()
 
 
 # loot all items and close the panel
@@ -123,6 +124,7 @@ func _on_LootAll_pressed():
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().player_looted()
 
 
 func loot_item(item_idx):
@@ -160,5 +162,6 @@ func loot_item(item_idx):
 	get_node(loot_slot + "/LootIcon/TextureRect").hide()
 	get_node(loot_slot + "/LootIcon/TextureRect/Stack").set_text("")
 	get_node(loot_slot + "/Name").set_text("")
+	get_node(loot_slot).hide()
 	if loot_dict.size() == 0 and !all:
 		_on_Close_pressed()
