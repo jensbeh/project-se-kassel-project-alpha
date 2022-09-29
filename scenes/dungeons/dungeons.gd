@@ -107,6 +107,9 @@ func destroy_scene():
 	
 	# Stop mobspawner
 	MobSpawnerService.stop()
+	
+	# Disconnect signals
+	clear_signals()
 
 
 # Method to setup the player with all informations
@@ -146,8 +149,6 @@ func interaction_detected():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
-			clear_signals()
-			
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))

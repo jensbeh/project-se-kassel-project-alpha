@@ -55,6 +55,9 @@ func _on_setup_scene_done():
 func destroy_scene():
 	# Stop chunkloader
 	ChunkLoaderService.stop()
+	
+	# Disconnect signals
+	clear_signals()
 
 
 # Method to setup the player with all informations
@@ -173,3 +176,27 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 # Method to return the scene type of the map
 func get_scene_type():
 	return scene_type
+
+
+# Method to disconnect all signals
+func clear_signals():
+	# Player
+	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
+	
+	# Change scenes
+	for child in changeScenesObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.disconnect("body_entered", self, "body_entered_change_scene_area")
+			child.disconnect("body_exited", self, "body_exited_change_scene_area")
+	
+	# Doors
+	for chunk in groundChunks.get_children():
+		var doors_object = chunk.find_node("doors")
+		if doors_object != null:
+			for door in doors_object.get_children():
+				if door is Area2D:
+					# connect Area2D with functions to handle body action
+					door.disconnect("body_entered", self, "body_entered_door")
+					door.disconnect("body_exited", self, "body_exited_door")

@@ -35,10 +35,6 @@ func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTi
 	map_offset_in_tiles = new_map_min_global_pos / Constants.TILE_SIZE
 	half_cell_size = mobNavigationTilemap.cell_size / 2
 	
-	# Start pathfinder thread
-	pathfinder_thread.start(self, "generate_pathes")
-	can_generate_pathes = true
-	
 	# Init AStar
 	# Mobs
 	var mobs_obstacles = mobNavigationTilemap.get_used_cells_by_id(pseudo_obstacle_tile_id)
@@ -54,6 +50,10 @@ func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTi
 #	print("map_offset_in_tiles: " + str(map_offset_in_tiles))
 #	print("new_map_min_global_pos: " + str(new_map_min_global_pos))
 #	print("new_map_min_global_pos/tilesize: " + str(new_map_min_global_pos/Constants.TILE_SIZE))
+	
+	# Start pathfinder thread
+	pathfinder_thread.start(self, "generate_pathes")
+	can_generate_pathes = true
 
 
 # Method to stop the pathfinder to change map

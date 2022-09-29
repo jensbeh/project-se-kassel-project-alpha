@@ -96,7 +96,7 @@ func _on_load_scene_done(scene):
 		Utils.set_current_player(null)
 	
 	# Add scene to current_scene
-	get_current_scene().call_deferred("queue_free")
+	get_current_scene().queue_free()
 	current_scene.call_deferred("add_child", scene)
 
 
