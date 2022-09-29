@@ -321,29 +321,41 @@ func setup_treasure_areas():
 					treasure.connect("body_exited", self, "body_exited_treasure", [treasure])
 
 
-# when interacted, open loot panel for looting
+# when interacted, open dialog
 func interaction():
 	var treasure
 	for i in treasure_dict.keys():
 		if treasure_dict[i][0]:
 			treasure = i
 	if treasure != null:
-		if treasure_dict[treasure][0] and !interacted and player_has_key(treasure):
+		if treasure_dict[treasure][0] and !interacted:
 			interacted = true
 			Utils.get_current_player().set_movement(false)
-			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
-			Utils.get_ui().add_child(loot_panel)
-			loot_panel.connect("looted", self, "save_loot")
+			var dialog = load(Constants.DIALOG_PATH).instance()
+			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
-				treasure_dict[treasure][1] = true
-				for child in treasure.get_children():
-					if "animationPlayer" in child.name:
-						# Start treasure animation
-						child.play("openTreasure")
-				loot_panel.set_loot_type("Treasure" + str(treasure_dict[treasure][3]), true)
-				loot_panel.loot()
+				dialog.start(treasure, false)
+			elif treasure_dict[treasure][2].empty():
+				dialog.start(treasure, true)
 			else:
-				loot_panel.set_up_content(treasure_dict[treasure][2])
+				dialog.start(treasure, "open")
+
+
+# called to open the loot panel
+func open_loot_panel(treasure):
+	loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+	Utils.get_ui().add_child(loot_panel)
+	loot_panel.connect("looted", self, "save_loot")
+	if !treasure_dict[treasure][1]:
+		treasure_dict[treasure][1] = true
+		for child in treasure.get_children():
+			if "animationPlayer" in child.name:
+				# Start treasure animation
+				child.play("openTreasure")
+		loot_panel.set_loot_type("Treasure" + str(treasure_dict[treasure][3]), true)
+		loot_panel.loot()
+	else:
+		loot_panel.set_up_content(treasure_dict[treasure][2])
 
 
 func save_loot(loot):
@@ -360,7 +372,7 @@ func save_loot(loot):
 func player_has_key(treasureArea):
 	if treasure_dict[treasureArea][1]:
 		return true
-	if treasure_dict[treasureArea][3] == 1:
+	elif treasure_dict[treasureArea][3] == 1:
 		for i in range(1,31):
 			if PlayerData.inv_data["Inv" + str(i)]["Item"] == 10022:
 				if PlayerData.inv_data["Inv" + str(i)]["Stack"] > 1:
@@ -368,7 +380,6 @@ func player_has_key(treasureArea):
 				else:
 					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
 				return true
-		Utils.get_ui().add_child(load(Constants.DIALOG_PATH).instance())
 		return false
 	elif treasure_dict[treasureArea][3] == 2:
 		for i in range(1,31):
@@ -378,7 +389,6 @@ func player_has_key(treasureArea):
 				else:
 					PlayerData.inv_data["Inv" + str(i)]["Item"] = null
 				return true
-		Utils.get_ui().add_child(load(Constants.DIALOG_PATH).instance())
 		return false
 	else:
 		return true

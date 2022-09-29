@@ -6,31 +6,25 @@ var dialog
 var trade = false
 var phraseNum = 0
 var finished = false
+var obj_name
 var origin
-var key
 
 
-func _ready():
-	$TextureRect.visible = false
-	$HSeparator.visible = false
-	$Button.visible = false
-	$Name.visible = false
-	$Text.visible = false
-
-
-func start(origin_obj, key_value):
-	key = key_value
+func start(origin_obj, looted_value):
+	obj_name = origin_obj.name
 	origin = origin_obj
+	if typeof(looted_value) == TYPE_BOOL:
+		if "treasure" in obj_name and !looted_value:
+			obj_name = "treasure"
+		elif "treasure" in obj_name and looted_value:
+			obj_name = "empty"
+	else:
+		obj_name = "open"
 	Utils.get_control_notes().hide()
-	$TextureRect.visible = true
-	$HSeparator.visible = true
-	$Button.visible = true
-	$Name.visible = true
-	$Text.visible = true
 	$Timer.wait_time = textSpeed
 	# Get language
 	var lang = TranslationServer.get_locale()
-	dialogPath = "res://assets/dialogue/"+ origin.name + "_" + lang + ".json"
+	dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
 	dialog = getDialog()
 	nextPhrase()
 
@@ -75,10 +69,10 @@ func nextPhrase():
 		phraseNum += 1
 	
 	if phraseNum >= len(dialog):
-		if origin.name in ["bella", "sam", "lea", "heinz"]:
+		if obj_name in ["bella", "sam", "lea", "heinz"]:
 			$Trade.visible = true
 			trade = true
-		elif "treasure" in origin.name and key:
+		elif "treasure" in obj_name or "open" in obj_name:
 			$Trade.visible = true
 			trade = true
 
@@ -92,11 +86,6 @@ func _on_Button_pressed():
 
 
 func close_dialog():
-	$TextureRect.visible = false
-	$HSeparator.visible = false
-	$Button.visible = false
-	$Name.visible = false
-	$Text.visible = false
 	$Trade.visible = false
 	phraseNum = 0
 	finished = false
@@ -105,21 +94,26 @@ func close_dialog():
 		Utils.get_current_player().set_movement(true)
 		Utils.get_current_player().set_movment_animation(true)
 		# reset npc interaction state
-		if !"treasure" in origin.name:#empty#######################################
+		if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
 			for npc in origin.get_parent().get_children():
 				npc.set_interacted(false)
 	Utils.get_control_notes().show()
 	get_parent().remove_child(self)
 	queue_free()
 
-# add dialog box by treasures ################################################
-#todo remove dialog box by npcs #####################################################
-func _on_Trade_pressed():#todo loot_panel and key remove###############################
-	Utils.get_control_notes().show()
-	MerchantData.set_path(origin.name)
-	MerchantData._ready()
-	PlayerData._ready()
-	close_dialog()
-	# Show trade inventory
-	Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
-	Utils.get_trade_inventory().set_name(origin.name)
+
+func _on_Trade_pressed():
+	if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
+		Utils.get_control_notes().show()
+		MerchantData.set_path(obj_name)
+		MerchantData._ready()
+		PlayerData._ready()
+		close_dialog()
+		# Show trade inventory
+		Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
+		Utils.get_trade_inventory().set_name(obj_name)
+	else:
+		Utils.get_control_notes().show()
+		close_dialog()
+		if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
+			Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)

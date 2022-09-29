@@ -104,16 +104,17 @@ func _on_Icon_gui_input(event, lootpanelslot):
 
 # close the loot panel
 func _on_Close_pressed():
+	Utils.get_current_player().player_looted()
 	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_current_player().player_looted()
 
 
 # loot all items and close the panel
 func _on_LootAll_pressed():
+	Utils.get_current_player().player_looted()
 	all = true
 	var size = loot_dict.size()
 	var keys = loot_dict.keys()
@@ -124,7 +125,6 @@ func _on_LootAll_pressed():
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_current_player().player_looted()
 
 
 func loot_item(item_idx):

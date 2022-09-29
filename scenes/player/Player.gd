@@ -109,6 +109,7 @@ func _ready():
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Collect/blend_position", velocity)
+	animation_tree.set("parameters/Collected/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
 	# Set invisibility of player
@@ -142,6 +143,7 @@ func _physics_process(delta):
 			animation_tree.set("parameters/Walk/blend_position", velocity)
 			animation_tree.set("parameters/Hurt/blend_position", velocity)
 			animation_tree.set("parameters/Collect/blend_position", velocity)
+			animation_tree.set("parameters/Collected/blend_position", velocity)
 			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 			animation_state.travel("Walk")
 		else:
@@ -586,6 +588,18 @@ func _set_collect_key(track_str, value):
 	
 	var collect_left = animation_player.get_animation("CollectLeft")
 	set_collect_key(collect_left, track_str, value)
+	
+	var collected_down = animation_player.get_animation("CollectedDown")
+	set_collect_key(collected_down, track_str, value)
+	
+	var collected_up = animation_player.get_animation("CollectedUp")
+	set_collect_key(collected_up, track_str, value)
+	
+	var collected_right = animation_player.get_animation("CollectedRight")
+	set_collect_key(collected_right, track_str, value)
+	
+	var collected_left = animation_player.get_animation("CollectedLeft")
+	set_collect_key(collected_left, track_str, value)
 
 
 # Method changes the frames of the animation
@@ -596,21 +610,21 @@ func set_collect_key(attack_animation, track_str, value):
 		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1)) + value)
 	
+	if attack_animation.track_find_key(track_idx, 0.1, 1) != -1:
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.1, 1),
+			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.1, 1)) + value)
+	
 	if attack_animation.track_find_key(track_idx, 0.2, 1) != -1:
 		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1)) + value)
 	
+	if attack_animation.track_find_key(track_idx, 0.3, 1) != -1:
+		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.3, 1),
+			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.3, 1)) + value)
+	
 	if attack_animation.track_find_key(track_idx, 0.4, 1) != -1:
 		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1),
 			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1)) + value)
-	
-	if attack_animation.track_find_key(track_idx, 0.6, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.6, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.6, 1)) + value)
-	
-	if attack_animation.track_find_key(track_idx, 0.8, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.8, 1)) + value)
 
 
 # Method to activate or disable the player movment animation 
@@ -630,6 +644,7 @@ func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
 	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Collect/blend_position", velocity)
+	animation_tree.set("parameters/Collected/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", view_direction)
 	position = spawn_position
 	animation_tree.active = true
@@ -864,7 +879,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		if current_health <= 0:
 			kill_player()
 		else:
-			if not is_attacking:
+			if not is_attacking and not collecting:
 				hurt_player()
 		
 		# Add knockback
@@ -913,12 +928,14 @@ func player_collect_loot():
 	animation_state.travel("Collect")
 
 
-# method is called after collect animation is done
+# Method is called after collecting and the animation go on to finish
 func player_looted():
+	animation_state.travel("Collected")
+
+
+# Method is called when loot animation is finished to start other animations
+func finished_looting():
 	collecting = false
-	set_movement(true)
-	if Utils.get_ui().get_node_or_null("LootPanel") != null:
-		set_movment_animation(false)
 
 
 # Method is called when DIE animation is done
@@ -944,6 +961,7 @@ func reset_player_after_dying():
 	hurting = false
 	dying = false
 	is_attacking = false
+	collecting = false
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
