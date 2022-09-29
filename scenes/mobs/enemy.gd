@@ -53,7 +53,9 @@ var navigation_tile_map
 var ideling_time = 0.0
 var max_ideling_time
 var searching_time = 0.0
-var max_searching_time
+var current_max_searching_time = 0.0
+var min_searching_time = 6
+var max_searching_time = 12
 
 # Nodes
 onready var collision = $Collision
@@ -199,7 +201,7 @@ func _process(delta):
 				if path.size() > 0:
 					# After some time change to WANDERING (also to return to mob area)
 					searching_time += delta
-					if searching_time > max_searching_time:
+					if searching_time > current_max_searching_time:
 						searching_time = 0.0
 						update_behaviour(WANDERING)
 				else:
@@ -248,10 +250,11 @@ func update_behaviour(new_behaviour):
 		
 		# Set previous behaviour state
 		previous_behaviour_state = behaviour_state
-	
+		
 		# Reset timer
-		if ideling_time != 0.0:
-			ideling_time = 0.0
+		ideling_time = 0.0
+		searching_time = 0.0
+		pre_attack_time = 0.0
 		
 		# Handle new bahaviour
 		match new_behaviour:
@@ -292,7 +295,7 @@ func update_behaviour(new_behaviour):
 				speed = HUNTING_SPEED
 				
 				if behaviour_state != HUNTING:
-					# Reset path in case player is seen but e.g. state is wandering
+					# Reset path in case player is seen but e.g. state is hunting
 					path.resize(0)
 					
 					# Update line path
@@ -309,13 +312,13 @@ func update_behaviour(new_behaviour):
 				
 				# start_searching_position -> last eye contact to player
 				if path.size() > 0:
-					start_searching_position = path[-1] 
+					start_searching_position = path[-1]
 				else:
 					start_searching_position = global_position
-					
-				# Set new max_searching_time for SEARCHING
+				
+				# Set new current_max_searching_time for SEARCHING
 				rng.randomize()
-				max_searching_time = rng.randi_range(6, 12)
+				current_max_searching_time = rng.randi_range(min_searching_time, max_searching_time)
 				
 #				print("SEARCHING")
 				behaviour_state = SEARCHING
@@ -373,12 +376,13 @@ func get_target_position():
 
 # Method is called from pathfinding_service to set new path to mob
 func update_path(new_path):
-	# Update mob path
-	path = new_path
-	mob_need_path = false
+	# Update mob path if it still need it
+	if mob_need_path:
+		path = new_path
+		mob_need_path = false
 	
-	# Update line path
-#	line2D.points = path
+		# Update line path
+		line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity

@@ -22,6 +22,8 @@ func _ready():
 	knockback = 2
 	mob_weight = 40
 	spawn_time = Constants.SpawnTime.ALWAYS
+	min_searching_time = 12
+	max_searching_time = 18
 	max_pre_attack_time = get_new_pre_attack_time(1.0, 3.0)
 	
 	# Constants
@@ -152,7 +154,7 @@ func update_behaviour(new_behaviour):
 			PRE_ATTACKING:
 				speed = PRE_ATTACKING_SPEED
 				if behaviour_state != PRE_ATTACKING:
-					# Reset path in case player is seen but e.g. state is wandering
+					# Reset path in case player is seen but e.g. state is pre_attacking
 					path.resize(0)
 					
 					# Update line path

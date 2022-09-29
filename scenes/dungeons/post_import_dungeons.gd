@@ -111,10 +111,18 @@ func generate_chunks(scene):
 	var higher_duplicate = scene.find_node("higherlayer").duplicate()
 	
 	# Map size in tiles
-	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x)
-	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y)
-	var vertical_chunks_count = ceil(map_height / chunk_size) + 1
-	var horizontal_chunks_count = ceil(map_width / chunk_size) + 1
+	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x) + 1 # +1 because (0,0)
+	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y) + 1 # +1 because (0,0)
+#	print("map_min_pos.x: " + str(map_min_pos.x))
+#	print("map_max_pos.x: " + str(map_max_pos.x))
+#	print("map_min_pos.y: " + str(map_min_pos.y))
+#	print("map_max_pos.y: " + str(map_max_pos.y))
+#	print("map_width: " + str(map_width))
+#	print("map_height: " + str(map_height))
+	var vertical_chunks_count = ceil(map_height / chunk_size)
+	var horizontal_chunks_count = ceil(map_width / chunk_size)
+#	print("vertical_chunks_count: " + str(vertical_chunks_count))
+#	print("horizontal_chunks_count: " + str(horizontal_chunks_count))
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()

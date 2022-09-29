@@ -112,8 +112,7 @@ func update_behaviour(new_behaviour):
 	previous_behaviour_state = behaviour_state
 	
 	# Reset timer
-	if ideling_time != 0.0:
-		ideling_time = 0.0
+	ideling_time = 0.0
 	
 	# Handle new bahaviour
 	match new_behaviour:
