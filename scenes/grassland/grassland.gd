@@ -25,7 +25,7 @@ onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_n
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
-onready var lootLayer = $map_grassland/lootLayer
+onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 
 # Called when the node enters the scene tree for the first time.
@@ -301,6 +301,7 @@ func despawn_boss(boss_node):
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
 		var loot = load(Constants.LOOT_DROP).instance()
+		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, false)
 		lootLayer.call_deferred("add_child", loot)
 	else:
@@ -308,6 +309,7 @@ func spawn_loot(position, mob_name):
 		var chance = ((randi() % 10) +1)
 		if chance > 3:
 			var loot = load(Constants.LOOT_DROP).instance()
+			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, false)
 			lootLayer.call_deferred("add_child", loot)
 

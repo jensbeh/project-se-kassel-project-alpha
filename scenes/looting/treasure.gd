@@ -9,6 +9,7 @@ var content = {}
 
 # connect interaction signal with player
 func _ready():
+	self.name = "treasure"
 	Utils.get_current_player().connect("player_interact", self, "interaction")
 	position = spawn_position
 
@@ -31,21 +32,38 @@ func _on_Area2D_body_exited(body):
 		interacted = false
 
 
-# when interacted, open loot panel for looting
+# when interacted, open dialog
 func interaction():
 	if player_in_looting_zone and !interacted:
 		interacted = true
 		Utils.get_current_player().set_movement(false)
-		get_node("AnimationPlayer").play("OpenTreasure")
-		loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
-		Utils.get_ui().add_child(loot_panel)
-		loot_panel.connect("looted", self, "save_loot")
+		var dialog = load(Constants.DIALOG_PATH).instance()
+		Utils.get_ui().add_child(dialog)
 		if !looted:
-			looted = true
-			loot_panel.set_loot_type("Treasure3", false)
-			loot_panel.loot()
+			dialog.start(self, false, str(3))
+		elif content.empty():
+			dialog.start(self, true, str(3))
 		else:
-			loot_panel.set_up_content(content)
+			dialog.start(self, "open", "")
+
+
+func reset_interaction():
+	interacted = false
+
+
+# called to open the loot panel
+func open_loot_panel():
+	interacted = true
+	loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+	Utils.get_ui().add_child(loot_panel)
+	get_node("AnimationPlayer").play("OpenTreasure")
+	loot_panel.connect("looted", self, "save_loot")
+	if !looted:
+		looted = true
+		loot_panel.set_loot_type("Treasure3", true)
+		loot_panel.loot()
+	else:
+		loot_panel.set_up_content(content)
 
 
 func save_loot(loot):

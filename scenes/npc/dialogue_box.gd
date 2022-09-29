@@ -8,18 +8,30 @@ var phraseNum = 0
 var finished = false
 var obj_name
 var origin
+var type
 
 
-func start(origin_obj, looted_value):
+func start(origin_obj, looted_value, treasure_type):
 	obj_name = origin_obj.name
 	origin = origin_obj
+	type = treasure_type
 	if typeof(looted_value) == TYPE_BOOL:
 		if "treasure" in obj_name and !looted_value:
 			obj_name = "treasure"
+			if treasure_type == "1":
+				get_node("Trade/Icon").frame = 185
+			elif treasure_type == "2":
+				get_node("Trade/Icon").frame = 186
+			else:
+				get_node("Trade/Icon").frame = 271
+				obj_name = "open"
 		elif "treasure" in obj_name and looted_value:
 			obj_name = "empty"
+		else:
+			get_node("Trade/Icon").frame = 203
 	else:
 		obj_name = "open"
+		get_node("Trade/Icon").frame = 271
 	Utils.get_control_notes().hide()
 	$Timer.wait_time = textSpeed
 	# Get language
@@ -97,6 +109,8 @@ func close_dialog():
 		if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
 			for npc in origin.get_parent().get_children():
 				npc.set_interacted(false)
+		else:
+			Utils.get_scene_manager().get_current_scene().reset_interaction()
 	Utils.get_control_notes().show()
 	get_parent().remove_child(self)
 	queue_free()
@@ -115,5 +129,8 @@ func _on_Trade_pressed():
 	else:
 		Utils.get_control_notes().show()
 		close_dialog()
-		if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
-			Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
+		if type != "3":
+			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
+				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
+		else:
+			origin.open_loot_panel()

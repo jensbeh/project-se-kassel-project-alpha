@@ -300,8 +300,8 @@
    <object id="50" x="752" y="-48" width="16" height="16"/>
   </objectgroup>
  </group>
- <group id="14" name="lootLayer"/>
  <group id="3" name="entitylayer">
+  <group id="14" name="lootLayer"/>
   <group id="19" name="keylayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>

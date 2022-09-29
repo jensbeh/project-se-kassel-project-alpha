@@ -280,6 +280,7 @@ func on_key_collected():
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
 		var loot = load(Constants.LOOT_DROP).instance()
+		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, true)
 		lootLayer.call_deferred("add_child", loot)
 	else:
@@ -287,6 +288,7 @@ func spawn_loot(position, mob_name):
 		var chance = ((randi() % 10) +1)
 		if chance > 3:
 			var loot = load(Constants.LOOT_DROP).instance()
+			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, true)
 			lootLayer.call_deferred("add_child", loot)
 
@@ -334,15 +336,20 @@ func interaction():
 			var dialog = load(Constants.DIALOG_PATH).instance()
 			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
-				dialog.start(treasure, false)
+				dialog.start(treasure, false, str(treasure_dict[treasure][3]))
 			elif treasure_dict[treasure][2].empty():
-				dialog.start(treasure, true)
+				dialog.start(treasure, true, str(treasure_dict[treasure][3]))
 			else:
-				dialog.start(treasure, "open")
+				dialog.start(treasure, "open", "")
+
+
+func reset_interaction():
+	interacted = false
 
 
 # called to open the loot panel
 func open_loot_panel(treasure):
+	interacted = true
 	loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
 	Utils.get_ui().add_child(loot_panel)
 	loot_panel.connect("looted", self, "save_loot")

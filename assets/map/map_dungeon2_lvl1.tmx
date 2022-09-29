@@ -823,8 +823,8 @@
    <object id="13" type="light" gid="274" x="496" y="208" width="16" height="16"/>
   </objectgroup>
  </group>
- <group id="17" name="lootLayer"/>
  <group id="3" name="entitylayer">
+  <group id="17" name="lootLayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>
  </group>

@@ -132,7 +132,7 @@ func interaction_detected():
 			Utils.get_current_player().set_movment_animation(false)
 			var dialog = load(Constants.DIALOG_PATH).instance()
 			Utils.get_ui().add_child(dialog)
-			dialog.start(self, false)
+			dialog.start(self, false, "")
 
 # When npc enters stairs to slow down
 func _on_interactionZone_NPC_area_entered(area):

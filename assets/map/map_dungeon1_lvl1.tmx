@@ -505,8 +505,8 @@
    <object id="13" type="light" gid="274" x="16" y="80" width="16" height="16"/>
   </objectgroup>
  </group>
- <group id="20" name="lootLayer"/>
  <group id="3" name="entitylayer">
+  <group id="20" name="lootLayer"/>
   <group id="18" name="playerlayer"/>
   <group id="17" name="mobslayer"/>
  </group>

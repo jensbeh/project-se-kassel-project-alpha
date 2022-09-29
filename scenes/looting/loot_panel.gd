@@ -97,7 +97,11 @@ func _on_Icon_gui_input(event, lootpanelslot):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			var keys = loot_dict.keys()
-			var item_idx = keys[lootpanelslot -1]
+			var item_idx
+			if keys.size() < lootpanelslot:
+				item_idx = keys[-1]
+			else:
+				item_idx = keys[lootpanelslot -1]
 			if loot_dict.has(item_idx):
 				loot_item(item_idx)
 

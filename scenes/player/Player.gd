@@ -226,7 +226,7 @@ func _input(event):
 		Utils.get_control_notes().show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying:
+	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 		is_attacking = true
 		set_movement(false)
 		animation_state.start("Attack")
@@ -590,42 +590,45 @@ func _set_collect_key(track_str, value):
 	set_collect_key(collect_left, track_str, value)
 	
 	var collected_down = animation_player.get_animation("CollectedDown")
-	set_collect_key(collected_down, track_str, value)
+	set_collected_key(collected_down, track_str, value)
 	
 	var collected_up = animation_player.get_animation("CollectedUp")
-	set_collect_key(collected_up, track_str, value)
+	set_collected_key(collected_up, track_str, value)
 	
 	var collected_right = animation_player.get_animation("CollectedRight")
-	set_collect_key(collected_right, track_str, value)
+	set_collected_key(collected_right, track_str, value)
 	
 	var collected_left = animation_player.get_animation("CollectedLeft")
-	set_collect_key(collected_left, track_str, value)
+	set_collected_key(collected_left, track_str, value)
 
 
 # Method changes the frames of the animation
-func set_collect_key(attack_animation, track_str, value):
-	var track_idx = attack_animation.find_track(track_str)
+func set_collect_key(collect_animation, track_str, value):
+	var track_idx = collect_animation.find_track(track_str)
 	
-	if attack_animation.track_find_key(track_idx, 0.0, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.0, 1)) + value)
+	if collect_animation.track_find_key(track_idx, 0.0, 1) != -1:
+		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.0, 1),
+			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.0, 1)) + value)
 	
-	if attack_animation.track_find_key(track_idx, 0.1, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.1, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.1, 1)) + value)
+	if collect_animation.track_find_key(track_idx, 0.2, 1) != -1:
+		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.2, 1),
+			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.2, 1)) + value)
 	
-	if attack_animation.track_find_key(track_idx, 0.2, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.2, 1)) + value)
-	
-	if attack_animation.track_find_key(track_idx, 0.3, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.3, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.3, 1)) + value)
-	
-	if attack_animation.track_find_key(track_idx, 0.4, 1) != -1:
-		attack_animation.track_set_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1),
-			attack_animation.track_get_key_value(track_idx, attack_animation.track_find_key(track_idx, 0.4, 1)) + value)
+	if collect_animation.track_find_key(track_idx, 0.4, 1) != -1:
+		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.4, 1),
+			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.4, 1)) + value)
 
+
+func set_collected_key(collected_animation, track_str, value):
+	var track_idx = collected_animation.find_track(track_str)
+	
+	if collected_animation.track_find_key(track_idx, 0.1, 1) != -1:
+		collected_animation.track_set_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.1, 1),
+			collected_animation.track_get_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.1, 1)) + value)
+		
+	if collected_animation.track_find_key(track_idx, 0.3, 1) != -1:
+		collected_animation.track_set_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.3, 1),
+			collected_animation.track_get_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.3, 1)) + value)
 
 # Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
@@ -941,6 +944,8 @@ func finished_looting():
 # Method is called when DIE animation is done
 func player_killed():
 	Utils.get_main().show_death_screen()
+	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
+		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
 
 
 # Method to return true if player is dying/died otherwise false -> called from scene_manager
@@ -952,6 +957,9 @@ func is_player_dying():
 func reset_player_after_dying():
 	# Make player visible again to mobs
 	make_player_invisible(false)
+	
+	if Utils.get_ui().get_node_or_null("LootPanel") != null:
+		Utils.get_ui().get_node_or_null("LootPanel").queue_free()
 	
 	# reset cooldown
 	Utils.get_hotbar().get_node("Hotbar/Timer").stop()

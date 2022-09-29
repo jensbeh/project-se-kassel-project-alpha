@@ -388,8 +388,8 @@
    <object id="31" x="-368" y="80" width="16" height="16"/>
   </objectgroup>
  </group>
- <group id="12" name="lootLayer"/>
  <group id="3" name="entitylayer">
+  <group id="12" name="lootLayer"/>
   <group id="15" name="keylayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>

@@ -444,8 +444,8 @@
    <data encoding="csv"/>
   </layer>
  </group>
- <group id="17" name="lootLayer"/>
  <group id="3" name="entitylayer">
+  <group id="17" name="lootLayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>
  </group>
