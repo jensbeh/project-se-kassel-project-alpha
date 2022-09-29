@@ -204,10 +204,14 @@ func astar_connect_walkable_cells_for_mobs(points_array):
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
 		var points_relative = PoolVector2Array([
-			point + Vector2.RIGHT,
-			point + Vector2.LEFT,
-			point + Vector2.DOWN,
-			point + Vector2.UP,
+			point + Vector2.RIGHT, # Vector2( 1, 0 )
+			point + Vector2(1,1), # RIGHT-DOWN
+			point + Vector2.DOWN, # Vector2( 0, 1 )
+			point + Vector2(-1,1), # LEFT-DOWN
+			point + Vector2.LEFT, # Vector2( -1, 0 )
+			point + Vector2(-1,-1), # LEFT-UP
+			point + Vector2.UP, # Vector2( 0, -1 )
+			point + Vector2(1,-1), # RIGHT-UP
 		])
 		
 		for point_relative in points_relative:
