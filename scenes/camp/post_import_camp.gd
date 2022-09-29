@@ -8,6 +8,7 @@ var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
 
+
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
 	print("reimporte " + scene.name + "...")

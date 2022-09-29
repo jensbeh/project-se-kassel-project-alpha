@@ -224,15 +224,23 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 		
 		# Check if cells / position with enough space around are perfect
 		var generate_again = false
-		if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
-		 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
-		 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
-		 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
-		 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
-		 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
-		 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
-		 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
-		 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
+		var obstacle_tile_id
+		if Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.GRASSLAND:
+			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID
+		elif Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.DUNGEON:
+			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
+		else:
+			printerr("Invalid scene type in generate_position_in_mob_area for \"obstacle_tile_id\"")
+		
+		if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
+		 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
+		 and cellBottomRight != obstacle_tile_id and cellBottomRight != Constants.INVALID_TILE_ID \
+		 and cellRight != obstacle_tile_id and cellRight != Constants.INVALID_TILE_ID \
+		 and cellTopRight != obstacle_tile_id and cellTopRight != Constants.INVALID_TILE_ID \
+		 and cellTop != obstacle_tile_id and cellTop != Constants.INVALID_TILE_ID \
+		 and cellTopLeft != obstacle_tile_id and cellTopLeft != Constants.INVALID_TILE_ID \
+		 and cellLeft != obstacle_tile_id and cellLeft != Constants.INVALID_TILE_ID \
+		 and cellBottomLeft != obstacle_tile_id and cellBottomLeft != Constants.INVALID_TILE_ID :
 			var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
 			for cell_to_check in cells:
 				var shapes = tile_set.tile_get_shapes(cell_to_check)
@@ -256,6 +264,7 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 # Method to return random mob list as spawning list to spawning area
 func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
 	var mobs_to_spawn = []
+	rng.randomize()
 	for _i in range(spawn_mobs_counter):
 		var num = rng.randi_range(0, biome_mobs_count - 1)
 		mobs_to_spawn.append(num)
@@ -270,6 +279,7 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 	var generate_position = true
 	while(generate_position):
 		# Get random position in circle
+		randomize()
 		var theta = rand_range(0.0, 2.0 * PI)
 		var radius = rand_range(min_radius, max_radius)
 		var randX = mob_global_position.x + (radius * cos(theta))
@@ -290,15 +300,23 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 		
 		# Check if cells / position with enough space around are perfect
 		var generate_again = false
-		if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
-		 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
-		 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
-		 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
-		 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
-		 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
-		 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
-		 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
-		 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
+		var obstacle_tile_id
+		if Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.GRASSLAND:
+			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID
+		elif Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.DUNGEON:
+			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
+		else:
+			printerr("Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")
+		
+		if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
+		 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
+		 and cellBottomRight != obstacle_tile_id and cellBottomRight != Constants.INVALID_TILE_ID \
+		 and cellRight != obstacle_tile_id and cellRight != Constants.INVALID_TILE_ID \
+		 and cellTopRight != obstacle_tile_id and cellTopRight != Constants.INVALID_TILE_ID \
+		 and cellTop != obstacle_tile_id and cellTop != Constants.INVALID_TILE_ID \
+		 and cellTopLeft != obstacle_tile_id and cellTopLeft != Constants.INVALID_TILE_ID \
+		 and cellLeft != obstacle_tile_id and cellLeft != Constants.INVALID_TILE_ID \
+		 and cellBottomLeft != obstacle_tile_id and cellBottomLeft != Constants.INVALID_TILE_ID :
 			var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
 			for cell_to_check in cells:
 				var shapes = tile_set.tile_get_shapes(cell_to_check)
@@ -326,6 +344,7 @@ func generate_position_in_polygon(area_info, is_first_spawn):
 	
 	var generate_position = true
 	while(generate_position):
+		randomize()
 		# Get weighted random triangle
 		var remaining_distance = randf() * complete_polygon_area
 		var selected_triangle = null

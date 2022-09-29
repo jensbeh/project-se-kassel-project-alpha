@@ -1,5 +1,9 @@
 extends Node2D
 
+
+# Map specific
+var scene_type = Constants.SceneType.CAMP
+
 # Variables
 var thread
 var player_in_change_scene_area = false
@@ -164,3 +168,8 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null:
 			higher_chunk.visible = false
+
+
+# Method to return the scene type of the map
+func get_scene_type():
+	return scene_type

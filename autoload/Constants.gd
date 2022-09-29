@@ -7,6 +7,7 @@ const COOLDOWN = 20
 # Tiles
 const TILE_SIZE = 16
 const PSEUDO_OBSTACLE_TILE_ID = 22
+const PSEUDO_OBSTACLE_TILE_ID_DUNGEONS = 39
 const INVALID_TILE_ID = -1
 
 # Chunks

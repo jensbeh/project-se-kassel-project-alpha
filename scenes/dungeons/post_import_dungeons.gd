@@ -11,6 +11,7 @@ var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
 
+
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
 	print("reimporte " + scene.name + "...")
@@ -42,25 +43,25 @@ func post_import(scene):
 	# Get TileSet from other TileMap because of changing tileset ids "res://assets/map/map_grassland.tmx::5195" -> 5195
 	# Also in every TileMap all TileSets are stored
 	var groundTileMap : TileMap = scene.find_node("ground")
-	mobs_nav_tilemap = compressed_tilemap
+	mobs_nav_tilemap = compressed_tilemap.duplicate()
 	mobs_nav_tilemap.tile_set = groundTileMap.tile_set
 	mobs_nav_tilemap.cell_quadrant_size = 1
 	mobs_nav_tilemap.cell_y_sort = false
 	mobs_nav_tilemap.cell_clip_uv = true
 	mobs_nav_tilemap.cell_size = Vector2(16,16)
-	mobs_nav_tilemap.name = "NavigationTileMap"
+	mobs_nav_tilemap.name = "mobs_navigation_tilemap"
+	mobs_nav_tilemap.visible = false
 	
 	
 	# merge all tilemaps and collisionshapes from "groundlayer" together
 	remove_collisionshapes_from_tilemap(mobs_nav_tilemap, scene.find_node("groundlayer"))
+	remove_collisiontiles_from_tilemap(mobs_nav_tilemap)
 	
-	# Setup Navigation2D for mobs
+	# Setup NavigationTileMap for mobs
 	var navigation : Node2D = scene.find_node("navigation")
-	var mobs_navigation2d = Navigation2D.new()
-	mobs_navigation2d.name = "mobs_navigation2d"
-	mobs_navigation2d.visible = false
-	navigation.replace_by(mobs_navigation2d, true)
-	scene.find_node("mobs_navigation2d").add_child(mobs_nav_tilemap)
+	navigation.name = "mobs_navigation"
+	navigation.visible = false
+	navigation.add_child(mobs_nav_tilemap)
 	mobs_nav_tilemap.set_owner(scene)
 	
 	# Setup entitylayer to YSorts
@@ -372,7 +373,7 @@ func compress_tilemaps(node):
 
 
 # Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
-func remove_collisionshapes_from_tilemap(tilemap, node_with_collisionshapes):
+func remove_collisionshapes_from_tilemap(tilemap : TileMap, node_with_collisionshapes):
 	for child in node_with_collisionshapes.get_children():
 		if child.get_child_count() > 0:
 			remove_collisionshapes_from_tilemap(tilemap, child)
@@ -383,4 +384,17 @@ func remove_collisionshapes_from_tilemap(tilemap, node_with_collisionshapes):
 					
 				for x in (child.shape.extents.x * xExtentsFactor):
 					for y in (child.shape.extents.y * yExtentsFactor):
-						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), -1)
+						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS)
+
+
+# Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
+func remove_collisiontiles_from_tilemap(tilemap : TileMap):
+	var tile_set : TileSet = tilemap.tile_set
+	for cellPos in tilemap.get_used_cells():
+		var cell = tilemap.get_cell(cellPos.x, cellPos.y)
+		var shapes = tile_set.tile_get_shapes(cell)
+		if shapes.size() > 0:
+			for shape in shapes:
+				# If shape on tile is collision then generate again
+				if shape["shape"] is RectangleShape2D:
+					tilemap.set_cell(cellPos.x, cellPos.y, constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS)

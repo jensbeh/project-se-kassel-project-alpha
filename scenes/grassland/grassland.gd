@@ -2,6 +2,7 @@ extends Node2D
 
 
 # Map specific
+var scene_type = Constants.SceneType.GRASSLAND
 var max_ambient_mobs = 50
 
 # Variables
@@ -53,7 +54,7 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-	PathfindingService.init(mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
+	PathfindingService.init(mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos, Constants.PSEUDO_OBSTACLE_TILE_ID)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
@@ -289,3 +290,8 @@ func despawn_boss(boss_node):
 		mobsLayer.remove_child(boss_node)
 		boss_node.queue_free()
 		print("----------> Boss \"" + boss_node.name + "\" removed")
+
+
+# Method to return the scene type of the map
+func get_scene_type():
+	return scene_type

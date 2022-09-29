@@ -1,5 +1,9 @@
 extends Node
 
+
+# Map specific
+var scene_type = Constants.SceneType.DUNGEON
+
 # Variables
 var thread
 var next_level_to  = null
@@ -16,8 +20,7 @@ var boss_spawn_area = null
 var init_transition_data = null
 
 # Nodes
-onready var mobsNavigation2d = find_node("mobs_navigation2d")
-onready var mobsNavigationTileMap = find_node("NavigationTileMap")
+onready var mobsNavigationTileMap = find_node("mobs_navigation_tilemap")
 onready var mobSpawns = find_node("mobSpawns")
 onready var mobsLayer = find_node("mobslayer")
 
@@ -41,19 +44,20 @@ func _setup_scene_in_background():
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
 	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
 	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
 
 	# Setup pathfinding
-	PathfindingService.init(mobsNavigation2d)
+	PathfindingService.init(mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos, Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
 	
 	# Spawn mobs
-	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, 0, false)
+	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false)
 	
 	call_deferred("_on_setup_scene_done")
 
@@ -255,3 +259,8 @@ func on_key_collected():
 	var lockedDoorsNode = find_node("locked_doors")
 	for child in lockedDoorsNode.get_children():
 		child.call_deferred("queue_free")
+
+
+# Method to return the scene type of the map
+func get_scene_type():
+	return scene_type

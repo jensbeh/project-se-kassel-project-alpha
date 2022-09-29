@@ -21,7 +21,7 @@ func _ready():
 
 
 # Method is called when new scene is loaded with mobs with pathfinding
-func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
+func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null, pseudo_obstacle_tile_id : int = 0):
 	print("INIT PATHFINDING_SERVICE")
 	# Check if thread is active wait to stop
 	if pathfinder_thread.is_active():
@@ -29,7 +29,6 @@ func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTi
 	
 	# Init variables
 	mobNavigationTilemap = new_mobNavigationTilemap
-	print(mobNavigationTilemap.get_cell(50,29))
 	ambientMobsNavigationTileMap = new_ambientMobsNavigationTileMap
 	
 	map_size_in_tiles = new_map_size_in_tiles
@@ -42,13 +41,14 @@ func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTi
 	
 	# Init AStar
 	# Mobs
-	var mobs_obstacles = mobNavigationTilemap.get_used_cells_by_id(Constants.PSEUDO_OBSTACLE_TILE_ID)
+	var mobs_obstacles = mobNavigationTilemap.get_used_cells_by_id(pseudo_obstacle_tile_id)
 	var mobs_walkable_cells_list = astar_add_walkable_cells_for_mobs(mobs_obstacles)
 	astar_connect_walkable_cells_for_mobs(mobs_walkable_cells_list)
 	# Ambient mobs
-	var ambient_mobs_obstacles = ambientMobsNavigationTileMap.get_used_cells_by_id(Constants.PSEUDO_OBSTACLE_TILE_ID)
-	var ambient_mobs_walkable_cells_list = astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_obstacles)
-	astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_walkable_cells_list)
+	if ambientMobsNavigationTileMap != null:
+		var ambient_mobs_obstacles = ambientMobsNavigationTileMap.get_used_cells_by_id(pseudo_obstacle_tile_id)
+		var ambient_mobs_walkable_cells_list = astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_obstacles)
+		astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_walkable_cells_list)
 	
 #	print("map_size_in_tiles: " + str(map_size_in_tiles))
 #	print("map_offset_in_tiles: " + str(map_offset_in_tiles))
@@ -77,6 +77,8 @@ func cleanup():
 	ambientMobsNavigationTileMap = null
 	map_size_in_tiles = null
 	half_cell_size = null
+	mobs_astar_node.clear()
+	ambient_mobs_astar_node.clear()
 	
 	print("STOPPED PATHFINDING_SERVICE")
 
