@@ -204,47 +204,53 @@ func calculate_triangle_area(A, B, C) -> float:
 
 # Method to generate a valid position in a mob area
 func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning) -> Vector2:
-	var position = generate_position_in_polygon(area_info, is_first_spawning)
 	var tile_set : TileSet = navigation_tile_map.tile_set
+	var position : Vector2
 	
-	# Check if position is valid
-	var cell = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor(position.y / 16)))
-	var cellBottom = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor((position.y + collision_radius) / 16)))
-	var cellBottomRight = navigation_tile_map.get_cell(int(floor((position.x + collision_radius) / 16)), int(floor((position.y + collision_radius) / 16)))
-	var cellRight = navigation_tile_map.get_cell(int(floor((position.x + collision_radius) / 16)), int(floor(position.y / 16)))
-	var cellTopRight = navigation_tile_map.get_cell(int(floor((position.x + collision_radius) / 16)), int(floor((position.y - collision_radius) / 16)))
-	var cellTop = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor((position.y - collision_radius) / 16)))
-	var cellTopLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor((position.y - collision_radius) / 16)))
-	var cellLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor(position.y / 16)))
-	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor((position.y + collision_radius) / 16)))
+	var generate_position = true
+	while(generate_position):
+		position = generate_position_in_polygon(area_info, is_first_spawning)
+		
+		# Check if position is valid
+		var cell = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor(position.y / 16)))
+		var cellBottom = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor((position.y + collision_radius) / 16)))
+		var cellBottomRight = navigation_tile_map.get_cell(int(floor((position.x + collision_radius) / 16)), int(floor((position.y + collision_radius) / 16)))
+		var cellRight = navigation_tile_map.get_cell(int(floor((position.x + collision_radius) / 16)), int(floor(position.y / 16)))
+		var cellTopRight = navigation_tile_map.get_cell(int(floor((position.x + collision_radius) / 16)), int(floor((position.y - collision_radius) / 16)))
+		var cellTop = navigation_tile_map.get_cell(int(floor(position.x / 16)), int(floor((position.y - collision_radius) / 16)))
+		var cellTopLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor((position.y - collision_radius) / 16)))
+		var cellLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor(position.y / 16)))
+		var cellBottomLeft = navigation_tile_map.get_cell(int(floor((position.x - collision_radius) / 16)), int(floor((position.y + collision_radius) / 16)))
+		
+		# Check if cells / position with enough space around are perfect
+		var generate_again = false
+		if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
+		 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
+		 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
+		 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
+		 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
+		 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
+		 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
+		 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
+		 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
+			var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
+			for cell_to_check in cells:
+				var shapes = tile_set.tile_get_shapes(cell_to_check)
+				if shapes.size() > 0:
+					for shape in shapes:
+						# If shape on tile is collision then generate again
+						if shape["shape"] is RectangleShape2D:
+							generate_again = true
+		else:
+			generate_again = true
+		
+		if not generate_again:
+			# Position is NOT blocked by collision, ... - get new one
+			generate_position = false
+		else:
+			print("generate_again - generate_position_in_mob_area")
 	
-	# Check if cells / position with enough space around are perfect
-	var generate_again = false
-	if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
-	 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
-	 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
-	 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
-	 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
-	 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
-	 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
-	 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
-	 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
-		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
-		for cell_to_check in cells:
-			var shapes = tile_set.tile_get_shapes(cell_to_check)
-			if shapes.size() > 0:
-				for shape in shapes:
-					# If shape on tile is collision then generate again
-					if shape["shape"] is RectangleShape2D:
-						generate_again = true
-	else:
-		generate_again = true
-	
-	if generate_again:
-		# Position is blocked by collision, ... - get new one
-		return generate_position_in_mob_area(area_info, navigation_tile_map, collision_radius, is_first_spawning)
-	else:
-		return position
+	return position
 
 
 # Method to return random mob list as spawning list to spawning area
@@ -258,86 +264,100 @@ func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
 
 # Method generates a valid position in a radius around the mob
 func generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
-	# Get random position in circle
-	rng.randomize()
-	var theta = rng.randf_range(0, 2 * PI)
-	var radius = rng.randf_range(min_radius, max_radius)
-	var randX = mob_global_position.x + (radius * cos(theta))
-	var randY = mob_global_position.y + (radius * sin(theta))
-	
-	var position = Vector2(randX, randY)
 	var tile_set : TileSet = navigation_tile_map.tile_set
+	var position : Vector2
 	
-	# Check if position is valid
-	var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
-	var cellBottom = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY + collision_radius) / 16)))
-	var cellBottomRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
-	var cellRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor(randY / 16)))
-	var cellTopRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
-	var cellTop = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY - collision_radius) / 16)))
-	var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
-	var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
-	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	var generate_position = true
+	while(generate_position):
+		# Get random position in circle
+		var theta = rand_range(0.0, 2.0 * PI)
+		var radius = rand_range(min_radius, max_radius)
+		var randX = mob_global_position.x + (radius * cos(theta))
+		var randY = mob_global_position.y + (radius * sin(theta))
+		
+		position = Vector2(randX, randY)
+		
+		# Check if position is valid
+		var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
+		var cellBottom = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY + collision_radius) / 16)))
+		var cellBottomRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+		var cellRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor(randY / 16)))
+		var cellTopRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+		var cellTop = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY - collision_radius) / 16)))
+		var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+		var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
+		var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+		
+		# Check if cells / position with enough space around are perfect
+		var generate_again = false
+		if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
+		 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
+		 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
+		 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
+		 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
+		 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
+		 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
+		 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
+		 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
+			var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
+			for cell_to_check in cells:
+				var shapes = tile_set.tile_get_shapes(cell_to_check)
+				if shapes.size() > 0:
+					for shape in shapes:
+						# If shape on tile is collision then generate again
+						if shape["shape"] is RectangleShape2D:
+							generate_again = true
+		else:
+			generate_again = true
+		
+		if not generate_again:
+			# Position is NOT blocked by collision, ... - get new one
+			generate_position = false
+		else:
+			print("generate_again - generate_position_near_mob")
 	
-	# Check if cells / position with enough space around are perfect
-	var generate_again = false
-	if cell != Constants.PSEUDO_OBSTACLE_TILE_ID and cell != Constants.INVALID_TILE_ID \
-	 and cellBottom != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottom != Constants.INVALID_TILE_ID \
-	 and cellBottomRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomRight != Constants.INVALID_TILE_ID \
-	 and cellRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellRight != Constants.INVALID_TILE_ID \
-	 and cellTopRight != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopRight != Constants.INVALID_TILE_ID \
-	 and cellTop != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTop != Constants.INVALID_TILE_ID \
-	 and cellTopLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellTopLeft != Constants.INVALID_TILE_ID \
-	 and cellLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellLeft != Constants.INVALID_TILE_ID \
-	 and cellBottomLeft != Constants.PSEUDO_OBSTACLE_TILE_ID and cellBottomLeft != Constants.INVALID_TILE_ID :
-		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
-		for cell_to_check in cells:
-			var shapes = tile_set.tile_get_shapes(cell_to_check)
-			if shapes.size() > 0:
-				for shape in shapes:
-					# If shape on tile is collision then generate again
-					if shape["shape"] is RectangleShape2D:
-						generate_again = true
-	else:
-		generate_again = true
-	
-	if generate_again:
-		# Position is blocked by collision, ... - get new one
-		return generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius)
-	else:
-		return position
+	return position
 
 
 # Method generates a position in a polygon and checks if the position is in camera screen
 func generate_position_in_polygon(area_info, is_first_spawn):
-	# Get weighted random triangle
 	var complete_polygon_area = area_info[0] # complete_polygon_area
-	var remaining_distance = randf() * complete_polygon_area
-	var selected_triangle = null
-	for i in range(1, area_info.size()): # without complete_polygon_area
-		remaining_distance -= area_info[i][3]
-		if remaining_distance < 0:
-			selected_triangle = i
-			break
+	var position : Vector2
 	
-	# Get random position in triangle
-	var A = area_info[selected_triangle][0]
-	var B = area_info[selected_triangle][1]
-	var C = area_info[selected_triangle][2]
-	var r1 = randf()
-	var r2 = randf()
-	var randX = (1 - sqrt(r1)) * A.x + (sqrt(r1) * (1 - r2)) * B.x + (sqrt(r1) * r2) * C.x
-	var randY = (1 - sqrt(r1)) * A.y + (sqrt(r1) * (1 - r2)) * B.y + (sqrt(r1) * r2) * C.y
-	
-	var position = Vector2(randX, randY)
-	# Check if spawn is in camera screen (only on first spawning) -> if it is then generate new position
-	if is_first_spawn:
-		if not is_position_in_camera_screen(position):
-			return position
+	var generate_position = true
+	while(generate_position):
+		# Get weighted random triangle
+		var remaining_distance = randf() * complete_polygon_area
+		var selected_triangle = null
+		for i in range(1, area_info.size()): # without complete_polygon_area
+			remaining_distance -= area_info[i][3]
+			if remaining_distance < 0:
+				selected_triangle = i
+				break
+		
+		# Get random position in triangle
+		var A = area_info[selected_triangle][0]
+		var B = area_info[selected_triangle][1]
+		var C = area_info[selected_triangle][2]
+		var r1 = randf()
+		var r2 = randf()
+		var randX = (1 - sqrt(r1)) * A.x + (sqrt(r1) * (1 - r2)) * B.x + (sqrt(r1) * r2) * C.x
+		var randY = (1 - sqrt(r1)) * A.y + (sqrt(r1) * (1 - r2)) * B.y + (sqrt(r1) * r2) * C.y
+		
+		position = Vector2(randX, randY)
+		# Check if spawn is in camera screen (only on first spawning) -> if it is then generate new position
+		if is_first_spawn:
+			if not is_position_in_camera_screen(position):
+				# Position NOT in camera screen -> take postion
+				generate_position = false
+			else:
+				# Position IN camera screen -> generate new postion
+				print("generate_again - generate_position_in_polygon")
+		
 		else:
-			return generate_position_in_polygon(area_info, is_first_spawn)
-	else:
-		return position
+			generate_position = false
+	
+	return position
 
 
 # Method to check is given position is in camera screen
