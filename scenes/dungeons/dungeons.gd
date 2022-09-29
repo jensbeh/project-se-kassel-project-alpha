@@ -310,17 +310,22 @@ func setup_treasure_areas():
 	for chunk in groundChunks.get_children():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
-			for treasure in treasure_object.get_children():
-				if "treasure" in treasure.name and !"pos" in treasure.name:
-					var treasure_data = []
-					treasure_data.append(false) # in range
-					treasure_data.append(false) # looted
-					treasure_data.append({}) # loot list
-					treasure_data.append(treasure.get_meta("selected_treasure_sprite")) # treasure type
-					treasure_dict[treasure] = treasure_data
-					# connect Area2D with functions to handle body action
-					treasure.connect("body_entered", self, "body_entered_treasure", [treasure])
-					treasure.connect("body_exited", self, "body_exited_treasure", [treasure])
+			randomize()
+			if randi() % 10 > 7:
+				chunk.remove_child(treasure_object)
+				treasure_object.queue_free()
+			else:
+				for treasure in treasure_object.get_children():
+					if "treasure" in treasure.name and !"pos" in treasure.name:
+						var treasure_data = []
+						treasure_data.append(false) # in range
+						treasure_data.append(false) # looted
+						treasure_data.append({}) # loot list
+						treasure_data.append(treasure.get_meta("selected_treasure_sprite")) # treasure type
+						treasure_dict[treasure] = treasure_data
+						# connect Area2D with functions to handle body action
+						treasure.connect("body_entered", self, "body_entered_treasure", [treasure])
+						treasure.connect("body_exited", self, "body_exited_treasure", [treasure])
 
 
 # when interacted, open dialog
