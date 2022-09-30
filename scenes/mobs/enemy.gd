@@ -75,6 +75,7 @@ func _ready():
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, true)
 	position = spawn_position
+#	position = Vector2(100, 100)
 	
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()

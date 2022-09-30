@@ -62,6 +62,11 @@ func _setup_scene_in_background():
 	call_deferred("_on_setup_scene_done")
 
 
+func _physics_process(_delta):
+	if Utils.get_current_player() != null:
+		find_node("point").global_position = Utils.get_current_player().global_position
+
+
 # Method is called when thread is done and the scene is setup
 func _on_setup_scene_done():
 	thread.wait_to_finish()

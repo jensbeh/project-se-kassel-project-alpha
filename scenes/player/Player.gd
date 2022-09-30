@@ -110,7 +110,7 @@ func _ready():
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
 	# Set invisibility of player
-	make_player_invisible(false)
+	make_player_invisible(true)
 	
 	# Set invincibility of player
 	make_player_invincible(false)
@@ -155,7 +155,10 @@ func _physics_process(delta):
 		# handle knockback when hurting or dying
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
-
+	
+	
+	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON:
+		PathfindingService.world_to_tile_coords(global_position)
 
 # Method handles key inputs
 func _input(event):

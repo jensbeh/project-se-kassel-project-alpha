@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/map/map_dungeon3_lvl2.tmx" type="PackedScene" id=2]
 [ext_resource path="res://scenes/dungeons/dungeons.gd" type="Script" id=3]
+[ext_resource path="res://astar_visualizer.gd" type="Script" id=4]
+[ext_resource path="res://assets/Icon_Items/item_icons_1.png" type="Texture" id=5]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
@@ -19,6 +21,12 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="map_dungeon3_lvl2" parent="." instance=ExtResource( 2 )]
 
+[node name="mobs_navigation" parent="map_dungeon3_lvl2" index="1"]
+visible = true
+
+[node name="mobs_navigation_tilemap" parent="map_dungeon3_lvl2/mobs_navigation" index="0"]
+visible = true
+
 [node name="Player" parent="map_dungeon3_lvl2/entitylayer/playerlayer" index="0" instance=ExtResource( 1 )]
 position = Vector2( 632, -456 )
 
@@ -27,6 +35,19 @@ frame = 0
 
 [node name="AnimationTree" parent="map_dungeon3_lvl2/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
+
+[node name="astar" type="Node2D" parent="."]
+visible = false
+script = ExtResource( 4 )
+
+[node name="point" type="Position2D" parent="."]
+
+[node name="Sprite" type="Sprite" parent="point"]
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 5 )
+hframes = 16
+vframes = 27
+frame = 96
 
 [editable path="map_dungeon3_lvl2"]
 [editable path="map_dungeon3_lvl2/entitylayer/playerlayer/Player"]
