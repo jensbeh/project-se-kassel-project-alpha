@@ -51,7 +51,7 @@ func _setup_scene_in_background():
 	setup_change_scene_areas()
 
 	# Setup pathfinding
-	PathfindingService.init(mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos, Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS)
+	PathfindingService.init(find_node("astar"), mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()

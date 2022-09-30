@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "AStar2DVisualizer",
+"language": "GDScript",
+"path": "res://astar_visualizer.gd"
+}, {
+"base": "Node2D",
 "class": "CustomLight",
 "language": "GDScript",
 "path": "res://scenes/light/custom_light.gd"
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scenes/transition_data.gd"
 } ]
 _global_script_class_icons={
+"AStar2DVisualizer": "",
 "CustomLight": "",
 "TransitionData": ""
 }

@@ -492,7 +492,7 @@ func remove_collisionshapes_from_tilemap(tilemap : TileMap, node_with_collisions
 					
 				for x in (child.shape.extents.x * xExtentsFactor):
 					for y in (child.shape.extents.y * yExtentsFactor):
-						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), constants.PSEUDO_OBSTACLE_TILE_ID)
+						tilemap.set_cell(int(floor((child.get_parent().position.x + x) / 16)), int(floor((child.get_parent().position.y + y) / 16)), -1)
 
 
 # Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
@@ -505,4 +505,4 @@ func remove_collisiontiles_from_tilemap(tilemap : TileMap):
 			for shape in shapes:
 				# If shape on tile is collision then generate again
 				if shape["shape"] is RectangleShape2D:
-					tilemap.set_cell(cellPos.x, cellPos.y, constants.PSEUDO_OBSTACLE_TILE_ID)
+					tilemap.set_cell(cellPos.x, cellPos.y, -1)

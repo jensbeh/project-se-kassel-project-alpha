@@ -21,7 +21,7 @@ func _ready():
 
 
 # Method is called when new scene is loaded with mobs with pathfinding
-func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null, pseudo_obstacle_tile_id : int = 0):
+func init(node2d = null, new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
 	print("INIT PATHFINDING_SERVICE")
 	# Check if thread is active wait to stop
 	if pathfinder_thread.is_active():
@@ -37,13 +37,11 @@ func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTi
 	
 	# Init AStar
 	# Mobs
-	var mobs_obstacles = mobNavigationTilemap.get_used_cells_by_id(pseudo_obstacle_tile_id)
-	var mobs_walkable_cells_list = astar_add_walkable_cells_for_mobs(mobs_obstacles)
+	var mobs_walkable_cells_list = astar_add_walkable_cells_for_mobs()
 	astar_connect_walkable_cells_for_mobs(mobs_walkable_cells_list)
 	# Ambient mobs
 	if ambientMobsNavigationTileMap != null:
-		var ambient_mobs_obstacles = ambientMobsNavigationTileMap.get_used_cells_by_id(pseudo_obstacle_tile_id)
-		var ambient_mobs_walkable_cells_list = astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_obstacles)
+		var ambient_mobs_walkable_cells_list = astar_add_walkable_cells_for_ambient_mobs()
 		astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_walkable_cells_list)
 	
 #	print("map_size_in_tiles: " + str(map_size_in_tiles))
@@ -54,6 +52,9 @@ func init(new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTi
 	# Start pathfinder thread
 	pathfinder_thread.start(self, "generate_pathes")
 	can_generate_pathes = true
+	
+	# Init visualizer
+	node2d.visualize(mobs_astar_node)
 
 
 # Method to stop the pathfinder to change map
@@ -152,16 +153,16 @@ func clean_thread():
 	pathfinder_thread.wait_to_finish()
 
 
-
-
 # Loops through all cells within the map's bounds and
 # adds all points to the mobs_astar_node, except the obstacles.
-func astar_add_walkable_cells_for_mobs(obstacle_list = []):
+func astar_add_walkable_cells_for_mobs():
 	var points_array = []
 	for y in range(map_offset_in_tiles.y, map_offset_in_tiles.y + map_size_in_tiles.y + 1):
 		for x in range(map_offset_in_tiles.x, map_offset_in_tiles.x + map_size_in_tiles.x + 1):
 			var point = Vector2(x, y)
-			if point in obstacle_list:
+			
+			# Check if point is no walkable tile / is outside of map (in map rectangle)
+			if mobNavigationTilemap.get_cell(point.x, point.y) == -1:
 				continue
 			
 			points_array.append(point)
@@ -177,12 +178,14 @@ func astar_add_walkable_cells_for_mobs(obstacle_list = []):
 
 # Loops through all cells within the map's bounds and
 # adds all points to the ambient_mobs_astar_node, except the obstacles.
-func astar_add_walkable_cells_for_ambient_mobs(obstacle_list = []):
+func astar_add_walkable_cells_for_ambient_mobs():
 	var points_array = []
 	for y in range(map_offset_in_tiles.y, map_offset_in_tiles.y + map_size_in_tiles.y + 1):
 		for x in range(map_offset_in_tiles.x, map_offset_in_tiles.x + map_size_in_tiles.x + 1):
 			var point = Vector2(x, y)
-			if point in obstacle_list:
+			
+			# Check if point is no walkable tile / is outside of map (in map rectangle)
+			if ambientMobsNavigationTileMap.get_cell(point.x, point.y) == -1:
 				continue
 			
 			points_array.append(point)
