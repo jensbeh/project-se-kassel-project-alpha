@@ -8,8 +8,8 @@ var can_generate_pathes = false
 
 var mobs_astar_node = AStar.new()
 var ambient_mobs_astar_node = AStar.new()
-var mobNavigationTilemap = null
-var ambientMobsNavigationTileMap = null
+var mobNavigationTilemap : TileMap = null
+var ambientMobsNavigationTileMap : TileMap = null
 var map_size_in_tiles = null
 var map_min_global_pos = null
 var map_offset_in_tiles = null
@@ -179,26 +179,90 @@ func astar_add_walkable_cells_for_mobs():
 			if mobNavigationTilemap.get_cell(tile_coord.x, tile_coord.y) == -1:
 				continue
 			
-			# Make in one tile 9 points
+			# Make from one tile nine points
 			for point_y in range(3): # 0, 1, 2
 				for point_x in range(3): # 0, 1, 2
 					var point = Vector2(point_x, point_y)
 					
-					if point.x == 0 or point.x == 2 or point.y == 0 or point.y == 2:
-						# Point is on BORDER - check if point is in other field or invalid
-						pass
+					var valid_point = true
 					
-					point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y)
+					# Check CORNERS
+					if (point.x == 0 or point.x == 2) \
+					 and (point.y == 0 or point.y == 2):
+						# Point is on CORNER - check if neighbor points are invalid
+						# Check RIGHT-DOWN, LEFT-DOWN, LEFT-UP, RIGHT-UP
+						point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+						var points_diagonal_relative = PoolVector2Array([
+							point + Vector2(1,1), # RIGHT-DOWN
+							point + Vector2(-1,1), # LEFT-DOWN
+							point + Vector2(-1,-1), # LEFT-UP
+							point + Vector2(1,-1), # RIGHT-UP
+						])
+						for point_relative in points_diagonal_relative:
+							# Check if neighbor point is invalid
+							var point_tile_coord_relative = mobNavigationTilemap.world_to_map(point_coords_world(point_relative))
+							if mobNavigationTilemap.get_cell(point_tile_coord_relative.x, point_tile_coord_relative.y) == -1:
+								valid_point = false
+								break
 					
-					if not points_array.has(point):
-						points_array.append(point)
-						# The AStar class references points with indices.
-						# Using a function to calculate the index from a tile_coord's coordinates
-						# ensures to always get the same index with the same input tile_coord
-						var point_index = calculate_point_index(point)
-						# AStar works for both 2d and 3d, so we have to convert the tile_coord
-						# coordinates from and to Vector3s.
-						mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
+					# Check EDGES
+					elif (point.x == 1 and point.y == 0) \
+					 or (point.x == 0 and point.y == 1) \
+					 or (point.x == 2 and point.y == 1) \
+					 or (point.x == 1 and point.y == 2):
+						# Point is on EDGE - check if neighbor points are invalid
+						
+						# Check DOWN, UP
+						if (point.x == 1 and point.y == 0) \
+					 	 or (point.x == 1 and point.y == 2):
+							point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+							# Take DOWN and UP point
+							var points_vertical_relative = PoolVector2Array([
+								point + Vector2.DOWN, # Vector2( 0, 1 )
+								point + Vector2.UP, # Vector2( 0, -1 )
+							])
+							for point_relative in points_vertical_relative:
+								# Check if neighbor point is invalid
+								var point_tile_coord_relative = mobNavigationTilemap.world_to_map(point_coords_world(point_relative))
+								if mobNavigationTilemap.get_cell(point_tile_coord_relative.x, point_tile_coord_relative.y) == -1:
+									valid_point = false
+									break
+						
+						# Check RIGHT, LEFT
+						elif (point.x == 0 and point.y == 1) \
+					 	 or (point.x == 2 and point.y == 1):
+							point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+							# Take RIGHT and LEFT point
+							var points_horizontal_relative = PoolVector2Array([
+								point + Vector2.RIGHT, # Vector2( 1, 0 )
+								point + Vector2.LEFT, # Vector2( -1, 0 )
+							])
+							for point_relative in points_horizontal_relative:
+								# Check if neighbor point is invalid
+								var point_tile_coord_relative = mobNavigationTilemap.world_to_map(point_coords_world(point_relative))
+								if mobNavigationTilemap.get_cell(point_tile_coord_relative.x, point_tile_coord_relative.y) == -1:
+									valid_point = false
+									break
+					
+					# Check CENTER
+					elif (point.x == 1 and point.y == 1):
+						point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+						var point_tile_coord = mobNavigationTilemap.world_to_map(point_coords_world(point))
+						# Check if point is invalid
+						if mobNavigationTilemap.get_cell(point_tile_coord.x, point_tile_coord.y) == -1:
+							valid_point = false
+					
+					# Add point if valid
+					if valid_point:
+						if not points_array.has(point):
+							points_array.append(point)
+							# The AStar class references points with indices.
+							# Using a function to calculate the index from a tile_coord's coordinates
+							# ensures to always get the same index with the same input tile_coord
+							var point_index = calculate_point_index(point)
+							# AStar works for both 2d and 3d, so we have to convert the tile_coord
+							# coordinates from and to Vector3s.
+							mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
 	
 	return points_array
 
@@ -332,7 +396,7 @@ func get_mob_astar_path(mob_start, mob_end):
 	# Convert point to map positions
 	var path_world = []
 	for point in point_path:
-		var point_world = tile_coords_world(Vector2(point.x, point.y)) + half_cell_size
+		var point_world = point_coords_world(Vector2(point.x, point.y))
 		path_world.append(point_world)
 	
 	# Return path
@@ -347,7 +411,7 @@ func world_to_tile_coords(global_position : Vector2):
 	return point
 
 
-func tile_coords_world(tile_coords : Vector2):
+func point_coords_world(tile_coords : Vector2):
 	var global_position = Vector2.ZERO
 	global_position.x = tile_coords.x * (Constants.TILE_SIZE / (points_horizontal_per_tile - 1))
 	global_position.y = tile_coords.y * (Constants.TILE_SIZE / (points_horizontal_per_tile - 1))
