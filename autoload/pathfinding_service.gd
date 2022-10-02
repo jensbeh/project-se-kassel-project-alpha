@@ -387,6 +387,13 @@ func get_mob_astar_path(mob_start, mob_end):
 #	print("")
 #	print("")
 	
+	# Check if start_position is valid - else take nearest & valid point to the invalid point
+	if not mobs_astar_node.has_point(start_point_index):
+		start_point_index = mobs_astar_node.get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
+	
+	# Check if end position is valid / reachable - else take nearest & valid point to the invalid point
+	if not mobs_astar_node.has_point(end_point_index):
+		end_point_index = mobs_astar_node.get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
 	
 	# Get the path as an array of points from mobs_astar_node
 	point_path = mobs_astar_node.get_point_path(start_point_index, end_point_index)
