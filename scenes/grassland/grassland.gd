@@ -54,7 +54,7 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-	PathfindingService.init(find_node("astar"), mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
+	PathfindingService.init(find_node("astar"), mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()

@@ -169,7 +169,7 @@ func clean_thread():
 # Loops through all cells within the map's bounds and
 # adds all points to the mobs_astar_node, except the obstacles.
 func astar_add_walkable_cells_for_mobs():
-	var points_array = []
+	var points_dic = Dictionary()
 	
 	for y in range(map_offset_in_tiles.y, map_offset_in_tiles.y + map_size_in_tiles.y + 1):
 		for x in range(map_offset_in_tiles.x, map_offset_in_tiles.x + map_size_in_tiles.x + 1):
@@ -254,17 +254,19 @@ func astar_add_walkable_cells_for_mobs():
 					
 					# Add point if valid
 					if valid_point:
-						if not points_array.has(point):
-							points_array.append(point)
+						if not points_dic.has(point):
 							# The AStar class references points with indices.
 							# Using a function to calculate the index from a tile_coord's coordinates
 							# ensures to always get the same index with the same input tile_coord
 							var point_index = calculate_point_index(point)
+							points_dic[point] = point_index
+							
 							# AStar works for both 2d and 3d, so we have to convert the tile_coord
 							# coordinates from and to Vector3s.
 							mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
-	
-	return points_array
+		print("y: " + str(y))
+#		print("points_array.size(): " + str(points_array.size()))
+	return points_dic
 
 
 # Loops through all cells within the map's bounds and
@@ -293,9 +295,10 @@ func astar_add_walkable_cells_for_ambient_mobs():
 
 
 # After added all points to the mobs_astar_node, connect them
-func astar_connect_walkable_cells_for_mobs(points_array):
-	for point in points_array:
-		var point_index = calculate_point_index(point)
+func astar_connect_walkable_cells_for_mobs(points_dic : Dictionary):
+	for point in points_dic.keys():
+#		var point_index = calculate_point_index(point)
+		var point_index = points_dic[point]
 		
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
