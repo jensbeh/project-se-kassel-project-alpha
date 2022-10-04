@@ -129,6 +129,7 @@ func _on_LootAll_pressed():
 	emit_signal("looted", loot_dict)
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().collecting = false
 
 
 func loot_item(item_idx):

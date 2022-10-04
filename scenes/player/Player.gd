@@ -156,7 +156,7 @@ func _physics_process(delta):
 				if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 					emit_signal("player_collided", collision.get_collider())
 	
-	elif hurting or dying and velocity != Vector2.ZERO:
+	elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
 		# handle knockback when hurting or dying
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
@@ -590,16 +590,16 @@ func _set_collect_key(track_str, value):
 	set_collect_key(collect_left, track_str, value)
 	
 	var collected_down = animation_player.get_animation("CollectedDown")
-	set_collected_key(collected_down, track_str, value)
+	set_collect_key(collected_down, track_str, value)
 	
 	var collected_up = animation_player.get_animation("CollectedUp")
-	set_collected_key(collected_up, track_str, value)
+	set_collect_key(collected_up, track_str, value)
 	
 	var collected_right = animation_player.get_animation("CollectedRight")
-	set_collected_key(collected_right, track_str, value)
+	set_collect_key(collected_right, track_str, value)
 	
 	var collected_left = animation_player.get_animation("CollectedLeft")
-	set_collected_key(collected_left, track_str, value)
+	set_collect_key(collected_left, track_str, value)
 
 
 # Method changes the frames of the animation
@@ -618,17 +618,6 @@ func set_collect_key(collect_animation, track_str, value):
 		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.4, 1),
 			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.4, 1)) + value)
 
-
-func set_collected_key(collected_animation, track_str, value):
-	var track_idx = collected_animation.find_track(track_str)
-	
-	if collected_animation.track_find_key(track_idx, 0.1, 1) != -1:
-		collected_animation.track_set_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.1, 1),
-			collected_animation.track_get_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.1, 1)) + value)
-		
-	if collected_animation.track_find_key(track_idx, 0.3, 1) != -1:
-		collected_animation.track_set_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.3, 1),
-			collected_animation.track_get_key_value(track_idx, collected_animation.track_find_key(track_idx, 0.3, 1)) + value)
 
 # Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
@@ -882,7 +871,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		if current_health <= 0:
 			kill_player()
 		else:
-			if not is_attacking and not collecting:
+			if not is_attacking:# and not collecting:
 				hurt_player()
 		
 		# Add knockback
@@ -906,6 +895,8 @@ func hurt_player():
 func player_hurt():
 	hurting = false
 	set_movement(true)
+	if collecting:
+		animation_state.travel("Collect")
 
 
 # Method is called when killing player
@@ -1015,3 +1006,4 @@ func make_player_invincible(invincible : bool):
 # Method to get player invincibility
 func is_player_invincible():
 	return is_invincible
+

@@ -134,6 +134,7 @@ func interaction_detected():
 			Utils.get_ui().add_child(dialog)
 			dialog.start(self, false, "")
 
+
 # When npc enters stairs to slow down
 func _on_interactionZone_NPC_area_entered(area):
 	if area.get_parent().name == "stairs":
