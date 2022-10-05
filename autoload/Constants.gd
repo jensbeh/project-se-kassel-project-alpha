@@ -82,7 +82,6 @@ const CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH = "res://scenes/menu/character_scre
 const CREATE_CHARACTER_SCREEN_PATH = "res://scenes/menu/character_screens/CreateCharacter.tscn"
 const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
 const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
-const SAVE_SETTINGS_PATH = "user://settings.json"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
@@ -98,8 +97,18 @@ const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
 const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
 const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
-const SAVE_PATH = "user://character/"
-const DATA_PATH = "user://data/"
+
+# File pathes
+const SAVE_PATH = "user://"
+const SAVE_SETTINGS_PATH = "user://settings.json"
+const SAVE_CHARACTER_PATH = "user://character/"
+const SAVE_INVENTORY_DATA_PATH = "user://data/"
+const SAVE_GAME_PATH = "user://game/"
+const SAVE_GAME_PATHFINDING_PATH = SAVE_GAME_PATH + "pathfinding/"
+
+# Pathfinding variables
+const POINTS_HORIZONTAL_PER_TILE = 3
+const POINTS_VERTICAL_PER_TILE = 3
 
 # Boss enemies pathes
 const BossPathes = [

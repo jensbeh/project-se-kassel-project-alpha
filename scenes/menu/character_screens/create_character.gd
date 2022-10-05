@@ -1,6 +1,5 @@
 extends Node2D
 
-const SAVE_PATH = "user://character/"
 const SAVE_FILE_EXTENSION = ".json"
 const uuid_util = preload("res://addons/uuid.gd")
 
@@ -197,10 +196,10 @@ var save_inventory = {
 # save the player data
 func save_data():
 	var dir = Directory.new()
-	if !dir.dir_exists(SAVE_PATH):
-		dir.make_dir(SAVE_PATH)
+	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
+		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
 	var save_game = File.new()
-	save_game.open(SAVE_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
+	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))
 	save_game.close()
 	print("Savegame saved")
@@ -572,10 +571,10 @@ func start_game():
 
 func create_player_inventory():
 	var dir = Directory.new()
-	if !dir.dir_exists(Constants.DATA_PATH):
-		dir.make_dir(Constants.DATA_PATH)
+	if !dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH):
+		dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH)
 	var save_player = File.new()
-	save_player.open(Constants.DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
 
