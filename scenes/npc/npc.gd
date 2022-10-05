@@ -129,7 +129,6 @@ func interaction_detected():
 			interacted = true
 			Utils.get_current_player().set_player_can_interact(false)
 			Utils.get_current_player().set_movement(false)
-			Utils.get_current_player().set_movment_animation(false)
 			var dialog = load(Constants.DIALOG_PATH).instance()
 			Utils.get_ui().add_child(dialog)
 			dialog.start(self, false, "")

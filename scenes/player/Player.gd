@@ -138,7 +138,7 @@ func _physics_process(delta):
 		if Input.is_action_pressed("Shift"):
 			velocity *= 1.4
 		
-		if velocity != Vector2.ZERO:
+		if velocity != Vector2.ZERO and player_can_interact:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
 			animation_tree.set("parameters/Hurt/blend_position", velocity)
@@ -894,7 +894,8 @@ func hurt_player():
 # Method is called when HURT animation is done
 func player_hurt():
 	hurting = false
-	set_movement(true)
+	if Utils.get_ui().get_node_or_null("DialogueBox") == null and Utils.get_ui().get_node_or_null("LootPanel") == null:
+		set_movement(true)
 	if collecting:
 		animation_state.travel("Collect")
 
@@ -1006,4 +1007,4 @@ func make_player_invincible(invincible : bool):
 # Method to get player invincibility
 func is_player_invincible():
 	return is_invincible
-
+	

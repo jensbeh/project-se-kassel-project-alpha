@@ -37,6 +37,7 @@ func interaction():
 	if player_in_looting_zone and !interacted:
 		interacted = true
 		Utils.get_current_player().set_movement(false)
+		Utils.get_current_player().set_player_can_interact(false)
 		var dialog = load(Constants.DIALOG_PATH).instance()
 		Utils.get_ui().add_child(dialog)
 		if !looted:

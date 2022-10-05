@@ -338,6 +338,7 @@ func interaction():
 		if treasure_dict[treasure][0] and !interacted:
 			interacted = true
 			Utils.get_current_player().set_movement(false)
+			Utils.get_current_player().set_player_can_interact(false)
 			var dialog = load(Constants.DIALOG_PATH).instance()
 			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
