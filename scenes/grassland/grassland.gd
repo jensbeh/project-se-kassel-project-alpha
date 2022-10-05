@@ -39,12 +39,14 @@ func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
-	# Setup chunks and chunkloader
-	# Get map position
+	# Get map informations
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
 	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
 	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
 	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
+	var map_name = groundChunks.get_meta("map_name")
+	
+	# Setup chunks and chunkloader
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
@@ -54,7 +56,7 @@ func _setup_scene_in_background():
 	setup_stair_areas()
 	
 	# Setup pathfinding
-	PathfindingService.init(find_node("astar"), mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos)
+	PathfindingService.init(map_name, find_node("astar"), mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()

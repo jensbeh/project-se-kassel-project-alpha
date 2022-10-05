@@ -10,6 +10,8 @@ var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
+var map_offset_in_tiles = Vector2.ZERO # In tiles
+var map_size_in_tiles = Vector2.ZERO # In tiles
 
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
@@ -83,12 +85,46 @@ func post_import(scene):
 	# generate chunks -> best at the end
 	print("generate chunks...")
 	generate_chunks(scene)
+	print("chunks generated!")
+	
+	# Create astar pathfinding
+	print("generate AStars...")
+	create_astar(scene)
+	print("AStars generated!")
 	
 	# Cleanup scene -> need to be at the end!!
 	cleanup_node(scene.find_node("groundlayer"))
 	cleanup_node(scene.find_node("higherlayer"))
-	print("reimported " + scene.name + "!")
+	print("reimported " + scene.name + "! \n")
 	return scene
+
+
+# Method to create the astar node with points and connection -> then saves the dic to file
+func create_astar(scene):
+	# Create astar
+	var mobs_astar_node = AStar.new()
+	var astar_nodes_dics = {
+						"mobs" : {},
+						"ambient_mobs" : {}
+						}
+	astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
+	astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
+	print("Generated AStar for MOBS!")
+	
+	# Store astar
+	# Check if directory is existing
+	var dir_game = Directory.new()
+	if !dir_game.dir_exists(constants.SAVE_GAME_PATH):
+		dir_game.make_dir(constants.SAVE_GAME_PATH)
+	var dir_game_pathfinding = Directory.new()
+	if !dir_game_pathfinding.dir_exists(constants.SAVE_GAME_PATHFINDING_PATH):
+		dir_game_pathfinding.make_dir(constants.SAVE_GAME_PATHFINDING_PATH)
+	# Save file
+	var astar_save = File.new()
+	astar_save.open(constants.SAVE_GAME_PATHFINDING_PATH + "astar-" + scene.name + ".sav", File.WRITE)
+	astar_save.store_var(astar_nodes_dics)
+	astar_save.close()
+	print("Saved AStars to file!")
 
 
 # Method to cleanup the scene
@@ -124,6 +160,8 @@ func generate_chunks(scene):
 	var horizontal_chunks_count = ceil(map_width / chunk_size)
 #	print("vertical_chunks_count: " + str(vertical_chunks_count))
 #	print("horizontal_chunks_count: " + str(horizontal_chunks_count))
+	map_size_in_tiles = Vector2(map_width, map_height)
+	map_offset_in_tiles = map_min_global_pos / constants.TILE_SIZE
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()
@@ -132,7 +170,8 @@ func generate_chunks(scene):
 	ground_chunks_node.set_meta("vertical_chunks_count", vertical_chunks_count)
 	ground_chunks_node.set_meta("horizontal_chunks_count", horizontal_chunks_count)
 	ground_chunks_node.set_meta("map_min_global_pos", map_min_global_pos)
-	ground_chunks_node.set_meta("map_size_in_tiles", Vector2(map_width, map_height))
+	ground_chunks_node.set_meta("map_size_in_tiles", map_size_in_tiles)
+	ground_chunks_node.set_meta("map_name", scene.name)
 	# Add ground_chunks_node to ground
 	scene.find_node("groundlayer").add_child(ground_chunks_node)
 	ground_chunks_node.set_owner(scene)
@@ -398,3 +437,152 @@ func remove_collisiontiles_from_tilemap(tilemap : TileMap):
 				# If shape on tile is collision then generate again
 				if shape["shape"] is RectangleShape2D:
 					tilemap.set_cell(cellPos.x, cellPos.y, -1)
+
+
+# Loops through all cells within the map's bounds and
+# adds all points to the mobs_astar_node, except the obstacles.
+func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
+	for y in range(map_offset_in_tiles.y, map_offset_in_tiles.y + map_size_in_tiles.y + 1):
+		for x in range(map_offset_in_tiles.x, map_offset_in_tiles.x + map_size_in_tiles.x + 1):
+			var tile_coord = Vector2(x, y)
+			
+			# Check if tile_coord is no walkable tile / is outside of map (in map rectangle)
+			if mobs_nav_tilemap.get_cell(tile_coord.x, tile_coord.y) == -1:
+				continue
+			
+			# Make from one tile nine points
+			for point_y in range(3): # 0, 1, 2
+				for point_x in range(3): # 0, 1, 2
+					var point = Vector2(point_x, point_y)
+					
+					var valid_point = true
+					
+					# Check CORNERS
+					if (point.x == 0 or point.x == 2) \
+					 and (point.y == 0 or point.y == 2):
+						# Point is on CORNER - check if neighbor points are invalid
+						# Check RIGHT-DOWN, LEFT-DOWN, LEFT-UP, RIGHT-UP
+						point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+						var points_diagonal_relative = PoolVector2Array([
+							point + Vector2(1,1), # RIGHT-DOWN
+							point + Vector2(-1,1), # LEFT-DOWN
+							point + Vector2(-1,-1), # LEFT-UP
+							point + Vector2(1,-1), # RIGHT-UP
+						])
+						for point_relative in points_diagonal_relative:
+							# Check if neighbor point is invalid
+							var point_tile_coord_relative = mobs_nav_tilemap.world_to_map(point_coords_world(point_relative))
+							if mobs_nav_tilemap.get_cell(point_tile_coord_relative.x, point_tile_coord_relative.y) == -1:
+								valid_point = false
+								break
+					
+					# Check EDGES
+					elif (point.x == 1 and point.y == 0) \
+					 or (point.x == 0 and point.y == 1) \
+					 or (point.x == 2 and point.y == 1) \
+					 or (point.x == 1 and point.y == 2):
+						# Point is on EDGE - check if neighbor points are invalid
+						
+						# Check DOWN, UP
+						if (point.x == 1 and point.y == 0) \
+					 	 or (point.x == 1 and point.y == 2):
+							point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+							# Take DOWN and UP point
+							var points_vertical_relative = PoolVector2Array([
+								point + Vector2.DOWN, # Vector2( 0, 1 )
+								point + Vector2.UP, # Vector2( 0, -1 )
+							])
+							for point_relative in points_vertical_relative:
+								# Check if neighbor point is invalid
+								var point_tile_coord_relative = mobs_nav_tilemap.world_to_map(point_coords_world(point_relative))
+								if mobs_nav_tilemap.get_cell(point_tile_coord_relative.x, point_tile_coord_relative.y) == -1:
+									valid_point = false
+									break
+						
+						# Check RIGHT, LEFT
+						elif (point.x == 0 and point.y == 1) \
+					 	 or (point.x == 2 and point.y == 1):
+							point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+							# Take RIGHT and LEFT point
+							var points_horizontal_relative = PoolVector2Array([
+								point + Vector2.RIGHT, # Vector2( 1, 0 )
+								point + Vector2.LEFT, # Vector2( -1, 0 )
+							])
+							for point_relative in points_horizontal_relative:
+								# Check if neighbor point is invalid
+								var point_tile_coord_relative = mobs_nav_tilemap.world_to_map(point_coords_world(point_relative))
+								if mobs_nav_tilemap.get_cell(point_tile_coord_relative.x, point_tile_coord_relative.y) == -1:
+									valid_point = false
+									break
+					
+					# Check CENTER
+					elif (point.x == 1 and point.y == 1):
+						point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
+						var point_tile_coord = mobs_nav_tilemap.world_to_map(point_coords_world(point))
+						# Check if point is invalid
+						if mobs_nav_tilemap.get_cell(point_tile_coord.x, point_tile_coord.y) == -1:
+							valid_point = false
+					
+					# Add point if valid
+					if valid_point:
+						if not astar_nodes_dics["mobs"].has(point):
+							# The AStar class references points with indices.
+							# Using a function to calculate the index from a tile_coord's coordinates
+							# ensures to always get the same index with the same input tile_coord
+							var point_index = calculate_point_index(point)
+							astar_nodes_dics["mobs"][point] = {
+												"point_index" : point_index,
+												"connections" : []
+												}
+							
+							# AStar works for both 2d and 3d, so we have to convert the tile_coord
+							# coordinates from and to Vector3s.
+							mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
+
+
+# After added all points to the mobs_astar_node, connect them
+func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : Dictionary):
+	for point in astar_nodes_dics["mobs"].keys():
+		
+		var point_index = astar_nodes_dics["mobs"][point]["point_index"]
+		
+		# For every cell in the map, we check the one to the top, right, 
+		# left and bottom of it. If it's in the map and not an obstalce -> connect it
+		var points_relative = PoolVector2Array([
+			point + Vector2.RIGHT, # Vector2( 1, 0 )
+			point + Vector2(1,1), # RIGHT-DOWN
+			point + Vector2.DOWN, # Vector2( 0, 1 )
+			point + Vector2(-1,1), # LEFT-DOWN
+			point + Vector2.LEFT, # Vector2( -1, 0 )
+			point + Vector2(-1,-1), # LEFT-UP
+			point + Vector2.UP, # Vector2( 0, -1 )
+			point + Vector2(1,-1), # RIGHT-UP
+		])
+		
+		for point_relative in points_relative:
+			var point_relative_index = calculate_point_index(point_relative)
+			# Check point_relative
+#			if is_outside_map_bounds(point_relative):
+#				continue
+			if not mobs_astar_node.has_point(point_relative_index):
+				continue
+			
+			# Connect points if everything is okay
+			mobs_astar_node.connect_points(point_index, point_relative_index, false) # False means it is one-way / not bilateral
+			astar_nodes_dics["mobs"][point]["connections"].append(point_relative_index)
+
+
+# Method to generate tile_coord to global_position
+func point_coords_world(tile_coords : Vector2):
+	var global_position = Vector2.ZERO
+	global_position.x = tile_coords.x * (constants.TILE_SIZE / (constants.POINTS_HORIZONTAL_PER_TILE - 1))
+	global_position.y = tile_coords.y * (constants.TILE_SIZE / (constants.POINTS_VERTICAL_PER_TILE - 1))
+	
+	return global_position
+
+
+# Method calculates the index of the point in astar_nodes - INPUT: Tilecoords like (-272, -144) or (128, 64)
+func calculate_point_index(point):
+	point -= map_offset_in_tiles * 2
+	
+	return point.x + map_size_in_tiles.x * 2 * point.y

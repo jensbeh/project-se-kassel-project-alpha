@@ -6,12 +6,9 @@ var scene_type = Constants.SceneType.DUNGEON
 
 # Variables
 var thread
-var next_level_to  = null
-var current_dungeon  = null
 var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
-var mob_list : Array
 var groundChunks
 var higherChunks
 var boss_spawn_area = null
@@ -37,21 +34,23 @@ func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
-	# Setup chunks and chunkloader
-	# Get map position
+	# Get map informations
 	groundChunks = find_node("groundlayer").get_node("Chunks")
 	higherChunks = find_node("higherlayer").get_node("Chunks")
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
 	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
 	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
 	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
+	var map_name = groundChunks.get_meta("map_name")
+	
+	# Setup chunks and chunkloader
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
 
 	# Setup pathfinding
-	PathfindingService.init(find_node("astar"), mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos)
+	PathfindingService.init(map_name, find_node("astar"), mobsNavigationTileMap, null, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
@@ -60,11 +59,6 @@ func _setup_scene_in_background():
 	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false)
 	
 	call_deferred("_on_setup_scene_done")
-
-
-func _physics_process(_delta):
-	if Utils.get_current_player() != null:
-		find_node("point").global_position = Utils.get_current_player().global_position
 
 
 # Method is called when thread is done and the scene is setup

@@ -141,11 +141,12 @@ func post_import(scene):
 	# generate chunks -> best at the end
 	print("generate chunks...")
 	generate_chunks(scene)
+	print("chunks generated!")
 	
 	# Cleanup scene -> need to be at the end!!
 	cleanup_node(scene.find_node("ground"))
 	cleanup_node(scene.find_node("higher"))
-	print("reimported " + scene.name + "!")
+	print("reimported " + scene.name + "! \n")
 	return scene
 
 
