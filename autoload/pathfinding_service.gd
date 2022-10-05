@@ -6,8 +6,6 @@ var enemies_to_update = []
 var ambient_mobs_to_update = []
 var can_generate_pathes = false
 
-var mobs_astar_node = AStar.new()
-var ambient_mobs_astar_node = AStar.new()
 var mobNavigationTilemap : TileMap = null
 var ambientMobsNavigationTileMap : TileMap = null
 var map_size_in_tiles = null
@@ -21,6 +19,8 @@ var points_horizontal_per_tile
 var points_vertical_per_tile
 var points_horizontal_in_map
 var points_vertical_in_map
+var map_name
+var astar_nodes_cache = {}
 
 
 func _ready():
@@ -28,13 +28,14 @@ func _ready():
 
 
 # Method is called when new scene is loaded with mobs with pathfinding
-func init(map_name = "", _node2d = null, new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
+func init(new_map_name = "", _node2d = null, new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
 	print("INIT PATHFINDING_SERVICE")
 	# Check if thread is active wait to stop
 	if pathfinder_thread.is_active():
 		clean_thread()
 	
 	# Init variables
+	map_name = new_map_name
 	mobNavigationTilemap = new_mobNavigationTilemap
 	ambientMobsNavigationTileMap = new_ambientMobsNavigationTileMap
 	
@@ -49,14 +50,25 @@ func init(map_name = "", _node2d = null, new_mobNavigationTilemap : TileMap = nu
 	points_vertical_per_tile = 3
 	
 	# Init AStar
-	var astar_nodes_dics = load_astar_file(map_name)
-	# Mobs
-	astar_add_walkable_cells_for_mobs(astar_nodes_dics["mobs"])
-	astar_connect_walkable_cells_for_mobs(astar_nodes_dics["mobs"])
-	# Ambient mobs
-	if ambientMobsNavigationTileMap != null:
-		astar_add_walkable_cells_for_ambient_mobs(astar_nodes_dics["ambient_mobs"])
-		astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_dics["ambient_mobs"])
+	# Create new AStars and store them to use later again
+	if not astar_nodes_cache.has(map_name):
+		astar_nodes_cache[map_name] = {
+							"mobs" : null,
+							"ambient_mobs" : null
+							}
+		
+		# Load astar points and connections
+		var astar_nodes_dics = load_astar_file()
+		
+		# Mobs
+		astar_nodes_cache[map_name]["mobs"] = AStar.new()
+		astar_add_walkable_cells_for_mobs(astar_nodes_dics["mobs"])
+		astar_connect_walkable_cells_for_mobs(astar_nodes_dics["mobs"])
+		# Ambient mobs
+		if ambientMobsNavigationTileMap != null:
+			astar_nodes_cache[map_name]["ambient_mobs"] = AStar.new()
+			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_dics["ambient_mobs"])
+			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_dics["ambient_mobs"])
 	
 #	print("map_size_in_tiles: " + str(map_size_in_tiles))
 #	print("map_offset_in_tiles: " + str(map_offset_in_tiles))
@@ -68,11 +80,11 @@ func init(map_name = "", _node2d = null, new_mobNavigationTilemap : TileMap = nu
 	can_generate_pathes = true
 	
 	# Init visualizer
-#	node2d.visualize(mobs_astar_node)
+#	node2d.visualize(astar_nodes_cache[map_name]["mobs"])
 
 
 # Method to load the astar points and connections from file -> file generated through reimport
-func load_astar_file(map_name):
+func load_astar_file():
 	# Check if directory is existing
 	var dir_game_pathfinding = Directory.new()
 	if dir_game_pathfinding.open(Constants.SAVE_GAME_PATHFINDING_PATH) == OK:
@@ -112,9 +124,7 @@ func cleanup():
 	mobNavigationTilemap = null
 	ambientMobsNavigationTileMap = null
 	map_size_in_tiles = null
-	half_cell_size = null
-	mobs_astar_node.clear()
-	ambient_mobs_astar_node.clear()
+	map_name = ""
 	
 	print("STOPPED PATHFINDING_SERVICE")
 
@@ -189,37 +199,37 @@ func clean_thread():
 
 
 # Loops through all cells within the map's bounds and
-# adds all points to the mobs_astar_node, except the obstacles.
+# adds all points to the astar_nodes_cache[map_name]["mobs"], except the obstacles.
 func astar_add_walkable_cells_for_mobs(astar_node_dic):
 	for point in astar_node_dic.keys():
 		var point_index = astar_node_dic[point]["point_index"]
-		mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
+		astar_nodes_cache[map_name]["mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
 # Loops through all cells within the map's bounds and
-# adds all points to the ambient_mobs_astar_node, except the obstacles.
+# adds all points to the astar_nodes_cache[map_name]["ambient_mobs"], except the obstacles.
 func astar_add_walkable_cells_for_ambient_mobs(astar_node_dic):
 	for point in astar_node_dic.keys():
 		var point_index = astar_node_dic[point]["point_index"]
-		ambient_mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
+		astar_nodes_cache[map_name]["ambient_mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
-# After added all points to the mobs_astar_node, connect them
+# After added all points to the astar_nodes_cache[map_name]["mobs"], connect them
 func astar_connect_walkable_cells_for_mobs(astar_node_dic):
 	for point in astar_node_dic.keys():
 		var point_index = astar_node_dic[point]["point_index"]
 		var point_connections = astar_node_dic[point]["connections"]
 		for point_connection in point_connections:
-			mobs_astar_node.connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
+			astar_nodes_cache[map_name]["mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
 
 
-# After added all points to the ambient_mobs_astar_node, connect them
+# After added all points to the astar_nodes_cache[map_name]["ambient_mobs"], connect them
 func astar_connect_walkable_cells_for_ambient_mobs(astar_node_dic):
 	for point in astar_node_dic.keys():
 		var point_index = astar_node_dic[point]["point_index"]
 		var point_connections = astar_node_dic[point]["connections"]
 		for point_connection in point_connections:
-			ambient_mobs_astar_node.connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
+			astar_nodes_cache[map_name]["ambient_mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
 
 
 # Method calculates the index of the point in astar_nodes - INPUT: Tilecoords like (-272, -144) or (128, 64)
@@ -233,7 +243,7 @@ func calculate_point_index(point):
 
 # Generates and returns path for the given positions
 func get_mob_astar_path(mob_start, mob_end):
-	# Get position in map and get point index in mobs_astar_node
+	# Get position in map and get point index in astar_nodes_cache[map_name]["mobs"]
 	var path_start_tile_position = world_to_tile_coords(mob_start)
 	var path_end_tile_position = world_to_tile_coords(mob_end)
 	var start_point_index = calculate_point_index(path_start_tile_position)
@@ -248,15 +258,15 @@ func get_mob_astar_path(mob_start, mob_end):
 #	print("")
 	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
-	if not mobs_astar_node.has_point(start_point_index):
-		start_point_index = mobs_astar_node.get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
+	if not astar_nodes_cache[map_name]["mobs"].has_point(start_point_index):
+		start_point_index = astar_nodes_cache[map_name]["mobs"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
 	
 	# Check if end position is valid / reachable - else take nearest & valid point to the invalid point
-	if not mobs_astar_node.has_point(end_point_index):
-		end_point_index = mobs_astar_node.get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
+	if not astar_nodes_cache[map_name]["mobs"].has_point(end_point_index):
+		end_point_index = astar_nodes_cache[map_name]["mobs"].get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
 	
-	# Get the path as an array of points from mobs_astar_node
-	point_path = mobs_astar_node.get_point_path(start_point_index, end_point_index)
+	# Get the path as an array of points from astar_nodes_cache[map_name]["mobs"]
+	point_path = astar_nodes_cache[map_name]["mobs"].get_point_path(start_point_index, end_point_index)
 	# Remove the position in index 0 because this is the starting cell
 	point_path.remove(0)
 	
@@ -290,7 +300,7 @@ func point_coords_world(tile_coords : Vector2):
 
 # Generates and returns path for the given positions
 func get_ambient_mob_astar_path(mob_start, mob_end):
-	# Get position in map and get point index in ambient_mobs_astar_node
+	# Get position in map and get point index in astar_nodes_cache[map_name]["ambient_mobs"]
 	var path_start_tile_position = ambientMobsNavigationTileMap.world_to_map(mob_start)
 	var path_end_tile_position = ambientMobsNavigationTileMap.world_to_map(mob_end)
 	var start_point_index = calculate_point_index(path_start_tile_position)
@@ -302,8 +312,8 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 #	print("start_point_index: " + str(start_point_index))
 #	print("end_point_index: " + str(end_point_index))
 	
-	# Get the path as an array of points from ambient_mobs_astar_node
-	point_path = ambient_mobs_astar_node.get_point_path(start_point_index, end_point_index)
+	# Get the path as an array of points from astar_nodes_cache[map_name]["ambient_mobs"]
+	point_path = astar_nodes_cache[map_name]["ambient_mobs"].get_point_path(start_point_index, end_point_index)
 	# Remove the position in index 0 because this is the starting cell
 	point_path.remove(0)
 	
