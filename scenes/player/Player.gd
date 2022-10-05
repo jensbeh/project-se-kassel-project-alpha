@@ -75,6 +75,7 @@ var hurting = false
 var dying = false
 var is_invincible = false
 var collecting = false
+var collected = false
 
 
 func _ready():
@@ -871,7 +872,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		if current_health <= 0:
 			kill_player()
 		else:
-			if not is_attacking:# and not collecting:
+			if not is_attacking and not collected:
 				hurt_player()
 		
 		# Add knockback
@@ -887,16 +888,17 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 func hurt_player():
 	if animation_tree.active: # Because when in menu the animation tree is disabled and the animation is never finished to unlock "hurting"
 		hurting = true
-	set_movement(false)
+	if !collected:
+		set_movement(false)
 	animation_state.start("Hurt")
 
 
 # Method is called when HURT animation is done
 func player_hurt():
 	hurting = false
-	if Utils.get_ui().get_node_or_null("DialogueBox") == null and Utils.get_ui().get_node_or_null("LootPanel") == null:
+	if !collecting:
 		set_movement(true)
-	if collecting:
+	else:
 		animation_state.travel("Collect")
 
 
@@ -925,12 +927,17 @@ func player_collect_loot():
 
 # Method is called after collecting and the animation go on to finish
 func player_looted():
+	collected = true
 	animation_state.travel("Collected")
 
 
 # Method is called when loot animation is finished to start other animations
 func finished_looting():
 	collecting = false
+	Utils.get_current_player().set_movement(true)
+	Utils.get_current_player().set_movment_animation(true)
+	Utils.get_current_player().set_player_can_interact(true)
+	collected = false
 
 
 # Method is called when DIE animation is done

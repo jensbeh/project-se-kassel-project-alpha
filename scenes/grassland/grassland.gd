@@ -300,7 +300,7 @@ func despawn_boss(boss_node):
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
-		var loot = load(Constants.LOOT_DROP).instance()
+		var loot = load(Constants.LOOT_DROP_PATH).instance()
 		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, false)
 		lootLayer.call_deferred("add_child", loot)
@@ -308,7 +308,7 @@ func spawn_loot(position, mob_name):
 		randomize()
 		var chance = ((randi() % 10) +1)
 		if chance > 3:
-			var loot = load(Constants.LOOT_DROP).instance()
+			var loot = load(Constants.LOOT_DROP_PATH).instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, false)
 			lootLayer.call_deferred("add_child", loot)
@@ -324,7 +324,7 @@ func spawn_treasures():
 			var random_float = randf()
 			if random_float <= 0.4:
 				# load treasure
-				var treasure = load(Constants.TREASUREPATH).instance()
+				var treasure = load(Constants.TREASURE_PATH).instance()
 				# Generate spawn position and spawn treasure
 				treasure.init(current_spawn_area, mobsNavigationTileMap)
 				lootLayer.call_deferred("add_child", treasure)

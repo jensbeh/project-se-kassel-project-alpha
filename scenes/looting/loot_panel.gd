@@ -12,7 +12,7 @@ var all = false
 func _ready():
 	Utils.get_current_player().player_collect_loot()
 	get_node("Border/Background/VBoxContainer/HBoxContainer/Close").set_text(tr("CLOSE"))
-	get_node("Border/Background/VBoxContainer/HBoxContainer/LootAll").set_text(tr("LootAll"))
+	get_node("Border/Background/VBoxContainer/HBoxContainer/LootAll").set_text(tr("LOOTALL"))
 
 
 # generate loot
@@ -61,13 +61,36 @@ func PopulatePanel():
 			if str(loot_dict[counter][0]) in ["Jewel", "Potion", "Weapon"]:
 				randomize()
 				if loot_dict[counter][0] == "Jewel":
-					loot_dict[counter][0] = GameData.jewel_IDs[randi() % 4]
+					var jewel = GameData.jewel_IDs[randi() % 4]
+					var found = false
+					for idx in loot_dict:
+						var item = loot_dict[idx]
+						if str(item[0]) == str(jewel):
+							item[1] += 1
+							found = true
+							loot_dict.erase(counter)
+							counter = idx
+							break
+					if !found:
+						loot_dict[counter][0] = jewel
 				elif loot_dict[counter][0] == "Potion":
 					loot_dict[counter][0] = GameData.potion_IDs[randi() % 4]
 					if loot_type == "Treasure":
 						loot_dict[counter][0] = GameData.potion_IDs[(randi() % 2) + 4]
 				elif loot_dict[counter][0] == "Weapon":
 					loot_dict[counter][0] = GameData.weapon_IDs[randi() % 4]
+			num += 1
+		else:
+			i.hide()
+	setup()
+
+
+func setup():
+	var num = 1
+	var keys = loot_dict.keys()
+	for i in get_tree().get_nodes_in_group("LootPanelSlots"):
+		if num <= loot_dict.size():
+			var counter = keys[num -1]
 			get_node(str(i.get_path()) + "/Name").set_text(tr(str(GameData.item_data[str(loot_dict[counter][0])]["Name"])))
 			var texture = GameData.item_data[str(loot_dict[counter][0])]["Texture"]
 			var frame = int(GameData.item_data[str(loot_dict[counter][0])]["Frame"])
@@ -112,10 +135,6 @@ func _on_Close_pressed():
 	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
-	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_current_player().set_player_can_interact(true)
-	Utils.get_current_player().collecting = false
 
 
 # loot all items and close the panel
@@ -129,10 +148,6 @@ func _on_LootAll_pressed():
 	for i in range(1,size + 1):
 		loot_item(keys[i -1])
 	emit_signal("looted", loot_dict)
-	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_current_player().set_player_can_interact(true)
-	Utils.get_current_player().collecting = false
 
 
 func loot_item(item_idx):

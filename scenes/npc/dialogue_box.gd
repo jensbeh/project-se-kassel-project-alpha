@@ -110,7 +110,10 @@ func close_dialog():
 			for npc in origin.get_parent().get_children():
 				npc.set_interacted(false)
 		else:
-			Utils.get_scene_manager().get_current_scene().reset_interaction()
+			if type != "3":
+				Utils.get_scene_manager().get_current_scene().reset_interaction()
+			else:
+				origin.reset_interaction()
 	Utils.get_control_notes().show()
 	get_parent().remove_child(self)
 	queue_free()

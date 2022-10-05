@@ -45,7 +45,7 @@ func interaction():
 		elif content.empty():
 			dialog.start(self, true, str(3))
 		else:
-			dialog.start(self, "open", "")
+			dialog.start(self, "open", str(3))
 
 
 func reset_interaction():
@@ -71,3 +71,5 @@ func save_loot(loot):
 	interacted = false
 	content = loot
 	loot_panel.disconnect("looted", self, "save_loot")
+	if content.empty():
+		Utils.get_current_player().disconnect("player_interact", self, "interaction")

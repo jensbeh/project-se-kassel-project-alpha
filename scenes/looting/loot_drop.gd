@@ -8,6 +8,7 @@ var looted = false
 var content = {}
 var spawn_position
 var loot_panel
+var timeout = false
 
 # start timer for looting time and connect interaction signal with player
 func _ready():
@@ -50,6 +51,7 @@ func interaction():
 				loot_panel.loot()
 				looted = true
 			elif !content.empty():
+				interacted = true
 				loot_panel.set_up_content(content)
 
 
@@ -57,7 +59,7 @@ func save_loot(loot):
 	interacted = false
 	content = loot
 	loot_panel.disconnect("looted", self, "save_loot")
-	if content.empty():
+	if content.empty() or timeout:
 		Utils.get_current_player().disconnect("player_interact", self, "interaction")
 		get_parent().remove_child(self)
 		queue_free()
@@ -65,6 +67,9 @@ func save_loot(loot):
 
 # loot disappear when time is up
 func _on_Timer_timeout():
-	Utils.get_current_player().disconnect("player_interact", self, "interaction")
-	get_parent().remove_child(self)
-	queue_free()
+	if !interacted:
+		Utils.get_current_player().disconnect("player_interact", self, "interaction")
+		get_parent().remove_child(self)
+		queue_free()
+	else:
+		timeout = true

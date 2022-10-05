@@ -166,6 +166,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 func clear_signals():
 	# Player
 	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction")
 	
 	# Change scene areas
 	var changeScenesObject = find_node("changeScenes")
@@ -279,7 +280,7 @@ func on_key_collected():
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
-		var loot = load(Constants.LOOT_DROP).instance()
+		var loot = load(Constants.LOOT_DROP_PATH).instance()
 		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, true)
 		lootLayer.call_deferred("add_child", loot)
@@ -287,18 +288,18 @@ func spawn_loot(position, mob_name):
 		randomize()
 		var chance = ((randi() % 10) +1)
 		if chance > 3:
-			var loot = load(Constants.LOOT_DROP).instance()
+			var loot = load(Constants.LOOT_DROP_PATH).instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, true)
 			lootLayer.call_deferred("add_child", loot)
 
 
-# Method which is called when a body has entered a doorArea
+# Method which is called when a body has entered a treasure Area
 func body_entered_treasure(body, treasureArea):
 	if body.name == "Player":
 		treasure_dict[treasureArea][0] = true
 
-# Method which is called when a body has exited a doorArea
+# Method which is called when a body has exited a treasure Area
 func body_exited_treasure(body, treasureArea):
 	if body.name == "Player":
 		treasure_dict[treasureArea][0] = false

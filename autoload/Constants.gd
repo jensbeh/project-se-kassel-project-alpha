@@ -88,8 +88,8 @@ const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
 const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
 const DEATH_SCREEN_PATH = "res://scenes/ui/DeathScreen.tscn"
 const LOOT_PANEL_PATH = "res://scenes/looting/LootPanel.tscn"
-const LOOT_DROP = "res://scenes/looting/LootDrop.tscn"
-const TREASUREPATH = "res://scenes/looting/Treasure.tscn"
+const LOOT_DROP_PATH = "res://scenes/looting/LootDrop.tscn"
+const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
 const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 
 # inventory
