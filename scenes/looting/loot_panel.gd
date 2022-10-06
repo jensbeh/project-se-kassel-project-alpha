@@ -30,10 +30,10 @@ func set_up_content(content):
 # specify the looting table
 func set_loot_type(type, dungeon: bool):
 	loot_type = type
-	if "Boss" in loot_type or "Treasure" in loot_type:
+	if dungeon:
+		max_loot = GameData.loot_data[loot_type]["ItemCountMax"]
+	elif "Treasure" in type:
 		max_loot = 6
-	elif dungeon:
-		max_loot = 5
 	else:
 		max_loot = 2
 

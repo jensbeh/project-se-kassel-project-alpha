@@ -71,5 +71,3 @@ func save_loot(loot):
 	interacted = false
 	content = loot
 	loot_panel.disconnect("looted", self, "save_loot")
-	if content.empty():
-		Utils.get_current_player().disconnect("player_interact", self, "interaction")

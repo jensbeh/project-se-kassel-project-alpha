@@ -223,6 +223,10 @@ func clear_signals():
 					# connect Area2D with functions to handle body action
 					stair.disconnect("body_entered", self, "body_entered_stair_area")
 					stair.disconnect("body_exited", self, "body_exited_stair_area")
+	
+	# Treasures
+	for treasure in lootLayer:
+		Utils.get_current_player().disconnect("player_interact", treasure, "interaction")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -292,6 +296,7 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
+		spawn_loot(boss_node.position, boss_node.get_name())
 		mobsLayer.remove_child(boss_node)
 		boss_node.queue_free()
 		print("----------> Boss \"" + boss_node.name + "\" removed")
