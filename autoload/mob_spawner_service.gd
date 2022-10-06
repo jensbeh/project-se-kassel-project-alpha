@@ -83,6 +83,7 @@ func cleanup():
 	ambientMobsSpawnArea = null
 	ambientMobsNavigationTileMap = null
 	ambientMobsLayer = null
+	current_ambient_mobs = 0
 	max_ambient_mobs = 0
 	mobs_to_despawn.clear()
 	# -> Reset timer
