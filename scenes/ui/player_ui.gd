@@ -143,4 +143,5 @@ func set_boss_name_to_hp_bar(new_boss):
 
 # Method to update language
 func update_language():
-	bossName.set_text(boss.get_boss_name())
+	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+		bossName.set_text(boss.get_boss_name())
