@@ -888,7 +888,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 func hurt_player():
 	if animation_tree.active: # Because when in menu the animation tree is disabled and the animation is never finished to unlock "hurting"
 		hurting = true
-	if !collected:
+	if !collecting:
 		set_movement(false)
 	animation_state.start("Hurt")
 
@@ -933,10 +933,10 @@ func player_looted():
 
 # Method is called when loot animation is finished to start other animations
 func finished_looting():
+	hurting = false
 	collecting = false
-	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_current_player().set_player_can_interact(true)
+	set_movement(true)
+	set_player_can_interact(true)
 	collected = false
 
 

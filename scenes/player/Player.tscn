@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=2]
+[gd_scene load_steps=120 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -2153,12 +2153,9 @@ tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [  ],
-"method": "finished_looting"
-}, {
 "args": [  ],
 "method": "finished_looting"
 } ]
@@ -2330,12 +2327,9 @@ tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [  ],
-"method": "finished_looting"
-}, {
 "args": [  ],
 "method": "finished_looting"
 } ]
@@ -2507,12 +2501,9 @@ tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [  ],
-"method": "finished_looting"
-}, {
 "args": [  ],
 "method": "finished_looting"
 } ]
@@ -2684,12 +2675,9 @@ tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.3, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [  ],
-"method": "finished_looting"
-}, {
 "args": [  ],
 "method": "finished_looting"
 } ]
@@ -5504,6 +5492,10 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=126]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=127]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=128]
+
 [sub_resource type="AnimationNodeStateMachine" id=2]
 states/Attack/node = SubResource( 57 )
 states/Attack/position = Vector2( 240, 219 )
@@ -5519,7 +5511,7 @@ states/Idle/node = SubResource( 17 )
 states/Idle/position = Vector2( 240, 73 )
 states/Walk/node = SubResource( 22 )
 states/Walk/position = Vector2( 431, 73 )
-transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 63 ), "Attack", "Idle", SubResource( 64 ), "Attack", "Walk", SubResource( 65 ), "Walk", "Attack", SubResource( 66 ), "Idle", "Hurt", SubResource( 73 ), "Hurt", "Idle", SubResource( 74 ), "Hurt", "Walk", SubResource( 77 ), "Walk", "Hurt", SubResource( 78 ), "Idle", "Die", SubResource( 89 ), "Walk", "Die", SubResource( 92 ), "Collected", "Idle", SubResource( 116 ), "Collect", "Collected", SubResource( 125 ), "Idle", "Collect", SubResource( 126 ) ]
+transitions = [ "Idle", "Walk", SubResource( 23 ), "Walk", "Idle", SubResource( 24 ), "Idle", "Attack", SubResource( 63 ), "Attack", "Idle", SubResource( 64 ), "Attack", "Walk", SubResource( 65 ), "Walk", "Attack", SubResource( 66 ), "Idle", "Hurt", SubResource( 73 ), "Hurt", "Idle", SubResource( 74 ), "Hurt", "Walk", SubResource( 77 ), "Walk", "Hurt", SubResource( 78 ), "Idle", "Die", SubResource( 89 ), "Walk", "Die", SubResource( 92 ), "Collected", "Idle", SubResource( 116 ), "Collect", "Collected", SubResource( 125 ), "Idle", "Collect", SubResource( 126 ), "Collect", "Hurt", SubResource( 127 ), "Hurt", "Collect", SubResource( 128 ) ]
 start_node = "Idle"
 graph_offset = Vector2( -161.044, 0 )
 
