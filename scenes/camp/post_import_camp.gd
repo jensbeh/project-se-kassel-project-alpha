@@ -1,6 +1,8 @@
 extends Node
 
-var constants = preload("res://autoload/Constants.gd")
+const constants = preload("res://autoload/Constants.gd")
+const customLight = preload("res://scenes/light/CustomLight.tscn")
+const animatedDoorTileSet = preload("res://assets/tilesets/Village Animated Doors.png")
 
 
 var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
@@ -19,7 +21,7 @@ func post_import(scene):
 		for child in groundLightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = customLight.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -37,7 +39,7 @@ func post_import(scene):
 		for child in higherLightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = customLight.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -62,7 +64,7 @@ func post_import(scene):
 				var sprite = Sprite.new()
 				sprite.name = "sprite"
 				sprite.centered = false
-				sprite.texture = load("res://assets/tilesets/Village Animated Doors.png")
+				sprite.texture = animatedDoorTileSet
 				sprite.hframes = 20
 				sprite.vframes = 8
 				sprite.frame = frame
@@ -333,7 +335,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = customLight.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius

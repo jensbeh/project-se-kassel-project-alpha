@@ -272,6 +272,7 @@ func get_mob_astar_path(mob_start, mob_end):
 	
 	# Convert point to map positions
 	var path_world = []
+#	print("point_path.size(): " + str(point_path.size()))
 	for point in point_path:
 		var point_world = point_coords_world(Vector2(point.x, point.y))
 		path_world.append(point_world)
@@ -283,8 +284,8 @@ func get_mob_astar_path(mob_start, mob_end):
 # Method to generate global_position to tile_coord
 func world_to_tile_coords(global_position : Vector2):
 	var point = Vector2.ZERO
-	point.x = floor(global_position.x / (Constants.TILE_SIZE / (points_horizontal_per_tile - 1)))
-	point.y = floor(global_position.y / (Constants.TILE_SIZE / (points_horizontal_per_tile - 1)))
+	point.x = floor(global_position.x / (float(Constants.TILE_SIZE) / (Constants.POINTS_HORIZONTAL_PER_TILE - 1)))
+	point.y = floor(global_position.y / (float(Constants.TILE_SIZE) / (Constants.POINTS_VERTICAL_PER_TILE - 1)))
 	
 	return point
 
@@ -292,8 +293,8 @@ func world_to_tile_coords(global_position : Vector2):
 # Method to generate tile_coord to global_position
 func point_coords_world(tile_coords : Vector2):
 	var global_position = Vector2.ZERO
-	global_position.x = tile_coords.x * (Constants.TILE_SIZE / (points_horizontal_per_tile - 1))
-	global_position.y = tile_coords.y * (Constants.TILE_SIZE / (points_horizontal_per_tile - 1))
+	global_position.x = tile_coords.x * (float(Constants.TILE_SIZE) / (Constants.POINTS_HORIZONTAL_PER_TILE - 1))
+	global_position.y = tile_coords.y * (float(Constants.TILE_SIZE) / (Constants.POINTS_VERTICAL_PER_TILE - 1))
 	
 	return global_position
 
@@ -311,6 +312,16 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 #	print("path_end_tile_position: " + str(path_end_tile_position))
 #	print("start_point_index: " + str(start_point_index))
 #	print("end_point_index: " + str(end_point_index))
+	
+	
+	# Check if start_position is valid - else take nearest & valid point to the invalid point
+	if not astar_nodes_cache[map_name]["ambient_mobs"].has_point(start_point_index):
+		start_point_index = astar_nodes_cache[map_name]["ambient_mobs"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
+	
+	# Check if end position is valid / reachable - else take nearest & valid point to the invalid point
+	if not astar_nodes_cache[map_name]["ambient_mobs"].has_point(end_point_index):
+		end_point_index = astar_nodes_cache[map_name]["ambient_mobs"].get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
+	
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["ambient_mobs"]
 	point_path = astar_nodes_cache[map_name]["ambient_mobs"].get_point_path(start_point_index, end_point_index)

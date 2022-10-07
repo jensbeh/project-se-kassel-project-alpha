@@ -1,6 +1,7 @@
 extends Node
 
-var constants = preload("res://autoload/Constants.gd")
+const constants = preload("res://autoload/Constants.gd")
+const customLight = preload("res://scenes/light/CustomLight.tscn")
 
 
 var compressed_tilemap = TileMap.new()
@@ -24,7 +25,7 @@ func post_import(scene):
 		for child in lightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = customLight.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -323,7 +324,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = customLight.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius
@@ -575,8 +576,8 @@ func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : D
 # Method to generate tile_coord to global_position
 func point_coords_world(tile_coords : Vector2):
 	var global_position = Vector2.ZERO
-	global_position.x = tile_coords.x * (constants.TILE_SIZE / (constants.POINTS_HORIZONTAL_PER_TILE - 1))
-	global_position.y = tile_coords.y * (constants.TILE_SIZE / (constants.POINTS_VERTICAL_PER_TILE - 1))
+	global_position.x = tile_coords.x * (float(constants.TILE_SIZE) / (constants.POINTS_HORIZONTAL_PER_TILE - 1))
+	global_position.y = tile_coords.y * (float(constants.TILE_SIZE) / (constants.POINTS_VERTICAL_PER_TILE - 1))
 	
 	return global_position
 
