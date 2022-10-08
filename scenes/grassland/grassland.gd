@@ -225,7 +225,7 @@ func clear_signals():
 					stair.disconnect("body_exited", self, "body_exited_stair_area")
 	
 	# Treasures
-	for treasure in lootLayer:
+	for treasure in lootLayer.get_children():
 		Utils.get_current_player().disconnect("player_interact", treasure, "interaction")
 
 
