@@ -24,6 +24,8 @@ func start(origin_obj, looted_value, treasure_type):
 				get_node("Trade/Icon").frame = 186
 			else:
 				get_node("Trade/Icon").frame = 271
+				get_node("Trade/Label").show()
+				get_node("Trade/Label").set_text(tr("OPEN"))
 				obj_name = "open"
 		elif "treasure" in obj_name and looted_value:
 			obj_name = "empty"
@@ -131,9 +133,11 @@ func _on_Trade_pressed():
 		Utils.get_trade_inventory().set_name(obj_name)
 	else:
 		Utils.get_control_notes().show()
-		close_dialog()
 		if type != "3":
 			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
 				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
+			else:
+				trade = false
 		else:
 			origin.open_loot_panel()
+		close_dialog()

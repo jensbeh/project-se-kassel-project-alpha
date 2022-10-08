@@ -916,6 +916,10 @@ func kill_player():
 		set_movement(true)
 	animation_player.stop(true)
 	animation_state.travel("Die")
+	
+	# Close LootPanel
+	if Utils.get_ui().get_node_or_null("LootPanel") != null:
+		Utils.get_ui().get_node_or_null("LootPanel").queue_free()
 
 
 # Method is called when player collect loot
@@ -956,9 +960,6 @@ func is_player_dying():
 func reset_player_after_dying():
 	# Make player visible again to mobs
 	make_player_invisible(false)
-	
-	if Utils.get_ui().get_node_or_null("LootPanel") != null:
-		Utils.get_ui().get_node_or_null("LootPanel").queue_free()
 	
 	# reset cooldown
 	Utils.get_hotbar().get_node("Hotbar/Timer").stop()

@@ -312,7 +312,7 @@ func spawn_loot(position, mob_name):
 	else:
 		randomize()
 		var chance = ((randi() % 10) +1)
-		if chance > 3:
+		if chance > Constants.LOOT_CHANCE:
 			var loot = load(Constants.LOOT_DROP_PATH).instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, false)

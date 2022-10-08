@@ -4,6 +4,7 @@ extends Node
 const NAME_LENGTH = 15
 const COOLDOWN = 20
 const LOOTING_TIME = 60
+const LOOT_CHANCE = 3 # means 70% Chance
 
 # Tiles
 const tile_size = 16
@@ -103,6 +104,7 @@ const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 const SAVE_PATH = "user://character/"
 const DATA_PATH = "user://data/"
+const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 
 # Boss enemies pathes
 const BossPathes = [

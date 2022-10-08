@@ -288,7 +288,7 @@ func spawn_loot(position, mob_name):
 	else:
 		randomize()
 		var chance = ((randi() % 10) +1)
-		if chance > 3:
+		if chance > Constants.LOOT_CHANCE:
 			var loot = load(Constants.LOOT_DROP_PATH).instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, true)
@@ -344,9 +344,15 @@ func interaction():
 			var dialog = load(Constants.DIALOG_PATH).instance()
 			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
-				dialog.start(treasure, false, str(treasure_dict[treasure][3]))
+				if treasure_dict[treasure][3] == 3:
+					dialog.start(treasure, false, "")
+				else:
+					dialog.start(treasure, true, str(treasure_dict[treasure][3]))
 			elif treasure_dict[treasure][2].empty():
-				dialog.start(treasure, true, str(treasure_dict[treasure][3]))
+				if treasure_dict[treasure][3] == 3:
+					dialog.start(treasure, false, "")
+				else:
+					dialog.start(treasure, true, str(treasure_dict[treasure][3]))
 			else:
 				dialog.start(treasure, "open", "")
 

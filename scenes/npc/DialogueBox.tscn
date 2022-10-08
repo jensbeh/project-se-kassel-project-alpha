@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/npc/dialogue_box.gd" type="Script" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
@@ -28,6 +28,10 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
 }
+
+[sub_resource type="DynamicFont" id=5]
+size = 48
+font_data = ExtResource( 2 )
 
 [node name="DialogueBox" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -112,6 +116,22 @@ texture = ExtResource( 4 )
 hframes = 16
 vframes = 27
 frame = 271
+
+[node name="Label" type="Label" parent="Trade"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -70.0
+margin_top = -28.0
+margin_right = 70.0
+margin_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = SubResource( 5 )
+align = 1
+valign = 1
 
 [node name="Timer" type="Timer" parent="."]
 

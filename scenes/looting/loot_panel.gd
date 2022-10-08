@@ -151,9 +151,11 @@ func _on_LootAll_pressed():
 
 
 func loot_item(item_idx):
+	var looted = false
 	# gold
 	if loot_dict[item_idx][0] == 10064:
 		Utils.get_current_player().set_gold(Utils.get_current_player().get_gold() + loot_dict[item_idx][1])
+		looted = true
 	# items
 	else:
 		if GameData.item_data[str(loot_dict[item_idx][0])]["Stackable"]:
@@ -163,6 +165,7 @@ func loot_item(item_idx):
 				if PlayerData.inv_data[slot]["Item"] == loot_dict[item_idx][0]:
 					PlayerData.inv_data[slot]["Stack"] += loot_dict[item_idx][1]
 					stored = true
+					looted = true
 					break
 			if !stored:
 				for i in range(1,31):
@@ -170,6 +173,7 @@ func loot_item(item_idx):
 					if PlayerData.inv_data[slot]["Item"] == null:
 						PlayerData.inv_data[slot]["Item"] = loot_dict[item_idx][0]
 						PlayerData.inv_data[slot]["Stack"] = loot_dict[item_idx][1]
+						looted = true
 						break
 		else:
 			for i in range(1,31):
@@ -177,14 +181,21 @@ func loot_item(item_idx):
 				if PlayerData.inv_data[slot]["Item"] == null:
 					PlayerData.inv_data[slot]["Item"] = loot_dict[item_idx][0]
 					PlayerData.inv_data[slot]["Stack"] = loot_dict[item_idx][1]
+					looted = true
 					break
-	# remove from looting panel
-	loot_dict.erase(item_idx)
-	var loot_slot = "Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot" + str(item_idx)
-	get_node(loot_slot + "/LootIcon/Icon/Sprite").texture = null
-	get_node(loot_slot + "/LootIcon/TextureRect").hide()
-	get_node(loot_slot + "/LootIcon/TextureRect/Stack").set_text("")
-	get_node(loot_slot + "/Name").set_text("")
-	get_node(loot_slot).hide()
-	if loot_dict.size() == 0 and !all:
-		_on_Close_pressed()
+	if looted:
+		# remove from looting panel
+		loot_dict.erase(item_idx)
+		var loot_slot = "Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot" + str(item_idx)
+		get_node(loot_slot + "/LootIcon/Icon/Sprite").texture = null
+		get_node(loot_slot + "/LootIcon/TextureRect").hide()
+		get_node(loot_slot + "/LootIcon/TextureRect/Stack").set_text("")
+		get_node(loot_slot + "/Name").set_text("")
+		get_node(loot_slot).hide()
+		if loot_dict.size() == 0 and !all:
+			_on_Close_pressed()
+	
+	else:
+		# Msg can not loot - inventory full
+		var msg = load(Constants.FULL_INV_MSG).instance()
+		Utils.get_ui().add_child(msg)
