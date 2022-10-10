@@ -345,14 +345,14 @@ func interaction():
 			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
 				if treasure_dict[treasure][3] == 3:
-					dialog.start(treasure, false, "")
+					dialog.start(treasure, treasure_dict[treasure][1], "")
 				else:
-					dialog.start(treasure, true, str(treasure_dict[treasure][3]))
+					dialog.start(treasure, treasure_dict[treasure][1], str(treasure_dict[treasure][3]))
 			elif treasure_dict[treasure][2].empty():
 				if treasure_dict[treasure][3] == 3:
-					dialog.start(treasure, false, "")
+					dialog.start(treasure, treasure_dict[treasure][1], "")
 				else:
-					dialog.start(treasure, true, str(treasure_dict[treasure][3]))
+					dialog.start(treasure, treasure_dict[treasure][1], str(treasure_dict[treasure][3]))
 			else:
 				dialog.start(treasure, "open", "")
 

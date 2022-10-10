@@ -433,7 +433,7 @@
   </layer>
   <objectgroup id="18" name="treasures">
    <object id="22" name="pos_treasure_1" x="495.875" y="-97.5625" width="16.125" height="15.875"/>
-   <object id="23" name="treasure_1" type="area" x="493.188" y="-99.625" width="22.8125" height="26.125">
+   <object id="23" name="treasure_1" type="area" x="493.188" y="-99.625" width="22.8125" height="24.75">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>

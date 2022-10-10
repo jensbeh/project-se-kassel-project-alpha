@@ -231,7 +231,7 @@
   </layer>
   <objectgroup id="17" name="treasures">
    <object id="48" name="pos_treasure_1" x="545.091" y="-145.364" width="16" height="16"/>
-   <object id="49" name="treasure_1" type="area" x="538.545" y="-149.636" width="28.7273" height="25.4545">
+   <object id="49" name="treasure_1" type="area" x="539.42" y="-149.636" width="27.8523" height="25.4545">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
@@ -252,7 +252,7 @@
     </properties>
    </object>
    <object id="54" name="pos_treasure_4" x="704.472" y="-96.7613" width="15.8182" height="16.2159"/>
-   <object id="55" name="treasure_4" type="area" x="696.387" y="-99.159" width="31.0909" height="24.5454">
+   <object id="55" name="treasure_4" type="area" x="704.387" y="-99.159" width="23.0909" height="24.5454">
     <properties>
      <property name="boss_loot" type="bool" value="true"/>
      <property name="selected_treasure_sprite" type="int" value="3"/>
