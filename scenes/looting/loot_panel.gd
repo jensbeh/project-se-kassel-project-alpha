@@ -7,6 +7,7 @@ var loot_type
 var loot_count
 var max_loot = 6
 var all = false
+var keys
 
 # setup the looting panel
 func _ready():
@@ -54,7 +55,7 @@ func LootSelector():
 # add drops to the looting panel
 func PopulatePanel():
 	var num = 1
-	var keys = loot_dict.keys()
+	keys = loot_dict.keys()
 	for i in get_tree().get_nodes_in_group("LootPanelSlots"):
 		if num <= loot_dict.size():
 			var counter = keys[num -1]
@@ -87,7 +88,6 @@ func PopulatePanel():
 
 func setup():
 	var num = 1
-	var keys = loot_dict.keys()
 	for i in get_tree().get_nodes_in_group("LootPanelSlots"):
 		if num <= loot_dict.size():
 			var counter = keys[num -1]
@@ -119,7 +119,6 @@ func setup():
 func _on_Icon_gui_input(event, lootpanelslot):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			var keys = loot_dict.keys()
 			var item_idx
 			if keys.size() < lootpanelslot:
 				item_idx = keys[-1]
@@ -142,7 +141,6 @@ func _on_LootAll_pressed():
 	Utils.get_current_player().player_looted()
 	all = true
 	var size = loot_dict.size()
-	var keys = loot_dict.keys()
 	get_parent().remove_child(self)
 	queue_free()
 	for i in range(1,size + 1):
