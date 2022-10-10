@@ -315,7 +315,7 @@ func setup_treasure_areas():
 			randomize()
 			for treasure in treasure_object.get_children():
 				if "treasure" in treasure.name and !"pos" in treasure.name:
-					if randi() % 10 > 7 and !treasure.get_meta("boss_loot"):
+					if randi() % 10 < Constants.LOOT_CHANCE and !treasure.get_meta("boss_loot"):
 						chunk.remove_child(treasure_object)
 						treasure_object.queue_free()
 					else:
