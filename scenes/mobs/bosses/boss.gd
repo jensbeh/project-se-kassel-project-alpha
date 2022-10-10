@@ -76,6 +76,9 @@ onready var healthBarNode = $NinePatchRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Show or hide line node for debugging
+	line2D.visible = Constants.SHOW_MOB_PATHES
+	
 	# Set detection radius depending on grassland or not
 	if in_grassland:
 		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_GRASSLAND
@@ -241,8 +244,9 @@ func move_to_position(delta):
 	if global_position.distance_to(path[0]) < position_threshold:
 		path.remove(0)
 		
-		# Update line
-		line2D.points = path
+		if Constants.SHOW_MOB_PATHES:
+			# Update line
+			line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
@@ -251,11 +255,13 @@ func move_to_position(delta):
 		# Update anmination
 		update_animations()
 		
-		# Update line position
-		line2D.global_position = Vector2(0,0)
+		if Constants.SHOW_MOB_PATHES:
+			# Update line position
+			line2D.global_position = Vector2(0,0)
 	
-	if path.size() == 0:
-		line2D.points = []
+	if Constants.SHOW_MOB_PATHES:
+		if path.size() == 0:
+			line2D.points = []
 
 
 # Method to search for player
@@ -309,8 +315,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					# Update line path
-					line2D.points = []
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
 				
 #				print("WANDERING")
 				behaviour_state = WANDERING
@@ -328,8 +335,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					# Update line path
-					line2D.points = []
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
 #				print("HUNTING")
 				behaviour_state = HUNTING
 				mob_need_path = true
@@ -422,8 +430,9 @@ func update_path(new_path):
 	path = new_path
 	mob_need_path = false
 	
-	# Update line path
-	line2D.points = path
+	if Constants.SHOW_MOB_PATHES:
+		# Update line path
+		line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity

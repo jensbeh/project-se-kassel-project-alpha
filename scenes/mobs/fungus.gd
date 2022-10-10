@@ -157,8 +157,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is pre_attacking
 					path.resize(0)
 					
-					# Update line path
-					line2D.points = []
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
 #				print("PRE_ATTACKING")
 				behaviour_state = PRE_ATTACKING
 				mob_need_path = true
@@ -173,8 +174,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					# Update line path
-					line2D.points = []
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
 				
 				# Move Mob to player and further more
 				update_animations()

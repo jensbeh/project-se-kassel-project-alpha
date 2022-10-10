@@ -1,5 +1,13 @@
 extends Node
 
+
+# --------------------------------------------------
+
+# DEBUG
+const SHOW_MOB_PATHES = false
+
+# --------------------------------------------------
+
 # Variables
 const NAME_LENGTH = 15
 const COOLDOWN = 20
