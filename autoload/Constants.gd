@@ -4,7 +4,7 @@ extends Node
 const NAME_LENGTH = 15
 const COOLDOWN = 20
 const LOOTING_TIME = 60
-const LOOT_CHANCE = 3 # means 70% Chance
+const LOOT_CHANCE = 0.7 # means 70% Chance
 
 # Tiles
 const tile_size = 16
