@@ -1018,15 +1018,11 @@
 </chunk>
    </data>
   </layer>
-  <objectgroup id="13" name="treasure">
-   <object id="5" gid="346" x="-240.51" y="304.898" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="1"/>
-    </properties>
-   </object>
+  <objectgroup id="13" name="treasures">
    <object id="6" name="pos_treasure_1" x="-240.364" y="288.364" width="15.8182" height="16.1818"/>
    <object id="9" name="treasure_1" type="area" x="-246.636" y="281.636" width="28.5455" height="28.4545">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>

@@ -485,17 +485,17 @@
    <object id="44" name="pos_treasure_2" x="160.818" y="223.273" width="15.8182" height="15.8182"/>
    <object id="45" name="treasure_2" type="area" x="160.727" y="223.091" width="23.7273" height="22.9091">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
    <object id="51" name="pos_treasure_1" x="656" y="-113.636" width="15.9091" height="16"/>
    <object id="56" name="treasure_1" type="area" x="647.939" y="-113.727" width="23.8788" height="23.7576">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
-   <object id="59" gid="346" x="656.091" y="-97.7273" width="16" height="16"/>
-   <object id="60" gid="346" x="160.636" y="239.091" width="16" height="16"/>
   </objectgroup>
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>

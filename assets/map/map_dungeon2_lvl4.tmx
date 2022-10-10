@@ -354,58 +354,42 @@
 </chunk>
    </data>
   </layer>
-  <objectgroup id="14" name="treasure">
-   <object id="33" gid="350" x="144.622" y="-178.008" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="2"/>
-    </properties>
-   </object>
-   <object id="34" gid="350" x="304.399" y="-178.008" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="2"/>
-    </properties>
-   </object>
-   <object id="35" gid="346" x="784.92" y="-83.8118" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="1"/>
-    </properties>
-   </object>
-   <object id="36" gid="354" x="31.3479" y="-116.006" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="3"/>
-    </properties>
-   </object>
+  <objectgroup id="14" name="treasures">
    <object id="37" name="pos_treasure_1" x="31.2727" y="-132.091" width="16.1818" height="16.0909"/>
    <object id="38" name="treasure_1" type="area" x="29.0909" y="-136.364" width="24.9091" height="25.4545">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="3"/>
     </properties>
    </object>
    <object id="43" name="pos_treasure_2" x="784.909" y="-99.8182" width="16.0909" height="15.9091"/>
    <object id="44" name="treasure_2" type="area" x="778.273" y="-103.909" width="25.9091" height="25.3636">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
    <object id="46" name="pos_treasure_3" x="304.364" y="-194.091" width="16" height="16.0909"/>
    <object id="47" name="treasure_3" type="area" x="298.273" y="-197.545" width="28.4545" height="24.5455">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="2"/>
     </properties>
    </object>
    <object id="48" name="pos_treasure_4" x="144.364" y="-194.273" width="16.4545" height="16.3636"/>
    <object id="50" name="treasure_4" type="area" x="140.909" y="-198.545" width="26.0909" height="25.9091">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="2"/>
     </properties>
    </object>
-   <object id="40" gid="354" x="320.364" y="383.517" width="16" height="16"/>
-   <object id="41" name="treasure_5" type="area" x="314" y="363.091" width="28.9091" height="26.5455">
+   <object id="41" name="treasure_5" type="area" x="297.75" y="363.341" width="28.9091" height="26.5455">
     <properties>
+     <property name="boss_loot" type="bool" value="true"/>
      <property name="selected_treasure_sprite" type="int" value="3"/>
     </properties>
    </object>
-   <object id="42" name="pos_treasure_5" x="320.182" y="367.631" width="16.1648" height="16.0057"/>
+   <object id="42" name="pos_treasure_5" x="303.557" y="367.631" width="16.1648" height="16.0057"/>
   </objectgroup>
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>

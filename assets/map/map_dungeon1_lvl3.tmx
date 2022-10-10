@@ -230,43 +230,31 @@
    </data>
   </layer>
   <objectgroup id="17" name="treasures">
-   <object id="43" gid="350" x="208" y="-146" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="2"/>
-    </properties>
-   </object>
-   <object id="44" gid="350" x="-111.5" y="-1.5" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="2"/>
-    </properties>
-   </object>
-   <object id="45" gid="346" x="545" y="-129.5" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="1"/>
-    </properties>
-   </object>
    <object id="48" name="pos_treasure_1" x="545.091" y="-145.364" width="16" height="16"/>
    <object id="49" name="treasure_1" type="area" x="538.545" y="-149.636" width="28.7273" height="25.4545">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
    <object id="53" name="pos_treasure_2" x="-111.455" y="-17.6364" width="16" height="16.2727"/>
    <object id="54" name="treasure_2" type="area" x="-113.636" y="-21.5455" width="25.2727" height="25.1818">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="2"/>
     </properties>
    </object>
    <object id="59" name="pos_treasure_3" x="207.909" y="-162.091" width="16.1818" height="16.1818"/>
    <object id="61" name="treasure_3" type="area" x="202" y="-164.636" width="29.2727" height="23.8182">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="2"/>
     </properties>
    </object>
-   <object id="52" gid="405" x="720.364" y="-80.7273" width="16" height="16"/>
-   <object id="54" name="pos_treasure_4" x="720.472" y="-96.7613" width="15.8182" height="16.2159"/>
-   <object id="55" name="treasure_4" type="area" x="712.637" y="-98.909" width="31.0909" height="24.5454">
+   <object id="54" name="pos_treasure_4" x="704.472" y="-96.7613" width="15.8182" height="16.2159"/>
+   <object id="55" name="treasure_4" type="area" x="696.387" y="-99.159" width="31.0909" height="24.5454">
     <properties>
+     <property name="boss_loot" type="bool" value="true"/>
      <property name="selected_treasure_sprite" type="int" value="3"/>
     </properties>
    </object>

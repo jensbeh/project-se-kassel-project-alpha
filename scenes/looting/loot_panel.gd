@@ -140,11 +140,12 @@ func _on_Close_pressed():
 func _on_LootAll_pressed():
 	Utils.get_current_player().player_looted()
 	all = true
+	var key = loot_dict.keys()
 	var size = loot_dict.size()
 	get_parent().remove_child(self)
 	queue_free()
 	for i in range(1,size + 1):
-		loot_item(keys[i -1])
+		loot_item(key[i -1])
 	emit_signal("looted", loot_dict)
 
 

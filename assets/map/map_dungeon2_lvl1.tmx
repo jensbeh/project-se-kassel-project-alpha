@@ -791,26 +791,18 @@
 </chunk>
    </data>
   </layer>
-  <objectgroup id="18" name="treasure">
-   <object id="25" gid="346" x="112.727" y="-528.563" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="1"/>
-    </properties>
-   </object>
-   <object id="26" gid="346" x="879.944" y="-306.485" width="16" height="16">
-    <properties>
-     <property name="selected_treasure_sprite" type="int" value="1"/>
-    </properties>
-   </object>
+  <objectgroup id="18" name="treasures">
    <object id="27" name="pos_treasure_1" x="879.75" y="-322.625" width="16.375" height="16.25"/>
    <object id="28" name="treasure_1" type="area" x="872.5" y="-326.375" width="25.25" height="26.5">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
    <object id="30" name="pos_treasure_2" x="112.375" y="-544.75" width="16.5" height="16.375"/>
    <object id="31" name="treasure_2" type="area" x="110.75" y="-548.75" width="25.25" height="26.125">
     <properties>
+     <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>

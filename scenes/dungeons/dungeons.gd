@@ -313,12 +313,12 @@ func setup_treasure_areas():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
 			randomize()
-			if randi() % 10 > 7:
-				chunk.remove_child(treasure_object)
-				treasure_object.queue_free()
-			else:
-				for treasure in treasure_object.get_children():
-					if "treasure" in treasure.name and !"pos" in treasure.name:
+			for treasure in treasure_object.get_children():
+				if "treasure" in treasure.name and !"pos" in treasure.name:
+					if randi() % 10 > 7 and !treasure.get_meta("boss_loot"):
+						chunk.remove_child(treasure_object)
+						treasure_object.queue_free()
+					else:
 						var treasure_data = []
 						treasure_data.append(false) # in range
 						treasure_data.append(false) # looted

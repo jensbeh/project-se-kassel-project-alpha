@@ -313,6 +313,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 				var node = Area2D.new()
 				if "treasure" in child.name and !"pos" in child.name:
 					node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
+					node.set_meta("boss_loot", child.get_meta("boss_loot"))
 				node.name = child.name
 				node.position = child.position
 				chunk_node.add_child(node)
