@@ -173,7 +173,7 @@ func _input(event):
 			emit_signal("player_interact")
 			
 		# Remove the Loot Panel
-		elif collecting:
+		elif Utils.get_ui().get_node_or_null("LootPanel") != null:
 			# Call close Method in Loot Panel
 			Utils.get_ui().get_node_or_null("LootPanel")._on_Close_pressed()
 			
@@ -238,7 +238,7 @@ func _input(event):
 		animation_state.start("Attack")
 	
 	# Loot All
-	elif event.is_action_pressed("loot_all") and collecting:
+	elif event.is_action_pressed("loot_all") and Utils.get_ui().get_node_or_null("LootPanel") != null:
 		# Call Loot all Method in Loot Panel
 		Utils.get_ui().get_node_or_null("LootPanel")._on_LootAll_pressed()
 
