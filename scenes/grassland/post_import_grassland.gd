@@ -571,12 +571,15 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 					var point = Vector2(point_x, point_y)
 					
 					var valid_point = true
+					var weight_scale = 0.0
 					
 					# Check CORNERS
 					if (point.x == 0 or point.x == 2) \
 					 and (point.y == 0 or point.y == 2):
 						# Point is on CORNER - check if neighbor points are invalid
 						# Check RIGHT-DOWN, LEFT-DOWN, LEFT-UP, RIGHT-UP
+						weight_scale = 1.4
+						
 						point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
 						var points_diagonal_relative = PoolVector2Array([
 							point + Vector2(1,1), # RIGHT-DOWN
@@ -597,6 +600,8 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 					 or (point.x == 2 and point.y == 1) \
 					 or (point.x == 1 and point.y == 2):
 						# Point is on EDGE - check if neighbor points are invalid
+						
+						weight_scale = 1.0
 						
 						# Check DOWN, UP
 						if (point.x == 1 and point.y == 0) \
@@ -632,6 +637,9 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 					
 					# Check CENTER
 					elif (point.x == 1 and point.y == 1):
+						
+						weight_scale = 1.0
+						
 						point = point + Vector2(2 * tile_coord.x, 2 * tile_coord.y) # Set point to real grid
 						var point_tile_coord = mobs_nav_tilemap.world_to_map(point_coords_world(point))
 						# Check if point is invalid
@@ -647,12 +655,13 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 							var point_index = calculate_point_index(point)
 							astar_nodes_dics["mobs"][point] = {
 												"point_index" : point_index,
+												"weight_scale" : weight_scale,
 												"connections" : []
 												}
 							
 							# AStar works for both 2d and 3d, so we have to convert the tile_coord
 							# coordinates from and to Vector3s.
-							mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
+							mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, weight_scale))
 
 
 # Loops through all cells within the map's bounds and

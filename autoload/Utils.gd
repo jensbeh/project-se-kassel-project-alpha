@@ -255,8 +255,8 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 		if not generate_again:
 			# Position is NOT blocked by collision, ... - get new one
 			generate_position = false
-		else:
-			print("generate_again - generate_position_in_mob_area")
+#		else:
+#			print("generate_again - generate_position_in_mob_area")
 	
 	return position
 
@@ -331,8 +331,8 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 		if not generate_again:
 			# Position is NOT blocked by collision, ... - get new one
 			generate_position = false
-		else:
-			print("generate_again - generate_position_near_mob")
+#		else:
+#			print("generate_again - generate_position_near_mob")
 	
 	return position
 
@@ -369,9 +369,9 @@ func generate_position_in_polygon(area_info, is_first_spawn):
 			if not is_position_in_camera_screen(position):
 				# Position NOT in camera screen -> take postion
 				generate_position = false
-			else:
-				# Position IN camera screen -> generate new postion
-				print("generate_again - generate_position_in_polygon")
+#			else:
+#				# Position IN camera screen -> generate new postion
+#				print("generate_again - generate_position_in_polygon")
 		
 		else:
 			generate_position = false

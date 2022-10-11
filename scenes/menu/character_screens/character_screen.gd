@@ -489,18 +489,19 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-
+	
 	# Set spawn
 #	var player_position = Vector2(1128,616) # Camp
 	var player_position = Vector2(768,752) # Grassland - Dungeon1
 #	var player_position = Vector2(-816,-496) # Grassland - Mountain
+#	var player_position = Vector2(-730,-1700) # Grassland - Top
 #	var player_position = Vector2(336,-62) # Dungeon1-1
 #	var player_position = Vector2(784,16) # Dungeon1-3
 #	var player_position = Vector2(240,480) # Dungeon2-4
 #	var player_position = Vector2(-300,64) # Dungeon3-2
 #	var player_position = Vector2(-384,176) # Dungeon3-4
 	var view_direction = Vector2(0,1)
-
+	
 	# Set data
 	var data = data_list[selected_character]
 	PlayerData.set_path(data.id)

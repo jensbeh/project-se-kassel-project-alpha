@@ -4,7 +4,7 @@ extends Node
 # --------------------------------------------------
 
 # DEBUG
-const SHOW_MOB_PATHES = false
+const SHOW_MOB_PATHES = true
 
 # --------------------------------------------------
 
