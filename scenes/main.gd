@@ -61,6 +61,32 @@ func disable_game_gui(disable_gui):
 	game_viewport.gui_disable_input = disable_gui
 
 
+# Method to start close game animation - calls ONLY from UTILS
+func start_close_game_transition():
+	loading_screen_animation_player.play("CloseGameFadeToBlack")
+
+
+# Method to stop the game after animation "CloseGameFadeToBlack" is done - called from animation "CloseGameFadeToBlack"
+func stop_game():
+	# Cleanup previous scene
+	if Utils.get_scene_manager().get_current_scene().has_method("destroy_scene"):
+		Utils.get_scene_manager().get_current_scene().destroy_scene()
+		print("----> destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
+	else:
+		printerr("----> NOT destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
+	
+	# Stop threads
+	# Stop Chunkloader
+	ChunkLoaderService.stop()
+	# Stop Pathfinder
+	PathfindingService.stop()
+	# Stop Mobspawner
+	MobSpawnerService.stop()
+	
+	# Quit and close game
+	get_tree().quit()
+
+
 # Handle notifications
 func _notification(notification):
 	# If game is closed

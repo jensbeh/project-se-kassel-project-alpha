@@ -131,6 +131,7 @@ func destroy_scene():
 	# Disconnect signals
 	clear_signals()
 
+
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data

@@ -431,15 +431,9 @@ func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
 	return position
 
 
-# Method to stop the game
-	# Stops all threads which are still running like ChunkLoaderService, PathfindingService, ...
+# Method to start the stop of the game
 func stop_game():
 	print("STOP GAME")
 	
-	# Stop threads
-	# Stop Chunkloader
-	ChunkLoaderService.stop()
-	# Stop Pathfinder
-	PathfindingService.stop()
-	# Stop Mobspawner
-	MobSpawnerService.stop()
+	# Start fade to black transition in main.gd
+	get_main().start_close_game_transition()

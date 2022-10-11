@@ -47,6 +47,3 @@ func _on_Settings_pressed():
 func _on_Exit_to_Desktop_pressed():
 	# Stop game
 	Utils.stop_game()
-	
-	# Quit and close game
-	get_tree().quit()
