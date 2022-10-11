@@ -1,14 +1,14 @@
 extends Node
 
-const constants = preload("res://autoload/Constants.gd")
-const customLight = preload("res://scenes/light/CustomLight.tscn")
+const CONSTANTS = preload("res://autoload/Constants.gd")
+const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
 
 
 var compressed_tilemap = TileMap.new()
 var mobs_nav_tilemap = TileMap.new()
 var ambient_mobs_nav_tilemap = TileMap.new()
 
-var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
+var chunk_size = CONSTANTS.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
@@ -26,7 +26,7 @@ func post_import(scene):
 		for child in lightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = customLight.instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -199,14 +199,14 @@ func create_astar(scene):
 	# Store astar
 	# Check if directory is existing
 	var dir_game = Directory.new()
-	if !dir_game.dir_exists(constants.SAVE_GAME_PATH):
-		dir_game.make_dir(constants.SAVE_GAME_PATH)
+	if !dir_game.dir_exists(CONSTANTS.SAVE_GAME_PATH):
+		dir_game.make_dir(CONSTANTS.SAVE_GAME_PATH)
 	var dir_game_pathfinding = Directory.new()
-	if !dir_game_pathfinding.dir_exists(constants.SAVE_GAME_PATHFINDING_PATH):
-		dir_game_pathfinding.make_dir(constants.SAVE_GAME_PATHFINDING_PATH)
+	if !dir_game_pathfinding.dir_exists(CONSTANTS.SAVE_GAME_PATHFINDING_PATH):
+		dir_game_pathfinding.make_dir(CONSTANTS.SAVE_GAME_PATHFINDING_PATH)
 	# Save file
 	var astar_save = File.new()
-	astar_save.open(constants.SAVE_GAME_PATHFINDING_PATH + "astar-" + scene.name + ".sav", File.WRITE)
+	astar_save.open(CONSTANTS.SAVE_GAME_PATHFINDING_PATH + "astar-" + scene.name + ".sav", File.WRITE)
 	astar_save.store_var(astar_nodes_dics)
 	astar_save.close()
 	print("Saved AStars to file!")
@@ -235,7 +235,7 @@ func generate_chunks(scene):
 #	print("vertical_chunks_count: " + str(vertical_chunks_count))
 #	print("horizontal_chunks_count: " + str(horizontal_chunks_count))
 	map_size_in_tiles = Vector2(map_width, map_height)
-	map_offset_in_tiles = map_min_global_pos / constants.TILE_SIZE
+	map_offset_in_tiles = map_min_global_pos / CONSTANTS.TILE_SIZE
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()
@@ -397,7 +397,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				var custom_light = customLight.instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius
@@ -433,8 +433,8 @@ func get_chunk_from_position(global_position):
 	new_position.x = abs(map_min_global_pos.x) + global_position.x
 	new_position.y = abs(map_min_global_pos.y) + global_position.y
 	
-	chunk.x = floor(new_position.x / constants.chunk_size_pixel)
-	chunk.y = floor(new_position.y / constants.chunk_size_pixel)
+	chunk.x = floor(new_position.x / CONSTANTS.chunk_size_pixel)
+	chunk.y = floor(new_position.y / CONSTANTS.chunk_size_pixel)
 	return chunk
 
 
@@ -751,8 +751,8 @@ func astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, asta
 # Method to generate tile_coord to global_position
 func point_coords_world(tile_coords : Vector2):
 	var global_position = Vector2.ZERO
-	global_position.x = tile_coords.x * (float(constants.TILE_SIZE) / (constants.POINTS_HORIZONTAL_PER_TILE - 1))
-	global_position.y = tile_coords.y * (float(constants.TILE_SIZE) / (constants.POINTS_VERTICAL_PER_TILE - 1))
+	global_position.x = tile_coords.x * (float(CONSTANTS.TILE_SIZE) / (CONSTANTS.POINTS_HORIZONTAL_PER_TILE - 1))
+	global_position.y = tile_coords.y * (float(CONSTANTS.TILE_SIZE) / (CONSTANTS.POINTS_VERTICAL_PER_TILE - 1))
 	
 	return global_position
 

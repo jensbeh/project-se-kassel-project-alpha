@@ -1,11 +1,11 @@
 extends Node
 
-const constants = preload("res://autoload/Constants.gd")
-const customLight = preload("res://scenes/light/CustomLight.tscn")
-const animatedDoorTileSet = preload("res://assets/tilesets/Village Animated Doors.png")
+const CONSTANTS = preload("res://autoload/Constants.gd")
+const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
+const VILLAGE_ANIMATED_DECORATIONS_TILESET = preload("res://assets/tilesets/Village Animated Decorations.png")
 
 
-var chunk_size = constants.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
+var chunk_size = CONSTANTS.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
@@ -21,7 +21,7 @@ func post_import(scene):
 		for child in groundLightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = customLight.instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -39,7 +39,7 @@ func post_import(scene):
 		for child in higherLightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = customLight.instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -64,7 +64,7 @@ func post_import(scene):
 				var sprite = Sprite.new()
 				sprite.name = "sprite"
 				sprite.centered = false
-				sprite.texture = animatedDoorTileSet
+				sprite.texture = VILLAGE_ANIMATED_DECORATIONS_TILESET
 				sprite.hframes = 20
 				sprite.vframes = 8
 				sprite.frame = frame
@@ -335,7 +335,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				var custom_light = customLight.instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius
@@ -378,8 +378,8 @@ func get_chunk_from_position(global_position):
 	new_position.x = abs(map_min_global_pos.x) + global_position.x
 	new_position.y = abs(map_min_global_pos.y) + global_position.y
 	
-	chunk.x = floor(new_position.x / constants.chunk_size_pixel)
-	chunk.y = floor(new_position.y / constants.chunk_size_pixel)
+	chunk.x = floor(new_position.x / CONSTANTS.chunk_size_pixel)
+	chunk.y = floor(new_position.y / CONSTANTS.chunk_size_pixel)
 	return chunk
 
 
