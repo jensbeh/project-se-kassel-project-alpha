@@ -228,6 +228,7 @@ func spawn_ambient_mobs():
 # Method to despawn/remove mob
 func despawn_mob(mob):
 	if is_instance_valid(mob) and mob.is_inside_tree():
+		Utils.get_scene_manager().get_current_scene().spawn_loot(mob.position, mob.get_name())
 		# Remove from variables
 		if mob_list.find(mob) != -1:
 			mob_list.remove(mob_list.find(mob))

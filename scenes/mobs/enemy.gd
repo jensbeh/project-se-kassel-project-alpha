@@ -462,3 +462,4 @@ func get_attack_damage(mob_attack_damage):
 		var normal_attack_factor = rng.randf_range(Constants.NORMAL_ATTACK_MIN_DAMAGE_FACTOR, Constants.NORMAL_ATTACK_MAX_DAMAGE_FACTOR)
 		var damage = int(round(mob_attack_damage * normal_attack_factor))
 		return damage
+

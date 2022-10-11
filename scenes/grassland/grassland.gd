@@ -25,6 +25,7 @@ onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_n
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
+onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 
 # Called when the node enters the scene tree for the first time.
@@ -73,6 +74,9 @@ func _on_setup_scene_done():
 	
 	# Spawn bosses
 	spawn_bosses()
+	
+	# Spawn random treasures
+	spawn_treasures()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -219,6 +223,10 @@ func clear_signals():
 					# connect Area2D with functions to handle body action
 					stair.disconnect("body_entered", self, "body_entered_stair_area")
 					stair.disconnect("body_exited", self, "body_exited_stair_area")
+	
+	# Treasures
+	for treasure in lootLayer.get_children():
+		Utils.get_current_player().disconnect("player_interact", treasure, "interaction")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -288,6 +296,41 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
+		spawn_loot(boss_node.position, boss_node.get_name())
 		mobsLayer.remove_child(boss_node)
 		boss_node.queue_free()
 		print("----------> Boss \"" + boss_node.name + "\" removed")
+
+
+# Method to spawn loot after monster died
+func spawn_loot(position, mob_name):
+	if "Boss" in mob_name:
+		var loot = load(Constants.LOOT_DROP_PATH).instance()
+		loot.get_child(0).frame = 187
+		loot.init(position, mob_name, false)
+		lootLayer.call_deferred("add_child", loot)
+	else:
+		randomize()
+		var random_float = randf()
+		if random_float <= Constants.LOOT_CHANCE:
+			var loot = load(Constants.LOOT_DROP_PATH).instance()
+			loot.get_child(0).frame = 198
+			loot.init(position, mob_name, false)
+			lootLayer.call_deferred("add_child", loot)
+
+
+func spawn_treasures():
+	for current_spawn_area in spawning_areas.keys():
+		randomize()
+		var quantity = randi() % 3
+		while quantity != 0:
+			# Spawn area informations
+			randomize()
+			var random_float = randf()
+			if random_float <= 0.4:
+				# load treasure
+				var treasure = load(Constants.TREASURE_PATH).instance()
+				# Generate spawn position and spawn treasure
+				treasure.init(current_spawn_area, mobsNavigationTileMap)
+				lootLayer.call_deferred("add_child", treasure)
+			quantity -= 1

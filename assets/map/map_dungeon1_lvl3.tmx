@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="20" nextobjectid="52">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="20" nextobjectid="56">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <tileset firstgid="337" source="../tilesets/animated_decorations.tsx"/>
+ <tileset firstgid="357" source="../tilesets/decoration.tsx"/>
  <group id="15" name="navigation"/>
  <group id="5" name="groundlayer">
   <layer id="1" name="ground" width="30" height="20">
@@ -69,11 +71,11 @@
 6,6,59,60,60,60,60,42,60,101,0,0,0,0,0,0,
 6,6,28,6,6,6,6,6,6,59,101,0,0,0,0,0,
 28,6,7,6,28,28,6,6,6,28,59,101,0,0,0,0,
-28,6,7,6,6,6,6,7,6,7,6,38,0,102,60,60,
-6,6,6,6,6,6,6,6,6,28,28,38,0,40,6,6,
-6,6,6,6,6,6,6,6,6,6,6,59,101,84,6,6,
-7,6,6,7,6,6,6,28,6,6,6,6,38,40,6,6,
-6,6,6,6,6,6,6,6,6,6,6,6,59,65,132,6,
+28,6,7,6,6,6,6,7,6,7,6,22,3,3,60,60,
+6,6,6,6,6,6,6,6,6,28,28,38,6,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,43,6,6,6,6,
+7,6,6,7,6,6,6,28,6,6,6,64,4,6,6,6,
+6,6,6,6,6,6,6,6,6,6,6,6,59,3,132,6,
 6,6,28,6,6,6,6,6,6,6,6,6,6,28,6,6,
 6,6,6,7,28,6,6,6,6,6,6,6,6,6,6,6
 </chunk>
@@ -227,6 +229,36 @@
 </chunk>
    </data>
   </layer>
+  <objectgroup id="17" name="treasures">
+   <object id="48" name="pos_treasure_1" x="545.091" y="-145.364" width="16" height="16"/>
+   <object id="49" name="treasure_1" type="area" x="539.42" y="-149.636" width="27.8523" height="25.4545">
+    <properties>
+     <property name="boss_loot" type="bool" value="false"/>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+   <object id="53" name="pos_treasure_2" x="-111.455" y="-17.6364" width="16" height="16.2727"/>
+   <object id="54" name="treasure_2" type="area" x="-113.636" y="-21.5455" width="25.2727" height="25.1818">
+    <properties>
+     <property name="boss_loot" type="bool" value="false"/>
+     <property name="selected_treasure_sprite" type="int" value="2"/>
+    </properties>
+   </object>
+   <object id="59" name="pos_treasure_3" x="207.909" y="-162.091" width="16.1818" height="16.1818"/>
+   <object id="61" name="treasure_3" type="area" x="202" y="-164.636" width="29.2727" height="23.8182">
+    <properties>
+     <property name="boss_loot" type="bool" value="false"/>
+     <property name="selected_treasure_sprite" type="int" value="2"/>
+    </properties>
+   </object>
+   <object id="54" name="pos_treasure_4" x="704.472" y="-96.7613" width="15.8182" height="16.2159"/>
+   <object id="55" name="treasure_4" type="area" x="704.387" y="-99.159" width="23.0909" height="24.5454">
+    <properties>
+     <property name="boss_loot" type="bool" value="true"/>
+     <property name="selected_treasure_sprite" type="int" value="3"/>
+    </properties>
+   </object>
+  </objectgroup>
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>
@@ -265,6 +297,7 @@
   </objectgroup>
  </group>
  <group id="3" name="entitylayer">
+  <group id="14" name="lootLayer"/>
   <group id="19" name="keylayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>

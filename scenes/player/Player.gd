@@ -74,6 +74,8 @@ var can_attack = false
 var hurting = false
 var dying = false
 var is_invincible = false
+var collecting = false
+var collected = false
 
 
 func _ready():
@@ -107,6 +109,8 @@ func _ready():
 	animation_tree.set("parameters/Idle/blend_position", velocity)
 	animation_tree.set("parameters/Walk/blend_position", velocity)
 	animation_tree.set("parameters/Hurt/blend_position", velocity)
+	animation_tree.set("parameters/Collect/blend_position", velocity)
+	animation_tree.set("parameters/Collected/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
 	# Set invisibility of player
@@ -117,7 +121,7 @@ func _ready():
 
 
 func _physics_process(delta):
-	if not is_attacking and not hurting and not dying: # Disable walking if attacking
+	if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
 		# Handle User Input
 		if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
 			velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
@@ -135,10 +139,12 @@ func _physics_process(delta):
 		if Input.is_action_pressed("Shift"):
 			velocity *= 1.4
 		
-		if velocity != Vector2.ZERO:
+		if velocity != Vector2.ZERO and player_can_interact:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
 			animation_tree.set("parameters/Hurt/blend_position", velocity)
+			animation_tree.set("parameters/Collect/blend_position", velocity)
+			animation_tree.set("parameters/Collected/blend_position", velocity)
 			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 			animation_state.travel("Walk")
 		else:
@@ -151,7 +157,7 @@ func _physics_process(delta):
 				if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 					emit_signal("player_collided", collision.get_collider())
 	
-	elif hurting or dying and velocity != Vector2.ZERO:
+	elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
 		# handle knockback when hurting or dying
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
@@ -166,6 +172,11 @@ func _input(event):
 		if player_can_interact:
 			emit_signal("player_interact")
 			
+		# Remove the Loot Panel
+		elif Utils.get_ui().get_node_or_null("LootPanel") != null:
+			# Call close Method in Loot Panel
+			Utils.get_ui().get_node_or_null("LootPanel")._on_Close_pressed()
+			
 		# Remove the trade inventory
 		if Utils.get_trade_inventory() != null and !dragging:
 			Utils.get_trade_inventory().queue_free()
@@ -178,7 +189,7 @@ func _input(event):
 			PlayerData.save_inventory()
 			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
-	
+		
 	# Open game menu with "esc"
 	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
 		set_movement(false)
@@ -221,10 +232,15 @@ func _input(event):
 		Utils.get_control_notes().show_hide_control_notes()
 	
 	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying:
+	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 		is_attacking = true
 		set_movement(false)
 		animation_state.start("Attack")
+	
+	# Loot All
+	elif event.is_action_pressed("loot_all") and Utils.get_ui().get_node_or_null("LootPanel") != null:
+		# Call Loot all Method in Loot Panel
+		Utils.get_ui().get_node_or_null("LootPanel")._on_LootAll_pressed()
 
 
 # Method is called at the end of any attack animation
@@ -554,7 +570,65 @@ func set_die_key(die_animation, track_str, value):
 	if die_animation.track_find_key(track_idx, 1.0, 1) != -1:
 		die_animation.track_set_key_value(track_idx, die_animation.track_find_key(track_idx, 1.0, 1),
 			die_animation.track_get_key_value(track_idx, die_animation.track_find_key(track_idx, 1.0, 1)) + value)
+
+
+# Method to reset animations back to first frame
+func reset_collect_key(track_str):
+	# Get animation for color offset
+	var newAnimation = animation_player.get_animation("CollectDown")
+	# Get track from animation for color offset
+	var track_idx = newAnimation.find_track(track_str)
+	# Calculate offset
+	var current_frame = int(newAnimation.track_get_key_value(track_idx, newAnimation.track_find_key(track_idx, 0.0, 1)))
+	var current_texture_hframes = get_node(track_str.substr(0, track_str.find(":"))).hframes
+	var newValue = 0 - current_frame % current_texture_hframes
+	# Update frame
+	_set_collect_key(track_str, newValue)
+
+
+# Method to change all animiations frames/colors
+func _set_collect_key(track_str, value):
+	var collect_down = animation_player.get_animation("CollectDown")
+	set_collect_key(collect_down, track_str, value)
 	
+	var collect_up = animation_player.get_animation("CollectUp")
+	set_collect_key(collect_up, track_str, value)
+	
+	var collect_right = animation_player.get_animation("CollectRight")
+	set_collect_key(collect_right, track_str, value)
+	
+	var collect_left = animation_player.get_animation("CollectLeft")
+	set_collect_key(collect_left, track_str, value)
+	
+	var collected_down = animation_player.get_animation("CollectedDown")
+	set_collect_key(collected_down, track_str, value)
+	
+	var collected_up = animation_player.get_animation("CollectedUp")
+	set_collect_key(collected_up, track_str, value)
+	
+	var collected_right = animation_player.get_animation("CollectedRight")
+	set_collect_key(collected_right, track_str, value)
+	
+	var collected_left = animation_player.get_animation("CollectedLeft")
+	set_collect_key(collected_left, track_str, value)
+
+
+# Method changes the frames of the animation
+func set_collect_key(collect_animation, track_str, value):
+	var track_idx = collect_animation.find_track(track_str)
+	
+	if collect_animation.track_find_key(track_idx, 0.0, 1) != -1:
+		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.0, 1),
+			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.0, 1)) + value)
+	
+	if collect_animation.track_find_key(track_idx, 0.2, 1) != -1:
+		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.2, 1),
+			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.2, 1)) + value)
+	
+	if collect_animation.track_find_key(track_idx, 0.4, 1) != -1:
+		collect_animation.track_set_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.4, 1),
+			collect_animation.track_get_key_value(track_idx, collect_animation.track_find_key(track_idx, 0.4, 1)) + value)
+
 
 # Method to activate or disable the player movment animation 
 func set_movment_animation(state: bool):
@@ -572,6 +646,8 @@ func set_spawn(spawn_position: Vector2, view_direction: Vector2):
 	animation_tree.set("parameters/Idle/blend_position", view_direction)
 	animation_tree.set("parameters/Walk/blend_position", view_direction)
 	animation_tree.set("parameters/Hurt/blend_position", velocity)
+	animation_tree.set("parameters/Collect/blend_position", velocity)
+	animation_tree.set("parameters/Collected/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", view_direction)
 	position = spawn_position
 	animation_tree.active = true
@@ -806,7 +882,7 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		if current_health <= 0:
 			kill_player()
 		else:
-			if not is_attacking:
+			if not is_attacking and not collected:
 				hurt_player()
 		
 		# Add knockback
@@ -822,14 +898,18 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 func hurt_player():
 	if animation_tree.active: # Because when in menu the animation tree is disabled and the animation is never finished to unlock "hurting"
 		hurting = true
-	set_movement(false)
+	if !collecting:
+		set_movement(false)
 	animation_state.start("Hurt")
 
 
 # Method is called when HURT animation is done
 func player_hurt():
 	hurting = false
-	set_movement(true)
+	if !collecting:
+		set_movement(true)
+	else:
+		animation_state.travel("Collect")
 
 
 # Method is called when killing player
@@ -846,11 +926,40 @@ func kill_player():
 		set_movement(true)
 	animation_player.stop(true)
 	animation_state.travel("Die")
+	
+	# Close LootPanel
+	if Utils.get_ui().get_node_or_null("LootPanel") != null:
+		Utils.get_ui().get_node_or_null("LootPanel").queue_free()
+
+
+# Method is called when player collect loot
+func player_collect_loot():
+	collecting = true
+	set_movement(false)
+	set_player_can_interact(false)
+	animation_state.travel("Collect")
+
+
+# Method is called after collecting and the animation go on to finish
+func player_looted():
+	collected = true
+	animation_state.travel("Collected")
+
+
+# Method is called when loot animation is finished to start other animations
+func finished_looting():
+	hurting = false
+	collecting = false
+	set_movement(true)
+	set_player_can_interact(true)
+	collected = false
 
 
 # Method is called when DIE animation is done
 func player_killed():
 	Utils.get_main().show_death_screen()
+	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
+		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
 
 
 # Method to return true if player is dying/died otherwise false -> called from scene_manager
@@ -871,6 +980,7 @@ func reset_player_after_dying():
 	hurting = false
 	dying = false
 	is_attacking = false
+	collecting = false
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
@@ -916,3 +1026,4 @@ func make_player_invincible(invincible : bool):
 # Method to get player invincibility
 func is_player_invincible():
 	return is_invincible
+	

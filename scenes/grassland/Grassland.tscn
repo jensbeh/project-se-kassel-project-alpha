@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://assets/map/map_grassland.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
@@ -1457,22 +1457,6 @@ tracks/12/keys = {
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=12]
 
-[sub_resource type="Animation" id=13]
-resource_name = "RESET"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Skip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1584, 960 ), Vector2( 1616, 960 ) ]
-}
-
 [sub_resource type="AnimationNodeStateMachinePlayback" id=15]
 
 [node name="Grassland" type="Node2D"]
@@ -1547,9 +1531,6 @@ anims/WalkUp = SubResource( 11 )
 [node name="AnimationTree" parent="map_grassland/npclayer/heinz" index="17"]
 parameters/playback = SubResource( 12 )
 
-[node name="AnimationPlayer" parent="map_grassland/npclayer/heinz/DialogueBox/Skip" index="0"]
-anims/RESET = SubResource( 13 )
-
 [node name="Player" parent="map_grassland/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 184, 570 )
 
@@ -1565,8 +1546,6 @@ visible = false
 
 [editable path="map_grassland"]
 [editable path="map_grassland/npclayer/roan"]
-[editable path="map_grassland/npclayer/roan/DialogueBox"]
 [editable path="map_grassland/npclayer/heinz"]
-[editable path="map_grassland/npclayer/heinz/DialogueBox"]
 [editable path="map_grassland/entitylayer/playerlayer/Player"]
 [editable path="map_grassland/entitylayer/playerlayer/Player/HitboxZone"]

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="12" nextobjectid="6">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="14" nextobjectid="15">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
+ <tileset firstgid="337" source="../tilesets/animated_decorations.tsx"/>
  <objectgroup id="11" name="mobSpawns">
   <object id="3" type="area" x="16" y="-608">
    <properties>
@@ -826,11 +827,28 @@
 </chunk>
    </data>
   </layer>
+  <objectgroup id="13" name="treasures">
+   <object id="8" name="pos_treasure_1" x="79.6364" y="-623.545" width="16.4545" height="16.0909"/>
+   <object id="9" name="treasure_1" type="area" x="77.6364" y="-626.818" width="21.6364" height="24.8182">
+    <properties>
+     <property name="boss_loot" type="bool" value="false"/>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+   <object id="12" name="pos_treasure_2" x="-447.818" y="-18.4545" width="16.2727" height="16.1818"/>
+   <object id="13" name="treasure_2" type="area" x="-449.364" y="-21.6364" width="24" height="24.6364">
+    <properties>
+     <property name="boss_loot" type="bool" value="false"/>
+     <property name="selected_treasure_sprite" type="int" value="1"/>
+    </properties>
+   </object>
+  </objectgroup>
   <layer id="8" name="ground decoration2" width="30" height="20">
    <data encoding="csv"/>
   </layer>
  </group>
  <group id="3" name="entitylayer">
+  <group id="12" name="lootLayer"/>
   <group id="13" name="playerlayer"/>
   <group id="14" name="mobslayer"/>
  </group>

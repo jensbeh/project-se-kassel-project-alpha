@@ -75,6 +75,67 @@ func post_import(scene):
 	var ySortMobs = YSort.new()
 	ySortMobs.name = mobslayer.name
 	mobslayer.replace_by(ySortMobs, true)
+	# Setup lootlayer
+	var lootlayer : Node2D = scene.find_node("lootLayer")
+	var ySortLoot = YSort.new()
+	ySortLoot.name = lootlayer.name
+	lootlayer.replace_by(ySortLoot, true)
+	
+	# Setup all treasures with animation
+	var treasureObject = scene.find_node("treasures")
+	if treasureObject != null and treasureObject.get_children().size() > 0:
+		for child in treasureObject.get_children():
+			if "treasure" in child.name and !"pos" in child.name:
+				var selected_treasure_sprite = child.get_meta("selected_treasure_sprite") # possible 1,2,3
+				var frame = selected_treasure_sprite * 4 + 4
+				var sprite = Sprite.new()
+				sprite.name = "sprite"
+				sprite.centered = false
+				sprite.texture = load("res://assets/tilesets/Village Animated Decorations.png")
+				sprite.hframes = 4
+				sprite.vframes = 5
+				sprite.frame = frame
+				for pos in treasureObject.get_children():
+					if pos.name == "pos_" + str(child.name):
+						sprite.position = pos.position
+						break
+				sprite.position.y = sprite.position.y + sprite.texture.get_size().y / sprite.vframes
+				
+				sprite.offset = Vector2(0, -sprite.texture.get_size().y / sprite.vframes)
+				
+				treasureObject.add_child(sprite)
+				sprite.set_owner(scene)
+				
+				var animationPlayer = AnimationPlayer.new()
+				animationPlayer.name = "animationPlayer"
+				var path = "../" + sprite.name + ":frame"
+				
+				var idleTreasureAnimation = Animation.new()
+				animationPlayer.add_animation( "idleTreasure", idleTreasureAnimation)
+				idleTreasureAnimation.add_track(0)
+				idleTreasureAnimation.length = 0.4
+				idleTreasureAnimation.track_set_path(0, path)
+				idleTreasureAnimation.track_insert_key(0, 0.0, frame)
+				idleTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+				idleTreasureAnimation.loop = 0
+
+				var openTreasureAnimation = Animation.new()
+				animationPlayer.add_animation( "openTreasure", openTreasureAnimation)
+				openTreasureAnimation.add_track(0)
+				openTreasureAnimation.length = 0.4
+				openTreasureAnimation.track_set_path(0, path)
+				openTreasureAnimation.track_insert_key(0, 0.0, frame)
+				openTreasureAnimation.track_insert_key(0, 0.1, frame + 1)
+				openTreasureAnimation.track_insert_key(0, 0.2, frame + 2)
+				openTreasureAnimation.track_insert_key(0, 0.3, frame + 3)
+				openTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+				openTreasureAnimation.loop = 0
+				
+				animationPlayer.current_animation = "idleTreasure"
+				animationPlayer.autoplay = "idleTreasure"
+				
+				child.add_child(animationPlayer)
+				animationPlayer.set_owner(scene)
 	
 	# generate chunks -> best at the end
 	print("generate chunks...")
@@ -250,6 +311,9 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var node = Area2D.new()
+				if "treasure" in child.name and !"pos" in child.name:
+					node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
+					node.set_meta("boss_loot", child.get_meta("boss_loot"))
 				node.name = child.name
 				node.position = child.position
 				chunk_node.add_child(node)
@@ -284,6 +348,14 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 				for child_in_light in custom_light.get_children():
 					child_in_light.set_owner(scene)
 			continue
+		
+		elif child is AnimationPlayer:
+			# Remove parent from child
+			child.get_parent().remove_child(child)
+			
+			# Add parent and child to chunk
+			chunk_node.add_child(child)
+			child.set_owner(scene)
 		
 		else:
 			var node = Node2D.new()

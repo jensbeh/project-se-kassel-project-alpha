@@ -1,7 +1,5 @@
 extends KinematicBody2D
 
-signal interacted
-
 var player_in_interacting_zone
 var patrol_points = []
 var patrol_index = 0
@@ -130,9 +128,11 @@ func interaction_detected():
 		if !interacted:
 			interacted = true
 			Utils.get_current_player().set_player_can_interact(false)
-			emit_signal("interacted")
 			Utils.get_current_player().set_movement(false)
-			Utils.get_current_player().set_movment_animation(false)
+			var dialog = load(Constants.DIALOG_PATH).instance()
+			Utils.get_ui().add_child(dialog)
+			dialog.start(self, false, "")
+
 
 # When npc enters stairs to slow down
 func _on_interactionZone_NPC_area_entered(area):

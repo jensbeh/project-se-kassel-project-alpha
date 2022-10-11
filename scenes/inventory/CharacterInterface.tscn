@@ -286,6 +286,9 @@ parameters/playback = SubResource( 2 )
 [node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="20"]
 current = false
 
+[node name="CustomLight" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="22"]
+radius = 0
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]
 margin_left = 350.0
 margin_right = 450.0
