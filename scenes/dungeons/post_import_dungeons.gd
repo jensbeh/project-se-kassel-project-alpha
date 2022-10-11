@@ -184,7 +184,7 @@ func create_astar(scene):
 		dir_game_pathfinding.make_dir(CONSTANTS.SAVE_GAME_PATHFINDING_PATH)
 	# Save file
 	var astar_save = File.new()
-	astar_save.open(CONSTANTS.SAVE_GAME_PATHFINDING_PATH + "astar-" + scene.name + ".sav", File.WRITE)
+	astar_save.open(CONSTANTS.SAVE_GAME_PATHFINDING_PATH + scene.name + ".sav", File.WRITE)
 	astar_save.store_var(astar_nodes_dics)
 	astar_save.close()
 	print("Saved AStars to file!")

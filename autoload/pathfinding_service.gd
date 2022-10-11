@@ -20,6 +20,41 @@ func _ready():
 	print("START PATHFINDING_SERVICE")
 
 
+# Method to preload the astar nodes
+func preload_astars():
+	print("preload_astars")
+	
+	# Load astar points and connections
+	var astar_nodes_file_dics : Dictionary = load_astar_files()
+	
+	for astar_dic_key in astar_nodes_file_dics.keys():
+		map_name = astar_dic_key
+		
+		# Create new AStars and store them to use later again
+		if not astar_nodes_cache.has(map_name):
+			astar_nodes_cache[map_name] = {
+								"mobs" : null,
+								"ambient_mobs" : null
+								}
+		# Mobs
+		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"])
+		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"])
+		
+		# Ambient mobs
+		if astar_nodes_file_dics[map_name]["ambient_mobs"].size() > 0:
+			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
+			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
+		
+		print("LOADED \"" + str(map_name) + "\"")
+	
+	map_name = ""
+	astar_nodes_file_dics.clear()
+	
+	print("preload_astars DONE")
+
+
 # Method is called when new scene is loaded with mobs with pathfinding
 func init(new_map_name = "", _astar2DVisualizerNode = null, new_mobNavigationTilemap : TileMap = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
 	print("INIT PATHFINDING_SERVICE")
@@ -37,28 +72,6 @@ func init(new_map_name = "", _astar2DVisualizerNode = null, new_mobNavigationTil
 	map_offset_in_tiles = map_min_global_pos / Constants.TILE_SIZE
 	half_cell_size = mobNavigationTilemap.cell_size / 2
 	
-	
-	# Init AStar
-	# Create new AStars and store them to use later again
-	if not astar_nodes_cache.has(map_name):
-		astar_nodes_cache[map_name] = {
-							"mobs" : null,
-							"ambient_mobs" : null
-							}
-		
-		# Load astar points and connections
-		var astar_nodes_dics = load_astar_file()
-		
-		# Mobs
-		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-		astar_add_walkable_cells_for_mobs(astar_nodes_dics["mobs"])
-		astar_connect_walkable_cells_for_mobs(astar_nodes_dics["mobs"])
-		# Ambient mobs
-		if ambientMobsNavigationTileMap != null:
-			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_dics["ambient_mobs"])
-			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_dics["ambient_mobs"])
-	
 #	print("map_size_in_tiles: " + str(map_size_in_tiles))
 #	print("map_offset_in_tiles: " + str(map_offset_in_tiles))
 #	print("new_map_min_global_pos: " + str(new_map_min_global_pos))
@@ -73,21 +86,28 @@ func init(new_map_name = "", _astar2DVisualizerNode = null, new_mobNavigationTil
 
 
 # Method to load the astar points and connections from file -> file generated through reimport
-func load_astar_file():
+func load_astar_files():
+	var astar_files_dic = {}
 	# Check if directory is existing
 	var dir_game_pathfinding = Directory.new()
 	if dir_game_pathfinding.open(Constants.SAVE_GAME_PATHFINDING_PATH) == OK:
 		dir_game_pathfinding.list_dir_begin()
 		var file_name = dir_game_pathfinding.get_next()
 		while file_name != "":
-			if map_name in file_name:
+			# Check for file extensions
+			if (file_name.get_extension() == "sav"):
+				var file_name_without_suffix = file_name.substr(0, file_name.find_last(".sav"))
+				
 				var astar_load = File.new()
 				astar_load.open(Constants.SAVE_GAME_PATHFINDING_PATH + file_name, File.READ)
 				var dic = astar_load.get_var(true)
 				astar_load.close()
-				return dic
+				
+				astar_files_dic[file_name_without_suffix] = dic
 			
 			file_name = dir_game_pathfinding.get_next()
+		
+		return astar_files_dic
 	
 	else:
 		printerr("An error occurred when trying to access the PATHFINDING PATH.")

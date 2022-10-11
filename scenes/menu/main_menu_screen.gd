@@ -5,9 +5,16 @@ var save_setting = {
 		language = "en"
 	}
 
+# Nodes
+onready var mainMenuAnimationPlayer = $MainMenuAnimationPlayer
+
 func _ready():
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+	
+	# Start animation
+	mainMenuAnimationPlayer.play("FadeIn")
+	
 	# Sets the Langauge
 	var save_settings = File.new()
 	if save_settings.file_exists(Constants.SAVE_SETTINGS_PATH):

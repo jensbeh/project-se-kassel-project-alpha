@@ -181,6 +181,22 @@ func get_current_scene():
 	return current_scene.get_child(0)
 
 
+# Method to set new current scene without any special calls or transition
+# new_current_scene -> must be scene instance
+func without_transition_to_scene(new_current_scene : Node):
+	# Cleanup previous scene
+	if get_current_scene().has_method("destroy_scene"):
+		get_current_scene().destroy_scene()
+		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
+	else:
+		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+	
+	# Remove previous scene
+	get_current_scene().queue_free()
+	# Load new scene
+	current_scene.call_deferred("add_child",new_current_scene)
+
+
 # Methods and stuff for better debugging
 const TIMER_LIMIT = 2.0
 var timer = 0.0

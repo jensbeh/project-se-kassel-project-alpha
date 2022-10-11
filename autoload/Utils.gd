@@ -431,6 +431,26 @@ func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
 	return position
 
 
+# Method to preload game -> called ONLY! from start screen
+func preload_game():
+	print("PRELOAD GAME")
+	# Measure time
+	var time_start = OS.get_system_time_msecs()
+	var time_now = 0
+	
+	# Load here everything which needs to be preloaded
+	# Load AStars
+	PathfindingService.preload_astars()
+	
+	
+	# Calculate needed time
+	time_now = OS.get_system_time_msecs()
+	var time_elapsed = time_now - time_start
+	print("Needed " + str(time_elapsed / 1000.0) + " sec to preload game!")
+
+	print("PRELOAD DONE")
+
+
 # Method to start the stop of the game
 func stop_game():
 	print("STOP GAME")

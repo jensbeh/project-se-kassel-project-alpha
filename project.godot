@@ -41,6 +41,8 @@ _global_script_class_icons={
 config/name="Project Alpha"
 run/main_scene="res://scenes/Main.tscn"
 config/use_custom_user_dir=true
+boot_splash/image="res://assets/start_screen.png"
+boot_splash/use_filter=false
 config/icon="res://icon.png"
 
 [autoload]
