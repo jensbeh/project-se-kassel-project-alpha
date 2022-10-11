@@ -11,6 +11,8 @@ const SHOW_MOB_PATHES = true
 # Variables
 const NAME_LENGTH = 15
 const COOLDOWN = 20
+const LOOTING_TIME = 60
+const LOOT_CHANCE = 0.7 # means 70% Chance
 
 # Tiles
 const TILE_SIZE = 16
@@ -92,9 +94,15 @@ const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
 const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
+const LOOT_DATA_PATH = "res://assets/data/LootData.json"
 const CAMP_SCENE_PATH = "res://scenes/camp/Camp.tscn"
 const GRASSLAND_SCENE_PATH = "res://scenes/grassland/Grassland.tscn"
 const DEATH_SCREEN_PATH = "res://scenes/ui/DeathScreen.tscn"
+const LOOT_PANEL_PATH = "res://scenes/looting/LootPanel.tscn"
+const LOOT_DROP_PATH = "res://scenes/looting/LootDrop.tscn"
+const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
+const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
+const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999
@@ -106,7 +114,7 @@ const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn
 const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 
-# File pathes
+# Save file pathes
 const SAVE_PATH = "user://"
 const SAVE_SETTINGS_PATH = "user://settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"

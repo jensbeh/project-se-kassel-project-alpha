@@ -141,7 +141,9 @@ func drop_data(_pos, data):
 				verify_origin_texture(data)
 				if data["target_stack"] != null and data["target_stack"] > 1:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
-				
+				else:
+					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+					
 			# Update the texture, label and data of the target
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 				var new_stack = 0
@@ -207,13 +209,13 @@ func SplitStack(split_amount, data):
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
 		if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
-			get_child(0).set_scale(Vector2(2.5,2.5))
-			get_child(0).set_hframes(16)
-			get_child(0).set_vframes(27)
+			data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
+			data["origin_node"].get_child(0).set_hframes(16)
+			data["origin_node"].get_child(0).set_vframes(27)
 		else:
-			get_child(0).set_scale(Vector2(4.5,4.5))
-			get_child(0).set_hframes(13)
-			get_child(0).set_vframes(15)
+			data["origin_node"].get_child(0).set_scale(Vector2(4.5,4.5))
+			data["origin_node"].get_child(0).set_hframes(13)
+			data["origin_node"].get_child(0).set_vframes(15)
 	
 	
 func verify_target_texture(data):

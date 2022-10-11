@@ -6,26 +6,41 @@ var dialog
 var trade = false
 var phraseNum = 0
 var finished = false
+var obj_name
+var origin
+var type
 
-func _ready():
-	var _error = get_parent().connect("interacted", self, "start")
-	$TextureRect.visible = false
-	$HSeparator.visible = false
-	$Button.visible = false
-	$Name.visible = false
-	$Text.visible = false
 
-func start():
+func start(origin_obj, looted_value, treasure_type):
+	obj_name = origin_obj.name
+	origin = origin_obj
+	type = treasure_type
+	if typeof(looted_value) == TYPE_BOOL:
+		if "treasure" in obj_name and !looted_value:
+			obj_name = "treasure"
+			if treasure_type == "1":
+				get_node("Trade/Icon").frame = 185
+			elif treasure_type == "2":
+				get_node("Trade/Icon").frame = 186
+			else:
+				get_node("Trade/Icon").frame = 271
+				get_node("Trade/Label").show()
+				get_node("Trade/Label").set_text(tr("OPEN"))
+				obj_name = "open"
+		elif "treasure" in obj_name and looted_value:
+			obj_name = "empty"
+		else:
+			get_node("Trade/Icon").frame = 203
+	else:
+		obj_name = "open"
+		get_node("Trade/Icon").frame = 271
+		get_node("Trade/Label").show()
+		get_node("Trade/Label").set_text(tr("OPEN"))
 	Utils.get_control_notes().hide()
-	$TextureRect.visible = true
-	$HSeparator.visible = true
-	$Button.visible = true
-	$Name.visible = true
-	$Text.visible = true
 	$Timer.wait_time = textSpeed
 	# Get language
 	var lang = TranslationServer.get_locale()
-	dialogPath = "res://assets/dialogue/"+ get_parent().name + "_" + lang + ".json"
+	dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
 	dialog = getDialog()
 	nextPhrase()
 
@@ -37,6 +52,7 @@ func _process(_delta):
 			nextPhrase()
 		else:
 			$Text.visible_characters = len($Text.text)
+
 
 # Open dialog text
 func getDialog():
@@ -69,7 +85,10 @@ func nextPhrase():
 		phraseNum += 1
 	
 	if phraseNum >= len(dialog):
-		if get_parent().name in ["bella", "sam", "lea", "heinz"]:
+		if obj_name in ["bella", "sam", "lea", "heinz"]:
+			$Trade.visible = true
+			trade = true
+		elif "treasure" in obj_name or "open" in obj_name:
 			$Trade.visible = true
 			trade = true
 
@@ -81,12 +100,8 @@ func _on_Button_pressed():
 	else:
 		$Text.visible_characters = len($Text.text)
 
+
 func close_dialog():
-	$TextureRect.visible = false
-	$HSeparator.visible = false
-	$Button.visible = false
-	$Name.visible = false
-	$Text.visible = false
 	$Trade.visible = false
 	phraseNum = 0
 	finished = false
@@ -95,16 +110,36 @@ func close_dialog():
 		Utils.get_current_player().set_movement(true)
 		Utils.get_current_player().set_movment_animation(true)
 		# reset npc interaction state
-		for npc in get_parent().get_parent().get_children():
-			npc.set_interacted(false)
+		if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
+			for npc in origin.get_parent().get_children():
+				npc.set_interacted(false)
+		else:
+			if type != "3":
+				Utils.get_scene_manager().get_current_scene().reset_interaction()
+			else:
+				origin.reset_interaction()
 	Utils.get_control_notes().show()
+	get_parent().remove_child(self)
+	queue_free()
+
 
 func _on_Trade_pressed():
-	Utils.get_control_notes().show()
-	MerchantData.set_path(get_parent().name)
-	MerchantData._ready()
-	PlayerData._ready()
-	close_dialog()
-	# Show trade inventory
-	Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
-	Utils.get_trade_inventory().set_name(get_parent().name)
+	if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
+		Utils.get_control_notes().show()
+		MerchantData.set_path(obj_name)
+		MerchantData._ready()
+		PlayerData._ready()
+		close_dialog()
+		# Show trade inventory
+		Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
+		Utils.get_trade_inventory().set_name(obj_name)
+	else:
+		Utils.get_control_notes().show()
+		if type != "3":
+			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
+				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
+			else:
+				trade = false
+		else:
+			origin.open_loot_panel()
+		close_dialog()

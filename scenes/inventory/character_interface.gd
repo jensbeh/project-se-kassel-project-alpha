@@ -77,6 +77,7 @@ func _ready():
 	find_node("Player").set_preview(true)
 	find_node("Player").set_dragging(true)
 
+
 func load_character():
 	var player = find_node("Player")
 	# set the clothes ...

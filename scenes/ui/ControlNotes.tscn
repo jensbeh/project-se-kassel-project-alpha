@@ -4,6 +4,7 @@
 [ext_resource path="res://scenes/ui/control_notes.gd" type="Script" id=2]
 [ext_resource path="res://assets/ui/panel_grey.png" type="Texture" id=3]
 
+
 [sub_resource type="DynamicFont" id=25]
 size = 20
 font_data = ExtResource( 1 )

@@ -557,6 +557,9 @@ func start_game():
 	# Set colors for die animations
 	set_colors_for_die_anim()
 	
+	# Set colors for collect animations
+	set_colors_for_collect_anim()
+	
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
 	var player_position = Vector2(1128,616)
@@ -708,3 +711,41 @@ func set_colors_for_die_anim():
 	# Hairs
 	player.reset_die_key("Hair:frame")
 	player._set_die_key("Hair:frame", curr_hair_color * 8)
+
+
+# Method to set all colors/frames to collect animations
+func set_colors_for_collect_anim():
+	# set the collect animation colors
+	# Shoes
+	player.reset_collect_key("Shoes:frame")
+	player._set_collect_key("Shoes:frame", curr_shoe_color * 8)
+	# Pants
+	player.reset_collect_key("Pants:frame")
+	player._set_collect_key("Pants:frame", curr_pants_color * 8)
+	# Clothes
+	player.reset_collect_key("Clothes:frame")
+	player._set_collect_key("Clothes:frame", curr_clothes_color * 8)
+	# Blush
+	player.reset_collect_key("Blush:frame")
+	if curr_blush_color == 0:
+		player._set_collect_key("Blush:frame", curr_blush_color * 8)
+	else: 
+		player._set_collect_key("Blush:frame", (curr_blush_color - 1) * 8)
+	# Lipstick
+	player.reset_collect_key("Lipstick:frame")
+	if curr_lipstick_color == 0:
+		player._set_collect_key("Lipstick:frame", curr_lipstick_color * 8)
+	else: 
+		player._set_collect_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+	# Beard
+	player.reset_collect_key("Beard:frame")
+	if curr_beard_color == 0:
+		player._set_collect_key("Beard:frame", curr_beard_color * 8)
+	else: 
+		player._set_collect_key("Beard:frame", (curr_beard_color - 1) * 8)
+	# Eyes
+	player.reset_collect_key("Eyes:frame")
+	player._set_collect_key("Eyes:frame", curr_eyes_color * 8)
+	# Hairs
+	player.reset_collect_key("Hair:frame")
+	player._set_collect_key("Hair:frame", curr_hair_color * 8)

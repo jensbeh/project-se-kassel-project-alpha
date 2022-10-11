@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -15,7 +15,6 @@
 [ext_resource path="res://assets/player/acc/hat_cowboy.png" type="Texture" id=13]
 [ext_resource path="res://assets/player/face/lipstick .png" type="Texture" id=14]
 [ext_resource path="res://scenes/npc/npc.gd" type="Script" id=15]
-[ext_resource path="res://scenes/npc/DialogueBox.tscn" type="PackedScene" id=16]
 
 [sub_resource type="RectangleShape2D" id=25]
 extents = Vector2( 7, 10 )
@@ -1563,6 +1562,8 @@ graph_offset = Vector2( -161.044, 0 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=53]
 
 [node name="NPC" type="KinematicBody2D"]
+collision_layer = 16
+collision_mask = 18
 script = ExtResource( 15 )
 
 [node name="Shadow" type="Sprite" parent="."]
@@ -1694,6 +1695,7 @@ position = Vector2( 8, 2 )
 shape = SubResource( 25 )
 
 [node name="interactionZone NPC" type="Area2D" parent="."]
+collision_mask = 2
 
 [node name="InteractionArea" type="CollisionShape2D" parent="interactionZone NPC"]
 position = Vector2( 8, 5.875 )
@@ -1716,8 +1718,6 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 53 )
 parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
 parameters/Walk/blend_position = Vector2( -0.852667, 0.595376 )
-
-[node name="DialogueBox" parent="." instance=ExtResource( 16 )]
 
 [connection signal="area_entered" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_entered"]
 [connection signal="area_exited" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_exited"]

@@ -134,6 +134,11 @@ func post_import(scene):
 	var ySortMobs = YSort.new()
 	ySortMobs.name = mobslayer.name
 	mobslayer.replace_by(ySortMobs, true)
+	# Setup lootlayer
+	var lootlayer : Node2D = scene.find_node("lootLayer")
+	var ySortLoot = YSort.new()
+	ySortLoot.name = lootlayer.name
+	lootlayer.replace_by(ySortLoot, true)
 	
 	# Setup NPC pathes
 	var npcPathes = scene.find_node("npcPathes")

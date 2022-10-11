@@ -11,7 +11,6 @@ var ambientMobsNavigationTileMap : TileMap = null
 var map_size_in_tiles = null
 var map_min_global_pos = null
 var map_offset_in_tiles = null
-var point_path = []
 var half_cell_size = null
 var map_name
 var astar_nodes_cache = {}
@@ -116,7 +115,6 @@ func cleanup():
 	map_size_in_tiles = null
 	map_min_global_pos = null
 	map_offset_in_tiles = null
-	point_path.clear()
 	half_cell_size = null
 	map_name = ""
 	
@@ -273,7 +271,7 @@ func get_mob_astar_path(mob_start, mob_end):
 #	time_start = OS.get_system_time_msecs()
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["mobs"]
-	point_path = astar_nodes_cache[map_name]["mobs"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269
+	var point_path = astar_nodes_cache[map_name]["mobs"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269
 	
 	
 	# Get time to calculate path
@@ -347,7 +345,7 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 	
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["ambient_mobs"]
-	point_path = astar_nodes_cache[map_name]["ambient_mobs"].get_point_path(start_point_index, end_point_index)
+	var point_path = astar_nodes_cache[map_name]["ambient_mobs"].get_point_path(start_point_index, end_point_index)
 	# Remove the position in index 0 because this is the starting cell
 	point_path.remove(0)
 	
