@@ -16,7 +16,7 @@ size = 24
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
-size = 19
+size = 18
 font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxTexture" id=4]
@@ -30,12 +30,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 36.0
 margin_top = 190.0
-margin_right = -1414.0
+margin_right = -1400.0
 margin_bottom = -390.0
 script = ExtResource( 6 )
 
 [node name="Border" type="NinePatchRect" parent="."]
-margin_right = 470.0
+margin_right = 484.0
 margin_bottom = 500.0
 texture = ExtResource( 2 )
 region_rect = Rect2( 2.11349, 4.3695, 99.275, 98.3725 )
@@ -64,7 +64,7 @@ margin_bottom = -18.0
 custom_constants/separation = 10
 
 [node name="Lootslots" type="ScrollContainer" parent="Border/Background/VBoxContainer"]
-margin_right = 432.0
+margin_right = 446.0
 margin_bottom = 405.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -422,12 +422,12 @@ custom_fonts/font = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Border/Background/VBoxContainer"]
 margin_top = 415.0
-margin_right = 432.0
+margin_right = 446.0
 margin_bottom = 465.0
 custom_constants/separation = 40
 
 [node name="LootAll" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
-margin_right = 196.0
+margin_right = 204.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 190, 50 )
 size_flags_horizontal = 3
@@ -439,11 +439,11 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
-text = "Loot All (F)"
+text = "Alles Nehmen (F)"
 
 [node name="Close" type="Button" parent="Border/Background/VBoxContainer/HBoxContainer"]
-margin_left = 236.0
-margin_right = 432.0
+margin_left = 244.0
+margin_right = 446.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 190, 50 )
 size_flags_horizontal = 3
@@ -455,7 +455,7 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
-text = "Close (E)"
+text = "Schließen (E)"
 
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot1/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 1 ]]
 [connection signal="gui_input" from="Border/Background/VBoxContainer/Lootslots/VBoxContainer/Loot2/LootIcon/Icon" to="." method="_on_Icon_gui_input" binds= [ 2 ]]
