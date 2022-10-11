@@ -173,11 +173,6 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 			higher_chunk.visible = false
 
 
-# Method to return the scene type of the map
-func get_scene_type():
-	return scene_type
-
-
 # Method to disconnect all signals
 func clear_signals():
 	# Player

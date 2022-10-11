@@ -42,6 +42,7 @@ var max_attacking_radius_around_player
 var min_attacking_radius_around_player
 var pre_attack_time = 0.0
 var max_pre_attack_time
+var scene_type
 
 # Mob movment
 var acceleration = 350
@@ -76,7 +77,7 @@ func _ready():
 	
 	# Set spawn_position
 	collision_radius = collision.shape.radius
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true)
 	position = spawn_position
 #	position = Vector2(100, 100)
 	
@@ -108,9 +109,10 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_spawnArea, new_navigation_tile_map):
+func init(init_spawnArea, new_navigation_tile_map, init_scene_type):
 	spawnArea = init_spawnArea
 	navigation_tile_map = new_navigation_tile_map
+	scene_type = init_scene_type
 
 
 func _physics_process(delta):
@@ -373,14 +375,14 @@ func get_target_position():
 	
 	# Return next wandering position
 	elif behaviour_state == WANDERING:
-		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, false)
-			
+		return Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false)
+	
 	# Return next searching position
 	elif behaviour_state == SEARCHING:
-		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
+		return Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
 	
 	elif behaviour_state == PRE_ATTACKING:
-		return Utils.generate_position_near_mob(Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+		return Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
 
 
 # Method is called from pathfinding_service to set new path to mob

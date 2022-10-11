@@ -18,6 +18,7 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
 var update_path_time = 0.0
 var max_update_path_time = 0.4
+var scene_type
 
 # Constants
 const WANDERING_SPEED = 30
@@ -42,7 +43,7 @@ func _ready():
 	line2D.visible = Constants.SHOW_MOB_PATHES
 	
 	# Set spawn_position
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING
@@ -57,10 +58,11 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_ambientMobsSpawnArea, init_ambientMobsNavigationTileMap, init_spawn_time):
+func init(init_ambientMobsSpawnArea, init_ambientMobsNavigationTileMap, init_spawn_time, init_scene_type):
 	ambientMobsSpawnArea = init_ambientMobsSpawnArea
 	ambientMobsNavigationTileMap = init_ambientMobsNavigationTileMap
 	spawn_time = init_spawn_time
+	scene_type = init_scene_type
 
 
 func _physics_process(delta):

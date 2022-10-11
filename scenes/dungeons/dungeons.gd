@@ -64,7 +64,7 @@ func _setup_scene_in_background():
 	setup_treasure_areas()
 	
 	# Spawn mobs
-	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false)
+	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false)
 	
 	call_deferred("_on_setup_scene_done")
 
@@ -99,7 +99,7 @@ func spawn_boss():
 	var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
 	var boss_instance = load(boss_path).instance()
 	# Generate spawn position and spawn boss
-	boss_instance.init(boss_spawn_area, mobsNavigationTileMap)
+	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type)
 	mobsLayer.call_deferred("add_child", boss_instance)
 
 
@@ -280,11 +280,6 @@ func on_key_collected():
 	var lockedDoorsNode = find_node("locked_doors")
 	for child in lockedDoorsNode.get_children():
 		child.call_deferred("queue_free")
-
-
-# Method to return the scene type of the map
-func get_scene_type():
-	return scene_type
 
 
 # Method to spawn loot after monster died

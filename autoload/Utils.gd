@@ -203,7 +203,7 @@ func calculate_triangle_area(A, B, C) -> float:
 
 
 # Method to generate a valid position in a mob area
-func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning) -> Vector2:
+func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning) -> Vector2:
 	var tile_set : TileSet = navigation_tile_map.tile_set
 	var position : Vector2
 	
@@ -225,9 +225,9 @@ func generate_position_in_mob_area(area_info, navigation_tile_map : TileMap, col
 		# Check if cells / position with enough space around are perfect
 		var generate_again = false
 		var obstacle_tile_id
-		if Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.GRASSLAND:
+		if scene_type == Constants.SceneType.GRASSLAND:
 			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID
-		elif Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.DUNGEON:
+		elif scene_type == Constants.SceneType.DUNGEON:
 			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
 		else:
 			printerr("Invalid scene type in generate_position_in_mob_area for \"obstacle_tile_id\"")
@@ -272,7 +272,7 @@ func get_spawn_mobs_list(biome_mobs_count, spawn_mobs_counter):
 
 
 # Method generates a valid position in a radius around the mob
-func generate_position_near_mob(mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
+func generate_position_near_mob(scene_type, mob_global_position, min_radius, max_radius, navigation_tile_map, collision_radius):
 	var tile_set : TileSet = navigation_tile_map.tile_set
 	var position : Vector2
 	
@@ -301,9 +301,9 @@ func generate_position_near_mob(mob_global_position, min_radius, max_radius, nav
 		# Check if cells / position with enough space around are perfect
 		var generate_again = false
 		var obstacle_tile_id
-		if Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.GRASSLAND:
+		if scene_type == Constants.SceneType.GRASSLAND:
 			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID
-		elif Utils.get_scene_manager().get_current_scene().get_scene_type() == Constants.SceneType.DUNGEON:
+		elif scene_type == Constants.SceneType.DUNGEON:
 			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
 		else:
 			printerr("Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")

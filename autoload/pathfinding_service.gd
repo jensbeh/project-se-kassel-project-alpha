@@ -199,7 +199,7 @@ func clean_thread():
 func astar_add_walkable_cells_for_mobs(astar_node_dic):
 	for point in astar_node_dic.keys():
 		var point_index = astar_node_dic[point]["point_index"]
-		astar_nodes_cache[map_name]["mobs"].add_point(point_index, Vector3(point.x, point.y, astar_node_dic[point]["weight_scale"]))
+		astar_nodes_cache[map_name]["mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
 # Loops through all cells within the map's bounds and
