@@ -23,8 +23,6 @@ func visualize(new_astar : AStar):
 
 func _point_pos(id):
 	var point = Vector2(astar.get_point_position(id).x, astar.get_point_position(id).y)
-#	print(point)
-#	print(offset + point * scale_multiplier)
 	return offset + point * scale_multiplier
 
 

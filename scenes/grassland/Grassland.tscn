@@ -10,7 +10,7 @@
 [ext_resource path="res://assets/player/characters/char4.png" type="Texture" id=8]
 [ext_resource path="res://assets/player/clothes/pants_suit.png" type="Texture" id=9]
 [ext_resource path="res://assets/player/clothes/pants.png" type="Texture" id=10]
-[ext_resource path="res://astar_visualizer.gd" type="Script" id=11]
+[ext_resource path="res://scripts/astar_visualizer.gd" type="Script" id=11]
 
 [sub_resource type="StreamTexture" id=14]
 load_path = "res://.import/beard.png-25ff2a3c41ad51cac3a6d4903052e374.stex"

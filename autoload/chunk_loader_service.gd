@@ -131,17 +131,17 @@ func update_mobs():
 		if is_instance_valid(enemy) and enemy.is_inside_tree():
 			var enemy_chunk = Utils.get_chunk_from_position(map_min_global_pos, enemy.global_position)
 			if enemy_chunk in active_chunks:
-				call_deferred("set_mob_activity_state", enemy, true)
+				set_mob_activity_state(enemy, true)
 			else:
-				call_deferred("set_mob_activity_state", enemy, false)
+				set_mob_activity_state(enemy, false)
 	
 	for ambient_mob in ambient_mobs:
 		if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree():
 			var ambient_mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, ambient_mob.global_position)
 			if ambient_mob_chunk in active_chunks:
-				call_deferred("set_mob_activity_state", ambient_mob, true)
+				set_mob_activity_state(ambient_mob, true)
 			else:
-				call_deferred("set_mob_activity_state", ambient_mob, false)
+				set_mob_activity_state(ambient_mob, false)
 
 
 # Method to send mob activity to mob

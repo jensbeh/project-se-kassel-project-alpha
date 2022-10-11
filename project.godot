@@ -12,12 +12,12 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "AStar2DVisualizer",
 "language": "GDScript",
-"path": "res://astar_visualizer.gd"
+"path": "res://scripts/astar_visualizer.gd"
 }, {
 "base": "AStar",
 "class": "CustomAstar",
 "language": "GDScript",
-"path": "res://custom_astar.gd"
+"path": "res://scripts/custom_astar.gd"
 }, {
 "base": "Node2D",
 "class": "CustomLight",

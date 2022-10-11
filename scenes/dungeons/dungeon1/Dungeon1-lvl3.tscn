@@ -3,7 +3,8 @@
 [ext_resource path="res://assets/map/map_dungeon1_lvl3.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/dungeons/dungeons.gd" type="Script" id=3]
-[ext_resource path="res://astar_visualizer.gd" type="Script" id=4]
+[ext_resource path="res://scripts/astar_visualizer.gd" type="Script" id=4]
+
 
 [node name="Dungeon1-lvl3" type="Node2D"]
 script = ExtResource( 3 )
