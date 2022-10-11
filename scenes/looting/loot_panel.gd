@@ -12,7 +12,7 @@ var keys
 # setup the looting panel
 func _ready():
 	Utils.get_current_player().player_collect_loot()
-	get_node("Border/Background/VBoxContainer/HBoxContainer/Close").set_text(tr("CLOSE"))
+	get_node("Border/Background/VBoxContainer/HBoxContainer/Close").set_text(tr("CLOSE_PANEL"))
 	get_node("Border/Background/VBoxContainer/HBoxContainer/LootAll").set_text(tr("LOOTALL"))
 
 

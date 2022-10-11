@@ -34,6 +34,8 @@ func start(origin_obj, looted_value, treasure_type):
 	else:
 		obj_name = "open"
 		get_node("Trade/Icon").frame = 271
+		get_node("Trade/Label").show()
+		get_node("Trade/Label").set_text(tr("OPEN"))
 	Utils.get_control_notes().hide()
 	$Timer.wait_time = textSpeed
 	# Get language

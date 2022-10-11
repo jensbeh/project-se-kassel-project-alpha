@@ -172,6 +172,11 @@ func _input(event):
 		if player_can_interact:
 			emit_signal("player_interact")
 			
+		# Remove the Loot Panel
+		elif collecting:
+			# Call close Method in Loot Panel
+			Utils.get_ui().get_node_or_null("LootPanel")._on_Close_pressed()
+			
 		# Remove the trade inventory
 		if Utils.get_trade_inventory() != null and !dragging:
 			Utils.get_trade_inventory().queue_free()
@@ -184,7 +189,7 @@ func _input(event):
 			PlayerData.save_inventory()
 			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
-	
+		
 	# Open game menu with "esc"
 	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
 		set_movement(false)
@@ -231,6 +236,11 @@ func _input(event):
 		is_attacking = true
 		set_movement(false)
 		animation_state.start("Attack")
+	
+	# Loot All
+	elif event.is_action_pressed("loot_all") and collecting:
+		# Call Loot all Method in Loot Panel
+		Utils.get_ui().get_node_or_null("LootPanel")._on_LootAll_pressed()
 
 
 # Method is called at the end of any attack animation
@@ -926,6 +936,7 @@ func kill_player():
 func player_collect_loot():
 	collecting = true
 	set_movement(false)
+	set_player_can_interact(false)
 	animation_state.travel("Collect")
 
 
