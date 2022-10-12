@@ -52,7 +52,7 @@ var velocity = Vector2(0,1)
 var movement
 
 # Interaction
-var player_can_interact
+var player_can_interact = true
 
 # player stats and values
 var gold: int
