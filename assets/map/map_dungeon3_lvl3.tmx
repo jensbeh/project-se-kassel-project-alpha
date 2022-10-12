@@ -1019,7 +1019,7 @@
    </data>
   </layer>
   <objectgroup id="13" name="treasures">
-   <object id="6" name="pos_treasure_1" x="-240.364" y="288.364" width="15.8182" height="16.1818"/>
+   <object id="6" name="pos_treasure_1" x="-240" y="288.364" width="16" height="16.1818"/>
    <object id="9" name="treasure_1" type="area" x="-246.636" y="281.636" width="28.5455" height="28.4545">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
