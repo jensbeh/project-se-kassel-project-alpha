@@ -58,7 +58,7 @@ func post_import(scene):
 	
 	
 	# merge all tilemaps and collisionshapes from "groundlayer" together
-	remove_collisionshapes_from_tilemap(mobs_nav_tilemap, scene.find_node("groundlayer"))
+	remove_collisionshapes_from_not_dynamic_objects_from_tilemap(mobs_nav_tilemap, scene.find_node("groundlayer"))
 	remove_collisiontiles_from_tilemap(mobs_nav_tilemap)
 	
 	# Setup NavigationTileMap for mobs
@@ -126,7 +126,7 @@ func post_import(scene):
 				idleTreasureAnimation.track_insert_key(0, 0.0, frame)
 				idleTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
 				idleTreasureAnimation.loop = 0
-
+				
 				var openTreasureAnimation = Animation.new()
 				animationPlayer.add_animation( "openTreasure", openTreasureAnimation)
 				openTreasureAnimation.add_track(0)
@@ -167,11 +167,15 @@ func create_astar(scene):
 	# Create astar
 	var mobs_astar_node = AStar.new()
 	var astar_nodes_dics = {
-						"mobs" : {},
+						"mobs" : {
+							"points": {},
+							"dynamic_collisions": {} # collision_shape_instance_id: disabled points
+						},
 						"ambient_mobs" : {}
 						}
 	astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
 	astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
+	disable_points_for_dynamic_collisionshapes(mobs_astar_node, astar_nodes_dics, scene.find_node("groundlayer"))
 	print("Generated AStar for MOBS!")
 	
 	# Store astar
@@ -188,6 +192,48 @@ func create_astar(scene):
 	astar_save.store_var(astar_nodes_dics)
 	astar_save.close()
 	print("Saved AStars to file!")
+
+
+# Method to iterate over all nodes in "ground" and disables all points for dynamic collisionshapes
+func disable_points_for_dynamic_collisionshapes(mobs_astar_node : AStar, astar_nodes_dics : Dictionary, node_with_collisionshapes):
+	for child in node_with_collisionshapes.get_children():
+		if child.get_child_count() > 0:
+			disable_points_for_dynamic_collisionshapes(mobs_astar_node, astar_nodes_dics, child)
+		else:
+			if child is CollisionShape2D and child.get_parent() is StaticBody2D:
+				var static_body : StaticBody2D = child.get_parent()
+				astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()] = []
+				
+				var xExtentsFactor = 2
+				var yExtentsFactor = 2
+				
+				# Round up to avoid wrong shape size
+				var range_x = ceil(child.shape.extents.x * xExtentsFactor)
+				var range_y = ceil(child.shape.extents.y * yExtentsFactor)
+				
+				for x in (range_x):
+					for y in (range_y):
+						# Check all positions inside shape
+						var current_position = Vector2(static_body.position.x + x, static_body.position.y + y)
+						var point = world_to_tile_coords(current_position)
+						var point_index = calculate_point_index(point)
+						if mobs_astar_node.has_point(point_index) and not astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].has(point_index):
+							astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].append(point_index)
+						
+						
+						# Check all positions at the bottom/right of the shape and add extra points there
+						var extra_safety_point_offset = Vector2.ZERO
+						# Add safety border if right or/and bottom
+						if x == range_x - 1:
+							extra_safety_point_offset.x = extra_safety_point_offset.x + 1
+						if y == range_y - 1:
+							extra_safety_point_offset.y = extra_safety_point_offset.y + 1
+						# Check new point
+						if extra_safety_point_offset != Vector2.ZERO:
+							point = world_to_tile_coords(current_position) + extra_safety_point_offset
+							point_index = calculate_point_index(point)
+							if mobs_astar_node.has_point(point_index) and not astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].has(point_index):
+								astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].append(point_index)
 
 
 # Method to cleanup the scene
@@ -486,12 +532,15 @@ func compress_tilemaps(node):
 
 
 # Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
-func remove_collisionshapes_from_tilemap(tilemap : TileMap, node_with_collisionshapes):
+func remove_collisionshapes_from_not_dynamic_objects_from_tilemap(tilemap : TileMap, node_with_collisionshapes):
 	for child in node_with_collisionshapes.get_children():
 		if child.get_child_count() > 0:
-			remove_collisionshapes_from_tilemap(tilemap, child)
+			remove_collisionshapes_from_not_dynamic_objects_from_tilemap(tilemap, child)
 		else:
 			if child is CollisionShape2D and child.get_parent() is StaticBody2D:
+				if "treasure" in child.get_parent().name:
+					continue
+				
 				var xExtentsFactor = 2
 				var yExtentsFactor = 2
 					
@@ -599,12 +648,12 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 					
 					# Add point if valid
 					if valid_point:
-						if not astar_nodes_dics["mobs"].has(point):
+						if not astar_nodes_dics["mobs"]["points"].has(point):
 							# The AStar class references points with indices.
 							# Using a function to calculate the index from a tile_coord's coordinates
 							# ensures to always get the same index with the same input tile_coord
 							var point_index = calculate_point_index(point)
-							astar_nodes_dics["mobs"][point] = {
+							astar_nodes_dics["mobs"]["points"][point] = {
 												"point_index" : point_index,
 												"connections" : []
 												}
@@ -616,9 +665,9 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 
 # After added all points to the mobs_astar_node, connect them
 func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : Dictionary):
-	for point in astar_nodes_dics["mobs"].keys():
+	for point in astar_nodes_dics["mobs"]["points"].keys():
 		
-		var point_index = astar_nodes_dics["mobs"][point]["point_index"]
+		var point_index = astar_nodes_dics["mobs"]["points"][point]["point_index"]
 		
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
@@ -643,7 +692,16 @@ func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : D
 			
 			# Connect points if everything is okay
 			mobs_astar_node.connect_points(point_index, point_relative_index, false) # False means it is one-way / not bilateral
-			astar_nodes_dics["mobs"][point]["connections"].append(point_relative_index)
+			astar_nodes_dics["mobs"]["points"][point]["connections"].append(point_relative_index)
+
+
+# Method to generate global_position to tile_coord
+func world_to_tile_coords(global_position : Vector2):
+	var point = Vector2.ZERO
+	point.x = floor(global_position.x / (float(Constants.TILE_SIZE) / (Constants.POINTS_HORIZONTAL_PER_TILE - 1)))
+	point.y = floor(global_position.y / (float(Constants.TILE_SIZE) / (Constants.POINTS_VERTICAL_PER_TILE - 1)))
+	
+	return point
 
 
 # Method to generate tile_coord to global_position

@@ -30,24 +30,37 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		# Create new AStars and store them to use later again
-		if not astar_nodes_cache.has(map_name):
-			astar_nodes_cache[map_name] = {
-								"mobs" : null,
-								"ambient_mobs" : null
-								}
-		# Mobs
-		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"])
-		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"])
-		
-		# Ambient mobs
-		if astar_nodes_file_dics[map_name]["ambient_mobs"].size() > 0:
-			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
-			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
-		
-		print("LOADED \"" + str(map_name) + "\"")
+		if map_name == "map_dungeon1_lvl3":
+			# Create new AStars and store them to use later again
+			if not astar_nodes_cache.has(map_name):
+				astar_nodes_cache[map_name] = {
+									"mobs" : null,
+									"ambient_mobs" : null
+									}
+				
+				# SAVED ASTAR NODE INFOS
+#				var astar_nodes_dics = {
+#						"mobs" : {
+#							"points": {},
+#							"dynamic_collisions": {} # collision_shape_instance_id: disabled points
+#						},
+#						"ambient_mobs" : {}
+#						}
+			
+			# Mobs
+			#astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()]
+			astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+			astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+			handle_dynamic_collisions(astar_nodes_file_dics[map_name]["mobs"]["dynamic_collisions"])
+			
+			# Ambient mobs
+			if astar_nodes_file_dics[map_name]["ambient_mobs"].size() > 0:
+				astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+				astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
+				astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
+			
+			print("LOADED \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
@@ -82,7 +95,7 @@ func init(new_map_name = "", _astar2DVisualizerNode = null, new_mobNavigationTil
 	can_generate_pathes = true
 	
 	# Init visualizer
-#	_astar2DVisualizerNode.visualize(astar_nodes_cache[map_name]["mobs"])
+	_astar2DVisualizerNode.visualize(astar_nodes_cache[map_name]["mobs"])
 
 
 # Method to load the astar points and connections from file -> file generated through reimport
@@ -216,36 +229,44 @@ func clean_thread():
 
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_nodes_cache[map_name]["mobs"], except the obstacles.
-func astar_add_walkable_cells_for_mobs(astar_node_dic):
-	for point in astar_node_dic.keys():
-		var point_index = astar_node_dic[point]["point_index"]
+func astar_add_walkable_cells_for_mobs(astar_node_points_dic):
+	for point in astar_node_points_dic.keys():
+		var point_index = astar_node_points_dic[point]["point_index"]
 		astar_nodes_cache[map_name]["mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_nodes_cache[map_name]["ambient_mobs"], except the obstacles.
-func astar_add_walkable_cells_for_ambient_mobs(astar_node_dic):
-	for point in astar_node_dic.keys():
-		var point_index = astar_node_dic[point]["point_index"]
+func astar_add_walkable_cells_for_ambient_mobs(astar_node_points_dic):
+	for point in astar_node_points_dic.keys():
+		var point_index = astar_node_points_dic[point]["point_index"]
 		astar_nodes_cache[map_name]["ambient_mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
 # After added all points to the astar_nodes_cache[map_name]["mobs"], connect them
-func astar_connect_walkable_cells_for_mobs(astar_node_dic):
-	for point in astar_node_dic.keys():
-		var point_index = astar_node_dic[point]["point_index"]
-		var point_connections = astar_node_dic[point]["connections"]
+func astar_connect_walkable_cells_for_mobs(astar_node_points_dic):
+	for point in astar_node_points_dic.keys():
+		var point_index = astar_node_points_dic[point]["point_index"]
+		var point_connections = astar_node_points_dic[point]["connections"]
 		for point_connection in point_connections:
 			astar_nodes_cache[map_name]["mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
 
 
 # After added all points to the astar_nodes_cache[map_name]["ambient_mobs"], connect them
-func astar_connect_walkable_cells_for_ambient_mobs(astar_node_dic):
-	for point in astar_node_dic.keys():
-		var point_index = astar_node_dic[point]["point_index"]
-		var point_connections = astar_node_dic[point]["connections"]
+func astar_connect_walkable_cells_for_ambient_mobs(astar_node_points_dic):
+	for point in astar_node_points_dic.keys():
+		var point_index = astar_node_points_dic[point]["point_index"]
+		var point_connections = astar_node_points_dic[point]["connections"]
 		for point_connection in point_connections:
 			astar_nodes_cache[map_name]["ambient_mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
+
+
+func handle_dynamic_collisions(astar_node_dynamic_collisions_dic):
+	print("handle_dynamic_collisions")
+	for collision_id in astar_node_dynamic_collisions_dic.keys():
+		print("collision_id: " + str(collision_id))
+		for point_index in astar_node_dynamic_collisions_dic[collision_id]:
+			astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
 
 
 # Method calculates the index of the point in astar_nodes - INPUT: Tilecoords like (-272, -144) or (128, 64)
@@ -289,6 +310,12 @@ func get_mob_astar_path(mob_start, mob_end):
 #	var time_elapsed = time_now - time_start
 #	dic["start"] = time_elapsed
 #	time_start = OS.get_system_time_msecs()
+	
+	# Check if point is disabled -> take nearest & enabled point to the disabled point
+	if astar_nodes_cache[map_name]["mobs"].has_point(start_point_index) and astar_nodes_cache[map_name]["mobs"].is_point_disabled(start_point_index):
+		start_point_index = astar_nodes_cache[map_name]["mobs"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
+	if astar_nodes_cache[map_name]["mobs"].has_point(end_point_index) and astar_nodes_cache[map_name]["mobs"].is_point_disabled(end_point_index):
+		end_point_index = astar_nodes_cache[map_name]["mobs"].get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["mobs"]
 	var point_path = astar_nodes_cache[map_name]["mobs"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269

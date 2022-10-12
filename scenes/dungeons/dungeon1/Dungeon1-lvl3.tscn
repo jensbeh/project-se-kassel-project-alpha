@@ -25,4 +25,7 @@ script = ExtResource( 4 )
 [node name="Player" parent="map_dungeon1_lvl3/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 824, 24 )
 
+[node name="astar" type="Node2D" parent="map_dungeon1_lvl3"]
+script = ExtResource( 4 )
+
 [editable path="map_dungeon1_lvl3"]

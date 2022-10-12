@@ -36,5 +36,9 @@ func _draw():
 #			draw_line(_point_pos(point), _point_pos(other), line_color, line_width)
 		
 		# Draw points
-		var point_color = disabled_point_color if astar.is_point_disabled(point) else enabled_point_color
-		draw_circle(_point_pos(point), point_radius, point_color)
+		# Enabled points
+		if not astar.is_point_disabled(point):
+			pass#draw_circle(_point_pos(point), point_radius, enabled_point_color)
+		# Disabled points
+		else:
+			draw_circle(_point_pos(point), point_radius, disabled_point_color)
