@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/small-trees-treetrunks.tsx-6a67953bc62d9d3f7a9f812a7e62eec0.res"
+
+[deps]
+
+source_file="res://assets/tilesets/small-trees-treetrunks.tsx"
+dest_files=[ "res://.import/small-trees-treetrunks.tsx-6a67953bc62d9d3f7a9f812a7e62eec0.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""
