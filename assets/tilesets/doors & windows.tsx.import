@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/doors & windows.tsx-370d10625009d097b78fed402f9273b2.res"
+
+[deps]
+
+source_file="res://assets/tilesets/doors & windows.tsx"
+dest_files=[ "res://.import/doors & windows.tsx-370d10625009d097b78fed402f9273b2.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

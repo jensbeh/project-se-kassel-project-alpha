@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/map_grassland.tmx-87fab7db19647d33d1f9e9cb6af397b4.scn"
+
+[deps]
+
+source_file="res://assets/map/map_grassland.tmx"
+dest_files=[ "res://.import/map_grassland.tmx-87fab7db19647d33d1f9e9cb6af397b4.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=3
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script="res://scenes/grassland/post_import_grassland.gd"

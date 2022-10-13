@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/small-trees-treecrowns.tsx-ba305d99fc67061f5789b407dfa80dca.res"
+
+[deps]
+
+source_file="res://assets/tilesets/small-trees-treecrowns.tsx"
+dest_files=[ "res://.import/small-trees-treecrowns.tsx-ba305d99fc67061f5789b407dfa80dca.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""
