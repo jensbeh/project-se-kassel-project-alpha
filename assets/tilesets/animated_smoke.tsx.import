@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/animated_smoke.tsx-b87eb2874e4f19d1c4360b378dac934f.res"
+
+[deps]
+
+source_file="res://assets/tilesets/animated_smoke.tsx"
+dest_files=[ "res://.import/animated_smoke.tsx-b87eb2874e4f19d1c4360b378dac934f.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""
