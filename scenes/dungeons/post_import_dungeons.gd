@@ -698,8 +698,8 @@ func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : D
 # Method to generate global_position to tile_coord
 func world_to_tile_coords(global_position : Vector2):
 	var point = Vector2.ZERO
-	point.x = floor(global_position.x / (float(Constants.TILE_SIZE) / (Constants.POINTS_HORIZONTAL_PER_TILE - 1)))
-	point.y = floor(global_position.y / (float(Constants.TILE_SIZE) / (Constants.POINTS_VERTICAL_PER_TILE - 1)))
+	point.x = floor(global_position.x / (float(CONSTANTS.TILE_SIZE) / (CONSTANTS.POINTS_HORIZONTAL_PER_TILE - 1)))
+	point.y = floor(global_position.y / (float(CONSTANTS.TILE_SIZE) / (CONSTANTS.POINTS_VERTICAL_PER_TILE - 1)))
 	
 	return point
 
