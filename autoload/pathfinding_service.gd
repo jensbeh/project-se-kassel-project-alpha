@@ -31,7 +31,7 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		if map_name == "map_dungeon1_lvl3":
+		if "dungeon" in map_name:# == "map_dungeon1_lvl1":
 			# Create new AStars and store them to use later again
 			if not astar_nodes_cache.has(map_name):
 				astar_nodes_cache[map_name] = {
@@ -210,7 +210,7 @@ func generate_pathes():
 							
 							var new_path = get_mob_astar_path(enemy.global_position, target_pos)
 							
-							send_path_to_mob(enemy, new_path)
+							call_deferred("send_path_to_mob", enemy, new_path)
 				
 				elif "ambient_mobs" == mob_key:
 					var ambient_mob_which_need_new_path = mobs_to_update[mob_key]
@@ -222,7 +222,7 @@ func generate_pathes():
 								target_pos = ambient_mob.global_position
 							
 							var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
-							send_path_to_mob(ambient_mob, new_path)
+							call_deferred("send_path_to_mob", ambient_mob, new_path)
 
 
 # Method to send new path to mob

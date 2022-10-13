@@ -103,16 +103,12 @@ func post_import(scene):
 				
 				var treasure_node = treasureObject.find_node(key_word + id + "_node")
 				
-				# Create new treasure node
+				# Create new treasure node if not existing
 				if treasure_node == null:
 					var new_treasure_node = Node2D.new()
 					new_treasure_node.name = key_word + id + "_node"
 					treasureObject.add_child(new_treasure_node)
 					new_treasure_node.set_owner(scene)
-				
-				# Treasure node is existing
-				else:
-					print("EXISTING")
 				
 				# Get treasure node in add it to treasureObject
 				treasure_node = treasureObject.find_node(key_word + id + "_node")

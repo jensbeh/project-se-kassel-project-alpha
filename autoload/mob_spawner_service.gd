@@ -5,7 +5,7 @@ var mobspawner_thread = Thread.new()
 var can_spawn_mobs = false
 var mob_spawner_timer = Timer.new()
 var mob_spawn_interval = 20.0 # in sec
-var should_spawn_mobs = true
+var should_spawn_mobs = false
 var spawning_areas = null
 var mobsNavigationTileMap : TileMap = null
 var mobsLayer : Node2D = null
@@ -57,10 +57,7 @@ func init(new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mob
 	# Start mobspawner thread
 	mobspawner_thread.start(self, "handle_mob_spawns")
 	can_spawn_mobs = true
-	
-	# Init timer to respawn mobs
-	mob_spawner_timer.set_wait_time(mob_spawn_interval)
-	mob_spawner_timer.start()
+	should_spawn_mobs = false
 
 
 # Method to stop the mobspawner to change map
@@ -104,7 +101,7 @@ func cleanup():
 	# -> Clean mobs
 	for mob in mob_list:
 		if is_instance_valid(mob) and mob.is_inside_tree():
-			mob.queue_free()
+			mob.call_deferred("queue_free")
 	mob_list.clear()
 	scene_type = null
 	
@@ -113,7 +110,11 @@ func cleanup():
 
 # Method to activate spawn mobs
 func spawn_mobs():
-	should_spawn_mobs = true
+	if can_spawn_mobs:
+		should_spawn_mobs = true
+		# Activate mob_spawner_timer
+		mob_spawner_timer.set_wait_time(mob_spawn_interval)
+		mob_spawner_timer.start()
 
 
 # Method to load active chunks in background
@@ -151,12 +152,10 @@ func despawn_mobs():
 					current_ambient_mobs -= 1
 				elif mob.is_in_group("Enemy"):
 					spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-				mob.get_parent().call_deferred("remove_child", mob)
 				
-				if mob in mobs_to_despawn:
-					removed_mobs.append(mobs_to_despawn.find(mob))
+				removed_mobs.append(mobs_to_despawn.find(mob))
 				
-				mob.queue_free()
+				mob.call_deferred("queue_free")#.queue_free()
 				mob_list.remove(mob_list.find(mob))
 	
 	var i = 0
@@ -251,14 +250,12 @@ func despawn_mob(mob):
 		# Remove from nodes
 		if mobsLayer.get_node_or_null(mob.name) != null:
 			spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-			mobsLayer.remove_child(mob)
-			mob.queue_free()
+			mob.call_deferred("queue_free")
 			print("----------> Mob \"" + mob.name + "\" removed")
 
 
 # Method is called from mob_spawner_timer -> new mobs should be spawned or  mobs should be removed
 func spawn_despawn_mobs():
-#	remove_mobs(remove_mobs)
 	if can_spawn_mobs:
 		should_spawn_mobs = true
 		mob_spawner_timer.set_wait_time(mob_spawn_interval)

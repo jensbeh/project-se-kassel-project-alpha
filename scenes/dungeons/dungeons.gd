@@ -245,19 +245,19 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and ground_chunk.is_inside_tree():
+		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
 			ground_chunk.visible = true
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and higher_chunk.is_inside_tree():
+		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
 			higher_chunk.visible = true
 	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and ground_chunk.is_inside_tree():
+		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
 			ground_chunk.visible = false
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and higher_chunk.is_inside_tree():
+		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false
 
 
@@ -266,8 +266,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
-		mobsLayer.remove_child(boss_node)
-		boss_node.queue_free()
+		boss_node.call_deferred("queue_free")
 		print("----------> Boss \"" + boss_node.name + "\" removed")
 	
 	# Disable mobs respawning
@@ -373,13 +372,11 @@ func setup_treasure_areas():
 			
 			# Delete treasure_nodes which should be removed
 			for treasure_to_delete in treasures_to_delete:
-				treasure_to_delete.get_parent().remove_child(treasure_to_delete)
-				treasure_to_delete.queue_free()
+				treasure_to_delete.call_deferred("queue_free")
 			
 			# Delete treasure_object if there are no more treasure_nodes
 			if treasure_object.get_child_count() == 0:
-				chunk.remove_child(treasure_object)
-				treasure_object.queue_free()
+				treasure_object.call_deferred("queue_free")
 
 
 # when interacted, open dialog

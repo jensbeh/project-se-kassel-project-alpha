@@ -299,8 +299,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
-		mobsLayer.remove_child(boss_node)
-		boss_node.queue_free()
+		boss_node.call_deferred("queue_free")
 		print("----------> Boss \"" + boss_node.name + "\" removed")
 
 
