@@ -17,7 +17,12 @@ var offset = Vector2(0,0)
 
 
 func visualize(new_astar : AStar):
+	print("visualize")
 	astar = new_astar
+	update()
+
+
+func update_disabled_points():
 	update()
 
 
@@ -38,7 +43,7 @@ func _draw():
 		# Draw points
 		# Enabled points
 		if not astar.is_point_disabled(point):
-			pass#draw_circle(_point_pos(point), point_radius, enabled_point_color)
+			pass #draw_circle(_point_pos(point), point_radius, enabled_point_color)
 		# Disabled points
 		else:
 			draw_circle(_point_pos(point), point_radius, disabled_point_color)

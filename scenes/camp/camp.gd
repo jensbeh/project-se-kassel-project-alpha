@@ -54,7 +54,7 @@ func _on_setup_scene_done():
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
 	# Stop chunkloader
-	ChunkLoaderService.stop()
+	ChunkLoaderService.cleanup()
 	
 	# Disconnect signals
 	clear_signals()

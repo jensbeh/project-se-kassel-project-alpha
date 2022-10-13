@@ -44,10 +44,17 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	
 	should_load_chunks = true
 
+
 # Method to stop the chunkloader to change map
 func stop():
 	# Reset variables
-	call_deferred("cleanup")
+	# Variables
+	can_load_chunks = null
+	chunk_loader_timer = null
+	chunk_load_interval = null
+	should_load_chunks = null
+	
+	print("STOPPED CHUNK_LOADER_SERVICE")
 
 
 # Method to cleanup the chunkloader
@@ -67,7 +74,7 @@ func cleanup():
 	active_chunks.clear()
 	chunk_loader_timer.stop()
 	
-	print("STOPPED CHUNK_LOADER_SERVICE")
+	print("CLEANED CHUNK_LOADER_SERVICE")
 
 
 # Method to set should_load_chunks back to true

@@ -120,13 +120,13 @@ func spawn_bosses():
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
 	# Stop pathfinder
-	PathfindingService.stop()
+	PathfindingService.cleanup()
 	
 	# Stop chunkloader
-	ChunkLoaderService.stop()
+	ChunkLoaderService.cleanup()
 	
 	# Stop mobspawner
-	MobSpawnerService.stop()
+	MobSpawnerService.cleanup()
 	
 	# Disconnect signals
 	clear_signals()

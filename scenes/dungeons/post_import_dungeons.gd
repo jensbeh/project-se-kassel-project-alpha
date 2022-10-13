@@ -93,57 +93,87 @@ func post_import(scene):
 	var treasureObject = scene.find_node("treasures")
 	if treasureObject != null and treasureObject.get_children().size() > 0:
 		for child in treasureObject.get_children():
-			if "treasure" in child.name and !"pos" in child.name:
-				var selected_treasure_sprite = child.get_meta("selected_treasure_sprite") # possible 1,2,3
-				var frame = selected_treasure_sprite * 4 + 4
-				var sprite = Sprite.new()
-				sprite.name = "sprite"
-				sprite.centered = false
-				sprite.texture = VILLAGE_ANIMATED_DECORATIONS_TILESET
-				sprite.hframes = 4
-				sprite.vframes = 5
-				sprite.frame = frame
-				for pos in treasureObject.get_children():
-					if pos.name == "pos_" + str(child.name):
-						sprite.position = pos.position
-						break
-				sprite.position.y = sprite.position.y + sprite.texture.get_size().y / sprite.vframes
+			
+			var key_word : String = "treasure_"
+			
+			if key_word in child.name:
+				var start_pos = child.name.find(key_word) + key_word.length()
+				var end_pos = start_pos + 1
+				var id = child.name.substr(start_pos, end_pos)
 				
-				sprite.offset = Vector2(0, -sprite.texture.get_size().y / sprite.vframes)
+				var treasure_node = treasureObject.find_node(key_word + id + "_node")
 				
-				treasureObject.add_child(sprite)
-				sprite.set_owner(scene)
+				# Create new treasure node
+				if treasure_node == null:
+					var new_treasure_node = Node2D.new()
+					new_treasure_node.name = key_word + id + "_node"
+					treasureObject.add_child(new_treasure_node)
+					new_treasure_node.set_owner(scene)
 				
-				var animationPlayer = AnimationPlayer.new()
-				animationPlayer.name = "animationPlayer"
-				var path = "../" + sprite.name + ":frame"
+				# Treasure node is existing
+				else:
+					print("EXISTING")
 				
-				var idleTreasureAnimation = Animation.new()
-				animationPlayer.add_animation( "idleTreasure", idleTreasureAnimation)
-				idleTreasureAnimation.add_track(0)
-				idleTreasureAnimation.length = 0.4
-				idleTreasureAnimation.track_set_path(0, path)
-				idleTreasureAnimation.track_insert_key(0, 0.0, frame)
-				idleTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
-				idleTreasureAnimation.loop = 0
+				# Get treasure node in add it to treasureObject
+				treasure_node = treasureObject.find_node(key_word + id + "_node")
+				child.get_parent().remove_child(child)
+				treasure_node.add_child(child)
 				
-				var openTreasureAnimation = Animation.new()
-				animationPlayer.add_animation( "openTreasure", openTreasureAnimation)
-				openTreasureAnimation.add_track(0)
-				openTreasureAnimation.length = 0.4
-				openTreasureAnimation.track_set_path(0, path)
-				openTreasureAnimation.track_insert_key(0, 0.0, frame)
-				openTreasureAnimation.track_insert_key(0, 0.1, frame + 1)
-				openTreasureAnimation.track_insert_key(0, 0.2, frame + 2)
-				openTreasureAnimation.track_insert_key(0, 0.3, frame + 3)
-				openTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
-				openTreasureAnimation.loop = 0
 				
-				animationPlayer.current_animation = "idleTreasure"
-				animationPlayer.autoplay = "idleTreasure"
-				
-				child.add_child(animationPlayer)
-				animationPlayer.set_owner(scene)
+				# Create sprite and animation
+				if child is Area2D:
+					var selected_treasure_sprite = child.get_meta("selected_treasure_sprite") # possible 1,2,3
+					var frame = selected_treasure_sprite * 4 + 4
+					var sprite = Sprite.new()
+					sprite.name = "sprite_" + str(child.name)
+					sprite.centered = false
+					sprite.texture = VILLAGE_ANIMATED_DECORATIONS_TILESET
+					sprite.hframes = 4
+					sprite.vframes = 5
+					sprite.frame = frame
+					for pos in treasureObject.get_children():
+						if pos.name == "pos_" + str(child.name):
+							sprite.position = pos.position
+							break
+					sprite.position.y = sprite.position.y + sprite.texture.get_size().y / sprite.vframes
+					
+					sprite.offset = Vector2(0, -sprite.texture.get_size().y / sprite.vframes)
+					
+					treasure_node.add_child(sprite)
+					sprite.set_owner(scene)
+					
+					
+					var animationPlayer = AnimationPlayer.new()
+					animationPlayer.name = "animationPlayer"
+					var path = "../" + sprite.name + ":frame"
+					
+					var idleTreasureAnimation = Animation.new()
+					animationPlayer.add_animation( "idleTreasure", idleTreasureAnimation)
+					idleTreasureAnimation.add_track(0)
+					idleTreasureAnimation.length = 0.4
+					idleTreasureAnimation.track_set_path(0, path)
+					idleTreasureAnimation.track_insert_key(0, 0.0, frame)
+					idleTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+					idleTreasureAnimation.loop = 0
+					
+					var openTreasureAnimation = Animation.new()
+					animationPlayer.add_animation( "openTreasure", openTreasureAnimation)
+					openTreasureAnimation.add_track(0)
+					openTreasureAnimation.length = 0.4
+					openTreasureAnimation.track_set_path(0, path)
+					openTreasureAnimation.track_insert_key(0, 0.0, frame)
+					openTreasureAnimation.track_insert_key(0, 0.1, frame + 1)
+					openTreasureAnimation.track_insert_key(0, 0.2, frame + 2)
+					openTreasureAnimation.track_insert_key(0, 0.3, frame + 3)
+					openTreasureAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+					openTreasureAnimation.loop = 0
+					
+					animationPlayer.current_animation = "idleTreasure"
+					animationPlayer.autoplay = "idleTreasure"
+					
+					child.add_child(animationPlayer)
+					animationPlayer.set_owner(scene)
+	
 	
 	# generate chunks -> best at the end
 	print("generate chunks...")
@@ -168,14 +198,12 @@ func create_astar(scene):
 	var mobs_astar_node = AStar.new()
 	var astar_nodes_dics = {
 						"mobs" : {
-							"points": {},
-							"dynamic_collisions": {} # collision_shape_instance_id: disabled points
+							"points": {}
 						},
 						"ambient_mobs" : {}
 						}
 	astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
 	astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
-	disable_points_for_dynamic_collisionshapes(mobs_astar_node, astar_nodes_dics, scene.find_node("groundlayer"))
 	print("Generated AStar for MOBS!")
 	
 	# Store astar
@@ -192,48 +220,6 @@ func create_astar(scene):
 	astar_save.store_var(astar_nodes_dics)
 	astar_save.close()
 	print("Saved AStars to file!")
-
-
-# Method to iterate over all nodes in "ground" and disables all points for dynamic collisionshapes
-func disable_points_for_dynamic_collisionshapes(mobs_astar_node : AStar, astar_nodes_dics : Dictionary, node_with_collisionshapes):
-	for child in node_with_collisionshapes.get_children():
-		if child.get_child_count() > 0:
-			disable_points_for_dynamic_collisionshapes(mobs_astar_node, astar_nodes_dics, child)
-		else:
-			if child is CollisionShape2D and child.get_parent() is StaticBody2D:
-				var static_body : StaticBody2D = child.get_parent()
-				astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()] = []
-				
-				var xExtentsFactor = 2
-				var yExtentsFactor = 2
-				
-				# Round up to avoid wrong shape size
-				var range_x = ceil(child.shape.extents.x * xExtentsFactor)
-				var range_y = ceil(child.shape.extents.y * yExtentsFactor)
-				
-				for x in (range_x):
-					for y in (range_y):
-						# Check all positions inside shape
-						var current_position = Vector2(static_body.position.x + x, static_body.position.y + y)
-						var point = world_to_tile_coords(current_position)
-						var point_index = calculate_point_index(point)
-						if mobs_astar_node.has_point(point_index) and not astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].has(point_index):
-							astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].append(point_index)
-						
-						
-						# Check all positions at the bottom/right of the shape and add extra points there
-						var extra_safety_point_offset = Vector2.ZERO
-						# Add safety border if right or/and bottom
-						if x == range_x - 1:
-							extra_safety_point_offset.x = extra_safety_point_offset.x + 1
-						if y == range_y - 1:
-							extra_safety_point_offset.y = extra_safety_point_offset.y + 1
-						# Check new point
-						if extra_safety_point_offset != Vector2.ZERO:
-							point = world_to_tile_coords(current_position) + extra_safety_point_offset
-							point_index = calculate_point_index(point)
-							if mobs_astar_node.has_point(point_index) and not astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].has(point_index):
-								astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()].append(point_index)
 
 
 # Method to cleanup the scene
@@ -411,9 +397,12 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var node = Area2D.new()
-				if "treasure" in child.name and !"pos" in child.name:
-					node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
-					node.set_meta("boss_loot", child.get_meta("boss_loot"))
+				
+				# Add infos if it is treasure area
+				if "treasure" in child.name:
+					chunk_node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
+					chunk_node.set_meta("boss_loot", child.get_meta("boss_loot"))
+				
 				node.name = child.name
 				node.position = child.position
 				chunk_node.add_child(node)

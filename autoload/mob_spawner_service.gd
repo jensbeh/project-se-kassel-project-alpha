@@ -66,7 +66,12 @@ func init(new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mob
 # Method to stop the mobspawner to change map
 func stop():
 	# Reset variables
-	call_deferred("cleanup")
+	can_spawn_mobs = null
+	mob_spawner_timer = null
+	mob_spawn_interval = null
+	should_spawn_mobs = null
+	
+	print("STOPPED MOB_SPAWNER_SERVICE")
 
 
 # Method to cleanup the mobspawner
@@ -103,7 +108,7 @@ func cleanup():
 	mob_list.clear()
 	scene_type = null
 	
-	print("STOPPED MOB_SPAWNER_SERVICE")
+	print("CLEANED MOB_SPAWNER_SERVICE")
 
 
 # Method to activate spawn mobs

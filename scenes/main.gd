@@ -91,4 +91,4 @@ func stop_game():
 func _notification(notification):
 	# If game is closed
 	if (notification == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
-		Utils.stop_game()
+		stop_game()

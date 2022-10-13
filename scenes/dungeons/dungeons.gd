@@ -107,13 +107,13 @@ func spawn_boss():
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
 	# Stop pathfinder
-	PathfindingService.stop()
+	PathfindingService.cleanup()
 	
 	# Stop chunkloader
-	ChunkLoaderService.stop()
+	ChunkLoaderService.cleanup()
 	
 	# Stop mobspawner
-	MobSpawnerService.stop()
+	MobSpawnerService.cleanup()
 	
 	# Disconnect signals
 	clear_signals()
@@ -184,11 +184,18 @@ func clear_signals():
 	for chunk in groundChunks.get_children():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
-			for treasure in treasure_object.get_children():
-				if "treasure" in treasure.name and !"pos" in treasure.name:
+			for treasure_node in treasure_object.get_children():
+				# Find area in treasure_node
+				var treasure_area = null
+				for child in treasure_node.get_children():
+					if child is Area2D:
+						treasure_area = child
+						break
+				
+				if treasure_area != null:
 					# connect Area2D with functions to handle body action
-					treasure.disconnect("body_entered", self, "body_entered_treasure")
-					treasure.disconnect("body_exited", self, "body_exited_treasure")
+					treasure_area.disconnect("body_entered", self, "body_entered_treasure")
+					treasure_area.disconnect("body_exited", self, "body_exited_treasure")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -317,22 +324,62 @@ func setup_treasure_areas():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
 			randomize()
-			for treasure in treasure_object.get_children():
-				if "treasure" in treasure.name and !"pos" in treasure.name:
-					var random_float = randf()
-					if random_float >= Constants.LOOT_CHANCE and !treasure.get_meta("boss_loot"):
-						chunk.remove_child(treasure_object)
-						treasure_object.queue_free()
-					else:
-						var treasure_data = []
-						treasure_data.append(false) # in range
-						treasure_data.append(false) # looted
-						treasure_data.append({}) # loot list
-						treasure_data.append(treasure.get_meta("selected_treasure_sprite")) # treasure type
-						treasure_dict[treasure] = treasure_data
+			var treasures_to_delete = []
+			for treasure_node in treasure_object.get_children():
+				# Skip treasure if it is broken object
+				if treasure_node.get_child_count() == 0:
+					continue
+				
+				var random_float = randf()
+				
+				# Remove existing treasure_node (add to list to remove after iteration)
+				if random_float >= Constants.LOOT_CHANCE and !treasure_node.get_meta("boss_loot"):
+					treasures_to_delete.append(treasure_node)
+				
+				# Keep existing treasure_node
+				else:
+					var treasure_data = []
+					treasure_data.append(false) # in range
+					treasure_data.append(false) # looted
+					treasure_data.append({}) # loot list
+					treasure_data.append(treasure_node.get_meta("selected_treasure_sprite")) # treasure type
+					
+					# Find area in treasure_node
+					var treasure_area = null
+					for child in treasure_node.get_children():
+						if child is Area2D:
+							treasure_area = child
+							break
+					
+					if treasure_area != null:
+						treasure_dict[treasure_area] = treasure_data
 						# connect Area2D with functions to handle body action
-						treasure.connect("body_entered", self, "body_entered_treasure", [treasure])
-						treasure.connect("body_exited", self, "body_exited_treasure", [treasure])
+						treasure_area.connect("body_entered", self, "body_entered_treasure", [treasure_area])
+						treasure_area.connect("body_exited", self, "body_exited_treasure", [treasure_area])
+					else:
+						printerr("Error in dungeons - setup_treasure_areas -> treasure_area is null")
+					
+					
+					# Add treasure to obstacles
+					# Find collision_shape and position of treasure
+					var treasure_collision = null
+					var treasure_position = Vector2.ZERO
+					for child in treasure_node.get_children():
+						if child is StaticBody2D:
+							treasure_position = child.position
+							treasure_collision = child.get_child(0)
+							break
+					PathfindingService.add_dynamic_obstacle(treasure_collision, treasure_position)
+			
+			# Delete treasure_nodes which should be removed
+			for treasure_to_delete in treasures_to_delete:
+				treasure_to_delete.get_parent().remove_child(treasure_to_delete)
+				treasure_to_delete.queue_free()
+			
+			# Delete treasure_object if there are no more treasure_nodes
+			if treasure_object.get_child_count() == 0:
+				chunk.remove_child(treasure_object)
+				treasure_object.queue_free()
 
 
 # when interacted, open dialog
