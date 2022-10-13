@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/marketplace.tsx-42630f14baa0aebac04870bb95266d66.res"
+
+[deps]
+
+source_file="res://assets/tilesets/marketplace.tsx"
+dest_files=[ "res://.import/marketplace.tsx-42630f14baa0aebac04870bb95266d66.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

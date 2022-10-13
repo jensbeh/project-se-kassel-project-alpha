@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/trees-treetrunks.tsx-549c42d31d42b026c63b6a2b3fcaa98c.res"
+
+[deps]
+
+source_file="res://assets/tilesets/trees-treetrunks.tsx"
+dest_files=[ "res://.import/trees-treetrunks.tsx-549c42d31d42b026c63b6a2b3fcaa98c.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

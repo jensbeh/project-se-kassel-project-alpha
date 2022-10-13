@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/map_dungeon2_lvl1.tmx-a278a6d559c03084c8792a5dd9eabc8b.scn"
+
+[deps]
+
+source_file="res://assets/map/map_dungeon2_lvl1.tmx"
+dest_files=[ "res://.import/map_dungeon2_lvl1.tmx-a278a6d559c03084c8792a5dd9eabc8b.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=3
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script="res://scenes/dungeons/post_import_dungeons.gd"
