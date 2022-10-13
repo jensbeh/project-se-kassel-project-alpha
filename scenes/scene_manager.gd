@@ -133,6 +133,8 @@ func finish_transition():
 				Utils.get_current_player().reset_player_after_dying()
 			if Utils.get_current_player().is_player_invisible() == true:
 				Utils.get_current_player().make_player_invisible(false)
+			if Utils.get_current_player().hurting:
+				Utils.get_current_player().hurting = false
 				
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")
