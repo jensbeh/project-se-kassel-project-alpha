@@ -10,7 +10,7 @@ var content = {}
 # connect interaction signal with player
 func _ready():
 	self.name = "treasure"
-	Utils.get_current_player().connect("player_interact", self, "interaction")
+	Utils.get_current_player().connect("player_looting", self, "interaction")
 	position = spawn_position
 
 

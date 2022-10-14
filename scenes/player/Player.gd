@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Signals
 signal player_collided(collision)
 signal player_interact
+signal player_looting
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -169,13 +170,13 @@ func _input(event):
 	
 	if event.is_action_pressed("e"):
 		
-		if player_can_interact:
+		if player_can_interact and not is_attacking:
 			emit_signal("player_interact")
 			
 		# Remove the Loot Panel
-		elif Utils.get_ui().get_node_or_null("LootPanel") != null:
+		elif Utils.get_loot_panel() != null:
 			# Call close Method in Loot Panel
-			Utils.get_ui().get_node_or_null("LootPanel")._on_Close_pressed()
+			Utils.get_loot_panel()._on_Close_pressed()
 			
 		# Remove the trade inventory
 		if Utils.get_trade_inventory() != null and !dragging:
@@ -189,7 +190,7 @@ func _input(event):
 			PlayerData.save_inventory()
 			save_player_data(Utils.get_current_player().get_data())
 			MerchantData.save_merchant_inventory()
-		
+	
 	# Open game menu with "esc"
 	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
 		set_movement(false)
@@ -237,10 +238,16 @@ func _input(event):
 		set_movement(false)
 		animation_state.start("Attack")
 	
+	# Loot
+	elif event.is_action_pressed("loot") and Utils.get_loot_panel() == null:
+		if player_can_interact and not is_attacking:
+			emit_signal("player_looting")
+			#Utils.get_control_notes().update()
+	
 	# Loot All
-	elif event.is_action_pressed("loot_all") and Utils.get_ui().get_node_or_null("LootPanel") != null:
+	elif event.is_action_pressed("loot") and Utils.get_loot_panel() != null:
 		# Call Loot all Method in Loot Panel
-		Utils.get_ui().get_node_or_null("LootPanel")._on_LootAll_pressed()
+		Utils.get_loot_panel()._on_LootAll_pressed()
 
 
 # Method is called at the end of any attack animation
@@ -928,8 +935,8 @@ func kill_player():
 	animation_state.travel("Die")
 	
 	# Close LootPanel
-	if Utils.get_ui().get_node_or_null("LootPanel") != null:
-		Utils.get_ui().get_node_or_null("LootPanel").queue_free()
+	if Utils.get_loot_panel() != null:
+		Utils.get_loot_panel().queue_free()
 
 
 # Method is called when player collect loot

@@ -135,6 +135,8 @@ func finish_transition():
 				Utils.get_current_player().make_player_invisible(false)
 			if Utils.get_current_player().hurting:
 				Utils.get_current_player().hurting = false
+			if Utils.get_current_player().is_attacking:
+				Utils.get_current_player().is_attacking = false
 				
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")

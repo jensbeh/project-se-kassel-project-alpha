@@ -130,7 +130,7 @@ func setup_player():
 	
 	# Connect signals
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
-	Utils.get_current_player().connect("player_interact", self, "interaction")
+	Utils.get_current_player().connect("player_looting", self, "interaction")
 
 
 # Method to set transition_data which contains stuff about the player and the transition
@@ -166,7 +166,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 func clear_signals():
 	# Player
 	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
-	Utils.get_current_player().disconnect("player_interact", self, "interaction")
+	Utils.get_current_player().disconnect("player_looting", self, "interaction")
 	
 	# Change scene areas
 	var changeScenesObject = find_node("changeScenes")
