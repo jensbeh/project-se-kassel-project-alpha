@@ -57,7 +57,7 @@ func post_import(scene):
 	mobs_nav_tilemap.visible = false
 	
 	# merge all tilemaps and collisionshapes from "ground" together
-	remove_collisionshapes_from_tilemap(mobs_nav_tilemap, scene.find_node("ground"))
+	remove_collisionshapes_from_not_dynamic_objects_from_tilemap(mobs_nav_tilemap, scene.find_node("ground"))
 	remove_collisiontiles_from_tilemap(mobs_nav_tilemap)
 	
 	# Setup NavigationTileMap for mobs
@@ -186,8 +186,12 @@ func create_astar(scene):
 	var ambient_mobs_astar_node = AStar.new()
 	var mobs_astar_node = AStar.new()
 	var astar_nodes_dics = {
-						"mobs" : {},
-						"ambient_mobs" : {}
+							"mobs" : {
+								"points": {}
+							},
+							"ambient_mobs" : {
+								"points": {}
+							}
 						}
 	astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
 	astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
@@ -531,13 +535,16 @@ func compress_tilemaps(node):
 					compressed_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
 
 
-# Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map
-func remove_collisionshapes_from_tilemap(tilemap : TileMap, node_with_collisionshapes):
+# Method to iterate over all nodes in "ground" and removes all tiles under collisionshapes in tilemap to use map as navigation map -> ONLY NOT DYNAMIC COLLISIONSHAPES
+func remove_collisionshapes_from_not_dynamic_objects_from_tilemap(tilemap : TileMap, node_with_collisionshapes):
 	for child in node_with_collisionshapes.get_children():
 		if child.get_child_count() > 0:
-			remove_collisionshapes_from_tilemap(tilemap, child)
+			remove_collisionshapes_from_not_dynamic_objects_from_tilemap(tilemap, child)
 		else:
 			if child is CollisionShape2D and child.get_parent() is StaticBody2D:
+				if "treasure" in child.get_parent().name:
+					continue
+				
 				var xExtentsFactor = 2
 				var yExtentsFactor = 2
 					
@@ -645,12 +652,12 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 					
 					# Add point if valid
 					if valid_point:
-						if not astar_nodes_dics["mobs"].has(point):
+						if not astar_nodes_dics["mobs"]["points"].has(point):
 							# The AStar class references points with indices.
 							# Using a function to calculate the index from a tile_coord's coordinates
 							# ensures to always get the same index with the same input tile_coord
 							var point_index = calculate_point_index(point)
-							astar_nodes_dics["mobs"][point] = {
+							astar_nodes_dics["mobs"]["points"][point] = {
 												"point_index" : point_index,
 												"connections" : []
 												}
@@ -675,7 +682,7 @@ func astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_no
 			# Using a function to calculate the index from a point's coordinates
 			# ensures to always get the same index with the same input point
 			var point_index = calculate_point_index(point)
-			astar_nodes_dics["ambient_mobs"][point] = {
+			astar_nodes_dics["ambient_mobs"]["points"][point] = {
 					"point_index" : point_index,
 					"connections" : []
 					}
@@ -686,9 +693,9 @@ func astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_no
 
 # After added all points to the mobs_astar_node, connect them
 func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : Dictionary):
-	for point in astar_nodes_dics["mobs"].keys():
+	for point in astar_nodes_dics["mobs"]["points"].keys():
 		
-		var point_index = astar_nodes_dics["mobs"][point]["point_index"]
+		var point_index = astar_nodes_dics["mobs"]["points"][point]["point_index"]
 		
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
@@ -713,14 +720,14 @@ func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : D
 			
 			# Connect points if everything is okay
 			mobs_astar_node.connect_points(point_index, point_relative_index, false) # False means it is one-way / not bilateral
-			astar_nodes_dics["mobs"][point]["connections"].append(point_relative_index)
+			astar_nodes_dics["mobs"]["points"][point]["connections"].append(point_relative_index)
 
 
 # After added all points to the ambient_mobs_astar_node, connect them
 func astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_nodes_dics):
-	for point in astar_nodes_dics["ambient_mobs"].keys():
+	for point in astar_nodes_dics["ambient_mobs"]["points"].keys():
 		
-		var point_index = astar_nodes_dics["ambient_mobs"][point]["point_index"]
+		var point_index = astar_nodes_dics["ambient_mobs"]["points"][point]["point_index"]
 		
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
@@ -745,7 +752,7 @@ func astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, asta
 			
 			# Connect points if everything is okay
 			ambient_mobs_astar_node.connect_points(point_index, point_relative_index, false) # False means it is one-way / not bilateral
-			astar_nodes_dics["ambient_mobs"][point]["connections"].append(point_relative_index)
+			astar_nodes_dics["ambient_mobs"]["points"][point]["connections"].append(point_relative_index)
 
 
 # Method to generate tile_coord to global_position

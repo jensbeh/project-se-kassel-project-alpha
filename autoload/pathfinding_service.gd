@@ -31,28 +31,27 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		if "dungeon" in map_name:# == "map_dungeon1_lvl1":
-			# Create new AStars and store them to use later again
-			if not astar_nodes_cache.has(map_name):
-				astar_nodes_cache[map_name] = {
-									"mobs" : null,
-									"ambient_mobs" : null,
-									"dynamic_obstacles" : {}
-									}
-			
-			# Mobs
-			#astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()]
-			astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-			astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-			
-			# Ambient mobs
-			if astar_nodes_file_dics[map_name]["ambient_mobs"].size() > 0:
-				astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-				astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
-				astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"])
-			
-			print("LOADED \"" + str(map_name) + "\"")
+		# Create new AStars and store them to use later again
+		if not astar_nodes_cache.has(map_name):
+			astar_nodes_cache[map_name] = {
+								"mobs" : null,
+								"ambient_mobs" : null,
+								"dynamic_obstacles" : {}
+								}
+		
+		# Mobs
+		#astar_nodes_dics["mobs"]["dynamic_collisions"][child.get_instance_id()]
+		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		
+		# Ambient mobs
+		if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
+			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+		
+		print("LOADED \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
@@ -89,7 +88,7 @@ func init(new_map_name = "", new_astar2DVisualizerNode = null, new_mobNavigation
 	# Init visualizer
 	astar2DVisualizerNode = new_astar2DVisualizerNode
 	if astar2DVisualizerNode != null:
-		astar2DVisualizerNode.visualize(astar_nodes_cache[map_name]["mobs"])
+		astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["mobs"])
 
 
 # Method to load the astar points and connections from file -> file generated through reimport
@@ -413,36 +412,70 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 	astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()] = []
 	var xExtentsFactor = 2
 	var yExtentsFactor = 2
+	var size_x = ceil(collisionshape_node.shape.extents.x * xExtentsFactor)
+	var size_y = ceil(collisionshape_node.shape.extents.y * yExtentsFactor)
 	
-	# Round up to avoid wrong shape size
-	var range_x = ceil(collisionshape_node.shape.extents.x * xExtentsFactor)
-	var range_y = ceil(collisionshape_node.shape.extents.y * yExtentsFactor)
+	# Top left point
+	var top_left_position = position
+	var top_left_point = world_to_tile_coords(top_left_position)
+	var top_left_point_index = calculate_point_index(top_left_point)
+	if astar_nodes_cache[map_name]["mobs"].has_point(top_left_point_index):
+		astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(top_left_point_index)
+		astar_nodes_cache[map_name]["mobs"].set_point_disabled(top_left_point_index, true)
 	
-	for x in (range_x):
-		for y in (range_y):
-			# Check all positions inside shape
-			var current_position = Vector2(position.x + x, position.y + y)
-			var point = world_to_tile_coords(current_position)
-			var point_index = calculate_point_index(point)
-			if astar_nodes_cache[map_name]["mobs"].has_point(point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(point_index):
-				astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(point_index)
-				astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
-				
-			# Check all positions at the bottom/right of the shape and add extra points there
-			var extra_safety_point_offset = Vector2.ZERO
-			# Add safety border if right or/and bottom
-			if x == range_x - 1:
-				extra_safety_point_offset.x = extra_safety_point_offset.x + 1
-			if y == range_y - 1:
-				extra_safety_point_offset.y = extra_safety_point_offset.y + 1
-			# Check new point
-			if extra_safety_point_offset != Vector2.ZERO:
-				point = world_to_tile_coords(current_position) + extra_safety_point_offset
-				point_index = calculate_point_index(point)
-				if astar_nodes_cache[map_name]["mobs"].has_point(point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(point_index):
-					astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(point_index)
-					astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
+	# Bottom right point
+	var bottom_right_position = Vector2(position.x + size_x + Constants.POINT_SIZE_IN_PIXEL_PER_TILE, position.y + size_y + Constants.POINT_SIZE_IN_PIXEL_PER_TILE) # Add here POINT_SIZE_IN_PIXEL_PER_TILE because point is top left of point area. Extend because of bottom right
+	var bottom_right_point = world_to_tile_coords(bottom_right_position)
+	var bottom_right_point_index = calculate_point_index(bottom_right_point)
+	if astar_nodes_cache[map_name]["mobs"].has_point(bottom_right_point_index):
+		astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(bottom_right_point_index)
+		astar_nodes_cache[map_name]["mobs"].set_point_disabled(bottom_right_point_index, true)
+	
+	# Get all points between top_left_point and bottom_right_point
+	var horizontal_point_span = bottom_right_point.x - top_left_point.x + 1
+	var vertical_point_span = bottom_right_point.y - top_left_point.y + 1
+	for x in horizontal_point_span:
+		for y in vertical_point_span:
+			var current_point = top_left_point + Vector2(x, y)
+			var current_point_index = calculate_point_index(current_point)
+			if astar_nodes_cache[map_name]["mobs"].has_point(current_point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(current_point_index):
+				astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(current_point_index)
+				astar_nodes_cache[map_name]["mobs"].set_point_disabled(current_point_index, true)
+	
+#	# Round up to avoid wrong shape size
+#	var range_x = ceil(collisionshape_node.shape.extents.x * xExtentsFactor)
+#	var range_y = ceil(collisionshape_node.shape.extents.y * yExtentsFactor)
+#	print(position)
+#	print(position + collisionshape_node.shape.extents * 2)
+#	for x in (range_x):
+#		for y in (range_y):
+#			# Check all positions inside shape
+#			var current_position = Vector2(position.x + x, position.y + y)
+#			var point = world_to_tile_coords(current_position)
+#			var point_index = calculate_point_index(point)
+#			print("current_position: " + str(current_position))
+#			print("point: " + str(point))
+#			if astar_nodes_cache[map_name]["mobs"].has_point(point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(point_index):
+#				astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(point_index)
+#				astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
+#				print("disabled normal: " + str(point))
+#
+#			# Check all positions at the bottom/right of the shape and add extra points there
+#			var extra_safety_point_offset = Vector2.ZERO
+#			# Add safety border if right or/and bottom
+#			if x == range_x - 1:
+#				extra_safety_point_offset.x = extra_safety_point_offset.x + 1
+#			if y == range_y - 1:
+#				extra_safety_point_offset.y = extra_safety_point_offset.y + 1
+#			# Check new point
+#			if extra_safety_point_offset != Vector2.ZERO:
+#				point = world_to_tile_coords(current_position) + extra_safety_point_offset
+#				point_index = calculate_point_index(point)
+#				if astar_nodes_cache[map_name]["mobs"].has_point(point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(point_index):
+#					astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(point_index)
+#					astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
+#					print("disabled safety: " + str(point))
 	
 	# Update obstacles visual
 	if astar2DVisualizerNode != null:
-		astar2DVisualizerNode.update_disabled_points()
+		astar2DVisualizerNode.call_deferred("update_disabled_points")

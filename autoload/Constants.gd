@@ -125,6 +125,7 @@ const SAVE_GAME_PATHFINDING_PATH = SAVE_GAME_PATH + "pathfinding/"
 # Pathfinding variables
 const POINTS_HORIZONTAL_PER_TILE = 3
 const POINTS_VERTICAL_PER_TILE = 3
+const POINT_SIZE_IN_PIXEL_PER_TILE = TILE_SIZE / POINTS_HORIZONTAL_PER_TILE
 
 # Boss enemies pathes
 const BossPathes = [

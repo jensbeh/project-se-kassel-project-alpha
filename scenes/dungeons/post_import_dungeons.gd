@@ -193,10 +193,12 @@ func create_astar(scene):
 	# Create astar
 	var mobs_astar_node = AStar.new()
 	var astar_nodes_dics = {
-						"mobs" : {
-							"points": {}
-						},
-						"ambient_mobs" : {}
+							"mobs" : {
+								"points": {}
+							},
+							"ambient_mobs" : {
+								"points": {}
+							}
 						}
 	astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
 	astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)

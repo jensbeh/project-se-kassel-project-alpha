@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://assets/map/map_grassland.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
@@ -1535,9 +1535,6 @@ parameters/playback = SubResource( 12 )
 [node name="Player" parent="map_grassland/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 184, 570 )
 
-[node name="Body" parent="map_grassland/entitylayer/playerlayer/Player" index="1"]
-frame = 0
-
 [node name="AnimationTree" parent="map_grassland/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 15 )
 
@@ -1546,7 +1543,6 @@ limit_left = -4335
 limit_bottom = 794
 
 [node name="astar" type="Node2D" parent="."]
-visible = false
 script = ExtResource( 11 )
 
 [editable path="map_grassland"]
