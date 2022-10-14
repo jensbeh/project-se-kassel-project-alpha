@@ -17,10 +17,10 @@ func _ready():
 	var collision_extents = get_node("StaticBody/CollisionShape2D").shape.extents
 	var spawn_position = Utils.generate_position_in_mob_area(scene_type, current_spawn_area, navigation_tile_map, collision_extents.x, true)
 	position = spawn_position
-	print("SPAWNED TREASURE AT: " + str(spawn_position))
+	print("SPAWNED TREASURE AT: " + str(position))
 	
 	# Add treasure to dynamic obstacles in PathfindingService
-	PathfindingService.add_dynamic_obstacle(get_node("StaticBody/CollisionShape2D"), spawn_position)
+	PathfindingService.add_dynamic_obstacle(get_node("StaticBody/CollisionShape2D"), position)
 
 
 func init(init_current_spawn_area, init_navigation_tile_map, init_scene_type):

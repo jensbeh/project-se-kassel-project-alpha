@@ -61,7 +61,6 @@ func save_loot(loot):
 	loot_panel.disconnect("looted", self, "save_loot")
 	if content.empty() or timeout:
 		Utils.get_current_player().disconnect("player_interact", self, "interaction")
-		get_parent().remove_child(self)
 		queue_free()
 
 
@@ -69,7 +68,6 @@ func save_loot(loot):
 func _on_Timer_timeout():
 	if !interacted:
 		Utils.get_current_player().disconnect("player_interact", self, "interaction")
-		get_parent().remove_child(self)
 		queue_free()
 	else:
 		timeout = true

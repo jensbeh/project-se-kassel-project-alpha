@@ -43,6 +43,7 @@ var min_attacking_radius_around_player
 var pre_attack_time = 0.0
 var max_pre_attack_time
 var scene_type
+var killed = false
 
 # Mob movment
 var acceleration = 350
@@ -452,8 +453,10 @@ func mob_hurt():
 
 # Method is called when DIE animation is done
 func mob_killed():
-	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-	MobSpawnerService.despawn_mob(self)
+	if not killed:
+		killed = true
+		Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
+		MobSpawnerService.despawn_mob(self)
 
 
 # Method to return a random time between min_time and max_time
