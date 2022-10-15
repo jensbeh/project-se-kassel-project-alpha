@@ -47,7 +47,7 @@ func _setup_scene_in_background():
 	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
 	var map_name = groundChunks.get_meta("map_name")
 	
-	# Setup chunks and chunkloader
+	# Setup ChunkLoaderService
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
@@ -56,13 +56,13 @@ func _setup_scene_in_background():
 	# Setup stair areas
 	setup_stair_areas()
 	
-	# Setup pathfinding
+	# Setup PathfindingService
 	PathfindingService.init(map_name, find_node("astar"), mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
 	
-	# Spawn mobs
+	# Setup MobSpawnerService
 	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true)
 	
 	call_deferred("_on_setup_scene_done")
@@ -80,6 +80,9 @@ func _on_setup_scene_done():
 	
 	# Spawn random treasures
 	spawn_treasures()
+	
+	# Start PathfindingService
+	PathfindingService.start()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
