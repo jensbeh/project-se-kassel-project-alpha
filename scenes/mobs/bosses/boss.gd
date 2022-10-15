@@ -50,6 +50,7 @@ var regenerate_hp = false
 var regeneration_interval = 0.0
 var max_regeneration_interval
 var scene_type
+var is_in_boss_room
 
 # Mob movment
 var acceleration = 350
@@ -120,10 +121,11 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type):
+func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_is_in_boss_room):
 	boss_spawn_area = init_boss_spawn_area
 	navigation_tile_map = init_navigation_tile_map
 	scene_type = init_scene_type
+	is_in_boss_room = init_is_in_boss_room
 
 
 func _physics_process(_delta):
@@ -463,13 +465,13 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	health -= damage_to_mob
 	
 	# Update healthbar in boss
-	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND:
+	if not is_in_boss_room:
 		var healthbar_value_in_percent = (100.0 / max_health) * health
 		healthBar.value = healthbar_value_in_percent
 		if not healthBarNode.visible:
 			healthBarNode.visible = true
 	# Update healthbar in player ui
-	elif Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON:
+	elif is_in_boss_room:
 		var healthbar_value_in_percent = (100.0 / max_health) * health
 		Utils.get_player_ui().set_boss_health(healthbar_value_in_percent)
 	
@@ -497,10 +499,10 @@ func mob_hurt():
 # Method is called when DIE animation is done
 func mob_killed():
 	# Spawn way to first lvl in dungeon if boss is killed in dungeon's boss room
-	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+	if is_in_boss_room:
 		Utils.get_scene_manager().get_current_scene().spawn_key_at_death(global_position)
 	
-	Utils.get_player_ui().show_boss_health(false)
+	Utils.get_player_ui().show_boss_health_bar(false)
 	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
 	Utils.get_scene_manager().get_current_scene().despawn_boss(self)
 
@@ -558,7 +560,7 @@ func regenerate_hp_bar(delta):
 			health = max_health
 		
 		# Update healthbar in boss
-		if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND:
+		if not is_in_boss_room:
 			var healthbar_value_in_percent = (100.0 / max_health) * health
 			healthBar.value = healthbar_value_in_percent
 			if not healthBarNode.visible and health < max_health:
@@ -568,6 +570,6 @@ func regenerate_hp_bar(delta):
 				# Disable healthbar visibility if full hp
 				healthBarNode.visible = false
 		# Update healthbar in player ui
-		elif Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON:
+		elif is_in_boss_room:
 			var healthbar_value_in_percent = (100.0 / max_health) * health
 			Utils.get_player_ui().set_boss_health(healthbar_value_in_percent)

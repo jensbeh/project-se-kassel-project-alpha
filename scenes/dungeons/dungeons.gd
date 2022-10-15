@@ -29,13 +29,6 @@ onready var lootLayer = find_node("lootLayer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Setup scene in background
-	thread = Thread.new()
-	thread.start(self, "_setup_scene_in_background")
-
-
-# Method to setup this scene with a thread in background
-func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
@@ -66,13 +59,6 @@ func _setup_scene_in_background():
 	# Setup MobSpawnerService
 	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false)
 	
-	call_deferred("_on_setup_scene_done")
-
-
-# Method is called when thread is done and the scene is setup
-func _on_setup_scene_done():
-	thread.wait_to_finish()
-	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
 	
@@ -80,6 +66,9 @@ func _on_setup_scene_done():
 	if is_boss_room():
 		# Spawn boss
 		spawn_boss()
+		
+		# Show boss health bar in player ui
+		Utils.get_player_ui().show_boss_health_bar(true)
 	
 	# Start PathfindingService
 	PathfindingService.start()
@@ -102,13 +91,18 @@ func spawn_boss():
 	var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
 	var boss_instance = load(boss_path).instance()
 	# Generate spawn position and spawn boss
-	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type)
+	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type, is_boss_room())
 	mobsLayer.call_deferred("add_child", boss_instance)
 
 
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
+	# Check if boss room
+	if is_boss_room():
+		# Hide boss health bar in player ui
+		Utils.get_player_ui().show_boss_health_bar(false)
+	
 	# Stop pathfinder
 	PathfindingService.cleanup()
 	

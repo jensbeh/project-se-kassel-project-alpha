@@ -33,7 +33,7 @@ func _ready():
 	setup_animations()
 	
 	# Setup healthbar in player_ui if in dungeon
-	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+	if is_in_boss_room:
 		Utils.get_player_ui().set_boss_name_to_hp_bar(self)
 
 

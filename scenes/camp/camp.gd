@@ -19,12 +19,6 @@ onready var higherChunks = $map_camp/higher/Chunks
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Setup scene in background
-	thread = Thread.new()
-	thread.start(self, "_setup_scene_in_background")
-
-# Method to setup this scene with a thread in background
-func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
@@ -41,11 +35,6 @@ func _setup_scene_in_background():
 	# setup all door areas to handle action
 	setup_door_areas()
 	
-	call_deferred("_on_setup_scene_done")
-
-# Method is called when thread is done and the scene is setup
-func _on_setup_scene_done():
-	thread.wait_to_finish()
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 

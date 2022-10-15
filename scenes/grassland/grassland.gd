@@ -30,13 +30,6 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Setup scene in background
-	thread = Thread.new()
-	thread.start(self, "_setup_scene_in_background")
-
-
-# Method to setup this scene with a thread in background
-func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
@@ -64,13 +57,6 @@ func _setup_scene_in_background():
 	
 	# Setup MobSpawnerService
 	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true)
-	
-	call_deferred("_on_setup_scene_done")
-
-
-# Method is called when thread is done and the scene is setup
-func _on_setup_scene_done():
-	thread.wait_to_finish()
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -100,7 +86,7 @@ func spawn_bosses():
 				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
 				var boss_instance = load(boss_path).instance()
 				# Generate spawn position and spawn boss
-				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type)
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
 				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
@@ -113,7 +99,7 @@ func spawn_bosses():
 				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
 				var boss_instance = load(boss_path).instance()
 				# Generate spawn position and spawn boss
-				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type)
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
 				print("SPAWNED BOSS \""+ str(boss_path) +"\" with 10% chance in " + str(biome_name))

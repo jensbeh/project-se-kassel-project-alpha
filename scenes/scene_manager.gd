@@ -145,11 +145,9 @@ func finish_transition():
 		# Update minimap
 		Utils.get_minimap().update_minimap()
 		
-		# Update boss health bar in player ui
-		Utils.get_player_ui().update_boss_health_bar()
-		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
+
 
 # Method to update the current_scene_type and emits a signal
 func update_scene_type(new_transition_data):
