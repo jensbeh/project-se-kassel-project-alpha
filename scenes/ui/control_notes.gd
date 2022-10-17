@@ -28,7 +28,7 @@ func _ready():
 	get_node("Menu/Label2").set_text(tr("CLOSEMENU"))
 	get_node("Control/Label7").set_text(tr("USEITEM"))
 	get_node("Looting/Label2").set_text(tr("CLOSE"))
-	get_node("Looting/Label4").set_text(tr("LOOTALL"))
+	get_node("Looting/Label4").set_text(tr("LOOT_ALL"))
 
 
 # makes all control notes invisible
