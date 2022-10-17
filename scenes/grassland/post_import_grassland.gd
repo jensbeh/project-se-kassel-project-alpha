@@ -183,8 +183,6 @@ func post_import(scene):
 # Method to create the astar nodes with points and connection -> then saves the dic to file
 func create_astar(scene):
 	# Create astar
-	var ambient_mobs_astar_node = AStar.new()
-	var mobs_astar_node = AStar.new()
 	var astar_nodes_dics = {
 							"mobs" : {
 								"points": {}
@@ -193,11 +191,11 @@ func create_astar(scene):
 								"points": {}
 							}
 						}
-	astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
-	astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics)
+	astar_add_walkable_cells_for_mobs(astar_nodes_dics)
+	astar_connect_walkable_cells_for_mobs(astar_nodes_dics)
 	print("Generated AStar for MOBS!")
-	astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_nodes_dics)
-	astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_nodes_dics)
+	astar_add_walkable_cells_for_ambient_mobs(astar_nodes_dics)
+	astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_dics)
 	print("Generated AStar for AMBIENT_MOBS!")
 	
 	# Store astar
@@ -568,7 +566,7 @@ func remove_collisiontiles_from_tilemap(tilemap : TileMap):
 
 # Loops through all cells within the map's bounds and
 # adds all points to the mobs_astar_node, except the obstacles.
-func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
+func astar_add_walkable_cells_for_mobs(astar_nodes_dics):
 	for y in range(map_offset_in_tiles.y, map_offset_in_tiles.y + map_size_in_tiles.y + 1):
 		for x in range(map_offset_in_tiles.x, map_offset_in_tiles.x + map_size_in_tiles.x + 1):
 			var tile_coord = Vector2(x, y)
@@ -661,15 +659,11 @@ func astar_add_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics):
 												"point_index" : point_index,
 												"connections" : []
 												}
-							
-							# AStar works for both 2d and 3d, so we have to convert the tile_coord
-							# coordinates from and to Vector3s.
-							mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
 # Loops through all cells within the map's bounds and
 # adds all points to the ambient_mobs_astar_node, except the obstacles.
-func astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_nodes_dics):
+func astar_add_walkable_cells_for_ambient_mobs(astar_nodes_dics):
 	for y in range(map_offset_in_tiles.y, map_offset_in_tiles.y + map_size_in_tiles.y + 1):
 		for x in range(map_offset_in_tiles.x, map_offset_in_tiles.x + map_size_in_tiles.x + 1):
 			var point = Vector2(x, y)
@@ -686,16 +680,11 @@ func astar_add_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_no
 					"point_index" : point_index,
 					"connections" : []
 					}
-			# AStar works for both 2d and 3d, so we have to convert the point
-			# coordinates from and to Vector3s.
-			ambient_mobs_astar_node.add_point(point_index, Vector3(point.x, point.y, 0.0))
 
 
 # After added all points to the mobs_astar_node, connect them
-func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : Dictionary):
+func astar_connect_walkable_cells_for_mobs(astar_nodes_dics : Dictionary):
 	for point in astar_nodes_dics["mobs"]["points"].keys():
-		
-		var point_index = astar_nodes_dics["mobs"]["points"][point]["point_index"]
 		
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
@@ -715,19 +704,16 @@ func astar_connect_walkable_cells_for_mobs(mobs_astar_node, astar_nodes_dics : D
 			# Check point_relative
 #			if is_outside_map_bounds(point_relative):
 #				continue
-			if not mobs_astar_node.has_point(point_relative_index):
+			if not astar_nodes_dics["mobs"]["points"].has(point_relative):
 				continue
 			
 			# Connect points if everything is okay
-			mobs_astar_node.connect_points(point_index, point_relative_index, false) # False means it is one-way / not bilateral
 			astar_nodes_dics["mobs"]["points"][point]["connections"].append(point_relative_index)
 
 
 # After added all points to the ambient_mobs_astar_node, connect them
-func astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, astar_nodes_dics):
+func astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_dics):
 	for point in astar_nodes_dics["ambient_mobs"]["points"].keys():
-		
-		var point_index = astar_nodes_dics["ambient_mobs"]["points"][point]["point_index"]
 		
 		# For every cell in the map, we check the one to the top, right, 
 		# left and bottom of it. If it's in the map and not an obstalce -> connect it
@@ -747,11 +733,10 @@ func astar_connect_walkable_cells_for_ambient_mobs(ambient_mobs_astar_node, asta
 			# Check point_relative
 #			if is_outside_map_bounds(point_relative):
 #				continue
-			if not ambient_mobs_astar_node.has_point(point_relative_index):
+			if not astar_nodes_dics["ambient_mobs"]["points"].has(point_relative):
 				continue
 			
 			# Connect points if everything is okay
-			ambient_mobs_astar_node.connect_points(point_index, point_relative_index, false) # False means it is one-way / not bilateral
 			astar_nodes_dics["ambient_mobs"]["points"][point]["connections"].append(point_relative_index)
 
 

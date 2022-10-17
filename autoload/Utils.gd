@@ -431,6 +431,11 @@ func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
 	return position
 
 
+# Method to choose random boss instance path
+func get_random_boss_instance_path():
+	return Constants.BossPathes[randi() % Constants.BossPathes.size()]
+
+
 # Method to preload game -> called ONLY! from start screen
 func preload_game():
 	print("PRELOAD GAME")
@@ -447,7 +452,7 @@ func preload_game():
 	time_now = OS.get_system_time_msecs()
 	var time_elapsed = time_now - time_start
 	print("Needed " + str(time_elapsed / 1000.0) + " sec to preload game!")
-
+	
 	print("PRELOAD DONE")
 
 

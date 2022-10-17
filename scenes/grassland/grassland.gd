@@ -83,26 +83,13 @@ func spawn_bosses():
 		if biome_name == "mountain":
 			for _i in range(2):
 				# Take random boss
-				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
+				var boss_path = Utils.get_random_boss_instance_path()
 				var boss_instance = load(boss_path).instance()
 				# Generate spawn position and spawn boss
 				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
 				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
-		
-		# Generate bosses with little chance in other biomes
-		else:
-			var random_float = randf()
-			if random_float <= 0.1:
-				# Take random boss
-				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
-				var boss_instance = load(boss_path).instance()
-				# Generate spawn position and spawn boss
-				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
-				boss_instance.is_boss_in_grassland(true)
-				mobsLayer.call_deferred("add_child", boss_instance)
-				print("SPAWNED BOSS \""+ str(boss_path) +"\" with 10% chance in " + str(biome_name))
 
 
 # Method to destroy the scene
