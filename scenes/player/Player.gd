@@ -240,7 +240,7 @@ func _input(event):
 	
 	# Loot
 	elif event.is_action_pressed("loot") and Utils.get_loot_panel() == null:
-		if player_can_interact and not is_attacking:
+		if player_can_interact and not is_attacking and not dying:
 			emit_signal("player_looting")
 	
 	# Loot All

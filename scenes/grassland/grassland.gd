@@ -226,7 +226,7 @@ func clear_signals():
 	
 	# Treasures
 	for treasure in lootLayer.get_children():
-		Utils.get_current_player().disconnect("player_looting", treasure, "interaction")
+		Utils.get_current_player().disconnect("player_interact", treasure, "interaction")
 
 
 # Method which is called when a body has exited a changeSceneArea
