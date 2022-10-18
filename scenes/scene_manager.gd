@@ -155,6 +155,9 @@ func finish_transition():
 		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
+		
+		if Utils.get_current_player() != null:
+			Utils.get_current_player().set_change_scene(false)
 
 # Method to update the current_scene_type and emits a signal
 func update_scene_type(new_transition_data):
