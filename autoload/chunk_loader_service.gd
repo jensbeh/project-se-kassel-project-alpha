@@ -132,6 +132,7 @@ func load_chunks():
 func update_mobs():
 	# Mob lists
 	var enemies = get_tree().get_nodes_in_group("Enemy")
+	var bosses = get_tree().get_nodes_in_group("Boss")
 	var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
 	
 	for enemy in enemies:
@@ -141,6 +142,14 @@ func update_mobs():
 				call_deferred("set_mob_activity_state", enemy, true)
 			else:
 				call_deferred("set_mob_activity_state", enemy, false)
+	
+	for boss in bosses:
+		if is_instance_valid(boss) and boss.is_inside_tree():
+			var boss_chunk = Utils.get_chunk_from_position(map_min_global_pos, boss.global_position)
+			if boss_chunk in active_chunks:
+				call_deferred("set_mob_activity_state", boss, true)
+			else:
+				call_deferred("set_mob_activity_state", boss, false)
 	
 	for ambient_mob in ambient_mobs:
 		if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree():

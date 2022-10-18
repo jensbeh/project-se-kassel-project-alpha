@@ -50,7 +50,7 @@ func _ready():
 	setup_stair_areas()
 	
 	# Setup PathfindingService
-	PathfindingService.init(map_name, find_node("astar"), mobsNavigationTileMap, ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
+	PathfindingService.init(map_name, find_node("astar"), ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()

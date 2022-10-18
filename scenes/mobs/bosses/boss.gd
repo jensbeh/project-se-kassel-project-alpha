@@ -79,7 +79,7 @@ onready var healthBarNode = $NinePatchRect
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Show or hide line node for debugging
-	line2D.visible = Constants.SHOW_MOB_PATHES
+	line2D.visible = Constants.SHOW_BOSS_PATHES
 	
 	# Set detection radius depending on grassland or not
 	if in_grassland:
@@ -128,118 +128,112 @@ func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_
 	is_in_boss_room = init_is_in_boss_room
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	# Handle behaviour
-#	match behaviour_state:
-#
-#		IDLING:
-#			# Mob is doing nothing, just standing and searching for player
-#			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
-#
-#
-#		WANDERING:
-#			if not mob_need_path:
-#				# Mob is wandering around and is searching for player
-#				# Follow wandering path
-#				if path.size() > 0:
-#					move_to_position(delta)
-#
-#
-#		HUNTING:
-#			# Check if player is nearby
-#			var player = playerDetectionZone.player
-#			if player != null:
-#				# Follow path
-#				if path.size() > 0:
-#					move_to_position(delta)
-#
-#
-#		SEARCHING:
-#			if not mob_need_path:
-#				# Mob is wandering around and is searching for player
-#				# Follow searching path
-#				if path.size() > 0:
-#					move_to_position(delta)
-#
-#
-#		HURTING:
-#			# handle knockback
-#			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
-#			velocity = move_and_slide(velocity)
-#
-#
-#		DYING:
-#			# handle knockback
-#			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
-#			velocity = move_and_slide(velocity)
-#
-#
-#	# Regenerate hp bar if enabled
-#	if regenerate_hp:
-#		regenerate_hp_bar(delta)
-	pass
+	match behaviour_state:
+		
+		IDLING:
+			# Mob is doing nothing, just standing and searching for player
+			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
+		
+		
+		WANDERING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow wandering path
+				if path.size() > 0:
+					move_to_position(delta)
+		
+		
+		HUNTING:
+			# Check if player is nearby
+			var player = playerDetectionZone.player
+			if player != null:
+				# Follow path
+				if path.size() > 0:
+					move_to_position(delta)
+		
+		
+		SEARCHING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow searching path
+				if path.size() > 0:
+					move_to_position(delta)
+		
+		
+		HURTING:
+			# handle knockback
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
+		
+		
+		DYING:
+			# handle knockback
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
+			velocity = move_and_slide(velocity)
+	
+	# Regenerate hp bar if enabled
+	if regenerate_hp:
+		regenerate_hp_bar(delta)
 
 
-func _process(_delta):
-#	# Handle behaviour
-#	match behaviour_state:
-#
-#		IDLING:
-#			search_player()
-#
-#			# After some time change to WANDERING
-#			ideling_time += delta
-#			if ideling_time > max_ideling_time:
-#				ideling_time = 0.0
-#				update_behaviour(WANDERING)
-#
-#
-#		WANDERING:
-#			if not mob_need_path:
-#				# Mob is wandering around and is searching for player
-#				# Follow wandering path
-#				if path.size() == 0:
-#					# Case if pathend is reached, need new path
-#					update_behaviour(IDLING)
-#
-#			# Check if player is nearby (needs to be at the end of WANDERING)
-#			search_player()
-#
-#
-#		HUNTING:
-#			# Update path generation timer
-#			update_path_time += delta
-#			if update_path_time > max_update_path_time:
-#				update_path_time = 0.0
-#				mob_need_path = true
-#			# Check if player is nearby
-#			var player = playerDetectionZone.player
-#			if player == null:
-#				# Lose player
-#				update_behaviour(SEARCHING)
-#
-#				# Start healing
-#				# TODO
-#
-#
-#		SEARCHING:
-#			if not mob_need_path:
-#				# Mob is wandering around and is searching for player
-#				# Follow searching path
-#				if path.size() > 0:
-#					# After some time change to WANDERING (also to return to mob area)
-#					searching_time += delta
-#					if searching_time > max_searching_time:
-#						searching_time = 0.0
-#						update_behaviour(WANDERING)
-#				else:
-#					# Case if pathend is reached, need new path for searching
-#					mob_need_path = true
-#
-#
-#			# Mob is doing nothing, just standing and searching for player
-#			search_player()
-	pass
+func _process(delta):
+	# Handle behaviour
+	match behaviour_state:
+		
+		IDLING:
+			search_player()
+			
+			# After some time change to WANDERING
+			ideling_time += delta
+			if ideling_time > max_ideling_time:
+				ideling_time = 0.0
+				update_behaviour(WANDERING)
+		
+		
+		WANDERING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow wandering path
+				if path.size() == 0:
+					# Case if pathend is reached, need new path
+					update_behaviour(IDLING)
+			
+			# Check if player is nearby (needs to be at the end of WANDERING)
+			search_player()
+		
+		
+		HUNTING:
+			# Update path generation timer
+			update_path_time += delta
+			if update_path_time > max_update_path_time:
+				update_path_time = 0.0
+				mob_need_path = true
+			# Check if player is nearby
+			var player = playerDetectionZone.player
+			if player == null:
+				# Lose player
+				update_behaviour(SEARCHING)
+		
+		
+		SEARCHING:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow searching path
+				if path.size() > 0:
+					# After some time change to WANDERING (also to return to mob area)
+					searching_time += delta
+					if searching_time > max_searching_time:
+						searching_time = 0.0
+						update_behaviour(WANDERING)
+				else:
+					# Case if pathend is reached, need new path for searching
+					mob_need_path = true
+			
+			
+			# Mob is doing nothing, just standing and searching for player
+			search_player()
 
 
 # Method to move the mob to position
@@ -248,7 +242,7 @@ func move_to_position(delta):
 	if global_position.distance_to(path[0]) < position_threshold:
 		path.remove(0)
 		
-		if Constants.SHOW_MOB_PATHES:
+		if Constants.SHOW_BOSS_PATHES:
 			# Update line
 			line2D.points = path
 	else:
@@ -259,18 +253,18 @@ func move_to_position(delta):
 		# Update anmination
 		update_animations()
 		
-		if Constants.SHOW_MOB_PATHES:
+		if Constants.SHOW_BOSS_PATHES:
 			# Update line position
 			line2D.global_position = Vector2(0,0)
 	
-	if Constants.SHOW_MOB_PATHES:
+	if Constants.SHOW_BOSS_PATHES:
 		if path.size() == 0:
 			line2D.points = []
 
 
 # Method to search for player
 func search_player():
-	if playerDetectionZone.mob_can_see_player():
+	if playerDetectionZone.mob_can_see_player(): # and PathfindingService.has_boss_path(global_position, playerDetectionZone.player.global_position):
 		# Player in detection zone of this mob
 		update_behaviour(HUNTING)
 
@@ -319,7 +313,7 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					if Constants.SHOW_MOB_PATHES:
+					if Constants.SHOW_BOSS_PATHES:
 						# Update line path
 						line2D.points = []
 				
@@ -339,7 +333,7 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					if Constants.SHOW_MOB_PATHES:
+					if Constants.SHOW_BOSS_PATHES:
 						# Update line path
 						line2D.points = []
 #				print("HUNTING")
@@ -434,7 +428,10 @@ func update_path(new_path):
 	path = new_path
 	mob_need_path = false
 	
-	if Constants.SHOW_MOB_PATHES:
+	if path.size() == 0:
+		update_behaviour(WANDERING)
+	
+	if Constants.SHOW_BOSS_PATHES:
 		# Update line path
 		line2D.points = path
 

@@ -715,7 +715,7 @@ margin_right = 3.58902
 
 [sub_resource type="StyleBoxTexture" id=138]
 
-[node name="Boss_ZombieBlue" type="KinematicBody2D" groups=["Enemy"]]
+[node name="Boss_ZombieBlue" type="KinematicBody2D" groups=["Boss"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
 script = ExtResource( 3 )

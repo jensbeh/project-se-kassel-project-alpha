@@ -165,7 +165,7 @@ margin_right = 3.58902
 
 [sub_resource type="StyleBoxTexture" id=41]
 
-[node name="Boss_OrbinautBlue" type="KinematicBody2D" groups=["Enemy"]]
+[node name="Boss_OrbinautBlue" type="KinematicBody2D" groups=["Boss"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
 script = ExtResource( 2 )
@@ -174,7 +174,6 @@ script = ExtResource( 2 )
 position = Vector2( 0, -5 )
 texture = ExtResource( 1 )
 hframes = 3
-frame = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Die = SubResource( 23 )
