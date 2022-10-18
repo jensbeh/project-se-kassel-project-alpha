@@ -51,6 +51,7 @@ var regeneration_interval = 0.0
 var max_regeneration_interval
 var scene_type
 var is_in_boss_room
+var killed = false
 
 # Mob movment
 var acceleration = 350
@@ -495,13 +496,15 @@ func mob_hurt():
 
 # Method is called when DIE animation is done
 func mob_killed():
-	# Spawn way to first lvl in dungeon if boss is killed in dungeon's boss room
-	if is_in_boss_room:
-		Utils.get_scene_manager().get_current_scene().spawn_key_at_death(global_position)
-	
-	Utils.get_player_ui().show_boss_health_bar(false)
-	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-	Utils.get_scene_manager().get_current_scene().despawn_boss(self)
+	if not killed:
+		killed = true
+		# Spawn way to first lvl in dungeon if boss is killed in dungeon's boss room
+		if is_in_boss_room:
+			Utils.get_scene_manager().get_current_scene().spawn_key_at_death(global_position)
+		
+		Utils.get_player_ui().show_boss_health_bar(false)
+		Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
+		Utils.get_scene_manager().get_current_scene().despawn_boss(self)
 
 
 # Method to return a random time between min_time and max_time
