@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Signals
 signal player_collided(collision)
 signal player_interact
+signal player_looting
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -52,7 +53,7 @@ var velocity = Vector2(0,1)
 var movement
 
 # Interaction
-var player_can_interact
+var player_can_interact = true
 
 # player stats and values
 var gold: int
@@ -76,6 +77,7 @@ var dying = false
 var is_invincible = false
 var collecting = false
 var collected = false
+var change_scene
 
 
 func _ready():
@@ -166,81 +168,91 @@ func _physics_process(delta):
 # Method handles key inputs
 func _input(event):
 	Utils.get_control_notes().update()
-	
-	if event.is_action_pressed("e"):
+	# only can do interactions while mot scene changeing
+	if not change_scene:
+		if event.is_action_pressed("e"):
+			
+			if player_can_interact and not is_attacking and not dying:
+				emit_signal("player_interact")
+				
+			# Remove the Loot Panel
+			elif Utils.get_loot_panel() != null:
+				# Call close Method in Loot Panel
+				Utils.get_loot_panel()._on_Close_pressed()
+				
+			# Remove the trade inventory
+			if Utils.get_trade_inventory() != null and !dragging:
+				Utils.get_trade_inventory().queue_free()
+				set_player_can_interact(true)
+				set_movement(true)
+				set_movment_animation(true)
+				# Reset npc interaction state
+				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
+					npc.set_interacted(false)
+				PlayerData.save_inventory()
+				save_player_data(Utils.get_current_player().get_data())
+				MerchantData.save_merchant_inventory()
 		
-		if player_can_interact:
-			emit_signal("player_interact")
-			
-		# Remove the Loot Panel
-		elif Utils.get_ui().get_node_or_null("LootPanel") != null:
-			# Call close Method in Loot Panel
-			Utils.get_ui().get_node_or_null("LootPanel")._on_Close_pressed()
-			
-		# Remove the trade inventory
-		if Utils.get_trade_inventory() != null and !dragging:
-			Utils.get_trade_inventory().queue_free()
-			set_player_can_interact(true)
+		# Open game menu with "esc"
+		elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
+			set_movement(false)
+			set_movment_animation(false)
+			set_player_can_interact(false)
+			Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
+			save_player_data(Utils.get_current_player().get_data())
+			PlayerData.save_inventory()
+		# Close game menu with "esc" when game menu is open
+		elif event.is_action_pressed("esc") and !movement and Utils.get_game_menu() != null:
 			set_movement(true)
 			set_movment_animation(true)
-			# Reset npc interaction state
-			for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
-				npc.set_interacted(false)
+			set_player_can_interact(true)
+			Utils.get_game_menu().queue_free()
+		
+		# Open character inventory with "i"
+		elif event.is_action_pressed("character_inventory") and movement and not collecting and not dying and Utils.get_character_interface() == null:
+			set_movement(false)
+			set_movment_animation(false)
+			set_player_can_interact(false)
+			Utils.get_ui().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+		# Close character inventory with "i"
+		elif event.is_action_pressed("character_inventory") and !movement and Utils.get_character_interface() != null and !dragging:
+			set_movement(true)
+			set_movment_animation(true)
+			set_player_can_interact(true)
+			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
+			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
+			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			PlayerData.save_inventory()
 			save_player_data(Utils.get_current_player().get_data())
-			MerchantData.save_merchant_inventory()
+			Utils.get_character_interface().queue_free()
 		
-	# Open game menu with "esc"
-	elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
-		set_movement(false)
-		set_movment_animation(false)
-		set_player_can_interact(false)
-		Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
-		save_player_data(Utils.get_current_player().get_data())
-		PlayerData.save_inventory()
-	# Close game menu with "esc" when game menu is open
-	elif event.is_action_pressed("esc") and !movement and Utils.get_game_menu() != null:
-		set_movement(true)
-		set_movment_animation(true)
-		set_player_can_interact(true)
-		Utils.get_game_menu().queue_free()
-	
-	# Open character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and movement and not hurting and not dying and Utils.get_character_interface() == null:
-		set_movement(false)
-		set_movment_animation(false)
-		set_player_can_interact(false)
-		Utils.get_ui().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
-	# Close character inventory with "i"
-	elif event.is_action_pressed("character_inventory") and !movement and Utils.get_character_interface() != null and !dragging:
-		set_movement(true)
-		set_movment_animation(true)
-		set_player_can_interact(true)
-		PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
-		PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
-		PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
-		PlayerData.save_inventory()
-		save_player_data(Utils.get_current_player().get_data())
-		Utils.get_character_interface().queue_free()
-	
-	# Use Item from Hotbar
-	elif event.is_action_pressed("hotbar") and !preview:
-		Utils.get_hotbar().use_item()
+		# Use Item from Hotbar
+		elif event.is_action_pressed("hotbar") and !preview and not dying:
+			Utils.get_hotbar().use_item()
+			
+		# Control Notes
+		elif event.is_action_pressed("control_notes") and !preview:
+			Utils.get_control_notes().show_hide_control_notes()
 		
-	# Control Notes
-	elif event.is_action_pressed("control_notes") and !preview:
-		Utils.get_control_notes().show_hide_control_notes()
-	
-	# Attack with "left_mouse"
-	elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
-		is_attacking = true
-		set_movement(false)
-		animation_state.start("Attack")
-	
-	# Loot All
-	elif event.is_action_pressed("loot_all") and Utils.get_ui().get_node_or_null("LootPanel") != null:
-		# Call Loot all Method in Loot Panel
-		Utils.get_ui().get_node_or_null("LootPanel")._on_LootAll_pressed()
+		# Attack with "left_mouse"
+		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
+			is_attacking = true
+			set_movement(false)
+			animation_state.start("Attack")
+		
+		# Loot
+		elif event.is_action_pressed("loot") and Utils.get_loot_panel() == null and not dying:
+			if player_can_interact and not is_attacking and not dying:
+				emit_signal("player_looting")
+		
+		# Loot All
+		elif event.is_action_pressed("loot") and Utils.get_loot_panel() != null:
+			# Call Loot all Method in Loot Panel
+			Utils.get_loot_panel()._on_LootAll_pressed()
+
+
+func set_change_scene(value):
+	change_scene = value
 
 
 # Method is called at the end of any attack animation
@@ -928,8 +940,8 @@ func kill_player():
 	animation_state.travel("Die")
 	
 	# Close LootPanel
-	if Utils.get_ui().get_node_or_null("LootPanel") != null:
-		Utils.get_ui().get_node_or_null("LootPanel").queue_free()
+	if Utils.get_loot_panel() != null:
+		Utils.get_loot_panel().queue_free()
 
 
 # Method is called when player collect loot

@@ -110,6 +110,8 @@ CLOSE,Close,Schließen
 CLOSE_PANEL,Close (E),Schließen (E)
 CLOSEMENU,Close menu, Menü schließen
 LOOTALL,Loot All (F),Alles Nehmen (F)
+LOOT_ALL,Loot All,Alles Nehmen
+LOOT,Looting,Aufnehmen
 LEVEL,Lvl,Lvl
 DEATH_MESSAGE, YOU DIED!, DU BIST GESTORBEN!
 LIGHT,Light,Licht
