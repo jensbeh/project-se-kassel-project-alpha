@@ -172,7 +172,7 @@ func _input(event):
 	if not change_scene:
 		if event.is_action_pressed("e"):
 			
-			if player_can_interact and not is_attacking:
+			if player_can_interact and not is_attacking and not dying:
 				emit_signal("player_interact")
 				
 			# Remove the Loot Panel
@@ -209,7 +209,7 @@ func _input(event):
 			Utils.get_game_menu().queue_free()
 		
 		# Open character inventory with "i"
-		elif event.is_action_pressed("character_inventory") and movement and not hurting and not dying and Utils.get_character_interface() == null:
+		elif event.is_action_pressed("character_inventory") and movement and not collecting and not dying and Utils.get_character_interface() == null:
 			set_movement(false)
 			set_movment_animation(false)
 			set_player_can_interact(false)
@@ -227,7 +227,7 @@ func _input(event):
 			Utils.get_character_interface().queue_free()
 		
 		# Use Item from Hotbar
-		elif event.is_action_pressed("hotbar") and !preview:
+		elif event.is_action_pressed("hotbar") and !preview and not dying:
 			Utils.get_hotbar().use_item()
 			
 		# Control Notes
@@ -241,7 +241,7 @@ func _input(event):
 			animation_state.start("Attack")
 		
 		# Loot
-		elif event.is_action_pressed("loot") and Utils.get_loot_panel() == null:
+		elif event.is_action_pressed("loot") and Utils.get_loot_panel() == null and not dying:
 			if player_can_interact and not is_attacking and not dying:
 				emit_signal("player_looting")
 		
