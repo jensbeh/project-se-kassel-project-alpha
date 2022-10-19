@@ -809,6 +809,8 @@ value = 100.0
 allow_greater = true
 percent_visible = false
 
+[node name="RayCast2D" type="RayCast2D" parent="."]
+
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 
 [editable path="PlayerDetectionZone"]

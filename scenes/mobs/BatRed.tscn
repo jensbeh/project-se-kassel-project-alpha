@@ -700,7 +700,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 4
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -794,6 +794,8 @@ custom_styles/bg = SubResource( 134 )
 value = 100.0
 allow_greater = true
 percent_visible = false
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
 
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 

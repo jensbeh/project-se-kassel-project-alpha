@@ -5765,11 +5765,6 @@ position = Vector2( 0.222219, 3.55556 )
 current = true
 zoom = Vector2( 0.25, 0.25 )
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-visible = false
-position = Vector2( 0.222219, 3.55556 )
-cast_to = Vector2( 0, 8 )
-
 [node name="CustomLight" parent="." instance=ExtResource( 16 )]
 position = Vector2( -7.8, 8 )
 radius = 64

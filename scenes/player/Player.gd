@@ -9,9 +9,6 @@ onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
 
-# Collision
-onready var ray = $RayCast2D
-
 # Look
 onready var shadow = $Shadow
 onready var bodySprite = $Body
