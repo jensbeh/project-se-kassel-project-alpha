@@ -87,9 +87,6 @@ func change_animations(animation_behaviour_state):
 
 
 func _physics_process(delta):
-	# Update parent method
-	._physics_process(delta)
-	
 	# Handle behaviour
 	match behaviour_state:
 		PRE_ATTACKING:
@@ -119,9 +116,6 @@ func _physics_process(delta):
 
 
 func _process(delta):
-	# Update parent method
-	._process(delta)
-	
 	# Handle behaviour
 	match behaviour_state:
 		PRE_ATTACKING:
