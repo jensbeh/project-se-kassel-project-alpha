@@ -129,6 +129,20 @@
 	"Texture": "item_icons_1",
 	"Worth": 30
   },
+  "10012": {
+    "Name": "Stamina Potion",
+    "Category": "Potion",
+    "EquipmentSlot": null,
+    "Attack": null,
+	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": null,
+    "Stamina": 50,
+	"Stackable": true,
+	"Frame": 147,
+	"Texture": "item_icons_1",
+	"Worth": 10
+  },
   "10013": {
     "Name": "Good Health Potion",
     "Category": "Potion",
@@ -142,6 +156,20 @@
 	"Texture": "item_icons_1",
 	"Worth": 40
   },
+  "10014": {
+    "Name": "Good Stamina Potion",
+    "Category": "Potion",
+    "EquipmentSlot": null,
+    "Attack": null,
+	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": null,
+    "Stamina": 80,
+	"Stackable": true,
+	"Frame": 151,
+	"Texture": "item_icons_1",
+	"Worth": 20
+  },
   "10015": {
     "Name": "Rare Health Potion",
     "Category": "Potion",
@@ -154,6 +182,20 @@
 	"Frame": 152,
 	"Texture": "item_icons_1",
 	"Worth": 50
+  },
+  "10016": {
+    "Name": "Rare Stamina Potion",
+    "Category": "Potion",
+    "EquipmentSlot": null,
+    "Attack": null,
+ 	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": null,
+    "Stamina": 100,
+	"Stackable": true,
+	"Frame": 155,
+	"Texture": "item_icons_1",
+	"Worth": 30
   },
   "10017": {
     "Name": "Axe",
@@ -274,6 +316,20 @@
 	"Frame": 308,
 	"Texture": "item_icons_1",
 	"Worth": 70
+  },
+  "10026": {
+    "Name": "Great Stamina Potion",
+    "Category": "Potion",
+    "EquipmentSlot": null,
+    "Attack": null,
+	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": null,
+    "Stamina": 150,
+	"Stackable": true,
+	"Frame": 311,
+	"Texture": "item_icons_1",
+	"Worth": 50
   },
   "10026": {
     "Name": "Apple",

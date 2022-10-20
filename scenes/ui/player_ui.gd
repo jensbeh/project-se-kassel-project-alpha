@@ -34,7 +34,7 @@ func setup_ui():
 # Set stamina value 
 func set_stamina(new_value: float):
 	stamina_bar.value = new_value
-	stamina_value.set_text(tr("STAMINA") + ": " + str(stepify(new_value, 0.01)))
+	stamina_value.set_text(tr("STAMINA") + ": " + str(int(new_value)))
 
 
 # Set expbar value

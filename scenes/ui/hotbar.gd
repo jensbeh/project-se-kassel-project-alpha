@@ -86,8 +86,12 @@ func use_item():
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null and !disabled and Utils.get_current_player() != null:
 		if PlayerData.equipment_data["Hotbar"]["Stack"] != null:
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
-			Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
-			int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
+			if GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina"):
+				Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
+				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Stamina"])
+			else:
+				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+				int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
 			set_cooldown(Constants.COOLDOWN)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null

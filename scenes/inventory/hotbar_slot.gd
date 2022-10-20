@@ -283,8 +283,12 @@ func _on_Icon_gui_input(event):
 			if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
 				if PlayerData.equipment_data[slot]["Stack"] != null:
 					PlayerData.equipment_data[slot]["Stack"] -= 1
-					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
-					int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
+					if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])].has("Stamina"):
+						Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
+						GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Stamina"])
+					else:
+						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+						int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
 						set_cooldown(Constants.COOLDOWN)
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:
