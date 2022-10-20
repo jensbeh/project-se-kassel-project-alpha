@@ -1579,7 +1579,7 @@ position = Vector2( 282, 1 )
 position = Vector2( 1219, 356 )
 scale = Vector2( 12, 12 )
 
-[node name="AnimationPlayer" parent="Node2D/Player" index="15"]
+[node name="AnimationPlayer" parent="Node2D/Player" index="18"]
 anims/IdleDown = SubResource( 2 )
 anims/IdleLeft = SubResource( 3 )
 anims/IdleRight = SubResource( 4 )
@@ -1590,14 +1590,13 @@ anims/WalkLeft = SubResource( 8 )
 anims/WalkRight = SubResource( 9 )
 anims/WalkUp = SubResource( 10 )
 
-[node name="AnimationTree" parent="Node2D/Player" index="16"]
+[node name="AnimationTree" parent="Node2D/Player" index="19"]
 parameters/playback = SubResource( 11 )
 
-[node name="Camera2D" parent="Node2D/Player" index="17"]
+[node name="Camera2D" parent="Node2D/Player" index="20"]
 current = false
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
-visible = true
 margin_left = 870.0
 margin_top = 463.0
 margin_right = 1126.0
@@ -1612,3 +1611,4 @@ window_title = ""
 [connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
 
 [editable path="Node2D/Player"]
+[editable path="Node2D/Player/HitboxZone"]

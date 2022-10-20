@@ -132,6 +132,10 @@ func finish_transition():
 				Utils.get_current_player().reset_player_after_dying()
 			if Utils.get_current_player().is_player_invisible() == true:
 				Utils.get_current_player().make_player_invisible(false)
+			if Utils.get_current_player().hurting:
+				Utils.get_current_player().hurting = false
+			if Utils.get_current_player().is_attacking:
+				Utils.get_current_player().is_attacking = false
 				
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")
@@ -147,6 +151,9 @@ func finish_transition():
 		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
+		
+		if Utils.get_current_player() != null:
+			Utils.get_current_player().set_change_scene(false)
 
 
 # Method to update the current_scene_type and emits a signal

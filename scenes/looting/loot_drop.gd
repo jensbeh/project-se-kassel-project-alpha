@@ -14,7 +14,7 @@ var timeout = false
 func _ready():
 	position = spawn_position
 	$Timer.wait_time = Constants.LOOTING_TIME
-	Utils.get_current_player().connect("player_interact", self, "interaction")
+	Utils.get_current_player().connect("player_looting", self, "interaction")
 	$Timer.start()
 
 
@@ -41,7 +41,7 @@ func _on_Area2D_body_exited(body):
 func interaction():
 	if player_in_looting_zone and !interacted and Utils.get_ui().get_node_or_null("DialogueBox") == null:
 		Utils.get_current_player().set_movement(false)
-		if Utils.get_ui().get_node_or_null("LootPanel") == null:
+		if Utils.get_loot_panel() == null:
 			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
 			Utils.get_ui().add_child(loot_panel)
 			loot_panel.connect("looted", self, "save_loot")
@@ -60,14 +60,16 @@ func save_loot(loot):
 	content = loot
 	loot_panel.disconnect("looted", self, "save_loot")
 	if content.empty() or timeout:
-		Utils.get_current_player().disconnect("player_interact", self, "interaction")
+		Utils.get_current_player().disconnect("player_looting", self, "interaction")
+		get_parent().remove_child(self)
 		queue_free()
 
 
 # loot disappear when time is up
 func _on_Timer_timeout():
 	if !interacted:
-		Utils.get_current_player().disconnect("player_interact", self, "interaction")
+		Utils.get_current_player().disconnect("player_looting", self, "interaction")
+		get_parent().remove_child(self)
 		queue_free()
 	else:
 		timeout = true

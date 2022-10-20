@@ -434,14 +434,24 @@ func show_hide_stack_label(data):
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
-		if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
-			data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
-			data["origin_node"].get_child(0).set_hframes(16)
-			data["origin_node"].get_child(0).set_vframes(27)
+		if data["origin_panel"] == "TradeInventory" or data["origin_panel"] == "Inventory":
+			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
+				data["origin_node"].get_child(0).set_hframes(16)
+				data["origin_node"].get_child(0).set_vframes(27)
+			else:
+				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
+				data["origin_node"].get_child(0).set_hframes(13)
+				data["origin_node"].get_child(0).set_vframes(15)
 		else:
-			data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
-			data["origin_node"].get_child(0).set_hframes(13)
-			data["origin_node"].get_child(0).set_vframes(15)
+			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
+				data["origin_node"].get_child(0).set_hframes(16)
+				data["origin_node"].get_child(0).set_vframes(27)
+			else:
+				data["origin_node"].get_child(0).set_scale(Vector2(4.5,4.5))
+				data["origin_node"].get_child(0).set_hframes(13)
+				data["origin_node"].get_child(0).set_vframes(15)
 	
 	
 func verify_target_texture(data):
