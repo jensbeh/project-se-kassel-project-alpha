@@ -139,7 +139,7 @@
     "Health": null,
     "Stamina": 50,
 	"Stackable": true,
-	"Frame": 147,
+	"Frame": 146,
 	"Texture": "item_icons_1",
 	"Worth": 10
   },
@@ -166,7 +166,7 @@
     "Health": null,
     "Stamina": 80,
 	"Stackable": true,
-	"Frame": 151,
+	"Frame": 150,
 	"Texture": "item_icons_1",
 	"Worth": 20
   },
@@ -193,7 +193,7 @@
     "Health": null,
     "Stamina": 100,
 	"Stackable": true,
-	"Frame": 155,
+	"Frame": 154,
 	"Texture": "item_icons_1",
 	"Worth": 30
   },
@@ -327,7 +327,7 @@
     "Health": null,
     "Stamina": 150,
 	"Stackable": true,
-	"Frame": 311,
+	"Frame": 310,
 	"Texture": "item_icons_1",
 	"Worth": 50
   },
