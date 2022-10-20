@@ -135,9 +135,9 @@ func _physics_process(delta):
 				if player != null:
 					PathfindingService.call_deferred("got_position", self, playerDetectionZone.player.global_position)
 					update_get_target_position = false
-					print("HERE2")
-					print("")
-					print("")
+#					print("HERE2")
+#					print("")
+#					print("")
 			
 			
 			# Return next wandering position
