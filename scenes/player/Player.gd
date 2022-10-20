@@ -67,6 +67,7 @@ var level: int = 1
 var dragging = false
 var preview = false
 var player_exp: int = 0
+var player_stamina: float
 var player_light_radius: int
 
 # Variables
@@ -139,7 +140,12 @@ func _physics_process(delta):
 			velocity /= 1.45
 			
 		if Input.is_action_pressed("Shift"):
-			velocity *= 1.4
+			if player_stamina - delta * 8 >= 0:
+				set_stamina(player_stamina - delta * 8)
+				velocity *= 1.4
+			elif player_stamina > 0:
+				set_stamina(0)
+				velocity *= 1.2
 		
 		if velocity != Vector2.ZERO and player_can_interact:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
@@ -163,6 +169,12 @@ func _physics_process(delta):
 		# handle knockback when hurting or dying
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
+		
+	if not is_attacking and not hurting and not dying and data != null:
+		if player_stamina + delta < 100:
+			set_stamina(player_stamina + delta)
+		elif player_stamina < 100:
+			set_stamina(100)
 
 
 # Method handles key inputs
@@ -828,6 +840,15 @@ func set_exp(new_exp: int):
 	data.exp = player_exp
 
 
+# set a new stamina value for the player
+func set_stamina(new_stamina: float):
+	player_stamina = new_stamina
+	# for ui update
+	Utils.get_player_ui().set_stamina(new_stamina)
+	# for save
+	data.stamina = player_stamina
+
+
 func _on_DamageAreaBottom_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
@@ -993,6 +1014,7 @@ func reset_player_after_dying():
 	dying = false
 	is_attacking = false
 	collecting = false
+	set_stamina(100)
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
