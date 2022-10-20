@@ -140,12 +140,9 @@ func _physics_process(delta):
 			velocity /= 1.45
 			
 		if Input.is_action_pressed("Shift"):
-			if player_stamina - delta * 8 >= 0:
-				set_stamina(player_stamina - delta * 8)
+			if player_stamina - delta * 15 >= 0:
+				set_stamina(player_stamina - delta * 15)
 				velocity *= 1.4
-			elif player_stamina > 0:
-				set_stamina(0)
-				velocity *= 1.2
 		
 		if velocity != Vector2.ZERO and player_can_interact:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
