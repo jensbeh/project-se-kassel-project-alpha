@@ -230,9 +230,10 @@ func generate_pathes():
 						for enemy in enemies_which_need_new_path:
 							
 							if is_instance_valid(enemy) and enemy.is_inside_tree():
-								enemy.call_deferred("get_target_position")
+								enemy.get_target_position()
+								mutex.lock()
 								mobs_waiting.append(enemy)
-			
+								mutex.unlock()
 			
 			if mobs_with_new_position.size() > 0:
 				mutex.lock()
@@ -294,7 +295,9 @@ func send_path_to_mob(mob, new_path):
 	if is_instance_valid(mob) and mob.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("update_path", new_path)
 #		print("mobs_waiting1: ")
+		mutex.lock()
 		mobs_waiting.remove(mobs_waiting.find(mob))
+		mutex.unlock()
 #		print("mobs_waiting2: ")
 #	print("finished")
 #	print("")
