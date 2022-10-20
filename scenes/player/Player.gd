@@ -171,10 +171,10 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity)
 		
 	if not is_attacking and not hurting and not dying and data != null:
-		if player_stamina + delta < 100:
+		if player_stamina + delta < level * 10 + 90:
 			set_stamina(player_stamina + delta)
-		elif player_stamina < 100:
-			set_stamina(100)
+		elif player_stamina < level * 10 + 90:
+			set_stamina(level * 10 + 90)
 
 
 # Method handles key inputs
@@ -1014,7 +1014,7 @@ func reset_player_after_dying():
 	dying = false
 	is_attacking = false
 	collecting = false
-	set_stamina(100)
+	set_stamina(level * 10 + 90)
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")

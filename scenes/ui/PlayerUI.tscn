@@ -205,7 +205,7 @@ custom_fonts/font = SubResource( 15 )
 custom_styles/fg = SubResource( 16 )
 custom_styles/bg = SubResource( 17 )
 value = 100.0
-allow_greater = true
+rounded = true
 percent_visible = false
 
 [node name="StaminaValue" type="Label" parent="Stamina/ProgressBar"]

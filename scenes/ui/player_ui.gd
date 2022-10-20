@@ -22,6 +22,7 @@ func _ready():
 # Load the correct ui settings
 func setup_ui():
 	exp_bar.max_value = Utils.get_current_player().get_level() * 100
+	stamina_bar.max_value = Utils.get_current_player().get_level() * 10 + 90
 	if Utils.get_current_player().get_level() >= 10:
 			change_heart_number(5)
 	elif Utils.get_current_player().get_level() >= 5:
@@ -33,7 +34,7 @@ func setup_ui():
 # Set stamina value 
 func set_stamina(new_value: float):
 	stamina_bar.value = new_value
-	stamina_value.set_text(tr("Stamina") + ": " + str(new_value))### todo number 
+	stamina_value.set_text(tr("STAMINA") + ": " + str(stepify(new_value, 0.01)))
 
 
 # Set expbar value
@@ -46,6 +47,7 @@ func set_exp(new_value: int):
 		Utils.get_current_player().set_level(player_level +1)
 		Utils.get_current_player().set_exp(new_value - exp_bar.max_value)
 		exp_bar.max_value = (player_level + 1) * 100
+		stamina_bar.max_value = (player_level + 1) * 100
 		life_bar.value = 100
 		# increase max lp by 10 by level up
 		Utils.get_current_player().set_max_health(100 + player_level*10)
