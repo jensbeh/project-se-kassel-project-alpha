@@ -124,57 +124,57 @@ func init(init_spawnArea, new_navigation_tile_map, init_scene_type):
 
 
 func _physics_process(delta):
-#	if update_get_target_position:
+	if update_get_target_position:
 		# Handle behaviour
-#		match behaviour_state:
-#			# Return player hunting position if player is still existing
-#			HUNTING:
-##				print("HUNTING")
-##				print("HERE1")
-#				var player = playerDetectionZone.player
-#				if player != null:
-#					PathfindingService.call_deferred("got_position", self, playerDetectionZone.player.global_position)
-#					update_get_target_position = false
-#					print("HERE2")
-#					print("")
-#					print("")
+		match behaviour_state:
+			# Return player hunting position if player is still existing
+			HUNTING:
+#				print("HUNTING")
+#				print("HERE1")
+				var player = playerDetectionZone.player
+				if player != null:
+					PathfindingService.call_deferred("got_position", self, playerDetectionZone.player.global_position)
+					update_get_target_position = false
+					print("HERE2")
+					print("")
+					print("")
 			
 			
 			# Return next wandering position
-#			WANDERING:
-##				print("WANDERING")
-#				var new_position = Vector2.ZERO
-#				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false)
-#				PathfindingService.call_deferred("got_position", self, new_position)
-#				update_get_target_position = false
-#
-#
-#			SEARCHING:
-##				print("SEARCHING")
-#				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
-#					raycast.cast_to = new_position_dic["position"] - global_position
-#					raycast.force_raycast_update()
-#
-#					if not raycast.is_colliding():
-#						PathfindingService.call_deferred("got_position", self, new_position_dic["position"])
-#						update_get_target_position = false
-#					else:
-#						printerr("SEARCHING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
-#					new_position_dic.clear()
-#
-#
-#			PRE_ATTACKING:
-##				print("PRE_ATTACKING")
-#				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
-#					raycast.cast_to = new_position_dic["position"] - global_position
-#					raycast.force_raycast_update()
-#
-#					if not raycast.is_colliding():
-#						PathfindingService.call_deferred("got_position", self, new_position_dic["position"])
-#						update_get_target_position = false
-#					else:
-#						printerr("PRE_ATTACKING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
-#					new_position_dic.clear()
+			WANDERING:
+#				print("WANDERING")
+				var new_position = Vector2.ZERO
+				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false)
+				PathfindingService.call_deferred("got_position", self, new_position)
+				update_get_target_position = false
+			
+			
+			SEARCHING:
+#				print("SEARCHING")
+				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
+					raycast.cast_to = new_position_dic["position"] - global_position
+					raycast.force_raycast_update()
+					
+					if not raycast.is_colliding():
+						PathfindingService.call_deferred("got_position", self, new_position_dic["position"])
+						update_get_target_position = false
+					else:
+						printerr("SEARCHING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+					new_position_dic.clear()
+			
+			
+			PRE_ATTACKING:
+#				print("PRE_ATTACKING")
+				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
+					raycast.cast_to = new_position_dic["position"] - global_position
+					raycast.force_raycast_update()
+					
+					if not raycast.is_colliding():
+						PathfindingService.call_deferred("got_position", self, new_position_dic["position"])
+						update_get_target_position = false
+					else:
+						printerr("PRE_ATTACKING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+					new_position_dic.clear()
 	
 	
 	# Handle behaviour
@@ -223,19 +223,19 @@ func _physics_process(delta):
 
 
 func _process(delta):
-#	if update_get_target_position:
+	if update_get_target_position:
 		# Handle behaviour
-#		match behaviour_state:
-#			SEARCHING:
-##				print("SEARCHING")
-#				if new_position_dic.empty() or new_position_dic["generate_again"]:
-#					new_position_dic = Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
+		match behaviour_state:
+			SEARCHING:
+#				print("SEARCHING")
+				if new_position_dic.empty() or new_position_dic["generate_again"]:
+					new_position_dic = Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
 #					printerr("SEARCHING: GENERATED POSITION")
-#
-#			PRE_ATTACKING:
-##				print("PRE_ATTACKING")
-#				if new_position_dic.empty() or new_position_dic["generate_again"]:
-#					new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+			
+			PRE_ATTACKING:
+#				print("PRE_ATTACKING")
+				if new_position_dic.empty() or new_position_dic["generate_again"]:
+					new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
 #					printerr("PRE_ATTACKING: GENERATED POSITION")
 	
 	
@@ -329,6 +329,7 @@ func move_to_position(delta):
 #	print("C")
 #	print("")
 #	print("")
+
 
 # Method to search for player
 func search_player():
@@ -451,12 +452,12 @@ func change_animations(_animation_behaviour_state):
 func get_target_position():
 #	print("get_target_position")
 #	print(behaviour_state)
-#	call_deferred("update_position")
-#	update_get_target_position = true
-	PathfindingService.call_deferred("got_position", self, Utils.get_current_player().global_position)
+	update_get_target_position = true
+	
+	
+	
+#	PathfindingService.call_deferred("got_position", self, Utils.get_current_player().global_position)
 
-
-#func update_position():
 
 ## Method returns next target position to pathfinding_service
 #func get_target_position():
