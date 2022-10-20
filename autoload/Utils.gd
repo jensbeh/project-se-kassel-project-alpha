@@ -281,65 +281,72 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 	var tile_set : TileSet = navigation_tile_map.tile_set
 	var position : Vector2
 	
-	var generate_position = true
-	while(generate_position):
+#	var generate_position = true
+#	while(generate_position):
 		# Get random position in circle
-		randomize()
-		var theta = rand_range(0.0, 2.0 * PI)
-		var radius = rand_range(min_radius, max_radius)
-		var randX = mob_global_position.x + (radius * cos(theta))
-		var randY = mob_global_position.y + (radius * sin(theta))
-		
-		position = Vector2(randX, randY)
-		
-		# Check if position is valid
-		var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
-		var cellBottom = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY + collision_radius) / 16)))
-		var cellBottomRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
-		var cellRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor(randY / 16)))
-		var cellTopRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
-		var cellTop = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY - collision_radius) / 16)))
-		var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
-		var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
-		var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
-		
-		# Check if cells / position with enough space around are perfect
-		var generate_again = false
-		var obstacle_tile_id
-		if scene_type == Constants.SceneType.GRASSLAND:
-			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID
-		elif scene_type == Constants.SceneType.DUNGEON:
-			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
-		else:
-			printerr("Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")
-		
-		if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
-		 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
-		 and cellBottomRight != obstacle_tile_id and cellBottomRight != Constants.INVALID_TILE_ID \
-		 and cellRight != obstacle_tile_id and cellRight != Constants.INVALID_TILE_ID \
-		 and cellTopRight != obstacle_tile_id and cellTopRight != Constants.INVALID_TILE_ID \
-		 and cellTop != obstacle_tile_id and cellTop != Constants.INVALID_TILE_ID \
-		 and cellTopLeft != obstacle_tile_id and cellTopLeft != Constants.INVALID_TILE_ID \
-		 and cellLeft != obstacle_tile_id and cellLeft != Constants.INVALID_TILE_ID \
-		 and cellBottomLeft != obstacle_tile_id and cellBottomLeft != Constants.INVALID_TILE_ID :
-			var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
-			for cell_to_check in cells:
-				var shapes = tile_set.tile_get_shapes(cell_to_check)
-				if shapes.size() > 0:
-					for shape in shapes:
-						# If shape on tile is collision then generate again
-						if shape["shape"] is RectangleShape2D:
-							generate_again = true
-		else:
-			generate_again = true
-		
-		if not generate_again:
-			# Position is NOT blocked by collision, ... - get new one
-			generate_position = false
-#		else:
-#			print("generate_again - generate_position_near_mob")
+	rng.randomize()
+	var theta = rng.randf_range(0.0, 2.0 * PI)
+	var radius = rng.randf_range(float(min_radius), float(max_radius))
+	var randX = mob_global_position.x + (radius * cos(theta))
+	var randY = mob_global_position.y + (radius * sin(theta))
 	
-	return position
+	position = Vector2(randX, randY)
+	
+#	print("position: " + str(position))
+#	var a = Vector2(int(floor(randX / 16)), int(floor(randY / 16)))
+#	print("tile: " + str(a))
+	
+	# Check if position is valid
+	var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
+	var cellBottom = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY + collision_radius) / 16)))
+	var cellBottomRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	var cellRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor(randY / 16)))
+	var cellTopRight = navigation_tile_map.get_cell(int(floor((randX + collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellTop = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellTopLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY - collision_radius) / 16)))
+	var cellLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor(randY / 16)))
+	var cellBottomLeft = navigation_tile_map.get_cell(int(floor((randX - collision_radius) / 16)), int(floor((randY + collision_radius) / 16)))
+	
+	# Check if cells / position with enough space around are perfect
+	var generate_again = false
+	var obstacle_tile_id
+	if scene_type == Constants.SceneType.GRASSLAND:
+		obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID
+	elif scene_type == Constants.SceneType.DUNGEON:
+		obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
+	else:
+		printerr("Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")
+	
+	if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
+	 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
+	 and cellBottomRight != obstacle_tile_id and cellBottomRight != Constants.INVALID_TILE_ID \
+	 and cellRight != obstacle_tile_id and cellRight != Constants.INVALID_TILE_ID \
+	 and cellTopRight != obstacle_tile_id and cellTopRight != Constants.INVALID_TILE_ID \
+	 and cellTop != obstacle_tile_id and cellTop != Constants.INVALID_TILE_ID \
+	 and cellTopLeft != obstacle_tile_id and cellTopLeft != Constants.INVALID_TILE_ID \
+	 and cellLeft != obstacle_tile_id and cellLeft != Constants.INVALID_TILE_ID \
+	 and cellBottomLeft != obstacle_tile_id and cellBottomLeft != Constants.INVALID_TILE_ID :
+		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
+		for cell_to_check in cells:
+			var shapes = tile_set.tile_get_shapes(cell_to_check)
+			if shapes.size() > 0:
+				for shape in shapes:
+					# If shape on tile is collision then generate again
+					if shape["shape"] is RectangleShape2D:
+						generate_again = true
+#	else:
+#		generate_again = true
+#
+#	if not generate_again:
+#		# Position is NOT blocked by collision, ... - get new one
+#		generate_position = false
+#	else:
+#		print("generate_again - generate_position_near_mob")
+	
+	return {
+		"generate_again": generate_again,
+		"position": position
+		}
 
 
 # Method generates a position in a polygon and checks if the position is in camera screen

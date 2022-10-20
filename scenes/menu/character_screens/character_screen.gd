@@ -528,9 +528,10 @@ func start_game():
 	
 	# Set spawn
 #	var player_position = Vector2(1128,616) # Camp
-	var player_position = Vector2(768,752) # Grassland - Dungeon1
+#	var player_position = Vector2(768,752) # Grassland - Dungeon1
 #	var player_position = Vector2(1056,-80) # Grassland - Beach
 #	var player_position = Vector2(1040, 64) # Grassland - Dungeon1/Beach
+	var player_position = Vector2(-864, -625) # Grassland - Mountain Entrance
 #	var player_position = Vector2(-816,-496) # Grassland - Mountain
 #	var player_position = Vector2(-730,-1700) # Grassland - Top
 #	var player_position = Vector2(336,-62) # Dungeon1-1

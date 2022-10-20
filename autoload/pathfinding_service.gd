@@ -5,6 +5,7 @@ var mobs_to_update : Dictionary = {}
 var enemies_to_update = []
 var bosses_to_update = []
 var ambient_mobs_to_update = []
+var mobs_waiting = []
 var can_generate_pathes = false
 var should_generate_pathes = false
 
@@ -16,7 +17,8 @@ var half_cell_size = null
 var map_name
 var astar_nodes_cache = {}
 var astar2DVisualizerNode = null
-
+var mutex = Mutex.new()
+var mobs_with_new_position : Dictionary = {}
 
 func _ready():
 	print("START PATHFINDING_SERVICE")
@@ -32,33 +34,34 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		# Create new AStars and store them to use later again
-		if not astar_nodes_cache.has(map_name):
-			astar_nodes_cache[map_name] = {
-								"mobs" : null,
-								"bosses" : null,
-								"ambient_mobs" : null,
-								"dynamic_obstacles" : {}
-								}
-		
-		# Mobs
-		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-		
-		# Bosses
-		if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
-			astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
-			astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-			astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-		
-		# Ambient mobs
-		if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
-			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-		
-		print("LOADED \"" + str(map_name) + "\"")
+		if "grassland" in map_name:
+			# Create new AStars and store them to use later again
+			if not astar_nodes_cache.has(map_name):
+				astar_nodes_cache[map_name] = {
+									"mobs" : null,
+									"bosses" : null,
+									"ambient_mobs" : null,
+									"dynamic_obstacles" : {}
+									}
+			
+			# Mobs
+			astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+			astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+			
+			# Bosses
+			if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
+				astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
+				astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+				astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+			
+			# Ambient mobs
+			if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
+				astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+				astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+				astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+			
+			print("LOADED \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
@@ -194,7 +197,7 @@ func generate_pathes():
 				enemies_to_update.clear()
 				for enemy in enemies:
 					if is_instance_valid(enemy) and enemy.is_inside_tree():
-						if enemy.mob_need_path:
+						if enemy.mob_need_path and not mobs_waiting.has(enemy):
 							enemies_to_update.append(enemy)
 				if enemies_to_update.size() > 0:
 					mobs_to_update["enemies"] = enemies_to_update
@@ -227,50 +230,74 @@ func generate_pathes():
 						for enemy in enemies_which_need_new_path:
 							
 							if is_instance_valid(enemy) and enemy.is_inside_tree():
-								
-								var target_pos = enemy.get_target_position()
-								
-								if target_pos == null:
-									# If target_pos is null then take last position of enemy
-									target_pos = enemy.global_position
-								
-								var new_path = get_mob_astar_path(enemy.global_position, target_pos)
-								
-								call_deferred("send_path_to_mob", enemy, new_path)
+								enemy.call_deferred("get_target_position")
+								mobs_waiting.append(enemy)
+			
+			
+			if mobs_with_new_position.size() > 0:
+				mutex.lock()
+#				print("mobs_with_new_position.keys(): " + str(mobs_with_new_position.keys()))
+				for mob in mobs_with_new_position.keys():
+#					print("mob: " + str(mob))
+					var new_path = get_mob_astar_path(mob.global_position, mobs_with_new_position[mob])
+					call_deferred("send_path_to_mob", mob, new_path)
+					var _was_present = mobs_with_new_position.erase(mob)
+#					print("MOB READY")
+#				print("")
+#				print("")
+				mutex.unlock()
+			
+#								var target_pos = enemy.get_target_position()
+#
+#								if target_pos == null:
+#									# If target_pos is null then take last position of enemy
+#									target_pos = enemy.global_position
+#
+#								var mutex = Mutex.new()
+#								mutex.lock()
+#								var new_path = get_mob_astar_path(enemy.global_position, target_pos)
+#								mutex.unlock()
+#								call_deferred("send_path_to_mob", enemy, new_path)
 					
-					elif "bosses" == mob_key:
-						var bosses_which_need_new_path = mobs_to_update[mob_key]
-						for boss in bosses_which_need_new_path:
-							
-							if is_instance_valid(boss) and boss.is_inside_tree():
-								
-								var target_pos = boss.get_target_position()
-								
-								if target_pos == null:
-									# If target_pos is null then take last position of boss
-									target_pos = boss.global_position
-								
-								var new_path = get_boss_astar_path(boss.global_position, target_pos)
-								
-								call_deferred("send_path_to_mob", boss, new_path)
-					
-					elif "ambient_mobs" == mob_key:
-						var ambient_mob_which_need_new_path = mobs_to_update[mob_key]
-						for ambient_mob in ambient_mob_which_need_new_path:
-							if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree() and is_instance_valid(ambientMobsNavigationTileMap) and ambientMobsNavigationTileMap.is_inside_tree():
-								var target_pos = ambient_mob.get_target_position()
-								if target_pos == null:
-									# If target_pos is null then take last position of ambient_mob
-									target_pos = ambient_mob.global_position
-								
-								var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
-								call_deferred("send_path_to_mob", ambient_mob, new_path)
+#					elif "bosses" == mob_key:
+#						var bosses_which_need_new_path = mobs_to_update[mob_key]
+#						for boss in bosses_which_need_new_path:
+#
+#							if is_instance_valid(boss) and boss.is_inside_tree():
+#
+#								var target_pos = boss.get_target_position()
+#
+#								if target_pos == null:
+#									# If target_pos is null then take last position of boss
+#									target_pos = boss.global_position
+#
+#								var new_path = get_boss_astar_path(boss.global_position, target_pos)
+#
+#								call_deferred("send_path_to_mob", boss, new_path)
+#
+#					elif "ambient_mobs" == mob_key:
+#						var ambient_mob_which_need_new_path = mobs_to_update[mob_key]
+#						for ambient_mob in ambient_mob_which_need_new_path:
+#							if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree() and is_instance_valid(ambientMobsNavigationTileMap) and ambientMobsNavigationTileMap.is_inside_tree():
+#								var target_pos = ambient_mob.get_target_position()
+#								if target_pos == null:
+#									# If target_pos is null then take last position of ambient_mob
+#									target_pos = ambient_mob.global_position
+#
+#								var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
+#								call_deferred("send_path_to_mob", ambient_mob, new_path)
 
 
 # Method to send new path to mob
 func send_path_to_mob(mob, new_path):
+#	print("send_path_to_mob: " +  str(mob))
 	if is_instance_valid(mob) and mob.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("update_path", new_path)
+#		print("mobs_waiting1: ")
+		mobs_waiting.remove(mobs_waiting.find(mob))
+#		print("mobs_waiting2: ")
+#	print("finished")
+#	print("")
 
 
 # Method is called when thread finished
@@ -630,3 +657,11 @@ func has_boss_path(start_pos, end_pos):
 	var point_path = astar_nodes_cache[map_name]["bosses"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269
 	
 	return point_path.size() > 0
+
+
+func got_position(mob, position):
+#	print("got_position")
+	
+	mutex.lock()
+	mobs_with_new_position[mob] = position
+	mutex.unlock()

@@ -22,18 +22,18 @@ func _ready():
 	material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 
 
-func _process(_delta):
-	if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree() and is_instance_valid(Utils.get_current_player().get_node("Camera2D")) and Utils.get_current_player().get_node("Camera2D").is_inside_tree():
-		update_shader()
-		var t = Transform2D(0, Vector2())
-		# Use camera for the correct position of the current screen to show correct light positions
-		t = update_shader_transformation()
-		# Set global transformation in shader for correct pixels and map size
-		material.set_shader_param("global_transform", t)
-		
-		# Set current screen color when day night cycle is enabled depending on the current time
-		if is_day_night_cycle:
-			material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
+#func _process(_delta):
+#	if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree() and is_instance_valid(Utils.get_current_player().get_node("Camera2D")) and Utils.get_current_player().get_node("Camera2D").is_inside_tree():
+#		update_shader()
+#		var t = Transform2D(0, Vector2())
+#		# Use camera for the correct position of the current screen to show correct light positions
+#		t = update_shader_transformation()
+#		# Set global transformation in shader for correct pixels and map size
+#		material.set_shader_param("global_transform", t)
+#
+#		# Set current screen color when day night cycle is enabled depending on the current time
+#		if is_day_night_cycle:
+#			material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())
 
 
 # Method to set all lights (with all informations) to the shader

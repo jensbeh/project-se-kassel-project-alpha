@@ -19529,66 +19529,10 @@
   </object>
  </objectgroup>
  <objectgroup id="72" name="mobSpawns">
-  <object id="5651" type="area" x="912" y="112">
-   <properties>
-    <property name="biome" value="forest"/>
-    <property name="max_mobs" type="int" value="15"/>
-   </properties>
-   <polygon points="0,0 -144,48 -272,160 -368,288 -384,400 -416,544 -352,592 -224,576 -176,480 -96,448 48,432 112,304 160,192 144,80 48,16"/>
-  </object>
-  <object id="5660" type="area" x="1184" y="-80">
-   <properties>
-    <property name="biome" value="beach"/>
-    <property name="max_mobs" type="int" value="15"/>
-   </properties>
-   <polygon points="0,0 32,80 64,32 80,-48 144,-80 160,-192 144,-272 80,-352 48,-416 48,-512 32,-528 32,-560 0,-576 0,-672 64,-768 64,-832 48,-864 32,-912 0,-960 0,-1008 64,-1040 80,-1072 -16,-1056 -96,-960 -96,-848 -96,-704 -128,-608 -128,-544 -96,-464 -16,-288 32,-208 32,-160 0,-128"/>
-  </object>
-  <object id="5661" type="area" x="624" y="-928">
-   <properties>
-    <property name="biome" value="grassland"/>
-    <property name="max_mobs" type="int" value="5"/>
-   </properties>
-   <polygon points="0,0 -64,32 -48,240 64,416 112,496 192,592 256,560 272,304 256,192"/>
-  </object>
-  <object id="5662" type="area" x="656" y="-1168">
-   <properties>
-    <property name="biome" value="grassland"/>
-    <property name="max_mobs" type="int" value="5"/>
-   </properties>
-   <polygon points="0,0 16,128 144,288 352,368 384,160 416,48 512,-32 368,-112 240,-64"/>
-  </object>
-  <object id="5663" type="area" x="-32" y="-1360">
-   <properties>
-    <property name="biome" value="grassland"/>
-    <property name="max_mobs" type="int" value="4"/>
-   </properties>
-   <polygon points="0,0 -48,112 96,192 288,272 336,352 352,384 384,384 400,272 448,192 448,32 288,48 144,0"/>
-  </object>
-  <object id="5664" type="area" x="48" y="-1760">
-   <properties>
-    <property name="biome" value="forest"/>
-    <property name="max_mobs" type="int" value="60"/>
-   </properties>
-   <polygon points="0,0 -336,-160 -960,-144 -1280,-112 -1664,-32 -1984,32 -2432,144 -2512,192 -2560,368 -2592,608 -2704,752 -2896,832 -2976,960 -3008,1104 -2944,1280 -2944,1536 -2752,1536 -2576,1440 -2384,1408 -2032,1008 -1712,768 -1520,736 -1504,640 -1440,544 -1136,384 -1008,352 -768,320 -576,224 -352,240 -32,320 48,368 144,368 208,384 64,160 80,64"/>
-  </object>
-  <object id="5665" type="area" x="-2832" y="-96">
-   <properties>
-    <property name="biome" value="forest"/>
-    <property name="max_mobs" type="int" value="10"/>
-   </properties>
-   <polygon points="0,0 -144,-48 -240,0 -432,0 -512,48 -512,192 -528,288 -544,368 -640,496 -752,544 -752,640 -640,720 -512,720 -432,624 -432,512 -304,352 -224,304 -80,160"/>
-  </object>
-  <object id="5666" type="area" x="-1488" y="-912">
-   <properties>
-    <property name="biome" value="grassland"/>
-    <property name="max_mobs" type="int" value="25"/>
-   </properties>
-   <polygon points="0,0 -128,0 -464,304 -464,416 -416,560 -416,752 -288,800 -160,912 -144,1040 -128,1072 -128,1216 -80,1472 -48,1568 128,1568 176,1584 288,1584 512,1440 592,1296 576,1088 464,992 464,832 544,752 544,624 384,496 128,416 0,320"/>
-  </object>
   <object id="5667" type="area" x="-704" y="-1184">
    <properties>
     <property name="biome" value="mountain"/>
-    <property name="max_mobs" type="int" value="20"/>
+    <property name="max_mobs" type="int" value="60"/>
    </properties>
    <polygon points="0,0 -224,16 -512,32 -608,192 -672,304 -624,352 -544,224 -464,208 -432,256 -512,416 -224,608 -64,560 -48,432 80,352 384,464 528,368 656,368 784,416 896,512 960,512 992,400 928,304 896,176 768,160 608,64 448,64 320,80 144,80"/>
   </object>
