@@ -81,16 +81,15 @@ func spawn_bosses():
 		var biome_name = spawning_areas[current_spawn_area]["biome"]
 		# Generate 2 bosses in mountain
 		if biome_name == "mountain":
-			pass
-#			for _i in range(2):
-#				# Take random boss
-#				var boss_path = Utils.get_random_boss_instance_path()
-#				var boss_instance = load(boss_path).instance()
-#				# Generate spawn position and spawn boss
-#				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
-#				boss_instance.is_boss_in_grassland(true)
-#				mobsLayer.call_deferred("add_child", boss_instance)
-#				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
+			for _i in range(2):
+				# Take random boss
+				var boss_path = Utils.get_random_boss_instance_path()
+				var boss_instance = load(boss_path).instance()
+				# Generate spawn position and spawn boss
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
+				boss_instance.is_boss_in_grassland(true)
+				mobsLayer.call_deferred("add_child", boss_instance)
+				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
 
 
 # Method to destroy the scene

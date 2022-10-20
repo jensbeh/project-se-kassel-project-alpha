@@ -6,6 +6,7 @@ var enemies_to_update = []
 var bosses_to_update = []
 var ambient_mobs_to_update = []
 var mobs_waiting = []
+var bosses_waiting = []
 var can_generate_pathes = false
 var should_generate_pathes = false
 
@@ -17,8 +18,9 @@ var half_cell_size = null
 var map_name
 var astar_nodes_cache = {}
 var astar2DVisualizerNode = null
-var mutex = Mutex.new()
+var mob_mutex = Mutex.new()
 var mobs_with_new_position : Dictionary = {}
+var bosses_with_new_position : Dictionary = {}
 
 func _ready():
 	print("START PATHFINDING_SERVICE")
@@ -187,6 +189,7 @@ func generate_pathes():
 	while can_generate_pathes:
 		if should_generate_pathes == true:
 			
+			# Check which mobs need new path
 			var enemies = get_tree().get_nodes_in_group("Enemy")
 			var bosses = get_tree().get_nodes_in_group("Boss")
 			var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
@@ -206,7 +209,7 @@ func generate_pathes():
 				bosses_to_update.clear()
 				for boss in bosses:
 					if is_instance_valid(boss) and boss.is_inside_tree():
-						if boss.mob_need_path:
+						if boss.mob_need_path and not bosses_waiting.has(boss):
 							bosses_to_update.append(boss)
 				if bosses_to_update.size() > 0:
 					mobs_to_update["bosses"] = bosses_to_update
@@ -221,86 +224,89 @@ func generate_pathes():
 					mobs_to_update["ambient_mobs"] = ambient_mobs_to_update
 			
 			
-			# Generate pathes for mobs
+			
 			if mobs_to_update.size() > 0:
-				# Generate new pathes and send to mobs
 				for mob_key in mobs_to_update.keys():
+					# Notify ENEMIES that new end_position is needed
 					if "enemies" == mob_key:
 						var enemies_which_need_new_path = mobs_to_update[mob_key]
 						for enemy in enemies_which_need_new_path:
-							
 							if is_instance_valid(enemy) and enemy.is_inside_tree():
 								enemy.get_target_position()
-								mutex.lock()
+								mob_mutex.lock()
 								mobs_waiting.append(enemy)
-								mutex.unlock()
+								mob_mutex.unlock()
+					
+					
+					# Notify BOSSES that new end_position is needed
+					elif "bosses" == mob_key:
+						var bosses_which_need_new_path = mobs_to_update[mob_key]
+						for boss in bosses_which_need_new_path:
+							if is_instance_valid(boss) and boss.is_inside_tree():
+								boss.get_target_position()
+								mob_mutex.lock()
+								bosses_waiting.append(boss)
+								mob_mutex.unlock()
+					
+					
+					# Notify AMBIENT_MOB that new end_position is needed
+					elif "ambient_mobs" == mob_key:
+						var ambient_mob_which_need_new_path = mobs_to_update[mob_key]
+						for ambient_mob in ambient_mob_which_need_new_path:
+							if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree() and is_instance_valid(ambientMobsNavigationTileMap) and ambientMobsNavigationTileMap.is_inside_tree():
+								var target_pos = ambient_mob.get_target_position()
+								if target_pos == null:
+									# If target_pos is null then take last position of ambient_mob
+									target_pos = ambient_mob.global_position
+								
+								var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
+								call_deferred("send_path_to_mob", ambient_mob, new_path)
 			
+			
+			
+			# Get path for MOB which got new end_position
 			if mobs_with_new_position.size() > 0:
-				mutex.lock()
-#				print("mobs_with_new_position.keys(): " + str(mobs_with_new_position.keys()))
+				mob_mutex.lock()
 				for mob in mobs_with_new_position.keys():
-#					print("mob: " + str(mob))
 					var new_path = get_mob_astar_path(mob.global_position, mobs_with_new_position[mob])
 					call_deferred("send_path_to_mob", mob, new_path)
 					var _was_present = mobs_with_new_position.erase(mob)
-#					print("MOB READY")
-#				print("")
-#				print("")
-				mutex.unlock()
+				mob_mutex.unlock()
 			
-#								var target_pos = enemy.get_target_position()
-#
-#								if target_pos == null:
-#									# If target_pos is null then take last position of enemy
-#									target_pos = enemy.global_position
-#
-#								var mutex = Mutex.new()
-#								mutex.lock()
-#								var new_path = get_mob_astar_path(enemy.global_position, target_pos)
-#								mutex.unlock()
-#								call_deferred("send_path_to_mob", enemy, new_path)
-					
-#					elif "bosses" == mob_key:
-#						var bosses_which_need_new_path = mobs_to_update[mob_key]
-#						for boss in bosses_which_need_new_path:
-#
-#							if is_instance_valid(boss) and boss.is_inside_tree():
-#
-#								var target_pos = boss.get_target_position()
-#
-#								if target_pos == null:
-#									# If target_pos is null then take last position of boss
-#									target_pos = boss.global_position
-#
-#								var new_path = get_boss_astar_path(boss.global_position, target_pos)
-#
-#								call_deferred("send_path_to_mob", boss, new_path)
-#
-#					elif "ambient_mobs" == mob_key:
-#						var ambient_mob_which_need_new_path = mobs_to_update[mob_key]
-#						for ambient_mob in ambient_mob_which_need_new_path:
-#							if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree() and is_instance_valid(ambientMobsNavigationTileMap) and ambientMobsNavigationTileMap.is_inside_tree():
-#								var target_pos = ambient_mob.get_target_position()
-#								if target_pos == null:
-#									# If target_pos is null then take last position of ambient_mob
-#									target_pos = ambient_mob.global_position
-#
-#								var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
-#								call_deferred("send_path_to_mob", ambient_mob, new_path)
+			# Get path for BOSS which got new end_position
+			if bosses_with_new_position.size() > 0:
+				mob_mutex.lock()
+				for boss in bosses_with_new_position.keys():
+					var new_path = get_boss_astar_path(boss.global_position, bosses_with_new_position[boss])
+					call_deferred("send_path_to_boss", boss, new_path)
+					var _was_present = bosses_with_new_position.erase(boss)
+				mob_mutex.unlock()
 
 
 # Method to send new path to mob
 func send_path_to_mob(mob, new_path):
-#	print("send_path_to_mob: " +  str(mob))
 	if is_instance_valid(mob) and mob.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
+		# Send new path to mob
 		mob.call_deferred("update_path", new_path)
-#		print("mobs_waiting1: ")
-		mutex.lock()
-		mobs_waiting.remove(mobs_waiting.find(mob))
-		mutex.unlock()
-#		print("mobs_waiting2: ")
-#	print("finished")
-#	print("")
+		
+		# Remove mob from waiting list
+		mob_mutex.lock()
+		if mobs_waiting.find(mob) != -1:
+			mobs_waiting.remove(mobs_waiting.find(mob))
+		mob_mutex.unlock()
+
+
+# Method to send new path to mob
+func send_path_to_boss(boss, new_path):
+	if is_instance_valid(boss) and boss.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
+		# Send new path to mob
+		boss.call_deferred("update_path", new_path)
+		
+		# Remove mob from waiting list
+		mob_mutex.lock()
+		if bosses_waiting.find(boss) != -1:
+			bosses_waiting.remove(bosses_waiting.find(boss))
+		mob_mutex.unlock()
 
 
 # Method is called when thread finished
@@ -662,9 +668,13 @@ func has_boss_path(start_pos, end_pos):
 	return point_path.size() > 0
 
 
-func got_position(mob, position):
-#	print("got_position")
-	
-	mutex.lock()
+func got_mob_position(mob, position):
+	mob_mutex.lock()
 	mobs_with_new_position[mob] = position
-	mutex.unlock()
+	mob_mutex.unlock()
+
+
+func got_boss_position(boss, position):
+	mob_mutex.lock()
+	bosses_with_new_position[boss] = position
+	mob_mutex.unlock()

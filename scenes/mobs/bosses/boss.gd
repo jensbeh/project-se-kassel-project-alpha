@@ -52,6 +52,8 @@ var max_regeneration_interval
 var scene_type
 var is_in_boss_room
 var killed = false
+var update_get_target_position = false
+var new_position_dic : Dictionary = {}
 
 # Mob movment
 var acceleration = 350
@@ -75,6 +77,7 @@ onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarNode = $NinePatchRect
+onready var raycast = $RayCast2D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -119,6 +122,10 @@ func _ready():
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
+	
+	
+	
+	raycast.enabled = true
 
 
 # Method to init variables, typically called after instancing
@@ -130,6 +137,57 @@ func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_
 
 
 func _physics_process(delta):
+	if update_get_target_position:
+		# Handle behaviour
+		match behaviour_state:
+			
+			# Return player hunting position if player is still existing
+			HUNTING:
+#				print("HUNTING")
+				var player = playerDetectionZone.player
+				if player != null:
+					PathfindingService.call_deferred("got_boss_position", self, playerDetectionZone.player.global_position)
+					update_get_target_position = false
+			
+			
+			# Return next wandering position
+			WANDERING:
+#				print("WANDERING")
+				var new_position = Vector2.ZERO
+				new_position = Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, false)
+				PathfindingService.call_deferred("got_boss_position", self, new_position)
+				update_get_target_position = false
+			
+			
+			# Return next searching position
+			SEARCHING:
+#				print("SEARCHING")
+				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
+					raycast.cast_to = new_position_dic["position"] - global_position
+					raycast.force_raycast_update()
+					
+					if not raycast.is_colliding():
+						PathfindingService.call_deferred("got_boss_position", self, new_position_dic["position"])
+						update_get_target_position = false
+					else:
+						printerr("SEARCHING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+					new_position_dic.clear()
+			
+			
+			PRE_ATTACKING:
+#				print("PRE_ATTACKING")
+				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
+					raycast.cast_to = new_position_dic["position"] - global_position
+					raycast.force_raycast_update()
+					
+					if not raycast.is_colliding():
+						PathfindingService.call_deferred("got_boss_position", self, new_position_dic["position"])
+						update_get_target_position = false
+					else:
+						printerr("PRE_ATTACKING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+					new_position_dic.clear()
+	
+	
 	# Handle behaviour
 	match behaviour_state:
 		
@@ -180,6 +238,20 @@ func _physics_process(delta):
 
 
 func _process(delta):
+	if update_get_target_position:
+		# Handle behaviour
+		match behaviour_state:
+			SEARCHING:
+#				print("SEARCHING")
+				if new_position_dic.empty() or new_position_dic["generate_again"]:
+					new_position_dic = Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
+			
+			PRE_ATTACKING:
+#				print("PRE_ATTACKING")
+				if new_position_dic.empty() or new_position_dic["generate_again"]:
+					new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+	
+	
 	# Handle behaviour
 	match behaviour_state:
 		
@@ -352,7 +424,7 @@ func update_behaviour(new_behaviour):
 				
 				# start_searching_position -> last eye contact to player
 				if path.size() > 0:
-					start_searching_position = path[-1] 
+					start_searching_position = path[-1]
 				else:
 					start_searching_position = global_position
 					
@@ -402,25 +474,32 @@ func change_animations(_animation_behaviour_state):
 
 
 # Method returns next target position to pathfinding_service
+#func get_target_position():
+#	# Return player hunting position if player is still existing
+#	if behaviour_state == HUNTING:
+#		var player = playerDetectionZone.player
+#		if player != null:
+#			return playerDetectionZone.player.global_position
+#		else:
+#			return null
+#
+#	# Return next wandering position
+#	elif behaviour_state == WANDERING:
+#		return Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, false)
+#
+#	# Return next searching position
+#	elif behaviour_state == SEARCHING:
+#		return Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
+#
+#	elif behaviour_state == PRE_ATTACKING:
+#		return Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+
+
+
+# Method returns next target position to pathfinding_service
 func get_target_position():
-	# Return player hunting position if player is still existing
-	if behaviour_state == HUNTING:
-		var player = playerDetectionZone.player
-		if player != null:
-			return playerDetectionZone.player.global_position
-		else:
-			return null
-	
-	# Return next wandering position
-	elif behaviour_state == WANDERING:
-		return Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, false)
-			
-	# Return next searching position
-	elif behaviour_state == SEARCHING:
-		return Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
-	
-	elif behaviour_state == PRE_ATTACKING:
-		return Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+	update_get_target_position = true
+
 
 
 # Method is called from pathfinding_service to set new path to mob
