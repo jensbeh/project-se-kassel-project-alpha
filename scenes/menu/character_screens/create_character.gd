@@ -135,6 +135,7 @@ var save_game_data = {
 	"gold": 100,
 	"light": 0,
 	"cooldown": 0,
+	"stamina_cooldown": 0,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,

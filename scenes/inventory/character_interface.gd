@@ -34,9 +34,17 @@ func _ready():
 				if item_stack != null and item_stack > 1:
 					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					item_slot.get_node("Icon/TextureRect").visible = true
-				var cooldown = Utils.get_hotbar().get_node("Hotbar").get_node("Timer").time_left
-				if cooldown != 0 and !Utils.get_hotbar().get_node("Hotbar").get_node("Timer").is_stopped():
-					item_slot.get_node("Icon").set_cooldown(cooldown)
+				var health_cooldown = Utils.get_current_player().health_cooldown
+				var stamina_cooldown = Utils.get_current_player().stamina_cooldown
+				if (PlayerData.equipment_data["Hotbar"]["Item"] != null and
+				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina")):
+					if stamina_cooldown != 0 and stamina_cooldown != null:
+						item_slot.get_node("Icon").set_cooldown(stamina_cooldown, "Stamina")
+				elif PlayerData.equipment_data["Hotbar"]["Item"] != null:
+					if health_cooldown != 0 and health_cooldown != null:
+						item_slot.get_node("Icon").set_cooldown(health_cooldown, "Health")
+				
+					
 					
 	# stat values
 	find_node("Inventory").get_child(0).find_node("Button").visible = false

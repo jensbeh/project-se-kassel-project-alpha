@@ -10,6 +10,8 @@ var disabled = false
 onready var timer = get_node("../Timer")
 var swap = false
 var stack = false
+var type
+
 
 
 func _ready():
@@ -22,7 +24,12 @@ func _ready():
 
 func _process(_delta):
 	time_label.text = "%2.1f" % timer.time_left
-	cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
+	if type == "Stamina":
+		cooldown_texture.value = int((timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
+		Utils.get_current_player().stamina_cooldown = timer.time_left
+	else:
+		cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
+		Utils.get_current_player().health_cooldown = timer.time_left
 
 
 func _on_Timer_timeout():
@@ -30,6 +37,10 @@ func _on_Timer_timeout():
 	disabled = false
 	time_label.hide()
 	set_process(false)
+	if type == "Stamina":
+		Utils.get_current_player().stamina_cooldown = 0
+	else:
+		Utils.get_current_player().health_cooldown = 0
 
 
 # Get information about drag item
@@ -522,14 +533,21 @@ func _on_Icon_gui_input(event):
 				if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
 					if PlayerData.inv_data[slot]["Stack"] != null:
 						PlayerData.inv_data[slot]["Stack"] -= 1
+						var cooldown
 						if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])].has("Stamina"):
 							Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
 							GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Stamina"])
+							type = "Stamina"
+							cooldown = Constants.STAMINA_POTION_COOLDOWN
+							Utils.get_current_player().stamina_cooldown = cooldown
 						else:
 							Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 							int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
+							type = "Health"
+							cooldown = Constants.COOLDOWN
+							Utils.get_current_player().health_cooldown = cooldown
 						if PlayerData.inv_data[slot]["Stack"] > 0:
-							set_cooldown(Constants.COOLDOWN)
+							set_cooldown(cooldown, type)
 						if PlayerData.inv_data[slot]["Stack"] <= 0:
 							PlayerData.inv_data[slot]["Stack"] = null
 							PlayerData.inv_data[slot]["Item"] = null
@@ -542,15 +560,18 @@ func _on_Icon_gui_input(event):
 						else:
 							get_node("../TextureRect/Stack").set_text(str(PlayerData.inv_data[slot]["Stack"]))
 						# sync cooldown
-						Utils.get_hotbar().set_cooldown(Constants.COOLDOWN)
-						Utils.get_character_interface().find_node("Hotbar").get_node("Icon").set_cooldown(Constants.COOLDOWN)
-						if PlayerData.equipment_data["Hotbar"]["Item"] == null:
-							Utils.get_hotbar().update_label()
-						Utils.get_character_interface().find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+						if (GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has(type) and 
+							GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])][type] != null):
+							Utils.get_hotbar().set_cooldown(cooldown, type)
+							Utils.get_character_interface().find_node("Hotbar").get_node("Icon").set_cooldown(cooldown, type)
+							if PlayerData.equipment_data["Hotbar"]["Item"] == null:
+								Utils.get_hotbar().update_label()
+						Utils.get_character_interface().find_node("Inventory").set_cooldown(cooldown, type)
 
 
 # starts cooldwon
-func set_cooldown(cooldown):
+func set_cooldown(cooldown, new_type):
+	type = new_type
 	timer.wait_time = cooldown
 	timer.start()
 	disabled = true

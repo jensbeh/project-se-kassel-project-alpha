@@ -69,6 +69,8 @@ var preview = false
 var player_exp: int = 0
 var player_stamina: float
 var player_light_radius: int
+var health_cooldown
+var stamina_cooldown
 
 # Variables
 var is_attacking = false
@@ -839,6 +841,8 @@ func set_exp(new_exp: int):
 
 # set a new stamina value for the player
 func set_stamina(new_stamina: float):
+	if new_stamina > level * 10 + 90:
+		new_stamina = level * 10 + 90
 	player_stamina = new_stamina
 	# for ui update
 	Utils.get_player_ui().set_stamina(new_stamina)
@@ -1003,6 +1007,8 @@ func reset_player_after_dying():
 	make_player_invisible(false)
 	
 	# reset cooldown
+	health_cooldown = 0
+	stamina_cooldown = 0
 	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
 	Utils.get_hotbar()._on_Timer_timeout()
 	

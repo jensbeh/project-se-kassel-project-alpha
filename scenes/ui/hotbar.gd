@@ -4,6 +4,7 @@ onready var item_slot = get_node("Hotbar")
 onready var time_label = get_node("Hotbar/TextureProgress/Time")
 onready var cooldown_texture = get_node("Hotbar/TextureProgress")
 var disabled = false
+var type
 
 func _ready():
 	time_label.hide()
@@ -48,7 +49,12 @@ func load_hotbar():
 
 func _process(_delta):
 	time_label.text = "%2.1f" % $Hotbar/Timer.time_left
-	cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.COOLDOWN) * 100)
+	if type == "Stamina":
+		cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
+		Utils.get_current_player().stamina_cooldown = $Hotbar/Timer.time_left
+	else:
+		cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.COOLDOWN) * 100)
+		Utils.get_current_player().health_cooldown = $Hotbar/Timer.time_left
 
 
 func _on_Timer_timeout():
@@ -56,6 +62,10 @@ func _on_Timer_timeout():
 	disabled = false
 	time_label.hide()
 	set_process(false)
+	if type == "Stamina":
+		Utils.get_current_player().stamina_cooldown = 0
+	else:
+		Utils.get_current_player().health_cooldown = 0
 
 
 # updates the label from the hotbar slot
@@ -86,13 +96,20 @@ func use_item():
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null and !disabled and Utils.get_current_player() != null:
 		if PlayerData.equipment_data["Hotbar"]["Stack"] != null:
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
+			var cooldown
 			if GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina"):
 				Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
 				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Stamina"])
+				type = "Stamina"
+				cooldown = Constants.STAMINA_POTION_COOLDOWN
+				Utils.get_current_player().stamina_cooldown = cooldown
 			else:
 				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 				int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
-			set_cooldown(Constants.COOLDOWN)
+				type = "Health"
+				cooldown = Constants.COOLDOWN
+				Utils.get_current_player().health_cooldown = cooldown
+			set_cooldown(cooldown, type)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
 				PlayerData.equipment_data["Hotbar"]["Item"] = null
@@ -110,7 +127,7 @@ func use_item():
 			var item_stack = PlayerData.equipment_data["Hotbar"]["Stack"]
 			var hotbar_slot = Utils.get_character_interface()
 			if hotbar_slot != null:
-				hotbar_slot.find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+				hotbar_slot.find_node("Inventory").set_cooldown(cooldown, type)
 				hotbar_slot = hotbar_slot.find_node("Hotbar")
 				if item_stack == null:
 					hotbar_slot.get_node("Icon/Sprite").set_texture(null)
@@ -119,15 +136,16 @@ func use_item():
 				elif item_stack > 1:
 					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					hotbar_slot.get_node("Icon/TextureRect").visible = true
-					hotbar_slot.get_node("Icon").set_cooldown(Constants.COOLDOWN)
+					hotbar_slot.get_node("Icon").set_cooldown(cooldown, type)
 				else:
 					hotbar_slot.get_node("Icon/TextureRect/Stack").set_text("")
 					hotbar_slot.get_node("Icon/TextureRect").visible = false
-					hotbar_slot.get_node("Icon").set_cooldown(Constants.COOLDOWN)
+					hotbar_slot.get_node("Icon").set_cooldown(cooldown, type)
 
 
 # starts cooldown
-func set_cooldown(cooldown):
+func set_cooldown(cooldown, new_type):
+	type = new_type
 	$Hotbar/Timer.wait_time = cooldown
 	cooldown_texture.show()
 	$Hotbar/Timer.start()

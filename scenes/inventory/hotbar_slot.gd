@@ -9,6 +9,7 @@ var disabled = false
 onready var timer = get_node("../Timer")
 var swap = false
 var stack = false
+var type
 
 
 func _ready():
@@ -21,7 +22,10 @@ func _ready():
 
 func _process(_delta):
 	time_label.text = "%2.1f" % timer.time_left
-	cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
+	if type == "Stamina":
+		cooldown_texture.value = int((timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
+	else:
+		cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -283,14 +287,21 @@ func _on_Icon_gui_input(event):
 			if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
 				if PlayerData.equipment_data[slot]["Stack"] != null:
 					PlayerData.equipment_data[slot]["Stack"] -= 1
+					var cooldown
 					if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])].has("Stamina"):
 						Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
 						GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Stamina"])
+						type = "Stamina"
+						cooldown = Constants.STAMINA_POTION_COOLDOWN
+						Utils.get_current_player().stamina_cooldown = cooldown
 					else:
 						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 						int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
+						type = "Health"
+						cooldown = Constants.COOLDOWN
+						Utils.get_current_player().health_cooldown = cooldown
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
-						set_cooldown(Constants.COOLDOWN)
+						set_cooldown(cooldown, type)
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:
 						PlayerData.equipment_data[slot]["Stack"] = null
 						PlayerData.equipment_data[slot]["Item"] = null
@@ -304,13 +315,14 @@ func _on_Icon_gui_input(event):
 						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
 					PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 					# sync cooldown
-					Utils.get_hotbar().set_cooldown(Constants.COOLDOWN)
+					Utils.get_hotbar().set_cooldown(cooldown, type)
 					Utils.get_hotbar().update_label()
-					Utils.get_character_interface().find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+					Utils.get_character_interface().find_node("Inventory").set_cooldown(cooldown, type)
 
 
 # starts cooldown
-func set_cooldown(cooldown):
+func set_cooldown(cooldown, new_type):
+	type = new_type
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
 		timer.wait_time = cooldown
 		timer.start()
