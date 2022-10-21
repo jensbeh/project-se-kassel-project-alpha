@@ -36,14 +36,15 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		if "dungeon" in map_name:
+		if "grassland" in map_name:
 			# Create new AStars and store them to use later again
 			if not astar_nodes_cache.has(map_name):
 				astar_nodes_cache[map_name] = {
 									"mobs" : null,
 									"bosses" : null,
 									"ambient_mobs" : null,
-									"dynamic_obstacles" : {}
+									"dynamic_obstacles_mobs" : {},
+									"dynamic_obstacles_bosses" : {}
 									}
 			
 			# Mobs
@@ -172,12 +173,19 @@ func cleanup():
 	half_cell_size = null
 	astar2DVisualizerNode = null
 	
-	# Clean dynamic obstacles
-	if not astar_nodes_cache[map_name]["dynamic_obstacles"].empty():
-		for obstacle in astar_nodes_cache[map_name]["dynamic_obstacles"].keys():
-			for point_index in astar_nodes_cache[map_name]["dynamic_obstacles"][obstacle]:
+	# Clean MOBS dynamic obstacles
+	if not astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].empty():
+		for obstacle in astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].keys():
+			for point_index in astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][obstacle]:
 				astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, false)
-		astar_nodes_cache[map_name]["dynamic_obstacles"].clear()
+		astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].clear()
+	
+	# Clean BOSSES dynamic obstacles
+	if not astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].empty():
+		for obstacle in astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].keys():
+			for point_index in astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][obstacle]:
+				astar_nodes_cache[map_name]["bosses"].set_point_disabled(point_index, false)
+		astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].clear()
 	
 	map_name = ""
 	
@@ -569,18 +577,20 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 
 # Method to disable points within the collisionshape FOR MOBS
 func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
-	astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()] = []
+	astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][collisionshape_node.get_instance_id()] = []
+	astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()] = []
 	var xExtentsFactor = 2
 	var yExtentsFactor = 2
 	var size_x = ceil(collisionshape_node.shape.extents.x * xExtentsFactor)
 	var size_y = ceil(collisionshape_node.shape.extents.y * yExtentsFactor)
 	
+	# Add obstacle for mobs
 	# Top left point
 	var top_left_position = position
 	var top_left_point = world_to_tile_coords(top_left_position)
 	var top_left_point_index = calculate_point_index(top_left_point)
 	if astar_nodes_cache[map_name]["mobs"].has_point(top_left_point_index):
-		astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(top_left_point_index)
+		astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][collisionshape_node.get_instance_id()].append(top_left_point_index)
 		astar_nodes_cache[map_name]["mobs"].set_point_disabled(top_left_point_index, true)
 	
 	# Bottom right point
@@ -588,7 +598,7 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 	var bottom_right_point = world_to_tile_coords(bottom_right_position)
 	var bottom_right_point_index = calculate_point_index(bottom_right_point)
 	if astar_nodes_cache[map_name]["mobs"].has_point(bottom_right_point_index):
-		astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(bottom_right_point_index)
+		astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][collisionshape_node.get_instance_id()].append(bottom_right_point_index)
 		astar_nodes_cache[map_name]["mobs"].set_point_disabled(bottom_right_point_index, true)
 	
 	# Get all points between top_left_point and bottom_right_point
@@ -598,74 +608,43 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 		for y in vertical_point_span:
 			var current_point = top_left_point + Vector2(x, y)
 			var current_point_index = calculate_point_index(current_point)
-			if astar_nodes_cache[map_name]["mobs"].has_point(current_point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(current_point_index):
-				astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(current_point_index)
+			if astar_nodes_cache[map_name]["mobs"].has_point(current_point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][collisionshape_node.get_instance_id()].has(current_point_index):
+				astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][collisionshape_node.get_instance_id()].append(current_point_index)
 				astar_nodes_cache[map_name]["mobs"].set_point_disabled(current_point_index, true)
 	
-#	# Round up to avoid wrong shape size
-#	var range_x = ceil(collisionshape_node.shape.extents.x * xExtentsFactor)
-#	var range_y = ceil(collisionshape_node.shape.extents.y * yExtentsFactor)
-#	print(position)
-#	print(position + collisionshape_node.shape.extents * 2)
-#	for x in (range_x):
-#		for y in (range_y):
-#			# Check all positions inside shape
-#			var current_position = Vector2(position.x + x, position.y + y)
-#			var point = world_to_tile_coords(current_position)
-#			var point_index = calculate_point_index(point)
-#			print("current_position: " + str(current_position))
-#			print("point: " + str(point))
-#			if astar_nodes_cache[map_name]["mobs"].has_point(point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(point_index):
-#				astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(point_index)
-#				astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
-#				print("disabled normal: " + str(point))
-#
-#			# Check all positions at the bottom/right of the shape and add extra points there
-#			var extra_safety_point_offset = Vector2.ZERO
-#			# Add safety border if right or/and bottom
-#			if x == range_x - 1:
-#				extra_safety_point_offset.x = extra_safety_point_offset.x + 1
-#			if y == range_y - 1:
-#				extra_safety_point_offset.y = extra_safety_point_offset.y + 1
-#			# Check new point
-#			if extra_safety_point_offset != Vector2.ZERO:
-#				point = world_to_tile_coords(current_position) + extra_safety_point_offset
-#				point_index = calculate_point_index(point)
-#				if astar_nodes_cache[map_name]["mobs"].has_point(point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].has(point_index):
-#					astar_nodes_cache[map_name]["dynamic_obstacles"][collisionshape_node.get_instance_id()].append(point_index)
-#					astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, true)
-#					print("disabled safety: " + str(point))
+	
+	# Add obstacle for bosses
+	# Top left point
+	var boss_safety_space = 2 * Vector2(Constants.TILE_SIZE, Constants.TILE_SIZE)
+	top_left_position = position - boss_safety_space
+	top_left_point = world_to_tile_coords(top_left_position)
+	top_left_point_index = calculate_point_index(top_left_point)
+	if astar_nodes_cache[map_name]["bosses"].has_point(top_left_point_index):
+		astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].append(top_left_point_index)
+		astar_nodes_cache[map_name]["bosses"].set_point_disabled(top_left_point_index, true)
+	
+	# Bottom right point
+	bottom_right_position = Vector2(position.x + size_x + Constants.POINT_SIZE_IN_PIXEL_PER_TILE, position.y + size_y + Constants.POINT_SIZE_IN_PIXEL_PER_TILE) + boss_safety_space # Add here POINT_SIZE_IN_PIXEL_PER_TILE because point is top left of point area. Extend because of bottom right
+	bottom_right_point = world_to_tile_coords(bottom_right_position)
+	bottom_right_point_index = calculate_point_index(bottom_right_point)
+	if astar_nodes_cache[map_name]["bosses"].has_point(bottom_right_point_index):
+		astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].append(bottom_right_point_index)
+		astar_nodes_cache[map_name]["bosses"].set_point_disabled(bottom_right_point_index, true)
+	
+	# Get all points between top_left_point and bottom_right_point
+	horizontal_point_span = bottom_right_point.x - top_left_point.x + 1
+	vertical_point_span = bottom_right_point.y - top_left_point.y + 1
+	for x in horizontal_point_span:
+		for y in vertical_point_span:
+			var current_point = top_left_point + Vector2(x, y)
+			var current_point_index = calculate_point_index(current_point)
+			if astar_nodes_cache[map_name]["bosses"].has_point(current_point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].has(current_point_index):
+				astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].append(current_point_index)
+				astar_nodes_cache[map_name]["bosses"].set_point_disabled(current_point_index, true)
 	
 	# Update obstacles visual
-#	if astar2DVisualizerNode != null:
-#		astar2DVisualizerNode.call_deferred("update_disabled_points")
-
-
-func has_boss_path(start_pos, end_pos):
-	# Get position in map and get point index in astar_nodes_cache[map_name]["bosses"]
-	var path_start_tile_position = world_to_tile_coords(start_pos)
-	var path_end_tile_position = world_to_tile_coords(end_pos)
-	var start_point_index = calculate_point_index(path_start_tile_position)
-	var end_point_index = calculate_point_index(path_end_tile_position)
-	
-	# Check if start_position is valid - else take nearest & valid point to the invalid point
-	if not astar_nodes_cache[map_name]["bosses"].has_point(start_point_index):
-		start_point_index = astar_nodes_cache[map_name]["bosses"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
-	
-	# Check if end position is valid / reachable - else take nearest & valid point to the invalid point
-	if not astar_nodes_cache[map_name]["bosses"].has_point(end_point_index):
-		end_point_index = astar_nodes_cache[map_name]["bosses"].get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
-	
-	# Check if point is disabled -> take nearest & enabled point to the disabled point
-	if astar_nodes_cache[map_name]["bosses"].has_point(start_point_index) and astar_nodes_cache[map_name]["bosses"].is_point_disabled(start_point_index):
-		start_point_index = astar_nodes_cache[map_name]["bosses"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
-	if astar_nodes_cache[map_name]["bosses"].has_point(end_point_index) and astar_nodes_cache[map_name]["bosses"].is_point_disabled(end_point_index):
-		end_point_index = astar_nodes_cache[map_name]["bosses"].get_closest_point(Vector3(path_end_tile_position.x, path_end_tile_position.y, 0), false)
-	
-	# Get the path as an array of points from astar_nodes_cache[map_name]["bosses"]
-	var point_path = astar_nodes_cache[map_name]["bosses"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269
-	
-	return point_path.size() > 0
+	if astar2DVisualizerNode != null:
+		astar2DVisualizerNode.call_deferred("update_disabled_points")
 
 
 func got_mob_position(mob, position):
