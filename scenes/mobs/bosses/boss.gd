@@ -194,6 +194,8 @@ func _physics_process(delta):
 		IDLING:
 			# Mob is doing nothing, just standing and searching for player
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
+			
+			search_player()
 		
 		
 		WANDERING:
@@ -202,6 +204,9 @@ func _physics_process(delta):
 				# Follow wandering path
 				if path.size() > 0:
 					move_to_position(delta)
+			
+			# Check if player is nearby (needs to be at the end of WANDERING)
+			search_player()
 		
 		
 		HUNTING:
@@ -219,6 +224,9 @@ func _physics_process(delta):
 				# Follow searching path
 				if path.size() > 0:
 					move_to_position(delta)
+			
+			# Mob is doing nothing, just standing and searching for player
+			search_player()
 		
 		
 		HURTING:
@@ -256,8 +264,6 @@ func _process(delta):
 	match behaviour_state:
 		
 		IDLING:
-			search_player()
-			
 			# After some time change to WANDERING
 			ideling_time += delta
 			if ideling_time > max_ideling_time:
@@ -272,9 +278,6 @@ func _process(delta):
 				if path.size() == 0:
 					# Case if pathend is reached, need new path
 					update_behaviour(IDLING)
-			
-			# Check if player is nearby (needs to be at the end of WANDERING)
-			search_player()
 		
 		
 		HUNTING:
@@ -303,10 +306,6 @@ func _process(delta):
 				else:
 					# Case if pathend is reached, need new path for searching
 					mob_need_path = true
-			
-			
-			# Mob is doing nothing, just standing and searching for player
-			search_player()
 
 
 # Method to move the mob to position
@@ -337,9 +336,15 @@ func move_to_position(delta):
 
 # Method to search for player
 func search_player():
-	if playerDetectionZone.mob_can_see_player(): # and PathfindingService.has_boss_path(global_position, playerDetectionZone.player.global_position):
-		# Player in detection zone of this mob
-		update_behaviour(HUNTING)
+	# Check if player is nearby the mob
+	if playerDetectionZone.mob_can_see_player():
+		# Check if mob can "see" player
+		raycast.cast_to = Utils.get_current_player().global_position - global_position
+		raycast.force_raycast_update()
+		
+		if not raycast.is_colliding():
+			# Player in detection zone of this mob and mob can "see" player
+			update_behaviour(HUNTING)
 
 
 # Method to update the behaviour of the mob
