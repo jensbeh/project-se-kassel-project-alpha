@@ -381,5 +381,8 @@ valign = 1
 
 [node name="Timer" type="Timer" parent="Hotbar/Hotbar"]
 
+[node name="Timer2" type="Timer" parent="Hotbar/Hotbar"]
+
 [connection signal="gui_input" from="Hotbar" to="Hotbar" method="_on_Hotbar_gui_input"]
 [connection signal="timeout" from="Hotbar/Hotbar/Timer" to="Hotbar" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Hotbar/Hotbar/Timer2" to="Hotbar" method="_on_Timer2_timeout"]

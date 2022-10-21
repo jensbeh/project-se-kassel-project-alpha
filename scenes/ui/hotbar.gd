@@ -5,14 +5,17 @@ onready var time_label = get_node("Hotbar/TextureProgress/Time")
 onready var cooldown_texture = get_node("Hotbar/TextureProgress")
 var disabled = false
 var type
+var type2
+var timer1 = false
 
 func _ready():
 	time_label.hide()
 	$Hotbar/Timer.wait_time = Constants.COOLDOWN
 	cooldown_texture.value = 0
-	set_process(false)
+	#set_process(false)
 	load_hotbar()
 	$Hotbar/Timer.set_one_shot(true)
+	$Hotbar/Timer2.set_one_shot(true)
 	
 
 # (re)load hotbar item and stack
@@ -48,20 +51,26 @@ func load_hotbar():
 
 
 func _process(_delta):
-	time_label.text = "%2.1f" % $Hotbar/Timer.time_left
-	if type == "Stamina":
-		cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
-		Utils.get_current_player().stamina_cooldown = $Hotbar/Timer.time_left
-	else:
-		cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.COOLDOWN) * 100)
-		Utils.get_current_player().health_cooldown = $Hotbar/Timer.time_left
+	if timer1:
+		time_label.text = "%2.1f" % $Hotbar/Timer.time_left
+		if type == "Stamina":
+			cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
+			Utils.get_current_player().stamina_cooldown = $Hotbar/Timer.time_left
+		else:
+			cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.COOLDOWN) * 100)
+			Utils.get_current_player().health_cooldown = $Hotbar/Timer.time_left
+	if type2 == "Stamina":
+		Utils.get_current_player().stamina_cooldown = $Hotbar/Timer2.time_left
+	elif type2 == "Health":
+		Utils.get_current_player().health_cooldown = $Hotbar/Timer2.time_left
 
 
 func _on_Timer_timeout():
 	cooldown_texture.value = 0
 	disabled = false
 	time_label.hide()
-	set_process(false)
+	#set_process(false)
+	timer1 = false
 	if type == "Stamina":
 		Utils.get_current_player().stamina_cooldown = 0
 	else:
@@ -150,6 +159,20 @@ func set_cooldown(cooldown, new_type):
 	cooldown_texture.show()
 	$Hotbar/Timer.start()
 	disabled = true
-	set_process(true)
+	timer1 = true
+	#set_process(true)
 	time_label.show()
 
+
+# Method to track second cooldown time
+func cooldown_timer2(cooldown, new_type2):
+	type2 = new_type2
+	$Hotbar/Timer2.wait_time = cooldown
+	$Hotbar/Timer2.start()
+
+
+func _on_Timer2_timeout():
+	if type2 == "Stamina":
+		Utils.get_current_player().stamina_cooldown = 0
+	else:
+		Utils.get_current_player().health_cooldown = 0
