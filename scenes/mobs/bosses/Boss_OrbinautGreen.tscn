@@ -146,7 +146,7 @@ height = 0.0
 radius = 100.0
 
 [sub_resource type="CircleShape2D" id=18]
-radius = 40.0
+radius = 20.0
 
 [sub_resource type="CircleShape2D" id=22]
 radius = 8.0
@@ -171,7 +171,7 @@ collision_layer = 8
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, -5 )
+position = Vector2( 0, -1 )
 texture = ExtResource( 1 )
 hframes = 3
 
@@ -228,9 +228,9 @@ shape = SubResource( 43 )
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 margin_left = -424.0
-margin_top = -39.0
+margin_top = -35.0
 margin_right = 424.0
-margin_bottom = 8.0
+margin_bottom = 12.0
 rect_scale = Vector2( 0.0218141, 0.0425841 )
 rect_pivot_offset = Vector2( 424, 23 )
 texture = ExtResource( 8 )
@@ -253,6 +253,7 @@ allow_greater = true
 percent_visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 0, 4 )
 
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 

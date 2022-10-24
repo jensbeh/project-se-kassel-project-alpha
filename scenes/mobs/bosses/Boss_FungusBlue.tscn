@@ -696,7 +696,7 @@ height = 0.0
 radius = 100.0
 
 [sub_resource type="CircleShape2D" id=40]
-radius = 40.0
+radius = 20.0
 
 [sub_resource type="CircleShape2D" id=67]
 radius = 8.0
@@ -769,7 +769,6 @@ position = Vector2( 0, -3 )
 shape = SubResource( 8 )
 
 [node name="PlayerAttackZone" parent="." instance=ExtResource( 2 )]
-visible = false
 position = Vector2( 0, -3 )
 
 [node name="AttackShape" parent="PlayerAttackZone" index="0"]
