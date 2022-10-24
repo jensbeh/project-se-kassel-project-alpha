@@ -136,7 +136,9 @@ func finish_transition():
 				Utils.get_current_player().hurting = false
 			if Utils.get_current_player().is_attacking:
 				Utils.get_current_player().is_attacking = false
-				
+			if Utils.get_current_player().is_in_safe_area() == true:
+				Utils.get_current_player().set_in_safe_area(false)
+			
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")
 			Utils.get_ui().in_world(true)

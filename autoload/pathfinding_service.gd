@@ -37,34 +37,35 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		# Create new AStars and store them to use later again
-		if not astar_nodes_cache.has(map_name):
-			astar_nodes_cache[map_name] = {
-								"mobs" : null,
-								"bosses" : null,
-								"ambient_mobs" : null,
-								"dynamic_obstacles_mobs" : {},
-								"dynamic_obstacles_bosses" : {}
-								}
-		
-		# Mobs
-		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-		
-		# Bosses
-		if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
-			astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
-			astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-			astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-		
-		# Ambient mobs
-		if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
-			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-		
-		print("LOADED \"" + str(map_name) + "\"")
+		if "dungeon" in map_name:
+			# Create new AStars and store them to use later again
+			if not astar_nodes_cache.has(map_name):
+				astar_nodes_cache[map_name] = {
+									"mobs" : null,
+									"bosses" : null,
+									"ambient_mobs" : null,
+									"dynamic_obstacles_mobs" : {},
+									"dynamic_obstacles_bosses" : {}
+									}
+			
+			# Mobs
+			astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+			astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+			
+			# Bosses
+			if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
+				astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
+				astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+				astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+			
+			# Ambient mobs
+			if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
+				astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+				astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+				astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+			
+			print("LOADED \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
@@ -641,6 +642,28 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 			if astar_nodes_cache[map_name]["bosses"].has_point(current_point_index) and not astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].has(current_point_index):
 				astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].append(current_point_index)
 				astar_nodes_cache[map_name]["bosses"].set_point_disabled(current_point_index, true)
+	
+	# Update obstacles visual
+	if astar2DVisualizerNode != null:
+		astar2DVisualizerNode.call_deferred("update_disabled_points")
+
+
+# Method to remove dynamic obstacle from astar
+func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
+	var disabled_mob_points = astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][collisionshape_node.get_instance_id()]
+	var disabled_boss_points = astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()]
+	
+	# Enable points for MOBS
+	for disabled_point in disabled_mob_points:
+		astar_nodes_cache[map_name]["mobs"].set_point_disabled(disabled_point, false)
+	# Delete obstacle from dic
+	astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].erase(collisionshape_node.get_instance_id())
+	
+	# Enable points for BOSSES
+	for disabled_point in disabled_boss_points:
+		astar_nodes_cache[map_name]["bosses"].set_point_disabled(disabled_point, false)
+	# Delete obstacle from dic
+	astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].erase(collisionshape_node.get_instance_id())
 	
 	# Update obstacles visual
 	if astar2DVisualizerNode != null:

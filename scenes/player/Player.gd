@@ -74,6 +74,7 @@ var dying = false
 var is_invincible = false
 var collecting = false
 var collected = false
+var in_safe_area = false
 var change_scene
 
 
@@ -1035,3 +1036,18 @@ func make_player_invincible(invincible : bool):
 # Method to get player invincibility
 func is_player_invincible():
 	return is_invincible
+
+
+# Method to set in_safe_area
+func set_in_safe_area(new_in_safe_area):
+	in_safe_area = new_in_safe_area
+	
+	if in_safe_area:
+		make_player_invisible(true)
+	else:
+		make_player_invisible(false)
+
+
+# Method to get in_safe_area
+func is_in_safe_area():
+	return in_safe_area

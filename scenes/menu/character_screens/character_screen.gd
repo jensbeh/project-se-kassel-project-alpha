@@ -532,10 +532,10 @@ func start_game():
 #	var player_position = Vector2(1056,-80) # Grassland - Beach
 #	var player_position = Vector2(1040, 64) # Grassland - Dungeon1/Beach
 #	var player_position = Vector2(-864, -625) # Grassland - Mountain Biome Entrance
-	var player_position = Vector2(-416,-928) # Grassland - Mountain
+#	var player_position = Vector2(-416,-928) # Grassland - Mountain
 #	var player_position = Vector2(-730,-1700) # Grassland - Top
 #	var player_position = Vector2(336,-62) # Dungeon1-1
-#	var player_position = Vector2(432,-120) # Dungeon1-3
+	var player_position = Vector2(432,-120) # Dungeon1-3
 #	var player_position = Vector2(240,480) # Dungeon2-4
 #	var player_position = Vector2(-300,64) # Dungeon3-2
 #	var player_position = Vector2(-384,176) # Dungeon3-4
@@ -564,9 +564,9 @@ func start_game():
 	
 	# Transition
 #	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
-	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
-#	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn", player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn", player_position, view_direction)

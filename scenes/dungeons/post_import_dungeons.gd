@@ -396,22 +396,46 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		elif child is Area2D:
 			# Check if child is in this chunk
-			var child_position = child.position + child.get_child(0).shape.extents
-			var chunk = get_chunk_from_position(child_position)
-			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				var node = Area2D.new()
+			if child.get_child(0) is CollisionShape2D:
+				var child_position = child.position + child.get_child(0).shape.extents
+				var chunk = get_chunk_from_position(child_position)
+				if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+					var node = Area2D.new()
+					
+					# Add infos if it is treasure area
+					if "treasure" in child.name:
+						chunk_node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
+						chunk_node.set_meta("boss_loot", child.get_meta("boss_loot"))
+					
+					node.name = child.name
+					node.position = child.position
+					chunk_node.add_child(node)
+					node.set_owner(scene)
+				else:
+					continue
+			
+			elif child.get_child(0) is CollisionPolygon2D:
+				var max_point = child.get_child(0).polygon[0]
+				for point in child.get_child(0).polygon:
+					if point > max_point:
+						max_point = point
+				var child_position = child.position + max_point
+				var chunk = get_chunk_from_position(child_position)
 				
-				# Add infos if it is treasure area
-				if "treasure" in child.name:
-					chunk_node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
-					chunk_node.set_meta("boss_loot", child.get_meta("boss_loot"))
-				
-				node.name = child.name
-				node.position = child.position
-				chunk_node.add_child(node)
-				node.set_owner(scene)
-			else:
-				continue
+				if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+					var node = Area2D.new()
+					
+					# Add infos if it is treasure area
+					if "treasure" in child.name:
+						chunk_node.set_meta("selected_treasure_sprite", child.get_meta("selected_treasure_sprite"))
+						chunk_node.set_meta("boss_loot", child.get_meta("boss_loot"))
+					
+					node.name = child.name
+					node.position = child.position
+					chunk_node.add_child(node)
+					node.set_owner(scene)
+				else:
+					continue
 		
 		elif child is CollisionShape2D:
 			var node = CollisionShape2D.new()
@@ -421,6 +445,13 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var shape = RectangleShape2D.new()
 			shape.extents = child.shape.extents
 			node.shape = shape
+		
+		elif child is CollisionPolygon2D:
+			var node = CollisionPolygon2D.new()
+			node.position = child.position
+			node.polygon = child.polygon
+			chunk_node.add_child(node)
+			node.set_owner(scene)
 		
 		elif child is CustomLight:
 			# Check if child is in this chunk
@@ -531,6 +562,8 @@ func remove_collisionshapes_from_not_dynamic_objects_from_tilemap(tilemap : Tile
 		else:
 			if child is CollisionShape2D and child.get_parent() is StaticBody2D:
 				if "treasure" in child.get_parent().name:
+					continue
+				if "locked_doors" in child.get_parent().get_parent().name:
 					continue
 				
 				var xExtentsFactor = 2

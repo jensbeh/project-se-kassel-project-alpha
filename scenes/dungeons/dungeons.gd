@@ -69,6 +69,13 @@ func _ready():
 		
 		# Show boss health bar in player ui
 		Utils.get_player_ui().show_boss_health_bar(true)
+		
+		setup_safe_area()
+		
+		# Handle locked door
+		var lockedDoorsNode = find_node("locked_doors")
+		var lockedDoorCollisionShape = lockedDoorsNode.find_node("CollisionShape2D")
+		PathfindingService.add_dynamic_obstacle(lockedDoorCollisionShape, lockedDoorCollisionShape.get_parent().global_position)
 	
 	# Start PathfindingService
 	PathfindingService.start()
@@ -194,6 +201,15 @@ func clear_signals():
 					# connect Area2D with functions to handle body action
 					treasure_area.disconnect("body_entered", self, "body_entered_treasure")
 					treasure_area.disconnect("body_exited", self, "body_exited_treasure")
+	
+	# Safeareas
+	var safeAreasObject = find_node("safe_area")
+	if safeAreasObject != null:
+		for child in safeAreasObject.get_children():
+			if "safe_area" in child.name:
+				# connect Area2D with functions to handle body action
+				child.disconnect("body_entered", self, "body_entered_safe_area")
+				child.disconnect("body_exited", self, "body_exited_safe_area")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -213,6 +229,30 @@ func setup_change_scene_areas():
 			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
 			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
 
+
+# Setup all change_scene objectes/Area2D's on start
+func setup_safe_area():
+	var safeAreasObject = find_node("safe_area")
+	if safeAreasObject != null:
+		for child in safeAreasObject.get_children():
+			if "safe_area" in child.name:
+				# connect Area2D with functions to handle body action
+				child.connect("body_entered", self, "body_entered_safe_area", [child])
+				child.connect("body_exited", self, "body_exited_safe_area", [child])
+
+
+# Method which is called when a body has exited a safeArea
+func body_entered_safe_area(body, safeArea):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" ENTERED safeArea \"" + safeArea.name + "\"")
+		Utils.get_current_player().set_in_safe_area(true)
+
+
+# Method which is called when a body has exited a safeArea
+func body_exited_safe_area(body, safeArea):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" EXITED safeArea \"" + safeArea.name + "\"")
+		Utils.get_current_player().set_in_safe_area(false)
 
 func setup_spawning_areas():
 	for area in mobSpawns.get_children():
@@ -282,6 +322,11 @@ func spawn_key_at_death(death_position):
 func on_key_collected():
 	# Remove locked door
 	var lockedDoorsNode = find_node("locked_doors")
+#	var lockedDoorCollisionShape = lockedDoorsNode.find_node("CollisionShape2D")
+#	# Remove from pathfinding obstacles
+#	PathfindingService.remove_dynamic_obstacle(lockedDoorCollisionShape)
+	
+	# Remove locked door
 	for child in lockedDoorsNode.get_children():
 		child.call_deferred("queue_free")
 
