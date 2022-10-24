@@ -821,6 +821,7 @@ allow_greater = true
 percent_visible = false
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+scale = Vector2( 0.33, 0.33 )
 
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 
