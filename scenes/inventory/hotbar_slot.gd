@@ -315,7 +315,10 @@ func _on_Icon_gui_input(event):
 						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
 					PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 					# sync cooldown
-					Utils.get_hotbar().set_cooldown(cooldown, type)
+					if type == "Stamina":
+						Utils.get_hotbar().set_cooldown_stamina(cooldown, type)
+					elif type == "Health":
+						Utils.get_hotbar().set_cooldown_health(cooldown, type)
 					Utils.get_hotbar().update_label()
 					Utils.get_character_interface().find_node("Inventory").set_cooldown(cooldown, type)
 
@@ -359,6 +362,7 @@ func check_cooldown(data):
 		time_label.show()
 		cooldown_texture.show()
 	else:
+		timer.stop()
 		disabled = false
 		set_process(false)
 		time_label.hide()

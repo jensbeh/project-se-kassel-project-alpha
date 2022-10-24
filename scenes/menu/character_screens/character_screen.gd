@@ -561,14 +561,16 @@ func start_game():
 	Utils.get_hotbar().load_hotbar()
 	if (PlayerData.equipment_data["Hotbar"]["Item"] != null and
 	 GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina")):
+		if data.has("cooldown") and data.cooldown != 0:
+			Utils.get_hotbar().set_cooldown_health(data.cooldown, "Stamina")
 		if data.has("stamina_cooldown") and data.stamina_cooldown != 0:
-			Utils.get_hotbar().set_cooldown(data.stamina_cooldown, "Stamina")
-			Utils.get_hotbar().cooldown_timer2(data.cooldown, "Health")
+			Utils.get_hotbar().set_cooldown_stamina(data.stamina_cooldown, "Stamina")
 			
 	elif PlayerData.equipment_data["Hotbar"]["Item"] != null:
+		if data.has("stamina_cooldown") and data.stamina_cooldown != 0:
+			Utils.get_hotbar().set_cooldown_stamina(data.stamina_cooldown, "Health")
 		if data.has("cooldown") and data.cooldown != 0:
-			Utils.get_hotbar().set_cooldown(data.cooldown, "Health")
-			Utils.get_hotbar().cooldown_timer2(data.stamina_cooldown, "Stamina")
+			Utils.get_hotbar().set_cooldown_health(data.cooldown, "Health")
 	
 	
 	# Transition
