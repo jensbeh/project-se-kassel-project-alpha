@@ -52,6 +52,7 @@ var regeneration_interval = 0.0
 var max_regeneration_interval
 var scene_type
 var is_in_boss_room
+var lootLayer
 var killed = false
 var update_get_target_position = false
 var new_position_dic : Dictionary = {}
@@ -93,7 +94,7 @@ func _ready():
 	
 	# Set spawn position
 	collision_radius = collision.shape.radius
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, true, lootLayer, 3)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING
@@ -130,11 +131,12 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_is_in_boss_room):
+func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_is_in_boss_room, init_lootLayer):
 	boss_spawn_area = init_boss_spawn_area
 	navigation_tile_map = init_navigation_tile_map
 	scene_type = init_scene_type
 	is_in_boss_room = init_is_in_boss_room
+	lootLayer = init_lootLayer
 
 
 func _physics_process(delta):
@@ -155,7 +157,7 @@ func _physics_process(delta):
 			WANDERING:
 #				print("WANDERING")
 				var new_position = Vector2.ZERO
-				new_position = Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, false)
+				new_position = Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, false, lootLayer, 3)
 				PathfindingService.call_deferred("got_boss_position", self, new_position)
 				update_get_target_position = false
 			
@@ -482,32 +484,8 @@ func change_animations(_animation_behaviour_state):
 
 
 # Method returns next target position to pathfinding_service
-#func get_target_position():
-#	# Return player hunting position if player is still existing
-#	if behaviour_state == HUNTING:
-#		var player = playerDetectionZone.player
-#		if player != null:
-#			return playerDetectionZone.player.global_position
-#		else:
-#			return null
-#
-#	# Return next wandering position
-#	elif behaviour_state == WANDERING:
-#		return Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, false)
-#
-#	# Return next searching position
-#	elif behaviour_state == SEARCHING:
-#		return Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
-#
-#	elif behaviour_state == PRE_ATTACKING:
-#		return Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
-
-
-
-# Method returns next target position to pathfinding_service
 func get_target_position():
 	update_get_target_position = true
-
 
 
 # Method is called from pathfinding_service to set new path to mob

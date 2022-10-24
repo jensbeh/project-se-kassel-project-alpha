@@ -57,7 +57,7 @@ func _ready():
 	setup_treasure_areas()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false)
+	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -91,7 +91,7 @@ func spawn_boss():
 	var boss_path = Utils.get_random_boss_instance_path()
 	var boss_instance = load(boss_path).instance()
 	# Generate spawn position and spawn boss
-	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type, is_boss_room())
+	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type, is_boss_room(), lootLayer)
 	mobsLayer.call_deferred("add_child", boss_instance)
 
 

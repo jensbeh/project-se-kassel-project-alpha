@@ -44,6 +44,7 @@ var min_attacking_radius_around_player
 var pre_attack_time = 0.0
 var max_pre_attack_time
 var scene_type
+var lootLayer
 var killed = false
 var update_get_target_position = false
 var new_position_dic : Dictionary = {}
@@ -82,7 +83,7 @@ func _ready():
 	
 	# Set spawn_position
 	collision_radius = collision.shape.radius
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true, lootLayer)
 	position = spawn_position
 #	position = Vector2(100, 100)
 	
@@ -119,10 +120,11 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_spawnArea, new_navigation_tile_map, init_scene_type):
+func init(init_spawnArea, new_navigation_tile_map, init_scene_type, init_lootLayer):
 	spawnArea = init_spawnArea
 	navigation_tile_map = new_navigation_tile_map
 	scene_type = init_scene_type
+	lootLayer = init_lootLayer
 
 
 func _physics_process(delta):
@@ -142,7 +144,7 @@ func _physics_process(delta):
 			WANDERING:
 #				print("WANDERING")
 				var new_position = Vector2.ZERO
-				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false)
+				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false, lootLayer)
 				PathfindingService.call_deferred("got_mob_position", self, new_position)
 				update_get_target_position = false
 			

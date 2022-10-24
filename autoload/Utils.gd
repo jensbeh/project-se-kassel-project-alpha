@@ -208,7 +208,7 @@ func calculate_triangle_area(A, B, C) -> float:
 
 
 # Method to generate a valid position in a mob area
-func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning) -> Vector2:
+func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : TileMap, collision_radius, is_first_spawning, lootLayer, spawn_loot_tile_distance = 1) -> Vector2:
 	var tile_set : TileSet = navigation_tile_map.tile_set
 	var position : Vector2
 	
@@ -256,6 +256,31 @@ func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : 
 							generate_again = true
 		else:
 			generate_again = true
+		
+		# Before return check positions of dynamic obstacles
+		if not generate_again and lootLayer != null and is_instance_valid(lootLayer) and lootLayer.is_inside_tree():
+			# Loot & treasures
+			for loot in lootLayer.get_children():
+				if "treasure" in loot.name:
+					# Check position if inside treasure
+					var size_x = ceil(loot.get_node("StaticBody/CollisionShape2D").shape.extents.x * 2)
+					var size_y = ceil(loot.get_node("StaticBody/CollisionShape2D").shape.extents.y * 2)
+					var max_position_loot = Vector2(loot.global_position.x + size_x, loot.global_position.y + size_y)
+					
+					var extra_safe_space = Vector2(Constants.TILE_SIZE, Constants.TILE_SIZE) * spawn_loot_tile_distance
+					
+					var top_left = loot.global_position - extra_safe_space
+					var bottom_right = max_position_loot + extra_safe_space
+					
+					if position.x >= top_left.x and position.y >= top_left.y \
+					 and position.x <= bottom_right.x and position.y <= bottom_right.y:
+						# Inside of treasure area
+						generate_again = true
+#						printerr("ERROR: generate_position_in_mob_area - Inside of treasure area")
+				
+				elif not "Loot" in loot.name:
+					printerr("ERROR: generate_position_in_mob_area - Loot & treasures -> " + str(loot.name))
+		
 		
 		if not generate_again:
 			# Position is NOT blocked by collision, ... - get new one

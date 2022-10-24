@@ -17,6 +17,7 @@ var ambientMobsLayer = null
 var current_ambient_mobs : int
 var max_ambient_mobs : int
 var is_time_sensitiv : bool = false
+var lootLayer : Node2D = null
 var mobs_to_despawn : Array
 var scene_type = null
 
@@ -31,7 +32,7 @@ func _ready():
 
 
 # Method to init all important variables
-func init(new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv):
+func init(new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv, new_lootLayer):
 	print("INIT MOB_SPAWNER_SERVICE")
 	# Check if thread is active wait to stop
 	if mobspawner_thread.is_active():
@@ -48,6 +49,7 @@ func init(new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mob
 	ambientMobsLayer = new_ambientMobsLayer
 	max_ambient_mobs = new_max_ambient_mobs
 	is_time_sensitiv = new_is_time_sensitiv
+	lootLayer = new_lootLayer
 	# Activate time specific mobs depending on scene_tpye
 	if is_time_sensitiv:
 		# Connect signals
@@ -83,6 +85,7 @@ func cleanup():
 	spawning_areas = null
 	mobsNavigationTileMap = null
 	mobsLayer = null
+	lootLayer = null
 	with_ambient_mobs = false
 	ambientMobsSpawnArea = null
 	ambientMobsNavigationTileMap = null
@@ -193,7 +196,7 @@ func spawn_area_mobs():
 							if mob == mob_id:
 								if is_instance_valid(mobsLayer) and mobsLayer.is_inside_tree():
 									var mob_instance = mobScene.instance()
-									mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type)
+									mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 									mobsLayer.call_deferred("add_child", mob_instance)
 									mob_list.append(mob_instance)
 									spawning_areas[current_spawn_area]["current_mobs_count"] += 1

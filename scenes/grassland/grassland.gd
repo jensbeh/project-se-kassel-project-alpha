@@ -55,17 +55,17 @@ func _ready():
 	# Setup spawning areas
 	setup_spawning_areas()
 	
+	# Spawn random treasures
+	spawn_treasures()
+	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true)
+	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
 	
 	# Spawn bosses
 	spawn_bosses()
-	
-	# Spawn random treasures
-	spawn_treasures()
 	
 	# Start PathfindingService
 	PathfindingService.start()
@@ -86,7 +86,7 @@ func spawn_bosses():
 				var boss_path = Utils.get_random_boss_instance_path()
 				var boss_instance = load(boss_path).instance()
 				# Generate spawn position and spawn boss
-				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false)
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false, lootLayer)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
 				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
@@ -203,9 +203,14 @@ func clear_signals():
 					stair.disconnect("body_entered", self, "body_entered_stair_area")
 					stair.disconnect("body_exited", self, "body_exited_stair_area")
 	
-	# Treasures
-	for treasure in lootLayer.get_children():
-		Utils.get_current_player().disconnect("player_interact", treasure, "interaction")
+	# Loot & treasures
+	for loot in lootLayer.get_children():
+		if "treasure" in loot.name:
+			loot.clear_signals()
+		elif "loot" in loot.name:
+			loot.clear_signals()
+		else:
+			printerr("NOTHING TO DISCONNECT IN GRASSLAND LOOT")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -309,6 +314,6 @@ func spawn_treasures():
 				# load treasure
 				var treasure = load(Constants.TREASURE_PATH).instance()
 				# Generate spawn position and spawn treasure
-				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type)
+				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 				lootLayer.call_deferred("add_child", treasure)
 			quantity -= 1

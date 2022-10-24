@@ -43,7 +43,7 @@ func _ready():
 	line2D.visible = Constants.SHOW_AMBIENT_MOB_PATHES
 	
 	# Set spawn_position
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true, null)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING

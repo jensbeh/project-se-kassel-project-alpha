@@ -37,35 +37,34 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		if "grassland" in map_name:
-			# Create new AStars and store them to use later again
-			if not astar_nodes_cache.has(map_name):
-				astar_nodes_cache[map_name] = {
-									"mobs" : null,
-									"bosses" : null,
-									"ambient_mobs" : null,
-									"dynamic_obstacles_mobs" : {},
-									"dynamic_obstacles_bosses" : {}
-									}
-			
-			# Mobs
-			astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-			astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-			
-			# Bosses
-			if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
-				astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
-				astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-				astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-			
-			# Ambient mobs
-			if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
-				astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-				astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-				astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-			
-			print("LOADED \"" + str(map_name) + "\"")
+		# Create new AStars and store them to use later again
+		if not astar_nodes_cache.has(map_name):
+			astar_nodes_cache[map_name] = {
+								"mobs" : null,
+								"bosses" : null,
+								"ambient_mobs" : null,
+								"dynamic_obstacles_mobs" : {},
+								"dynamic_obstacles_bosses" : {}
+								}
+		
+		# Mobs
+		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		
+		# Bosses
+		if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
+			astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
+			astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+			astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+		
+		# Ambient mobs
+		if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
+			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+		
+		print("LOADED \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
@@ -101,7 +100,7 @@ func init(new_map_name = "", new_astar2DVisualizerNode = null, new_ambientMobsNa
 	# Init visualizer
 	astar2DVisualizerNode = new_astar2DVisualizerNode
 	if astar2DVisualizerNode != null:
-		astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["bosses"])
+		astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["mobs"])
 
 
 # Method to start pathfinding service (call after init)
