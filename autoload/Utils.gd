@@ -246,6 +246,7 @@ func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : 
 		 and cellTopLeft != obstacle_tile_id and cellTopLeft != Constants.INVALID_TILE_ID \
 		 and cellLeft != obstacle_tile_id and cellLeft != Constants.INVALID_TILE_ID \
 		 and cellBottomLeft != obstacle_tile_id and cellBottomLeft != Constants.INVALID_TILE_ID :
+			# Cells are valid -> check if they contain collision
 			var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
 			for cell_to_check in cells:
 				var shapes = tile_set.tile_get_shapes(cell_to_check)
@@ -254,6 +255,8 @@ func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : 
 						# If shape on tile is collision then generate again
 						if shape["shape"] is RectangleShape2D:
 							generate_again = true
+		
+		# One of these cells is obstacles/invalid
 		else:
 			generate_again = true
 		
@@ -306,9 +309,7 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 	var tile_set : TileSet = navigation_tile_map.tile_set
 	var position : Vector2
 	
-#	var generate_position = true
-#	while(generate_position):
-		# Get random position in circle
+	# Get random position in circle
 	rng.randomize()
 	var theta = rng.randf_range(0.0, 2.0 * PI)
 	var radius = rng.randf_range(float(min_radius), float(max_radius))
@@ -316,10 +317,6 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 	var randY = mob_global_position.y + (radius * sin(theta))
 	
 	position = Vector2(randX, randY)
-	
-#	print("position: " + str(position))
-#	var a = Vector2(int(floor(randX / 16)), int(floor(randY / 16)))
-#	print("tile: " + str(a))
 	
 	# Check if position is valid
 	var cell = navigation_tile_map.get_cell(int(floor(randX / 16)), int(floor(randY / 16)))
@@ -341,7 +338,7 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 		obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
 	else:
 		printerr("Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")
-	
+		
 	if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
 	 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
 	 and cellBottomRight != obstacle_tile_id and cellBottomRight != Constants.INVALID_TILE_ID \
@@ -351,22 +348,21 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 	 and cellTopLeft != obstacle_tile_id and cellTopLeft != Constants.INVALID_TILE_ID \
 	 and cellLeft != obstacle_tile_id and cellLeft != Constants.INVALID_TILE_ID \
 	 and cellBottomLeft != obstacle_tile_id and cellBottomLeft != Constants.INVALID_TILE_ID :
+		# Cells are valid -> check if they contain collision
 		var cells = [cell, cellBottom, cellBottomRight, cellRight, cellTopRight, cellTop, cellTopLeft, cellLeft, cellBottomLeft]
 		for cell_to_check in cells:
 			var shapes = tile_set.tile_get_shapes(cell_to_check)
 			if shapes.size() > 0:
 				for shape in shapes:
+					print(shapes)
 					# If shape on tile is collision then generate again
 					if shape["shape"] is RectangleShape2D:
+						print("COLLISION")
 						generate_again = true
-#	else:
-#		generate_again = true
-#
-#	if not generate_again:
-#		# Position is NOT blocked by collision, ... - get new one
-#		generate_position = false
-#	else:
-#		print("generate_again - generate_position_near_mob")
+	
+	# One of these cells is obstacles/invalid
+	else:
+		generate_again = true
 	
 	return {
 		"generate_again": generate_again,
