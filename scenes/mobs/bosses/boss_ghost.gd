@@ -22,9 +22,9 @@ func _ready():
 	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 	
 	# Constants
-	HUNTING_SPEED = 35
-	WANDERING_SPEED = 12
-	PRE_ATTACKING_SPEED = 3 * HUNTING_SPEED
+	HUNTING_SPEED = 35 * BOSS_SPEED_FACTOR
+	WANDERING_SPEED = 12 * BOSS_SPEED_FACTOR
+	PRE_ATTACKING_SPEED = 1.5 * HUNTING_SPEED
 	
 	# Animations
 	setup_animations()

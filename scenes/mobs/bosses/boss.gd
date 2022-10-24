@@ -5,6 +5,7 @@ var DETECTION_RADIUS_IN_GRASSLAND = 60
 var ATTACK_RADIUS_IN_GRASSLAND = 20
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
+var BOSS_SPEED_FACTOR = 2.0
 var PRE_ATTACKING_SPEED
 var REGENERATION_HP_AMOUNT
 
@@ -169,8 +170,8 @@ func _physics_process(delta):
 					if not raycast.is_colliding():
 						PathfindingService.call_deferred("got_boss_position", self, new_position_dic["position"])
 						update_get_target_position = false
-					else:
-						printerr("SEARCHING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+#					else:
+#						printerr("SEARCHING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING: " + str(raycast.get_collider()))
 					new_position_dic.clear()
 			
 			
@@ -183,8 +184,8 @@ func _physics_process(delta):
 					if not raycast.is_colliding():
 						PathfindingService.call_deferred("got_boss_position", self, new_position_dic["position"])
 						update_get_target_position = false
-					else:
-						printerr("PRE_ATTACKING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+#					else:
+#						printerr("PRE_ATTACKING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
 					new_position_dic.clear()
 	
 	
@@ -345,6 +346,8 @@ func search_player():
 		if not raycast.is_colliding():
 			# Player in detection zone of this mob and mob can "see" player
 			update_behaviour(HUNTING)
+#		else:
+#			printerr("SEARCHING - COLLIDING: " + str(raycast.get_collider()))
 
 
 # Method to update the behaviour of the mob

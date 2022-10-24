@@ -19,6 +19,7 @@ var map_name
 var astar_nodes_cache = {}
 var astar2DVisualizerNode = null
 var mob_mutex = Mutex.new()
+var boss_mutex = Mutex.new()
 var mobs_with_new_position : Dictionary = {}
 var bosses_with_new_position : Dictionary = {}
 
@@ -252,9 +253,9 @@ func generate_pathes():
 						for boss in bosses_which_need_new_path:
 							if is_instance_valid(boss) and boss.is_inside_tree():
 								boss.get_target_position()
-								mob_mutex.lock()
+								boss_mutex.lock()
 								bosses_waiting.append(boss)
-								mob_mutex.unlock()
+								boss_mutex.unlock()
 					
 					
 					# Notify AMBIENT_MOB that new end_position is needed
@@ -283,12 +284,12 @@ func generate_pathes():
 			
 			# Get path for BOSS which got new end_position
 			if bosses_with_new_position.size() > 0:
-				mob_mutex.lock()
+				boss_mutex.lock()
 				for boss in bosses_with_new_position.keys():
 					var new_path = get_boss_astar_path(boss.global_position, bosses_with_new_position[boss])
 					call_deferred("send_path_to_boss", boss, new_path)
 					var _was_present = bosses_with_new_position.erase(boss)
-				mob_mutex.unlock()
+				boss_mutex.unlock()
 
 
 # Method to send new path to mob
@@ -311,10 +312,10 @@ func send_path_to_boss(boss, new_path):
 		boss.call_deferred("update_path", new_path)
 		
 		# Remove mob from waiting list
-		mob_mutex.lock()
+		boss_mutex.lock()
 		if bosses_waiting.find(boss) != -1:
 			bosses_waiting.remove(bosses_waiting.find(boss))
-		mob_mutex.unlock()
+		boss_mutex.unlock()
 
 
 # Method is called when thread finished
@@ -654,6 +655,6 @@ func got_mob_position(mob, position):
 
 
 func got_boss_position(boss, position):
-	mob_mutex.lock()
+	boss_mutex.lock()
 	bosses_with_new_position[boss] = position
-	mob_mutex.unlock()
+	boss_mutex.unlock()

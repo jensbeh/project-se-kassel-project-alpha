@@ -4,6 +4,7 @@ extends KinematicBody2D
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 var PRE_ATTACKING_SPEED
+var MOB_SPEED_FACTOR = 2.0
 
 # Mob specific
 var max_health = 100
@@ -292,36 +293,26 @@ func _process(delta):
 # Method to move the mob to position
 func move_to_position(delta):
 	# Stop motion when reached position
-#	print("A")
 	if global_position.distance_to(path[0]) < position_threshold:
 		path.remove(0)
-#		print("D")
 		if Constants.SHOW_MOB_PATHES:
 			# Update line
 			line2D.points = path
 	else:
-#		print("E")
 		# Move mob
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
-#		print("F")
 		# Update anmination
 		update_animations()
 		
 		if Constants.SHOW_MOB_PATHES:
 			# Update line position
 			line2D.global_position = Vector2(0,0)
-#		print("G")
-#	print("B")
 	
 	if Constants.SHOW_MOB_PATHES:
 		if path.size() == 0:
 			line2D.points = []
-	
-#	print("C")
-#	print("")
-#	print("")
 
 
 # Method to search for player
