@@ -44,25 +44,28 @@ func set_exp(new_value: int):
 	# Max exp for level
 	if exp_bar.value >= exp_bar.max_value:
 		var player_level = Utils.get_current_player().get_level()
-		# reset exp bar
-		Utils.get_current_player().set_exp(new_value - player_level * 100)
 		# increase by level up
 		if player_level < Constants.MAX_LEVEL:
+			# reset exp bar
+			Utils.get_current_player().set_exp(new_value - player_level * 100)
+			# increase by level up
 			Utils.get_current_player().set_level(player_level +1)
 			exp_bar.max_value = (player_level + 1) * 100
 			stamina_bar.max_value = 100 + player_level * 10
 			Utils.get_current_player().set_max_health(100 + player_level*10)
 			player_level += 1
-		# reset life and stamina
-		Utils.get_current_player().set_stamina(90 + player_level * 10)
-		life_bar.value = 100
-		Utils.get_current_player().set_current_health(90 + player_level * 10)
-		# save player
-		Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
-		if player_level == 5:
-			change_heart_number(4)
-		elif player_level == 10:
-			change_heart_number(5)
+			# reset life and stamina
+			Utils.get_current_player().set_stamina(90 + player_level * 10)
+			life_bar.value = 100
+			Utils.get_current_player().set_current_health(90 + player_level * 10)
+			# save player
+			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
+			if player_level == 5:
+				change_heart_number(4)
+			elif player_level == 10:
+				change_heart_number(5)
+		else:
+			exp_bar.value = exp_bar.max_value
 
 # Clock
 func set_time(new_hour, new_minute):
