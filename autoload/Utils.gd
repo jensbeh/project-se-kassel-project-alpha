@@ -354,6 +354,7 @@ func generate_position_in_polygon(area_info, is_first_spawn):
 	var complete_polygon_area = area_info[0] # complete_polygon_area
 	var position : Vector2
 	
+	var counter_in_camera_screen = 0
 	var generate_position = true
 	while(generate_position):
 		randomize()
@@ -381,9 +382,15 @@ func generate_position_in_polygon(area_info, is_first_spawn):
 			if not is_position_in_camera_screen(position):
 				# Position NOT in camera screen -> take postion
 				generate_position = false
-#			else:
-#				# Position IN camera screen -> generate new postion
-#				print("generate_again - generate_position_in_polygon")
+			else:
+				# Position IN camera screen -> generate new postion
+				counter_in_camera_screen += 1
+				
+				# Max regenerations when inside camera screen
+				if counter_in_camera_screen >= 3:
+					# Check if position is not to near to player
+					if position.distance_to(Utils.get_current_player().global_position) >= 125:
+						generate_position = false
 		
 		else:
 			generate_position = false
