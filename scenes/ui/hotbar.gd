@@ -10,7 +10,7 @@ var timer2 = false
 
 func _ready():
 	time_label.hide()
-	$Hotbar/Timer.wait_time = Constants.COOLDOWN
+	$Hotbar/Timer.wait_time = Constants.HEALTH_COOLDOWN
 	$Hotbar/Timer2.wait_time = Constants.STAMINA_POTION_COOLDOWN
 	cooldown_texture.value = 0
 	load_hotbar()
@@ -61,6 +61,7 @@ func load_hotbar():
 		time_label.hide()
 
 
+# Update cooldown label
 func _process(_delta):
 	if timer1:
 		Utils.get_current_player().health_cooldown = $Hotbar/Timer.time_left
@@ -71,7 +72,7 @@ func _process(_delta):
 		cooldown_texture.value = int(($Hotbar/Timer2.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
 	if type == "Health":
 		time_label.text = "%2.1f" % $Hotbar/Timer.time_left
-		cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.COOLDOWN) * 100)
+		cooldown_texture.value = int(($Hotbar/Timer.time_left / Constants.HEALTH_COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -123,7 +124,7 @@ func use_item():
 				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 				int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
 				type = "Health"
-				cooldown = Constants.COOLDOWN
+				cooldown = Constants.HEALTH_COOLDOWN
 				Utils.get_current_player().health_cooldown = cooldown
 				set_cooldown_health(cooldown, type)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:

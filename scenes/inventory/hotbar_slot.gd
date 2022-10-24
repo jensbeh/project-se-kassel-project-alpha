@@ -14,18 +14,19 @@ var type
 
 func _ready():
 	time_label.hide()
-	timer.wait_time = Constants.COOLDOWN
+	timer.wait_time = Constants.HEALTH_COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
 	timer.set_one_shot(true)
 
 
+# Update Cooldwon Label
 func _process(_delta):
 	time_label.text = "%2.1f" % timer.time_left
 	if type == "Stamina":
 		cooldown_texture.value = int((timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
 	else:
-		cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
+		cooldown_texture.value = int((timer.time_left / Constants.HEALTH_COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -279,7 +280,8 @@ func show_tooltip():
 func hide_tooltip():
 	get_node("ToolTip").free()
 	
-	
+
+# Use Item
 func _on_Icon_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
 		var slot = get_parent().get_name()
@@ -298,7 +300,7 @@ func _on_Icon_gui_input(event):
 						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 						int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
 						type = "Health"
-						cooldown = Constants.COOLDOWN
+						cooldown = Constants.HEALTH_COOLDOWN
 						Utils.get_current_player().health_cooldown = cooldown
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
 						set_cooldown(cooldown, type)

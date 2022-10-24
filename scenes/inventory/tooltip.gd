@@ -29,6 +29,7 @@ func _ready():
 			var stat_name = GameData.item_stats[i]
 			var stat_label = GameData.item_stat_labels[i]
 			if stat_name in GameData.item_data[item_id].keys():
+				# check item if has the stat value
 				if GameData.item_data[item_id].has(stat_name) and GameData.item_data[item_id][stat_name] != null:
 					var stat_value = GameData.item_data[item_id][stat_name]
 					if stat_name != "Worth":

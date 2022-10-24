@@ -2,7 +2,7 @@ extends Node
 
 # Variables
 const NAME_LENGTH = 15
-const COOLDOWN = 20
+const HEALTH_COOLDOWN = 20
 const STAMINA_POTION_COOLDOWN = 15
 const LOOTING_TIME = 60
 const LOOT_CHANCE = 0.7 # means 70% Chance

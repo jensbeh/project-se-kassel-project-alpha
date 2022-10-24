@@ -33,6 +33,7 @@ func _ready():
 	$Background/MarginContainer/VBox/TitleBox/Title/Titlename.text = tr("INVENTORY")
 	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + str(Utils.get_current_player().get_gold())
 	if Utils.get_trade_inventory() == null:
+		# check if needed to set cooldown
 		var health_cooldown = Utils.get_current_player().health_cooldown
 		var stamina_cooldown = Utils.get_current_player().stamina_cooldown
 		if health_cooldown != 0 and health_cooldown != null:
@@ -57,6 +58,7 @@ func _on_Button_gui_input(event):
 			PlayerData.save_inventory()
 
 
+# Set cooldown if needed to slots
 func set_cooldown(cooldown, type):
 	for i in range(1,31):
 		var slot = "Inv" + str(i)
