@@ -127,8 +127,7 @@ func _ready():
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
 	
-	
-	
+	# Enable raycast
 	raycast.enabled = true
 
 
@@ -591,12 +590,12 @@ func set_mob_activity(is_active):
 
 
 func on_player_entered_attack_zone():
-#	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
+	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
 		update_behaviour(PRE_ATTACKING)
 
 
 func on_player_exited_attack_zone():
-#	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
+	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
 		update_behaviour(HUNTING)
 
 

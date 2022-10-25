@@ -322,11 +322,6 @@ func spawn_key_at_death(death_position):
 func on_key_collected():
 	# Remove locked door
 	var lockedDoorsNode = find_node("locked_doors")
-#	var lockedDoorCollisionShape = lockedDoorsNode.find_node("CollisionShape2D")
-#	# Remove from pathfinding obstacles
-#	PathfindingService.remove_dynamic_obstacle(lockedDoorCollisionShape)
-	
-	# Remove locked door
 	for child in lockedDoorsNode.get_children():
 		child.call_deferred("queue_free")
 

@@ -7,6 +7,7 @@ onready var minimap_camera = $ViewportContainer/Viewport/Camera2D
 var zoom_factor = 1.0
 var max_zoom_factor = 1.5
 var min_zoom_factor = 1.0
+var deactivated = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,13 +20,14 @@ func _ready():
 
 
 func _physics_process(_delta):
-	# Move map position with player position
-	if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
-		minimap_camera.position = Utils.get_current_player().global_position
-	
-	# Handle minimap_camera zoom
-	if minimap_camera.zoom != Vector2(zoom_factor, zoom_factor):
-		minimap_camera.zoom = Vector2(zoom_factor, zoom_factor)
+	if not deactivated:
+		# Move map position with player position
+		if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
+			minimap_camera.position = Utils.get_current_player().global_position
+		
+		# Handle minimap_camera zoom
+		if minimap_camera.zoom != Vector2(zoom_factor, zoom_factor):
+			minimap_camera.zoom = Vector2(zoom_factor, zoom_factor)
 
 
 # Method to setup the viewport world2d with game_viewport world2d otherwise there is no content in minimap
@@ -56,19 +58,23 @@ func update_minimap():
 			min_zoom_factor = 1.0
 			zoom_factor = 1.0
 			visible = true
+			deactivated = false
 		
 		Constants.SceneType.GRASSLAND:
 			max_zoom_factor = 2.1
 			min_zoom_factor = 1.3
 			zoom_factor = 1.3
 			visible = true
+			deactivated = false
 		
 		Constants.SceneType.DUNGEON:
 			Utils.get_player_ui().in_dungeon(true)
 			visible = false
+			deactivated = true
 		
 		Constants.SceneType.MENU:
 			visible = false
+			deactivated = true
 	
 	set_camera_limits()
 

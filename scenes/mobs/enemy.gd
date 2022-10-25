@@ -85,7 +85,6 @@ func _ready():
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true, lootLayer)
 	position = spawn_position
-#	position = Vector2(100, 100)
 	
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
@@ -113,10 +112,8 @@ func _ready():
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
 	
-	
-	
+	# Enable raycast
 	raycast.enabled = true
-
 
 
 # Method to init variables, typically called after instancing

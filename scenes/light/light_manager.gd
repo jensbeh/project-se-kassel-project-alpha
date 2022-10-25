@@ -30,7 +30,7 @@ func _process(_delta):
 		t = update_shader_transformation()
 		# Set global transformation in shader for correct pixels and map size
 		material.set_shader_param("global_transform", t)
-
+		
 		# Set current screen color when day night cycle is enabled depending on the current time
 		if is_day_night_cycle:
 			material.set_shader_param("night_screen_color", DayNightCycle.get_screen_color())

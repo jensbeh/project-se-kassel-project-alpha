@@ -38,35 +38,34 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		if "grassland" in map_name:
-			# Create new AStars and store them to use later again
-			if not astar_nodes_cache.has(map_name):
-				astar_nodes_cache[map_name] = {
-									"mobs" : null,
-									"bosses" : null,
-									"ambient_mobs" : null,
-									"dynamic_obstacles_mobs" : {},
-									"dynamic_obstacles_bosses" : {}
-									}
-			
-			# Mobs
-			astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-			astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-			
-			# Bosses
-			if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
-				astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
-				astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-				astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-			
-			# Ambient mobs
-			if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
-				astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-				astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-				astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-			
-			print("LOADED \"" + str(map_name) + "\"")
+		# Create new AStars and store them to use later again
+		if not astar_nodes_cache.has(map_name):
+			astar_nodes_cache[map_name] = {
+								"mobs" : null,
+								"bosses" : null,
+								"ambient_mobs" : null,
+								"dynamic_obstacles_mobs" : {},
+								"dynamic_obstacles_bosses" : {}
+								}
+		
+		# Mobs
+		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
+		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		
+		# Bosses
+		if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
+			astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
+			astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+			astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+		
+		# Ambient mobs
+		if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
+			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+		
+		print("LOADED \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
@@ -141,6 +140,9 @@ func stop():
 	ambient_mobs_to_update = null
 	can_generate_pathes = null
 	should_generate_pathes = null
+	mobs_waiting = null
+	bosses_waiting = null
+	bosses_check_can_reach_player = null
 	
 	map_name = null
 	astar_nodes_cache.clear()
@@ -169,6 +171,11 @@ func cleanup():
 	map_offset_in_tiles = null
 	half_cell_size = null
 	astar2DVisualizerNode = null
+	mobs_waiting.clear()
+	bosses_waiting.clear()
+	bosses_check_can_reach_player.clear()
+	mobs_with_new_position.clear()
+	bosses_with_new_position.clear()
 	
 	# Clean MOBS dynamic obstacles
 	if not astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].empty():
@@ -276,31 +283,34 @@ func generate_pathes():
 			# Bosses which need to know if they can reach player
 			if bosses_check_can_reach_player.size() > 0:
 				for boss in bosses_check_can_reach_player:
-					var new_path = get_boss_astar_path(boss.global_position, Utils.get_current_player().global_position)
-					if new_path.size() == 0:
-						# Boss can reach player
-						call_deferred("inform_boss_with_reachable", boss, false)
-					else:
-						# Boss can't reach player
-						call_deferred("inform_boss_with_reachable", boss, true)
+					if is_instance_valid(boss) and boss.is_inside_tree() and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
+						var new_path = get_boss_astar_path(boss.global_position, Utils.get_current_player().global_position)
+						if new_path.size() == 0:
+							# Boss can reach player
+							call_deferred("inform_boss_with_reachable", boss, false)
+						else:
+							# Boss can't reach player
+							call_deferred("inform_boss_with_reachable", boss, true)
 			
 			
 			# Get path for MOB which got new end_position
 			if mobs_with_new_position.size() > 0:
 				mob_mutex.lock()
 				for mob in mobs_with_new_position.keys():
-					var new_path = get_mob_astar_path(mob.global_position, mobs_with_new_position[mob])
-					call_deferred("send_path_to_mob", mob, new_path)
-					var _was_present = mobs_with_new_position.erase(mob)
+					if is_instance_valid(mob) and mob.is_inside_tree():
+						var new_path = get_mob_astar_path(mob.global_position, mobs_with_new_position[mob])
+						call_deferred("send_path_to_mob", mob, new_path)
+						var _was_present = mobs_with_new_position.erase(mob)
 				mob_mutex.unlock()
 			
 			# Get path for BOSS which got new end_position
 			if bosses_with_new_position.size() > 0:
 				boss_mutex.lock()
 				for boss in bosses_with_new_position.keys():
-					var new_path = get_boss_astar_path(boss.global_position, bosses_with_new_position[boss])
-					call_deferred("send_path_to_boss", boss, new_path)
-					var _was_present = bosses_with_new_position.erase(boss)
+					if is_instance_valid(boss) and boss.is_inside_tree():
+						var new_path = get_boss_astar_path(boss.global_position, bosses_with_new_position[boss])
+						call_deferred("send_path_to_boss", boss, new_path)
+						var _was_present = bosses_with_new_position.erase(boss)
 				boss_mutex.unlock()
 
 
@@ -659,23 +669,26 @@ func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
 
 # New position for MOB has arrived
 func got_mob_position(mob, position):
-	mob_mutex.lock()
-	mobs_with_new_position[mob] = position
-	mob_mutex.unlock()
+	if is_instance_valid(mob) and mob.is_inside_tree():
+		mob_mutex.lock()
+		mobs_with_new_position[mob] = position
+		mob_mutex.unlock()
 
 
 # New position for BOSS has arrived
 func got_boss_position(boss, position):
-	boss_mutex.lock()
-	bosses_with_new_position[boss] = position
-	boss_mutex.unlock()
+	if is_instance_valid(boss) and boss.is_inside_tree():
+		boss_mutex.lock()
+		bosses_with_new_position[boss] = position
+		boss_mutex.unlock()
 
 
 # Inform BOSS about reachability of player
 func inform_boss_with_reachable(boss, can_reach):
-	# Send reachability of player to boss
-	boss.call_deferred("can_reach_player", can_reach)
-	
-	# Remove boss from bosses_check_can_reach_player list
-	if bosses_check_can_reach_player.find(boss) != -1:
-		bosses_check_can_reach_player.remove(bosses_check_can_reach_player.find(boss))
+	if is_instance_valid(boss) and boss.is_inside_tree():
+		# Send reachability of player to boss
+		boss.call_deferred("can_reach_player", can_reach)
+		
+		# Remove boss from bosses_check_can_reach_player list
+		if bosses_check_can_reach_player.find(boss) != -1:
+			bosses_check_can_reach_player.remove(bosses_check_can_reach_player.find(boss))

@@ -6,7 +6,7 @@ extends Node
 # DEBUG
 const SHOW_MOB_PATHES = false
 const SHOW_AMBIENT_MOB_PATHES = false
-const SHOW_BOSS_PATHES = true
+const SHOW_BOSS_PATHES = false
 
 # --------------------------------------------------
 

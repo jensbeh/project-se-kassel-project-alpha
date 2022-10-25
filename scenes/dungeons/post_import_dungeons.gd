@@ -813,8 +813,6 @@ func astar_connect_walkable_cells_for_mobs(astar_nodes_dics : Dictionary):
 		for point_relative in points_relative:
 			var point_relative_index = calculate_point_index(point_relative)
 			# Check point_relative
-#			if is_outside_map_bounds(point_relative):
-#				continue
 			if not astar_nodes_dics["mobs"]["points"].has(point_relative):
 				continue
 			
@@ -842,8 +840,6 @@ func astar_connect_walkable_cells_for_bosses(astar_nodes_dics : Dictionary):
 		for point_relative in points_relative:
 			var point_relative_index = calculate_point_index(point_relative)
 			# Check point_relative
-#			if is_outside_map_bounds(point_relative):
-#				continue
 			if not astar_nodes_dics["bosses"]["points"].has(point_relative):
 				continue
 			
