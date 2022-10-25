@@ -7,6 +7,7 @@ var bosses_to_update = []
 var ambient_mobs_to_update = []
 var mobs_waiting = []
 var bosses_waiting = []
+var bosses_check_can_reach_player = []
 var can_generate_pathes = false
 var should_generate_pathes = false
 
@@ -37,7 +38,7 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
-		if "dungeon" in map_name:
+		if "grassland" in map_name:
 			# Create new AStars and store them to use later again
 			if not astar_nodes_cache.has(map_name):
 				astar_nodes_cache[map_name] = {
@@ -74,7 +75,7 @@ func preload_astars():
 
 
 # Method is called when new scene is loaded with mobs with pathfinding
-func init(new_map_name = "", new_astar2DVisualizerNode = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
+func init(new_map_name = "", _new_astar2DVisualizerNode = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
 	print("INIT PATHFINDING_SERVICE")
 	# Check if thread is active wait to stop
 	if pathfinder_thread.is_active():
@@ -89,19 +90,14 @@ func init(new_map_name = "", new_astar2DVisualizerNode = null, new_ambientMobsNa
 	map_offset_in_tiles = map_min_global_pos / Constants.TILE_SIZE
 	half_cell_size = Vector2(Constants.TILE_SIZE, Constants.TILE_SIZE) / 2
 	
-#	print("map_size_in_tiles: " + str(map_size_in_tiles))
-#	print("map_offset_in_tiles: " + str(map_offset_in_tiles))
-#	print("new_map_min_global_pos: " + str(new_map_min_global_pos))
-#	print("new_map_min_global_pos/tilesize: " + str(new_map_min_global_pos/Constants.TILE_SIZE))
-	
 	# Start pathfinder thread
 	pathfinder_thread.start(self, "generate_pathes")
 	can_generate_pathes = true
 	
-	# Init visualizer
-	astar2DVisualizerNode = new_astar2DVisualizerNode
-	if astar2DVisualizerNode != null:
-		astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["mobs"])
+#	# Init visualizer
+#	astar2DVisualizerNode = new_astar2DVisualizerNode
+#	if astar2DVisualizerNode != null:
+#		astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["bosses"])
 
 
 # Method to start pathfinding service (call after init)
@@ -209,6 +205,7 @@ func generate_pathes():
 				enemies_to_update.clear()
 				for enemy in enemies:
 					if is_instance_valid(enemy) and enemy.is_inside_tree():
+						# Check if enemy needs new path and pathfinder is not waiting for mob to return new target position
 						if enemy.mob_need_path and not mobs_waiting.has(enemy):
 							enemies_to_update.append(enemy)
 				if enemies_to_update.size() > 0:
@@ -218,8 +215,12 @@ func generate_pathes():
 				bosses_to_update.clear()
 				for boss in bosses:
 					if is_instance_valid(boss) and boss.is_inside_tree():
+						# Check if boss needs new path and pathfinder is not waiting for boss to return new target position
 						if boss.mob_need_path and not bosses_waiting.has(boss):
 							bosses_to_update.append(boss)
+						# Check if boss need to know if player is reachable
+						if boss.check_can_reach_player:
+							bosses_check_can_reach_player.append(boss)
 				if bosses_to_update.size() > 0:
 					mobs_to_update["bosses"] = bosses_to_update
 			
@@ -233,7 +234,7 @@ func generate_pathes():
 					mobs_to_update["ambient_mobs"] = ambient_mobs_to_update
 			
 			
-			
+			# Get new positions for mobs
 			if mobs_to_update.size() > 0:
 				for mob_key in mobs_to_update.keys():
 					# Notify ENEMIES that new end_position is needed
@@ -271,6 +272,17 @@ func generate_pathes():
 								var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
 								call_deferred("send_path_to_mob", ambient_mob, new_path)
 			
+			
+			# Bosses which need to know if they can reach player
+			if bosses_check_can_reach_player.size() > 0:
+				for boss in bosses_check_can_reach_player:
+					var new_path = get_boss_astar_path(boss.global_position, Utils.get_current_player().global_position)
+					if new_path.size() == 0:
+						# Boss can reach player
+						call_deferred("inform_boss_with_reachable", boss, false)
+					else:
+						# Boss can't reach player
+						call_deferred("inform_boss_with_reachable", boss, true)
 			
 			
 			# Get path for MOB which got new end_position
@@ -396,14 +408,7 @@ func get_mob_astar_path(mob_start, mob_end):
 	var path_end_tile_position = world_to_tile_coords(mob_end)
 	var start_point_index = calculate_point_index(path_start_tile_position)
 	var end_point_index = calculate_point_index(path_end_tile_position)
-#	print("mob_start: " + str(mob_start))
-#	print("mob_end: " + str(mob_end))
-#	print("path_start_tile_position: " + str(path_start_tile_position))
-#	print("path_end_tile_position: " + str(path_end_tile_position))
-#	print("start_point_index: " + str(start_point_index))
-#	print("end_point_index: " + str(end_point_index))
-#	print("")
-#	print("")
+	
 	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
 	if not astar_nodes_cache[map_name]["mobs"].has_point(start_point_index):
@@ -449,25 +454,11 @@ func get_mob_astar_path(mob_start, mob_end):
 	#	time_elapsed = time_now - time_start
 	#	dic["rest"] = time_elapsed
 		
-		if dic["get_point_path"] > 200:
-			print("-----------------> HERE: " + str(dic))
-			print("mob_start: " + str(mob_start))
-			print("mob_end: " + str(mob_end))
-			print("path_start_tile_position: " + str(path_start_tile_position))
-			print("path_end_tile_position: " + str(path_end_tile_position))
-			print("start_point_index: " + str(start_point_index))
-			print("end_point_index: " + str(end_point_index))
-			print("map_min_global_pos: " + str(map_min_global_pos))
-			print("map_offset_in_tiles: " + str(map_offset_in_tiles))
-			print("map_size_in_tiles: " + str(map_size_in_tiles))
-			print("")
-			print("")
-		
 		# Return path
 		return path_world
 	
 	else:
-		printerr("ERROR - \"get_mob_astar_path\" NO PATH AVAILABLE")
+#		printerr("ERROR - \"get_mob_astar_path\" NO PATH AVAILABLE")
 		return []
 
 
@@ -478,6 +469,7 @@ func get_boss_astar_path(boss_start, boss_end):
 	var path_end_tile_position = world_to_tile_coords(boss_end)
 	var start_point_index = calculate_point_index(path_start_tile_position)
 	var end_point_index = calculate_point_index(path_end_tile_position)
+	
 	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
 	if not astar_nodes_cache[map_name]["bosses"].has_point(start_point_index):
@@ -510,8 +502,9 @@ func get_boss_astar_path(boss_start, boss_end):
 		return path_world
 	
 	else:
-		printerr("ERROR - \"get_boss_astar_path\" NO PATH AVAILABLE")
+#		printerr("ERROR - \"get_boss_astar_path\" NO PATH AVAILABLE")
 		return []
+
 
 # Method to generate global_position to tile_coord
 func world_to_tile_coords(global_position : Vector2):
@@ -538,12 +531,6 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 	var path_end_tile_position = ambientMobsNavigationTileMap.world_to_map(mob_end)
 	var start_point_index = calculate_point_index(path_start_tile_position)
 	var end_point_index = calculate_point_index(path_end_tile_position)
-#	print("mob_start: " + str(mob_start))
-#	print("mob_end: " + str(mob_end))
-#	print("path_start_tile_position: " + str(path_start_tile_position))
-#	print("path_end_tile_position: " + str(path_end_tile_position))
-#	print("start_point_index: " + str(start_point_index))
-#	print("end_point_index: " + str(end_point_index))
 	
 	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
@@ -643,9 +630,9 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 				astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].append(current_point_index)
 				astar_nodes_cache[map_name]["bosses"].set_point_disabled(current_point_index, true)
 	
-	# Update obstacles visual
-	if astar2DVisualizerNode != null:
-		astar2DVisualizerNode.call_deferred("update_disabled_points")
+#	# Update obstacles visual
+#	if astar2DVisualizerNode != null:
+#		astar2DVisualizerNode.call_deferred("update_disabled_points")
 
 
 # Method to remove dynamic obstacle from astar
@@ -665,18 +652,30 @@ func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
 	# Delete obstacle from dic
 	astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].erase(collisionshape_node.get_instance_id())
 	
-	# Update obstacles visual
-	if astar2DVisualizerNode != null:
-		astar2DVisualizerNode.call_deferred("update_disabled_points")
+#	# Update obstacles visual
+#	if astar2DVisualizerNode != null:
+#		astar2DVisualizerNode.call_deferred("update_disabled_points")
 
 
+# New position for MOB has arrived
 func got_mob_position(mob, position):
 	mob_mutex.lock()
 	mobs_with_new_position[mob] = position
 	mob_mutex.unlock()
 
 
+# New position for BOSS has arrived
 func got_boss_position(boss, position):
 	boss_mutex.lock()
 	bosses_with_new_position[boss] = position
 	boss_mutex.unlock()
+
+
+# Inform BOSS about reachability of player
+func inform_boss_with_reachable(boss, can_reach):
+	# Send reachability of player to boss
+	boss.call_deferred("can_reach_player", can_reach)
+	
+	# Remove boss from bosses_check_can_reach_player list
+	if bosses_check_can_reach_player.find(boss) != -1:
+		bosses_check_can_reach_player.remove(bosses_check_can_reach_player.find(boss))
