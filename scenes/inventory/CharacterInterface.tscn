@@ -426,17 +426,17 @@ valign = 1
 margin_top = 49.0
 margin_right = 435.0
 margin_bottom = 78.0
-custom_constants/separation = 50
+custom_constants/separation = 40
 
 [node name="Health" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 192.0
+margin_right = 197.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="Damage" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 242.0
+margin_left = 237.0
 margin_right = 435.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
@@ -447,10 +447,10 @@ custom_fonts/font = SubResource( 3 )
 margin_top = 98.0
 margin_right = 435.0
 margin_bottom = 127.0
-custom_constants/separation = 50
+custom_constants/separation = 40
 
-[node name="LightRadius" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 192.0
+[node name="Stamina" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 197.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 110, 0 )
 size_flags_horizontal = 3
@@ -458,7 +458,7 @@ size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="Attack-Speed" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 242.0
+margin_left = 237.0
 margin_right = 435.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
@@ -469,10 +469,10 @@ custom_fonts/font = SubResource( 3 )
 margin_top = 147.0
 margin_right = 435.0
 margin_bottom = 176.0
-custom_constants/separation = 50
+custom_constants/separation = 40
 
-[node name="Block" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_right = 192.0
+[node name="LightRadius" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 197.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 110, 0 )
 size_flags_horizontal = 3
@@ -480,7 +480,7 @@ size_flags_vertical = 6
 custom_fonts/font = SubResource( 3 )
 
 [node name="Knockback" type="Label" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 242.0
+margin_left = 237.0
 margin_right = 435.0
 margin_bottom = 29.0
 size_flags_horizontal = 3

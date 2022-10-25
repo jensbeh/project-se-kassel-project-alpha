@@ -7,7 +7,6 @@ onready var life_bar = get_node("Lifebar")
 onready var bossHpNode = get_node("BossHpBar")
 onready var bossHpBar = get_node("BossHpBar/ProgressBar")
 onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
-onready var stamina_value = get_node("Stamina/ProgressBar/StaminaValue")
 onready var stamina_bar = get_node("Stamina/ProgressBar")
 var hearts = 3
 var boss
@@ -34,7 +33,6 @@ func setup_ui():
 # Set stamina value 
 func set_stamina(new_value: float):
 	stamina_bar.value = new_value
-	stamina_value.set_text(tr("STAMINA") + ": " + str(int(new_value)))
 
 
 # Set expbar value

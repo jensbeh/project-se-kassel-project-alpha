@@ -850,6 +850,11 @@ func set_stamina(new_stamina: float):
 	data.stamina = player_stamina
 
 
+# Return maximum Stamina Value
+func get_stamina():
+	return (level * 10 + 90)
+
+
 func _on_DamageAreaBottom_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner

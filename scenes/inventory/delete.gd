@@ -30,7 +30,7 @@ func _ready():
 	pressed2.set_bg_color(Color(0.5, 0.5, 0.5))
 	pressed2.set_corner_radius_all(5)
 	pressed2.set_expand_margin_all(3)
-	dialog.get_ok().set_text(tr("DELETE"))
+	dialog.get_ok().set_text(tr("DISCARD"))
 	dialog.get_cancel().set_text(tr("CANCLE"))
 	dialog.get_cancel().add_stylebox_override("normal", styleup2)
 	dialog.get_cancel().add_stylebox_override("hover", hover2)
