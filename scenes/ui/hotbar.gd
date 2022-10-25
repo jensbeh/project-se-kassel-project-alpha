@@ -44,6 +44,7 @@ func load_hotbar():
 			else:
 				cooldown_texture.hide()
 				time_label.hide()
+				disabled = false
 		elif PlayerData.equipment_data["Hotbar"]["Item"] != null:
 			type = "Health"
 			if $Hotbar/Timer.time_left != 0:
@@ -52,6 +53,7 @@ func load_hotbar():
 			else:
 				cooldown_texture.hide()
 				time_label.hide()
+				disabled = false
 	else:
 		item_slot.get_node("TextureRect/Stack").set_text("")
 		item_slot.get_node("TextureRect").visible = false
