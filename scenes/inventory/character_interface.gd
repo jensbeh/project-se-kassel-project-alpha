@@ -47,7 +47,7 @@ func _ready():
 					
 					
 	# stat values
-	find_node("Inventory").get_child(0).find_node("Button").visible = false
+	#find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
 	if PlayerData.equipment_data["Weapon"]["Item"] != null:
 		find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Attack"]))

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/inventory/inventory.gd" type="Script" id=2]
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=3]
-[ext_resource path="res://assets/ui/checkbox_x_example.png" type="Texture" id=4]
+[ext_resource path="res://assets/deleteButtonIcon.png" type="Texture" id=4]
 [ext_resource path="res://assets/ui/border.png" type="Texture" id=5]
+[ext_resource path="res://scenes/inventory/delete.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFont" id=2]
 size = 24
@@ -13,6 +14,13 @@ font_data = ExtResource( 1 )
 [sub_resource type="DynamicFont" id=1]
 size = 36
 font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 3 )
 
 [node name="Inventory" type="Control"]
 margin_top = 200.0
@@ -83,22 +91,39 @@ text = "Inventory"
 align = 1
 valign = 1
 
-[node name="Exit" type="Control" parent="Background/MarginContainer/VBox/TitleBox"]
+[node name="Delete" type="Control" parent="Background/MarginContainer/VBox/TitleBox"]
 margin_left = 391.0
 margin_right = 450.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
-[node name="Button" type="TextureRect" parent="Background/MarginContainer/VBox/TitleBox/Exit"]
+[node name="Button" type="TextureRect" parent="Background/MarginContainer/VBox/TitleBox/Delete"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -55.0
-margin_top = 16.0
-margin_right = -5.0
-margin_bottom = 66.0
+margin_left = -83.0
+margin_top = 2.0
+margin_right = 1.0
+margin_bottom = 82.0
 rect_min_size = Vector2( 30, 30 )
 texture = ExtResource( 4 )
 expand = true
+script = ExtResource( 6 )
+
+[node name="AcceptDialog" type="ConfirmationDialog" parent="Background/MarginContainer/VBox/TitleBox/Delete/Button"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.0
+margin_top = 8.0
+margin_right = 262.0
+margin_bottom = 222.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource( 4 )
+popup_exclusive = true
+window_title = ""
+dialog_autowrap = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/MarginContainer/VBox"]
 margin_top = 100.0
@@ -125,4 +150,4 @@ patch_margin_top = 29
 patch_margin_right = 21
 patch_margin_bottom = 31
 
-[connection signal="gui_input" from="Background/MarginContainer/VBox/TitleBox/Exit/Button" to="." method="_on_Button_gui_input"]
+[connection signal="confirmed" from="Background/MarginContainer/VBox/TitleBox/Delete/Button/AcceptDialog" to="Background/MarginContainer/VBox/TitleBox/Delete/Button" method="_on_AcceptDialog_confirmed"]

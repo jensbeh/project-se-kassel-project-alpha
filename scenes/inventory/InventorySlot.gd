@@ -27,10 +27,8 @@ func _process(_delta):
 	time_label.text = "%2.1f" % timer.time_left
 	if type == "Stamina":
 		cooldown_texture.value = int((timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
-		Utils.get_current_player().stamina_cooldown = timer.time_left
 	else:
 		cooldown_texture.value = int((timer.time_left / Constants.HEALTH_COOLDOWN) * 100)
-		Utils.get_current_player().health_cooldown = timer.time_left
 
 
 func _on_Timer_timeout():
@@ -38,10 +36,6 @@ func _on_Timer_timeout():
 	disabled = false
 	time_label.hide()
 	set_process(false)
-	if type == "Stamina":
-		Utils.get_current_player().stamina_cooldown = 0
-	else:
-		Utils.get_current_player().health_cooldown = 0
 
 
 # Get information about drag item
