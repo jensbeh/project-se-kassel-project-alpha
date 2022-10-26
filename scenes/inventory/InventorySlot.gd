@@ -572,6 +572,8 @@ func _on_Icon_gui_input(event):
 							Utils.get_hotbar().set_cooldown_stamina(cooldown, "")
 						elif type == "Health" and cooldown_type != "":
 							Utils.get_hotbar().set_cooldown_health(cooldown, "")
+						hide_tooltip()
+						show_tooltip()
 
 
 # starts cooldwon
@@ -625,5 +627,13 @@ func check_cooldown(data):
 			data["origin_node"].get_node("TextureProgress").value = 0
 			data["origin_node"].get_node("TextureProgress/Time").hide()
 			data["origin_node"].set_process(false)
-	
+		if data["origin_slot"].has("Stamina"):
+			type = "Stamina"
+		elif data["origin_slot"].has("Health") and data["origin_slot"]["Health"] != null:
+			type = "Health"
+		if data["target_item_id"] != null:
+			if GameData.item_data[str(data["target_item_id"])].has("Stamina"):
+				data["origin_node"].type = "Stamina"
+			elif GameData.item_data[str(data["target_item_id"])]["Health"] != null:
+				data["origin_node"].type = "Health"
 	

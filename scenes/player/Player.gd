@@ -141,7 +141,7 @@ func _physics_process(delta):
 		if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
 			velocity /= 1.45
 			
-		if Input.is_action_pressed("Shift"):
+		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
 			if player_stamina - delta * 15 >= 0:
 				set_stamina(player_stamina - delta * 15)
 				velocity *= 1.4
@@ -169,7 +169,7 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
 		
-	if not is_attacking and not hurting and not dying and data != null and not Input.is_action_pressed("Shift"):
+	if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
 		if player_stamina + delta < level * 10 + 90:
 			set_stamina(player_stamina + delta)
 		elif player_stamina < level * 10 + 90:

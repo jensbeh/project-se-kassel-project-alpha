@@ -157,7 +157,6 @@ grow_vertical = 2
 theme = SubResource( 4 )
 popup_exclusive = true
 window_title = ""
-dialog_autowrap = true
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 margin_right = 480.0
