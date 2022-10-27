@@ -137,9 +137,9 @@ func _ready():
 	
 	
 	# Setup attacking radius around player variables
-	max_attacking_radius_around_player = attack_radius * 0.95
-	min_attacking_radius_around_player = attack_radius * 0.85
-	
+	randomize()
+	max_attacking_radius_around_player = attack_radius * rand_range(0.9, 1.0)
+	min_attacking_radius_around_player = attack_radius * rand_range(0.75, 0.85)
 	
 	# Enable raycast
 	raycast.enabled = true
@@ -303,21 +303,6 @@ func _physics_process(delta):
 	# Regenerate hp bar if enabled
 	if regenerate_hp:
 		regenerate_hp_bar(delta)
-
-
-# Method to check if boss can attack player
-func can_attack():
-	# Check if boss can see player
-	if not Utils.get_current_player().is_player_invisible():
-		# Check distance to player
-		if global_position.distance_to(Utils.get_current_player().global_position) <= 66.0:
-			raycast.cast_to = Utils.get_current_player().global_position - global_position
-			raycast.force_raycast_update()
-			# Check if there is a collision between player and boss
-			if not raycast.is_colliding():
-				return true
-	else:
-		return false
 
 
 func _process(delta):
@@ -621,16 +606,17 @@ func get_target_position():
 
 # Method is called from pathfinding_service to set new path to mob
 func update_path(new_path):
-	# Update mob path
-	path = new_path
-	mob_need_path = false
-	
-	if path.size() <= 1 and behaviour_state == HUNTING and global_position.distance_to(Utils.get_current_player().global_position) >= CANT_REACH_DISTANCE:
-		update_behaviour(CANT_REACH_PLAYER)
-	
-	if Constants.SHOW_BOSS_PATHES:
-		# Update line path
-		line2D.points = path
+	# Update mob path if it still need it
+	if mob_need_path:
+		path = new_path
+		mob_need_path = false
+		
+		if path.size() <= 1 and behaviour_state == HUNTING and global_position.distance_to(Utils.get_current_player().global_position) >= CANT_REACH_DISTANCE:
+			update_behaviour(CANT_REACH_PLAYER)
+		
+		if Constants.SHOW_BOSS_PATHES:
+			# Update line path
+			line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity
@@ -759,6 +745,21 @@ func regenerate_hp_bar(delta):
 		elif is_in_boss_room:
 			var healthbar_value_in_percent = (100.0 / max_health) * health
 			Utils.get_player_ui().set_boss_health(healthbar_value_in_percent)
+
+
+# Method to check if boss can attack player
+func can_attack():
+	# Check if boss can see player
+	if not Utils.get_current_player().is_player_invisible():
+		# Check distance to player
+		if global_position.distance_to(Utils.get_current_player().global_position) <= (attack_radius * 1.3):
+			raycast.cast_to = Utils.get_current_player().global_position - global_position
+			raycast.force_raycast_update()
+			# Check if there is a collision between player and boss
+			if not raycast.is_colliding():
+				return true
+	else:
+		return false
 
 
 # Pathfinder notifys to boss if it can reach the player in case CANT_REACH_PLAYER

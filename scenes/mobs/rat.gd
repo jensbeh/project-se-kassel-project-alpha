@@ -107,7 +107,7 @@ func _physics_process(delta):
 				set_view_direction(view_direction)
 				if global_position == previouse_global_position:
 					is_attacking = false
-					if playerAttackZone.mob_can_attack:
+					if can_attack():
 						update_behaviour(PRE_ATTACKING)
 					else:
 						update_behaviour(HUNTING)

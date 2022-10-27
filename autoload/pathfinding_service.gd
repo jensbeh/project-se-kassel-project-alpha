@@ -7,7 +7,7 @@ var bosses_to_update = []
 var ambient_mobs_to_update = []
 var mobs_waiting = []
 var bosses_waiting = []
-var bosses_check_can_reach_player = []
+var mobs_check_can_reach_player = []
 var can_generate_pathes = false
 var should_generate_pathes = false
 
@@ -142,7 +142,7 @@ func stop():
 	should_generate_pathes = null
 	mobs_waiting = null
 	bosses_waiting = null
-	bosses_check_can_reach_player = null
+	mobs_check_can_reach_player = null
 	
 	map_name = null
 	astar_nodes_cache.clear()
@@ -173,7 +173,7 @@ func cleanup():
 	astar2DVisualizerNode = null
 	mobs_waiting.clear()
 	bosses_waiting.clear()
-	bosses_check_can_reach_player.clear()
+	mobs_check_can_reach_player.clear()
 	mobs_with_new_position.clear()
 	bosses_with_new_position.clear()
 	
@@ -215,6 +215,9 @@ func generate_pathes():
 						# Check if enemy needs new path and pathfinder is not waiting for mob to return new target position
 						if enemy.mob_need_path and not mobs_waiting.has(enemy):
 							enemies_to_update.append(enemy)
+						# Check if enemy need to know if player is reachable
+						if enemy.check_can_reach_player:
+							mobs_check_can_reach_player.append(enemy)
 				if enemies_to_update.size() > 0:
 					mobs_to_update["enemies"] = enemies_to_update
 			
@@ -227,7 +230,7 @@ func generate_pathes():
 							bosses_to_update.append(boss)
 						# Check if boss need to know if player is reachable
 						if boss.check_can_reach_player:
-							bosses_check_can_reach_player.append(boss)
+							mobs_check_can_reach_player.append(boss)
 				if bosses_to_update.size() > 0:
 					mobs_to_update["bosses"] = bosses_to_update
 			
@@ -280,20 +283,19 @@ func generate_pathes():
 								call_deferred("send_path_to_mob", ambient_mob, new_path)
 			
 			
-			# Bosses which need to know if they can reach player
-			if bosses_check_can_reach_player.size() > 0:
-				for boss in bosses_check_can_reach_player:
-					if is_instance_valid(boss) and boss.is_inside_tree() and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
-						var new_path = get_boss_astar_path(boss.global_position, Utils.get_current_player().global_position)
+			# Mobs which need to know if they can reach player
+			if mobs_check_can_reach_player.size() > 0:
+				for mob in mobs_check_can_reach_player:
+					if is_instance_valid(mob) and mob.is_inside_tree() and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
+						var new_path = get_boss_astar_path(mob.global_position, Utils.get_current_player().global_position)
 						if new_path.size() == 0:
-							# Boss can reach player
-							call_deferred("inform_boss_with_reachable", boss, false, new_path)
+							# Mob can reach player
+							call_deferred("inform_mob_about_reachable", mob, false, new_path)
 						else:
-							# Boss can't reach player
-							call_deferred("inform_boss_with_reachable", boss, true, new_path)
-				# Remove bosses from bosses_check_can_reach_player list
-				bosses_check_can_reach_player.clear()
-
+							# Mob can't reach player
+							call_deferred("inform_mob_about_reachable", mob, true, new_path)
+				# Remove mobs from mobs_check_can_reach_player list
+				mobs_check_can_reach_player.clear()
 			
 			
 			# Get path for MOB which got new end_position
@@ -686,8 +688,8 @@ func got_boss_position(boss, position):
 		boss_mutex.unlock()
 
 
-# Inform BOSS about reachability of player
-func inform_boss_with_reachable(boss, can_reach, new_path):
-	if is_instance_valid(boss) and boss.is_inside_tree():
-		# Send reachability of player to boss
-		boss.call_deferred("can_reach_player", can_reach, new_path)
+# Inform mob about reachability of player
+func inform_mob_about_reachable(mob, can_reach, reachable_path):
+	if is_instance_valid(mob) and mob.is_inside_tree():
+		# Send reachability of player to mob
+		mob.call_deferred("can_reach_player", can_reach, reachable_path)

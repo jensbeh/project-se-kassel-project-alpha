@@ -1,8 +1,7 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/mobs/OrbinautBlue.png" type="Texture" id=1]
 [ext_resource path="res://scenes/mobs/orbinaut.gd" type="Script" id=2]
-[ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=6]
@@ -106,6 +105,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("NinePatchRect:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ) ]
+}
 
 [sub_resource type="AnimationNodeAnimation" id=32]
 animation = "Die"
@@ -144,9 +155,6 @@ height = 0.0
 
 [sub_resource type="CircleShape2D" id=17]
 radius = 96.0
-
-[sub_resource type="CircleShape2D" id=18]
-radius = 32.0
 
 [sub_resource type="CircleShape2D" id=22]
 radius = 8.0
@@ -198,13 +206,6 @@ position = Vector2( 0, -5 )
 [node name="DetectionShape" parent="PlayerDetectionZone" index="0"]
 shape = SubResource( 17 )
 
-[node name="PlayerAttackZone" parent="." instance=ExtResource( 3 )]
-visible = false
-position = Vector2( 0, -5 )
-
-[node name="AttackShape" parent="PlayerAttackZone" index="0"]
-shape = SubResource( 18 )
-
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2( 0, 4 )
 width = 2.0
@@ -229,7 +230,7 @@ margin_left = -424.0
 margin_top = -35.0
 margin_right = 424.0
 margin_bottom = 12.0
-rect_scale = Vector2( 0.022, 0.043 )
+rect_scale = Vector2( 0.0218141, 0.0425841 )
 rect_pivot_offset = Vector2( 424, 23 )
 texture = ExtResource( 7 )
 region_rect = Rect2( 3, 4.5077, 95, 95.4923 )
@@ -255,6 +256,5 @@ percent_visible = false
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 
 [editable path="PlayerDetectionZone"]
-[editable path="PlayerAttackZone"]
 [editable path="HitboxZone"]
 [editable path="DamageArea"]
