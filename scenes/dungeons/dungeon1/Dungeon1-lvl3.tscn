@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/map/map_dungeon1_lvl3.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/dungeons/dungeons.gd" type="Script" id=3]
+[ext_resource path="res://scripts/astar_visualizer.gd" type="Script" id=4]
 
 [node name="Dungeon1-lvl3" type="Node2D"]
 script = ExtResource( 3 )
@@ -19,5 +20,8 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="Player" parent="map_dungeon1_lvl3/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( 824, 24 )
+
+[node name="astar" type="Node2D" parent="map_dungeon1_lvl3"]
+script = ExtResource( 4 )
 
 [editable path="map_dungeon1_lvl3"]

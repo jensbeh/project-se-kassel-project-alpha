@@ -2,6 +2,7 @@ extends Node2D
 
 
 # Map specific
+var scene_type = Constants.SceneType.GRASSLAND
 var max_ambient_mobs = 50
 
 # Variables
@@ -18,10 +19,9 @@ var init_transition_data = null
 onready var changeScenesObject = $map_grassland/changeScenes
 onready var groundChunks = $map_grassland/ground/Chunks
 onready var higherChunks = $map_grassland/higher/Chunks
-onready var mobsNavigation2d = $map_grassland/mobs_navigation2d
-onready var mobsNavigationTileMap = $map_grassland/mobs_navigation2d/NavigationTileMap
-onready var ambientMobsNavigation2d = $map_grassland/ambient_mobs_navigation2d
-onready var ambientMobsNavigationPolygonInstance = $map_grassland/ambient_mobs_navigation2d/NavigationPolygonInstance
+onready var mobsNavigationTileMap = $map_grassland/mobs_navigation/mobs_navigation_tilemap
+onready var ambientMobsNavigationTileMap = $map_grassland/ambient_mobs_navigation/ambient_mobs_navigation_tilemap
+onready var ambientMobsNavigationPolygon = $map_grassland/ambient_mobs_navigation/Area2D/CollisionPolygon2D
 onready var mobsLayer = $map_grassland/entitylayer/mobslayer
 onready var mobSpawns = $map_grassland/mobSpawns
 onready var ambientMobsLayer = $map_grassland/ambientMobsLayer
@@ -30,21 +30,17 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Setup scene in background
-	thread = Thread.new()
-	thread.start(self, "_setup_scene_in_background")
-
-
-# Method to setup this scene with a thread in background
-func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
-	# Setup chunks and chunkloader
-	# Get map position
+	# Get map informations
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
 	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
 	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
+	var map_name = groundChunks.get_meta("map_name")
+	
+	# Setup ChunkLoaderService
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
@@ -53,21 +49,17 @@ func _setup_scene_in_background():
 	# Setup stair areas
 	setup_stair_areas()
 	
-	# Setup pathfinding
-	PathfindingService.init(mobsNavigation2d, ambientMobsNavigation2d)
+	# Setup PathfindingService
+	PathfindingService.init(map_name, find_node("astar"), ambientMobsNavigationTileMap, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
 	
-	# Spawn mobs
-	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsLayer, max_ambient_mobs, true)
+	# Spawn random treasures
+	spawn_treasures()
 	
-	call_deferred("_on_setup_scene_done")
-
-
-# Method is called when thread is done and the scene is setup
-func _on_setup_scene_done():
-	thread.wait_to_finish()
+	# Setup MobSpawnerService
+	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -75,8 +67,8 @@ func _on_setup_scene_done():
 	# Spawn bosses
 	spawn_bosses()
 	
-	# Spawn random treasures
-	spawn_treasures()
+	# Start PathfindingService
+	PathfindingService.start()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -91,39 +83,29 @@ func spawn_bosses():
 		if biome_name == "mountain":
 			for _i in range(2):
 				# Take random boss
-				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
+				var boss_path = Utils.get_random_boss_instance_path()
 				var boss_instance = load(boss_path).instance()
 				# Generate spawn position and spawn boss
-				boss_instance.init(current_spawn_area, mobsNavigationTileMap)
+				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false, lootLayer)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
 				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
-		
-		# Generate bosses with little chance in other biomes
-		else:
-			var random_float = randf()
-			if random_float <= 0.1:
-				# Take random boss
-				var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
-				var boss_instance = load(boss_path).instance()
-				# Generate spawn position and spawn boss
-				boss_instance.init(current_spawn_area, mobsNavigationTileMap)
-				boss_instance.is_boss_in_grassland(true)
-				mobsLayer.call_deferred("add_child", boss_instance)
-				print("SPAWNED BOSS \""+ str(boss_path) +"\" with 10% chance in " + str(biome_name))
 
 
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
 	# Stop pathfinder
-	PathfindingService.stop()
+	PathfindingService.cleanup()
 	
 	# Stop chunkloader
-	ChunkLoaderService.stop()
+	ChunkLoaderService.cleanup()
 	
 	# Stop mobspawner
-	MobSpawnerService.stop()
+	MobSpawnerService.cleanup()
+	
+	# Disconnect signals
+	clear_signals()
 
 
 # Method to set transition_data which contains stuff about the player and the transition
@@ -173,9 +155,7 @@ func setup_spawning_areas():
 	
 	
 	# AmbientMobs spawning area
-	var polygon = Polygon2D.new()
-	polygon.polygon = ambientMobsNavigationPolygonInstance.navpoly.get_vertices()
-	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(polygon.position, polygon.polygon)
+	ambientMobsSpawnArea = Utils.generate_mob_spawn_area_from_polygon(ambientMobsNavigationPolygon.position, ambientMobsNavigationPolygon.polygon)
 
 
 # Method to handle collision detetcion dependent of the collision object type
@@ -192,8 +172,6 @@ func interaction_detected():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
-			clear_signals()
-			
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("-> Change scene \"GRASSLAND\" to \""  + str(next_scene_path) + "\"")
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
@@ -225,9 +203,14 @@ func clear_signals():
 					stair.disconnect("body_entered", self, "body_entered_stair_area")
 					stair.disconnect("body_exited", self, "body_exited_stair_area")
 	
-	# Treasures
-	for treasure in lootLayer.get_children():
-		Utils.get_current_player().disconnect("player_interact", treasure, "interaction")
+	# Loot & treasures
+	for loot in lootLayer.get_children():
+		if "treasure" in loot.name:
+			loot.clear_signals()
+		elif "loot" in loot.name:
+			loot.clear_signals()
+		else:
+			printerr("NOTHING TO DISCONNECT IN GRASSLAND LOOT")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -298,8 +281,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
-		mobsLayer.remove_child(boss_node)
-		boss_node.queue_free()
+		boss_node.call_deferred("queue_free")
 		print("----------> Boss \"" + boss_node.name + "\" removed")
 
 
@@ -332,6 +314,6 @@ func spawn_treasures():
 				# load treasure
 				var treasure = load(Constants.TREASURE_PATH).instance()
 				# Generate spawn position and spawn treasure
-				treasure.init(current_spawn_area, mobsNavigationTileMap)
+				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 				lootLayer.call_deferred("add_child", treasure)
 			quantity -= 1

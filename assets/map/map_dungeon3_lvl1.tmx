@@ -1080,14 +1080,14 @@
    </data>
   </layer>
   <objectgroup id="16" name="treasures">
-   <object id="20" name="pos_treasure_1" x="912.25" y="-305.75" width="16.375" height="16.25"/>
+   <object id="20" name="pos_treasure_1" x="912" y="-305.75" width="16" height="16.25"/>
    <object id="21" name="treasure_1" type="area" x="905.75" y="-309.875" width="26" height="26">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
-   <object id="22" name="pos_treasure_2" x="544.625" y="-754" width="16.125" height="16.25"/>
+   <object id="22" name="pos_treasure_2" x="544" y="-754" width="16" height="16.25"/>
    <object id="24" name="treasure_2" type="area" x="538.375" y="-759.375" width="25.75" height="26.75">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>

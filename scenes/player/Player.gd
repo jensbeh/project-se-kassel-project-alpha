@@ -10,9 +10,6 @@ onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
 
-# Collision
-onready var ray = $RayCast2D
-
 # Look
 onready var shadow = $Shadow
 onready var bodySprite = $Body
@@ -81,6 +78,7 @@ var dying = false
 var is_invincible = false
 var collecting = false
 var collected = false
+var in_safe_area = false
 var change_scene
 
 
@@ -120,10 +118,10 @@ func _ready():
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
 	# Set invisibility of player
-	make_player_invisible(false)
+	make_player_invisible(Constants.PLAYER_INVISIBLE)
 	
 	# Set invincibility of player
-	make_player_invincible(false)
+	make_player_invincible(Constants.PLAYER_INVINCIBLE)
 
 
 func _physics_process(delta):
@@ -144,7 +142,8 @@ func _physics_process(delta):
 			
 		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
 			if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
-				set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+				if not Constants.PLAYER_INFINIT_STAMINA:
+					set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
 				velocity *= 1.4
 		
 		if velocity != Vector2.ZERO and player_can_interact:
@@ -249,7 +248,8 @@ func _input(event):
 		# Attack with "left_mouse"
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
-				set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				if not Constants.PLAYER_INFINIT_STAMINA:
+					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
 				is_attacking = true
 				set_movement(false)
 				animation_state.start("Attack")
@@ -806,10 +806,10 @@ func get_data():
 
 func save_player_data(player_data):
 	var dir = Directory.new()
-	if !dir.dir_exists(Constants.SAVE_PATH):
-		dir.make_dir(Constants.SAVE_PATH)
+	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
+		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
 	var save_game = File.new()
-	save_game.open(Constants.SAVE_PATH + player_data.id + ".json", File.WRITE)
+	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
 
@@ -1073,4 +1073,18 @@ func make_player_invincible(invincible : bool):
 # Method to get player invincibility
 func is_player_invincible():
 	return is_invincible
+
+
+# Method to set in_safe_area
+func set_in_safe_area(new_in_safe_area):
+	in_safe_area = new_in_safe_area
 	
+	if in_safe_area:
+		make_player_invisible(true)
+	else:
+		make_player_invisible(false)
+
+
+# Method to get in_safe_area
+func is_in_safe_area():
+	return in_safe_area

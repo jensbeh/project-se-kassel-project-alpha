@@ -1,5 +1,42 @@
 extends Node
 
+
+# --------------------------------------------------
+
+# DEBUG
+#################
+## AMBIENT MOBS
+#################
+const SHOW_AMBIENT_MOB_COLLISION = false
+const SHOW_AMBIENT_MOB_PATHES = false
+
+#################
+## MOBS
+#################
+const SHOW_MOB_COLLISION = false
+const SHOW_MOB_DETECTION_RADIUS = false
+const SHOW_MOB_PATHES = false
+const SHOW_MOB_HITBOX = false
+const SHOW_MOB_DAMAGE_AREA = false
+
+#################
+## BOSSES
+#################
+const SHOW_BOSS_COLLISION = false
+const SHOW_BOSS_DETECTION_RADIUS = false
+const SHOW_BOSS_PATHES = false
+const SHOW_BOSS_HITBOX = false
+const SHOW_BOSS_DAMAGE_AREA = false
+
+#################
+## PLAYER
+#################
+const PLAYER_INVISIBLE = false
+const PLAYER_INVINCIBLE = true
+const PLAYER_INFINIT_STAMINA = true
+
+# --------------------------------------------------
+
 # Variables
 const NAME_LENGTH = 15
 const HEALTH_COOLDOWN = 20
@@ -12,12 +49,15 @@ const STAMINA_SPRINT = 15 # Points per Second
 const STAMINA_RECOVER = 10 # Points per Second
 
 # Tiles
-const tile_size = 16
+const TILE_SIZE = 16
+const PSEUDO_OBSTACLE_TILE_ID = 22
+const PSEUDO_OBSTACLE_TILE_ID_DUNGEONS = 39
+const INVALID_TILE_ID = -1
 
 # Chunks
-const chunk_size_tiles = 10 # In tiles -> if changing need reimport of maps!
-const chunk_size_pixel = chunk_size_tiles * tile_size # In pixel
-const render_distance = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
+const CHUNK_SIZE_TILES = 10 # In tiles -> if changing need reimport of maps!
+const chunk_size_pixel = CHUNK_SIZE_TILES * TILE_SIZE # In pixel
+const RENDER_DISTANCE = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
 
 # Player
 const PLAYER_WALK_SPEED = 70
@@ -86,7 +126,6 @@ const CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH = "res://scenes/menu/character_scre
 const CREATE_CHARACTER_SCREEN_PATH = "res://scenes/menu/character_screens/CreateCharacter.tscn"
 const GAME_MENU_PATH = "res://scenes/menu/GameMenu.tscn"
 const SETTINGS_PATH = "res://scenes/menu/SettingScreen.tscn"
-const SAVE_SETTINGS_PATH = "user://settings.json"
 const TRADE_INVENTORY_PATH = "res://scenes/inventory/TradeInventory.tscn"
 const ITEM_DATA_PATH = "res://assets/data/ItemData.json"
 const LOOT_DATA_PATH = "res://assets/data/LootData.json"
@@ -97,6 +136,7 @@ const LOOT_PANEL_PATH = "res://scenes/looting/LootPanel.tscn"
 const LOOT_DROP_PATH = "res://scenes/looting/LootDrop.tscn"
 const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
 const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
+const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 999
@@ -107,9 +147,19 @@ const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
 const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
 const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
-const SAVE_PATH = "user://character/"
-const DATA_PATH = "user://data/"
-const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
+
+# Save file pathes
+const SAVE_PATH = "user://"
+const SAVE_SETTINGS_PATH = "user://settings.json"
+const SAVE_CHARACTER_PATH = "user://character/"
+const SAVE_INVENTORY_DATA_PATH = "user://data/"
+const SAVE_GAME_PATH = "user://game/"
+const SAVE_GAME_PATHFINDING_PATH = SAVE_GAME_PATH + "pathfinding/"
+
+# Pathfinding variables
+const POINTS_HORIZONTAL_PER_TILE = 3
+const POINTS_VERTICAL_PER_TILE = 3
+const POINT_SIZE_IN_PIXEL_PER_TILE = ceil(float(TILE_SIZE) / (POINTS_HORIZONTAL_PER_TILE - 1))
 
 # Boss enemies pathes
 const BossPathes = [

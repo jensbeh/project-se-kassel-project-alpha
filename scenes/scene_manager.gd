@@ -100,8 +100,10 @@ func _on_load_scene_done(scene):
 		Utils.set_current_player(null)
 	
 	# Add scene to current_scene
-	get_current_scene().call_deferred("queue_free")
+	get_current_scene().queue_free()
 	current_scene.call_deferred("add_child", scene)
+	# Update current_scene_type from the new scene like MENU, CAMP, ...
+	update_scene_type(current_transition_data)
 
 
 # Method to pass the transition_data to the new scene 
@@ -116,9 +118,6 @@ func finish_transition():
 	update_previouse_scene_path()
 	
 	if current_transition_data != null: # In menu it is null
-		# Update current_scene_type from the new scene like MENU, CAMP, ...
-		update_scene_type(current_transition_data)
-		
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
@@ -141,6 +140,9 @@ func finish_transition():
 				Utils.get_current_player().hurting = false
 			if Utils.get_current_player().is_attacking:
 				Utils.get_current_player().is_attacking = false
+			if Utils.get_current_player().is_in_safe_area() == true:
+				Utils.get_current_player().set_in_safe_area(false)
+			
 			
 			# Resume cooldown timer
 			Utils.get_hotbar().resume_cooldown()
@@ -157,14 +159,12 @@ func finish_transition():
 		# Update minimap
 		Utils.get_minimap().update_minimap()
 		
-		# Update boss health bar in player ui
-		Utils.get_player_ui().update_boss_health_bar()
-		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 		
 		if Utils.get_current_player() != null:
 			Utils.get_current_player().set_change_scene(false)
+
 
 # Method to update the current_scene_type and emits a signal
 func update_scene_type(new_transition_data):
@@ -193,6 +193,22 @@ func update_previouse_scene_path():
 # Method to return the current scene
 func get_current_scene():
 	return current_scene.get_child(0)
+
+
+# Method to set new current scene without any special calls or transition
+# new_current_scene -> must be scene instance
+func without_transition_to_scene(new_current_scene : Node):
+	# Cleanup previous scene
+	if get_current_scene().has_method("destroy_scene"):
+		get_current_scene().destroy_scene()
+		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
+	else:
+		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+	
+	# Remove previous scene
+	get_current_scene().queue_free()
+	# Load new scene
+	current_scene.call_deferred("add_child",new_current_scene)
 
 
 # Methods and stuff for better debugging

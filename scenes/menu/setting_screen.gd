@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-const SAVE_PATH = "user://"
-const SAVE_FILE_EXTENSION = ".json"
 
 func _ready():
 	get_node("Settings").set_text(tr("SETTINGS"))
@@ -29,7 +27,7 @@ var save_setting = {
 func save_settings():
 	save_setting.language = Utils.get_language()
 	var save_game = File.new()
-	save_game.open(SAVE_PATH + "settings" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_game.open(Constants.SAVE_SETTINGS_PATH, File.WRITE)
 	save_game.store_line(to_json(save_setting))
 	save_game.close()
 

@@ -10,7 +10,7 @@ var current_chunk
 var previouse_chunk
 var active_chunks = []
 var can_load_chunks = false
-var chunk_loader_timer
+var chunk_loader_timer = Timer.new()
 var chunk_load_interval = 0.5
 var should_load_chunks = true
 
@@ -18,6 +18,10 @@ var should_load_chunks = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("START CHUNK_LOADER_SERVICE")
+	
+	# Add chunk_loader_timer
+	add_child(chunk_loader_timer)
+	chunk_loader_timer.connect("timeout", self, "_on_Timer_timeout")
 
 
 # Method to init all important variables
@@ -38,15 +42,19 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 	chunkloader_thread.start(self, "load_chunks")
 	can_load_chunks = true
 	
-	chunk_loader_timer = Timer.new()
-	add_child(chunk_loader_timer)
-	chunk_loader_timer.connect("timeout", self, "_on_Timer_timeout")
 	should_load_chunks = true
+
 
 # Method to stop the chunkloader to change map
 func stop():
 	# Reset variables
-	call_deferred("cleanup")
+	# Variables
+	can_load_chunks = null
+	chunk_loader_timer = null
+	chunk_load_interval = null
+	should_load_chunks = null
+	
+	print("STOPPED CHUNK_LOADER_SERVICE")
 
 
 # Method to cleanup the chunkloader
@@ -66,7 +74,7 @@ func cleanup():
 	active_chunks.clear()
 	chunk_loader_timer.stop()
 	
-	print("STOPPED CHUNK_LOADER_SERVICE")
+	print("CLEANED CHUNK_LOADER_SERVICE")
 
 
 # Method to set should_load_chunks back to true
@@ -86,12 +94,12 @@ func load_chunks():
 			# Generate and update chunks
 			if current_chunk != null and previouse_chunk != current_chunk:
 				previouse_chunk = current_chunk
-				var render_bounds = Constants.render_distance * 2 + 1
+				var render_bounds = Constants.RENDER_DISTANCE * 2 + 1
 				var loading_chunks = []
 				for y in range(render_bounds):
 					for x in range(render_bounds):
-						var chunk_x = current_chunk.x - Constants.render_distance + x
-						var chunk_y = current_chunk.y - Constants.render_distance + y
+						var chunk_x = current_chunk.x - Constants.RENDER_DISTANCE + x
+						var chunk_y = current_chunk.y - Constants.RENDER_DISTANCE + y
 						
 						if chunk_x <= horizontal_chunks_count and chunk_y <= vertical_chunks_count and chunk_x >= 0 and chunk_y >= 0:
 							var chunk_coords = Vector2(chunk_x, chunk_y)
@@ -114,7 +122,7 @@ func load_chunks():
 				active_chunks = new_chunks
 			
 				# Make chunks visibel
-				send_chunks_to_world(deleting_chunks)
+				call_deferred("send_chunks_to_world", deleting_chunks)
 				
 				# Update mobs to be active or not
 				update_mobs()
@@ -124,6 +132,7 @@ func load_chunks():
 func update_mobs():
 	# Mob lists
 	var enemies = get_tree().get_nodes_in_group("Enemy")
+	var bosses = get_tree().get_nodes_in_group("Boss")
 	var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
 	
 	for enemy in enemies:
@@ -133,6 +142,14 @@ func update_mobs():
 				call_deferred("set_mob_activity_state", enemy, true)
 			else:
 				call_deferred("set_mob_activity_state", enemy, false)
+	
+	for boss in bosses:
+		if is_instance_valid(boss) and boss.is_inside_tree():
+			var boss_chunk = Utils.get_chunk_from_position(map_min_global_pos, boss.global_position)
+			if boss_chunk in active_chunks:
+				call_deferred("set_mob_activity_state", boss, true)
+			else:
+				call_deferred("set_mob_activity_state", boss, false)
 	
 	for ambient_mob in ambient_mobs:
 		if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree():

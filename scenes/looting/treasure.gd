@@ -2,21 +2,38 @@ extends Node2D
 
 var player_in_looting_zone = false
 var interacted = false
-var spawn_position
 var loot_panel
 var looted = false
 var content = {}
+var current_spawn_area
+var navigation_tile_map
+var scene_type
+var lootLayer
 
 # connect interaction signal with player
 func _ready():
 	self.name = "treasure"
 	Utils.get_current_player().connect("player_interact", self, "interaction")
+	
+	var collision_extents = get_node("StaticBody/CollisionShape2D").shape.extents
+	var spawn_position = Utils.generate_position_in_mob_area(scene_type, current_spawn_area, navigation_tile_map, collision_extents.x, true, lootLayer)
 	position = spawn_position
+	print("SPAWNED TREASURE AT: " + str(position))
+	
+	# Add treasure to dynamic obstacles in PathfindingService
+	PathfindingService.add_dynamic_obstacle(get_node("StaticBody/CollisionShape2D"), position)
 
 
-func init(current_spawn_area, navigation_tile_map):
-	var collision_radius = get_node("Area2D2/CollisionShape2D").shape.radius
-	spawn_position = Utils.generate_position_in_mob_area(current_spawn_area, navigation_tile_map, collision_radius, true)
+# Method to disconnect all signals
+func clear_signals():
+	Utils.get_current_player().disconnect("player_interact", self, "interaction")
+
+
+func init(init_current_spawn_area, init_navigation_tile_map, init_scene_type, init_lootLayer):
+	current_spawn_area = init_current_spawn_area
+	navigation_tile_map = init_navigation_tile_map
+	scene_type = init_scene_type
+	lootLayer = init_lootLayer
 
 
 # When player enter zone, player can interact

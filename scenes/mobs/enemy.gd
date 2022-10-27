@@ -1,9 +1,12 @@
 extends KinematicBody2D
 
 # Constants
+var ATTACK_RADIUS = 32.0
 var HUNTING_SPEED = 100
 var WANDERING_SPEED = 50
 var PRE_ATTACKING_SPEED
+var MOB_SPEED_FACTOR = 2.2
+var CANT_REACH_DISTANCE
 
 # Mob specific
 var max_health = 100
@@ -25,6 +28,7 @@ enum {
 	DYING,
 	PRE_ATTACKING,
 	ATTACKING,
+	CANT_REACH_PLAYER,
 }
 var velocity = Vector2(0, 0)
 var behaviour_state = IDLING
@@ -42,6 +46,12 @@ var max_attacking_radius_around_player
 var min_attacking_radius_around_player
 var pre_attack_time = 0.0
 var max_pre_attack_time
+var scene_type
+var lootLayer
+var killed = false
+var update_get_target_position = false
+var new_position_dic : Dictionary = {}
+var check_can_reach_player = false
 
 # Mob movment
 var acceleration = 350
@@ -53,25 +63,35 @@ var navigation_tile_map
 var ideling_time = 0.0
 var max_ideling_time
 var searching_time = 0.0
-var max_searching_time
+var current_max_searching_time = 0.0
+var min_searching_time = 6
+var max_searching_time = 12
 
 # Nodes
 onready var collision = $Collision
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
-onready var playerAttackZone = $PlayerAttackZone
-onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
+onready var damageArea = $DamageArea
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
+onready var hitbox = $HitboxZone
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
+onready var raycast = $RayCast2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Show or hide nodes for debugging
+	collision.visible = Constants.SHOW_MOB_COLLISION
+	playerDetectionZone.visible = Constants.SHOW_MOB_DETECTION_RADIUS
+	line2D.visible = Constants.SHOW_MOB_PATHES
+	hitbox.visible = Constants.SHOW_MOB_HITBOX
+	damageArea.visible = Constants.SHOW_MOB_DAMAGE_AREA
+	
 	# Set spawn_position
 	collision_radius = collision.shape.radius
-	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true, lootLayer)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING
@@ -85,35 +105,107 @@ func _ready():
 	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius * 0.33
 	
-	playerAttackZone.connect("player_entered_attack_zone", self, "on_player_entered_attack_zone")
-	playerAttackZone.connect("player_exited_attack_zone", self, "on_player_exited_attack_zone")
-	
 	# Healthbar
 	healthBar.value = 100
 	healthBar.visible = false
 	healthBarBackground.visible = false
 	
 	# Setup attacking radius around player variables
-	max_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.95
-	min_attacking_radius_around_player = playerAttackZoneShape.shape.radius * 0.85
+	randomize()
+	max_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.9, 1.0)
+	min_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.75, 0.85)
+	
+	# Enable raycast
+	raycast.enabled = true
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
 
 
 # Method to init variables, typically called after instancing
-func init(init_spawnArea, new_navigation_tile_map):
+func init(init_spawnArea, new_navigation_tile_map, init_scene_type, init_lootLayer):
 	spawnArea = init_spawnArea
 	navigation_tile_map = new_navigation_tile_map
+	scene_type = init_scene_type
+	lootLayer = init_lootLayer
 
 
 func _physics_process(delta):
+	# Handle position update
+	if update_get_target_position:
+		# Handle behaviour
+		match behaviour_state:
+			# Return player hunting position if player is still existing
+			HUNTING:
+#				print("HUNTING")
+				var player = playerDetectionZone.player
+				if player != null:
+					PathfindingService.call_deferred("got_mob_position", self, playerDetectionZone.player.global_position)
+					update_get_target_position = false
+			
+			
+			# Return next wandering position
+			WANDERING:
+#				print("WANDERING")
+				var new_position = Vector2.ZERO
+				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false, lootLayer)
+				PathfindingService.call_deferred("got_mob_position", self, new_position)
+				update_get_target_position = false
+			
+			
+			SEARCHING:
+#				print("SEARCHING")
+				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
+					raycast.cast_to = new_position_dic["position"] - global_position
+					raycast.force_raycast_update()
+					
+					if not raycast.is_colliding():
+						PathfindingService.call_deferred("got_mob_position", self, new_position_dic["position"])
+						update_get_target_position = false
+#					else:
+#						printerr("SEARCHING: GENERATE POSITION AGAIN -> RAYCAST.IS_COLLIDING == TRUE")
+					new_position_dic.clear()
+			
+			
+			CANT_REACH_PLAYER:
+#				print("CANT_REACH_PLAYER")
+				var new_position = Vector2.ZERO
+				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false, lootLayer)
+				PathfindingService.call_deferred("got_boss_position", self, new_position)
+				update_get_target_position = false
+			
+			
+			PRE_ATTACKING:
+#				print("PRE_ATTACKING")
+				if not new_position_dic.empty() and not new_position_dic["generate_again"]:
+					raycast.cast_to = new_position_dic["position"] - global_position
+					raycast.force_raycast_update()
+					
+					if not raycast.is_colliding():
+						PathfindingService.call_deferred("got_mob_position", self, new_position_dic["position"])
+						update_get_target_position = false
+					else:
+#						printerr("PRE_ATTACKING: RAYCAST.IS_COLLIDING")
+						update_behaviour(HUNTING)
+					new_position_dic.clear()
+			
+			
+			ATTACKING:
+				raycast.cast_to = Utils.get_current_player().global_position - global_position
+				raycast.force_raycast_update()
+				if raycast.is_colliding():
+					update_behaviour(HUNTING)
+#					printerr("ATTACKING: RAYCAST.IS_COLLIDING")
+	
+	
 	# Handle behaviour
 	match behaviour_state:
 		
 		IDLING:
 			# Mob is doing nothing, just standing and searching for player
 			velocity = velocity.move_toward(Vector2(0, 0), friction * delta)
+			
+			search_player()
 		
 		
 		WANDERING:
@@ -122,6 +214,9 @@ func _physics_process(delta):
 				# Follow wandering path
 				if path.size() > 0:
 					move_to_position(delta)
+			
+			# Check if player is nearby (needs to be at the end of WANDERING)
+			search_player()
 		
 		
 		HUNTING:
@@ -131,6 +226,9 @@ func _physics_process(delta):
 				# Follow path
 				if path.size() > 0:
 					move_to_position(delta)
+				
+				if can_attack():
+					update_behaviour(PRE_ATTACKING)
 		
 		
 		SEARCHING:
@@ -139,6 +237,25 @@ func _physics_process(delta):
 				# Follow searching path
 				if path.size() > 0:
 					move_to_position(delta)
+			
+			# Mob is doing nothing, just standing and searching for player
+			search_player()
+		
+		
+		CANT_REACH_PLAYER:
+			if not mob_need_path:
+				# Mob is wandering around and is searching for player
+				# Follow wandering path
+				if path.size() > 0:
+					move_to_position(delta)
+			
+			# Check if player is nearby (needs to be at the end of CANT_REACH_PLAYER)
+			search_player()
+		
+		
+		PRE_ATTACKING:
+			if not can_attack():
+				update_behaviour(HUNTING)
 		
 		
 		HURTING:
@@ -154,12 +271,24 @@ func _physics_process(delta):
 
 
 func _process(delta):
+	# Handle position update
+	if update_get_target_position:
 		# Handle behaviour
-	match behaviour_state:
-		
-		IDLING:
-			search_player()
+		match behaviour_state:
+			SEARCHING:
+#				print("SEARCHING")
+				if new_position_dic.empty() or new_position_dic["generate_again"]:
+					new_position_dic = Utils.generate_position_near_mob(scene_type, start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
 			
+			PRE_ATTACKING:
+#				print("PRE_ATTACKING")
+				if new_position_dic.empty() or new_position_dic["generate_again"]:
+					new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+#					print("GENERATE NEW POSITION for PRE_ATTACKING")
+	
+	# Handle behaviour
+	match behaviour_state:
+		IDLING:
 			# After some time change to WANDERING
 			ideling_time += delta
 			if ideling_time > max_ideling_time:
@@ -174,9 +303,6 @@ func _process(delta):
 				if path.size() == 0:
 					# Case if pathend is reached, need new path
 					update_behaviour(IDLING)
-				
-			# Check if player is nearby (needs to be at the end of WANDERING)
-			search_player()
 		
 		
 		HUNTING:
@@ -199,16 +325,12 @@ func _process(delta):
 				if path.size() > 0:
 					# After some time change to WANDERING (also to return to mob area)
 					searching_time += delta
-					if searching_time > max_searching_time:
+					if searching_time > current_max_searching_time:
 						searching_time = 0.0
 						update_behaviour(WANDERING)
 				else:
 					# Case if pathend is reached, need new path for searching
 					mob_need_path = true
-			
-			
-			# Mob is doing nothing, just standing and searching for player
-			search_player()
 
 
 # Method to move the mob to position
@@ -216,30 +338,48 @@ func move_to_position(delta):
 	# Stop motion when reached position
 	if global_position.distance_to(path[0]) < position_threshold:
 		path.remove(0)
-		
-		# Update line
-#		line2D.points = path
+		if Constants.SHOW_MOB_PATHES:
+			# Update line
+			line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
 		velocity = velocity.move_toward(direction * speed, acceleration * delta)
 		velocity = move_and_slide(velocity)
-		
 		# Update anmination
 		update_animations()
 		
-		# Update line position
-#		line2D.global_position = Vector2(0,0)
-#
-#	if path.size() == 0:
-#		line2D.points = []
+		if Constants.SHOW_MOB_PATHES:
+			# Update line position
+			line2D.global_position = Vector2(0,0)
+	
+	if Constants.SHOW_MOB_PATHES:
+		if path.size() == 0:
+			line2D.points = []
 
 
 # Method to search for player
 func search_player():
+	# Check if player is nearby the mob
 	if playerDetectionZone.mob_can_see_player():
-		# Player in detection zone of this mob
-		update_behaviour(HUNTING)
+		# Case if mob can reach player
+		if behaviour_state != CANT_REACH_PLAYER:
+			# Check if mob can "see" player
+			raycast.cast_to = Utils.get_current_player().global_position - global_position
+			raycast.force_raycast_update()
+			
+			if not raycast.is_colliding():
+				# Player in detection zone of this mob and mob can "see" player
+				update_behaviour(HUNTING)
+#			else:
+#				printerr("SEARCHING - COLLIDING: " + str(raycast.get_collider()))
+	
+	
+	else:
+		# Case if player no longer in detection zone and player was not reachable
+		if behaviour_state == CANT_REACH_PLAYER:
+			check_can_reach_player = false
+			update_behaviour(WANDERING)
 
 
 # Method to update the behaviour of the mob
@@ -248,10 +388,36 @@ func update_behaviour(new_behaviour):
 		
 		# Set previous behaviour state
 		previous_behaviour_state = behaviour_state
-	
+		
+		
+#		match new_behaviour:
+#			0:
+#				print("new_behaviour: SLEEPING")
+#			1:
+#				print("new_behaviour: IDLING")
+#			2:
+#				print("new_behaviour: SEARCHING")
+#			3:
+#				print("new_behaviour: WANDERING")
+#			4:
+#				print("new_behaviour: HUNTING")
+#			5:
+#				print("new_behaviour: HURTING")
+#			6:
+#				print("new_behaviour: DYING")
+#			7:
+#				print("new_behaviour: PRE_ATTACKING")
+#			8:
+#				print("new_behaviour: ATTACKING")
+#			9:
+#				print("new_behaviour: CANT_REACH_PLAYER")
+		
+		
+		
 		# Reset timer
-		if ideling_time != 0.0:
-			ideling_time = 0.0
+		ideling_time = 0.0
+		searching_time = 0.0
+		pre_attack_time = 0.0
 		
 		# Handle new bahaviour
 		match new_behaviour:
@@ -279,8 +445,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					# Update line path
-	#				line2D.points = []
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
 				
 #				print("WANDERING")
 				behaviour_state = WANDERING
@@ -292,11 +459,12 @@ func update_behaviour(new_behaviour):
 				speed = HUNTING_SPEED
 				
 				if behaviour_state != HUNTING:
-					# Reset path in case player is seen but e.g. state is wandering
+					# Reset path in case player is seen but e.g. state is hunting
 					path.resize(0)
 					
-					# Update line path
-	#				line2D.points = []
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
 #				print("HUNTING")
 				behaviour_state = HUNTING
 				mob_need_path = true
@@ -309,13 +477,13 @@ func update_behaviour(new_behaviour):
 				
 				# start_searching_position -> last eye contact to player
 				if path.size() > 0:
-					start_searching_position = path[-1] 
+					start_searching_position = path[-1]
 				else:
 					start_searching_position = global_position
-					
-				# Set new max_searching_time for SEARCHING
+				
+				# Set new current_max_searching_time for SEARCHING
 				rng.randomize()
-				max_searching_time = rng.randi_range(6, 12)
+				current_max_searching_time = rng.randi_range(min_searching_time, max_searching_time)
 				
 #				print("SEARCHING")
 				behaviour_state = SEARCHING
@@ -337,6 +505,27 @@ func update_behaviour(new_behaviour):
 					behaviour_state = DYING
 					# Show hurt animation if not already played
 					change_animations(DYING)
+			
+			
+			CANT_REACH_PLAYER:
+				speed = WANDERING_SPEED
+				
+				if behaviour_state != CANT_REACH_PLAYER:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
+				
+#				print("CANT_REACH_PLAYER")
+				behaviour_state = CANT_REACH_PLAYER
+				mob_need_path = true
+				
+				# Inform pathfinder to check if mob can reach player
+				check_can_reach_player = true
+				
+				change_animations(WANDERING)
 
 
 # Method to update the animation with velocity for direction -> needs to code in child
@@ -351,34 +540,22 @@ func change_animations(_animation_behaviour_state):
 
 # Method returns next target position to pathfinding_service
 func get_target_position():
-	# Return player hunting position if player is still existing
-	if behaviour_state == HUNTING:
-		var player = playerDetectionZone.player
-		if player != null:
-			return playerDetectionZone.player.global_position
-		else:
-			return null
-	
-	# Return next wandering position
-	elif behaviour_state == WANDERING:
-		return Utils.generate_position_in_mob_area(spawnArea, navigation_tile_map, collision_radius, false)
-			
-	# Return next searching position
-	elif behaviour_state == SEARCHING:
-		return Utils.generate_position_near_mob(start_searching_position, min_searching_radius, max_searching_radius, navigation_tile_map, collision_radius)
-	
-	elif behaviour_state == PRE_ATTACKING:
-		return Utils.generate_position_near_mob(Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+	update_get_target_position = true
 
 
 # Method is called from pathfinding_service to set new path to mob
 func update_path(new_path):
-	# Update mob path
-	path = new_path
-	mob_need_path = false
-	
-	# Update line path
-#	line2D.points = path
+	# Update mob path if it still need it
+	if mob_need_path:
+		path = new_path
+		mob_need_path = false
+		
+		if path.size() <= 1 and behaviour_state == HUNTING and global_position.distance_to(Utils.get_current_player().global_position) >= CANT_REACH_DISTANCE:
+			update_behaviour(CANT_REACH_PLAYER)
+		
+		if Constants.SHOW_MOB_PATHES:
+			# Update line path
+			line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity
@@ -389,16 +566,6 @@ func set_mob_activity(is_active):
 	elif is_active and behaviour_state == SLEEPING:
 		# wake up the mob to what it has done before
 		update_behaviour(previous_behaviour_state)
-
-
-func on_player_entered_attack_zone():
-	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
-		update_behaviour(PRE_ATTACKING)
-
-
-func on_player_exited_attack_zone():
-	if behaviour_state != DYING and behaviour_state != HURTING: # Because if mob is dying/hurting then state should be change with area's
-		update_behaviour(HUNTING)
 
 
 # Method to simulate damage and behaviour to mob
@@ -436,8 +603,10 @@ func mob_hurt():
 
 # Method is called when DIE animation is done
 func mob_killed():
-	Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-	MobSpawnerService.despawn_mob(self)
+	if not killed:
+		killed = true
+		Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
+		MobSpawnerService.despawn_mob(self)
 
 
 # Method to return a random time between min_time and max_time
@@ -463,3 +632,30 @@ func get_attack_damage(mob_attack_damage):
 		var damage = int(round(mob_attack_damage * normal_attack_factor))
 		return damage
 
+
+# Method to check if boss can attack player
+func can_attack():
+	# Check if boss can see player
+	if not Utils.get_current_player().is_player_invisible():
+		# Check distance to player
+		if global_position.distance_to(Utils.get_current_player().global_position) <= (ATTACK_RADIUS * 1.3):
+			raycast.cast_to = Utils.get_current_player().global_position - global_position
+			raycast.force_raycast_update()
+			# Check if there is a collision between player and boss
+			if not raycast.is_colliding():
+				return true
+	else:
+		return false
+
+
+# Pathfinder notifys to mob if it can reach the player in case CANT_REACH_PLAYER
+func can_reach_player(can_reach, reachable_path):
+	if can_reach:
+		if reachable_path.size() > 0:
+			# Check if final point is in reachable near of player
+			var end_position : Vector2 = reachable_path[-1]
+			if end_position.distance_to(Utils.get_current_player().global_position) >= CANT_REACH_DISTANCE:
+				return
+		
+		check_can_reach_player = false
+		update_behaviour(HUNTING)

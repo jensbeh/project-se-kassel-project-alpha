@@ -18,6 +18,11 @@ func _ready():
 	$Timer.start()
 
 
+# Method to disconnect all signals
+func clear_signals():
+	Utils.get_current_player().disconnect("player_looting", self, "interaction")
+
+
 func init(new_spawn_position, mob_name, dungeon: bool):
 	spawn_position = new_spawn_position
 	in_dungeon = dungeon

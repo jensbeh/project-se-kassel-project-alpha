@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="20" nextobjectid="56">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="21" nextobjectid="59">
  <tileset firstgid="1" source="../tilesets/dungeon_environment.tsx"/>
  <tileset firstgid="337" source="../tilesets/animated_decorations.tsx"/>
  <tileset firstgid="357" source="../tilesets/decoration.tsx"/>
@@ -230,28 +230,28 @@
    </data>
   </layer>
   <objectgroup id="17" name="treasures">
-   <object id="48" name="pos_treasure_1" x="545.091" y="-145.364" width="16" height="16"/>
+   <object id="48" name="pos_treasure_1" x="544" y="-145.364" width="16" height="16"/>
    <object id="49" name="treasure_1" type="area" x="539.42" y="-149.636" width="27.8523" height="25.4545">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
-   <object id="53" name="pos_treasure_2" x="-111.455" y="-17.6364" width="16" height="16.2727"/>
+   <object id="53" name="pos_treasure_2" x="-112" y="-17.6364" width="16" height="16.2727"/>
    <object id="54" name="treasure_2" type="area" x="-113.636" y="-21.5455" width="25.2727" height="25.1818">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="2"/>
     </properties>
    </object>
-   <object id="59" name="pos_treasure_3" x="207.909" y="-162.091" width="16.1818" height="16.1818"/>
+   <object id="59" name="pos_treasure_3" x="208" y="-162.091" width="16" height="16.1818"/>
    <object id="61" name="treasure_3" type="area" x="202" y="-164.636" width="29.2727" height="23.8182">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="2"/>
     </properties>
    </object>
-   <object id="54" name="pos_treasure_4" x="704.472" y="-96.7613" width="15.8182" height="16.2159"/>
+   <object id="54" name="pos_treasure_4" x="704" y="-96.7613" width="16" height="16.2159"/>
    <object id="55" name="treasure_4" type="area" x="704.387" y="-99.159" width="23.0909" height="24.5454">
     <properties>
      <property name="boss_loot" type="bool" value="true"/>
@@ -294,6 +294,11 @@
   <objectgroup id="17" name="locked_doors">
    <object id="46" gid="170" x="752" y="-32" width="16" height="16"/>
    <object id="50" x="752" y="-48" width="16" height="16"/>
+  </objectgroup>
+  <objectgroup id="20" name="safe_area">
+   <object id="58" name="safe_area1" type="area" x="704" y="-96">
+    <polygon points="0,0 0,32 16,32 16,48 48,48 48,64 64,64 64,48 80,48 80,0"/>
+   </object>
   </objectgroup>
  </group>
  <group id="3" name="entitylayer">

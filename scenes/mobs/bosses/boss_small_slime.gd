@@ -23,15 +23,15 @@ func _ready():
 	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
 	
 	# Constants
-	HUNTING_SPEED = 25
-	WANDERING_SPEED = 12
-	PRE_ATTACKING_SPEED = 3 * HUNTING_SPEED
+	HUNTING_SPEED = 25 * BOSS_SPEED_FACTOR
+	WANDERING_SPEED = 12 * BOSS_SPEED_FACTOR
+	PRE_ATTACKING_SPEED = 1.5 * HUNTING_SPEED
 	
 	# Animations
 	setup_animations()
 	
 	# Setup healthbar in player_ui if in dungeon
-	if Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.DUNGEON and Utils.get_scene_manager().get_current_scene().is_boss_room():
+	if is_in_boss_room:
 		Utils.get_player_ui().set_boss_name_to_hp_bar(self)
 
 
@@ -90,9 +90,6 @@ func change_animations(animation_behaviour_state):
 
 
 func _physics_process(delta):
-	# Update parent method
-	._physics_process(delta)
-	
 	# Handle behaviour
 	match behaviour_state:
 		PRE_ATTACKING:
@@ -108,16 +105,13 @@ func _physics_process(delta):
 			
 			if velocity == Vector2.ZERO:
 				is_attacking = false
-				if playerAttackZone.mob_can_attack:
+				if can_attack():
 					update_behaviour(PRE_ATTACKING)
 				else:
 					update_behaviour(HUNTING)
 
 
 func _process(delta):
-	# Update parent method
-	._process(delta)
-	
 	# Handle behaviour
 	match behaviour_state:
 		PRE_ATTACKING:
@@ -153,8 +147,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					# Update line path
-					line2D.points = []
+					if Constants.SHOW_BOSS_PATHES:
+						# Update line path
+						line2D.points = []
 #				print("PRE_ATTACKING")
 				behaviour_state = PRE_ATTACKING
 				mob_need_path = true
@@ -169,8 +164,9 @@ func update_behaviour(new_behaviour):
 					# Reset path in case player is seen but e.g. state is wandering
 					path.resize(0)
 					
-					# Update line path
-					line2D.points = []
+					if Constants.SHOW_BOSS_PATHES:
+						# Update line path
+						line2D.points = []
 				
 				# Move Mob to player and further more
 				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150

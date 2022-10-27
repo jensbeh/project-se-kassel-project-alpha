@@ -828,14 +828,14 @@
    </data>
   </layer>
   <objectgroup id="13" name="treasures">
-   <object id="8" name="pos_treasure_1" x="79.6364" y="-623.545" width="16.4545" height="16.0909"/>
+   <object id="8" name="pos_treasure_1" x="80" y="-624" width="16" height="16"/>
    <object id="9" name="treasure_1" type="area" x="77.6364" y="-626.818" width="21.6364" height="24.8182">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
      <property name="selected_treasure_sprite" type="int" value="1"/>
     </properties>
    </object>
-   <object id="12" name="pos_treasure_2" x="-447.818" y="-18.4545" width="16.2727" height="16.1818"/>
+   <object id="12" name="pos_treasure_2" x="-448" y="-18.4545" width="16" height="16.1818"/>
    <object id="13" name="treasure_2" type="area" x="-449.364" y="-21.6364" width="24" height="24.6364">
     <properties>
      <property name="boss_loot" type="bool" value="false"/>
