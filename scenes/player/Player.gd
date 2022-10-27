@@ -67,7 +67,11 @@ var level: int = 1
 var dragging = false
 var preview = false
 var player_exp: int = 0
+var player_stamina: float
 var player_light_radius: int
+var health_cooldown
+var stamina_cooldown
+var weapon_weight = 0
 
 # Variables
 var is_attacking = false
@@ -138,8 +142,10 @@ func _physics_process(delta):
 		if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
 			velocity /= 1.45
 			
-		if Input.is_action_pressed("Shift"):
-			velocity *= 1.4
+		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
+			if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
+				set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+				velocity *= 1.4
 		
 		if velocity != Vector2.ZERO and player_can_interact:
 			animation_tree.set("parameters/Idle/blend_position", velocity)
@@ -163,6 +169,12 @@ func _physics_process(delta):
 		# handle knockback when hurting or dying
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		velocity = move_and_slide(velocity)
+		
+	if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
+		if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
+			set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
+		elif player_stamina < level * 10 + 90:
+			set_stamina(level * 10 + 90)
 
 
 # Method handles key inputs
@@ -236,9 +248,11 @@ func _input(event):
 		
 		# Attack with "left_mouse"
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
-			is_attacking = true
-			set_movement(false)
-			animation_state.start("Attack")
+			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
+				set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				is_attacking = true
+				set_movement(false)
+				animation_state.start("Attack")
 		
 		# Loot
 		elif event.is_action_pressed("loot") and Utils.get_loot_panel() == null and not dying:
@@ -686,6 +700,7 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 # Method to set/save weapon and stats to player
 func set_weapon(new_weapon_id, new_attack_value: int, new_attack_speed: int, new_knockback: int):
 	if new_weapon_id != null:
+		weapon_weight = GameData.item_data[str(new_weapon_id)]["Weight"]
 		var weapon_id_str = str(new_weapon_id)
 		can_attack = true
 		var weapons_dir = Directory.new()
@@ -707,6 +722,7 @@ func set_weapon(new_weapon_id, new_attack_value: int, new_attack_speed: int, new
 		weaponSprite.texture = weapon_texture
 	
 	else:
+		weapon_weight = 0
 		can_attack = false
 		
 		
@@ -826,6 +842,22 @@ func set_exp(new_exp: int):
 	Utils.get_player_ui().set_exp(new_exp)
 	# for save
 	data.exp = player_exp
+
+
+# set a new stamina value for the player
+func set_stamina(new_stamina: float):
+	if new_stamina > level * 10 + 90:
+		new_stamina = level * 10 + 90
+	player_stamina = new_stamina
+	# for ui update
+	Utils.get_player_ui().set_stamina(new_stamina)
+	# for save
+	data.stamina = player_stamina
+
+
+# Return maximum Stamina Value
+func get_stamina():
+	return (level * 10 + 90)
 
 
 func _on_DamageAreaBottom_area_entered(area):
@@ -985,6 +1017,8 @@ func reset_player_after_dying():
 	make_player_invisible(false)
 	
 	# reset cooldown
+	health_cooldown = 0
+	stamina_cooldown = 0
 	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
 	Utils.get_hotbar()._on_Timer_timeout()
 	
@@ -993,6 +1027,7 @@ func reset_player_after_dying():
 	dying = false
 	is_attacking = false
 	collecting = false
+	set_stamina(level * 10 + 90)
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")

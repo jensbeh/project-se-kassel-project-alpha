@@ -126,6 +126,7 @@ var save_game_data = {
 	"name": charac_name,
 	"level": 1,
 	"exp": 0,
+	"stamina": 100.0,
 	"maxLP": 100,
 	"attack": 0,
 	"attack_speed": 0,
@@ -134,6 +135,7 @@ var save_game_data = {
 	"gold": 100,
 	"light": 0,
 	"cooldown": 0,
+	"stamina_cooldown": 0,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
@@ -595,6 +597,7 @@ func create_player_inventory():
 	Utils.get_current_player().set_gold(save_game_data.gold)
 	Utils.get_current_player().set_level(save_game_data.level)
 	Utils.get_current_player().set_exp(save_game_data.exp)
+	Utils.get_current_player().set_stamina(save_game_data.stamina)
 	Utils.get_current_player().set_current_health(save_game_data.currentHP)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)

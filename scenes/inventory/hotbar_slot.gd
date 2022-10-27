@@ -9,19 +9,24 @@ var disabled = false
 onready var timer = get_node("../Timer")
 var swap = false
 var stack = false
+var type
 
 
 func _ready():
 	time_label.hide()
-	timer.wait_time = Constants.COOLDOWN
+	timer.wait_time = Constants.HEALTH_COOLDOWN
 	cooldown_texture.value = 0
 	set_process(false)
 	timer.set_one_shot(true)
 
 
+# Update Cooldwon Label
 func _process(_delta):
 	time_label.text = "%2.1f" % timer.time_left
-	cooldown_texture.value = int((timer.time_left / Constants.COOLDOWN) * 100)
+	if type == "Stamina":
+		cooldown_texture.value = int((timer.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
+	else:
+		cooldown_texture.value = int((timer.time_left / Constants.HEALTH_COOLDOWN) * 100)
 
 
 func _on_Timer_timeout():
@@ -275,7 +280,8 @@ func show_tooltip():
 func hide_tooltip():
 	get_node("ToolTip").free()
 	
-	
+
+# Use Item
 func _on_Icon_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
 		var slot = get_parent().get_name()
@@ -283,10 +289,21 @@ func _on_Icon_gui_input(event):
 			if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Category"] in ["Potion", "Food"]:
 				if PlayerData.equipment_data[slot]["Stack"] != null:
 					PlayerData.equipment_data[slot]["Stack"] -= 1
-					Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
-					int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
+					var cooldown
+					if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])].has("Stamina"):
+						Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
+						GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Stamina"])
+						type = "Stamina"
+						cooldown = Constants.STAMINA_POTION_COOLDOWN
+						Utils.get_current_player().stamina_cooldown = cooldown
+					else:
+						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
+						int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
+						type = "Health"
+						cooldown = Constants.HEALTH_COOLDOWN
+						Utils.get_current_player().health_cooldown = cooldown
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
-						set_cooldown(Constants.COOLDOWN)
+						set_cooldown(cooldown, type)
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:
 						PlayerData.equipment_data[slot]["Stack"] = null
 						PlayerData.equipment_data[slot]["Item"] = null
@@ -300,13 +317,19 @@ func _on_Icon_gui_input(event):
 						get_node("TextureRect/Stack").set_text(str(PlayerData.equipment_data[slot]["Stack"]))
 					PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 					# sync cooldown
-					Utils.get_hotbar().set_cooldown(Constants.COOLDOWN)
+					if type == "Stamina":
+						Utils.get_hotbar().set_cooldown_stamina(cooldown, type)
+					elif type == "Health":
+						Utils.get_hotbar().set_cooldown_health(cooldown, type)
 					Utils.get_hotbar().update_label()
-					Utils.get_character_interface().find_node("Inventory").set_cooldown(Constants.COOLDOWN)
+					Utils.get_character_interface().find_node("Inventory").set_cooldown(cooldown, type)
+					hide_tooltip()
+					show_tooltip()
 
 
 # starts cooldown
-func set_cooldown(cooldown):
+func set_cooldown(cooldown, new_type):
+	type = new_type
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
 		timer.wait_time = cooldown
 		timer.start()
@@ -343,6 +366,7 @@ func check_cooldown(data):
 		time_label.show()
 		cooldown_texture.show()
 	else:
+		timer.stop()
 		disabled = false
 		set_process(false)
 		time_label.hide()
@@ -359,5 +383,13 @@ func check_cooldown(data):
 		data["origin_node"].get_node("TextureProgress").value = 0
 		data["origin_node"].get_node("TextureProgress/Time").hide()
 		data["origin_node"].set_process(false)
-	
+	if data["origin_slot"].has("Stamina"):
+		type = "Stamina"
+	elif data["origin_slot"].has("Health") and data["origin_slot"]["Health"] != null:
+		type = "Health"
+	if data["target_item_id"] != null:
+		if GameData.item_data[str(data["target_item_id"])].has("Stamina"):
+			data["origin_node"].type = "Stamina"
+		elif GameData.item_data[str(data["target_item_id"])]["Health"] != null:
+			data["origin_node"].type = "Health"
 	

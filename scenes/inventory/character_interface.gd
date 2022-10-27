@@ -34,12 +34,19 @@ func _ready():
 				if item_stack != null and item_stack > 1:
 					item_slot.get_node("Icon/TextureRect/Stack").set_text(str(item_stack))
 					item_slot.get_node("Icon/TextureRect").visible = true
-				var cooldown = Utils.get_hotbar().get_node("Hotbar").get_node("Timer").time_left
-				if cooldown != 0 and !Utils.get_hotbar().get_node("Hotbar").get_node("Timer").is_stopped():
-					item_slot.get_node("Icon").set_cooldown(cooldown)
+				var health_cooldown = Utils.get_current_player().health_cooldown
+				var stamina_cooldown = Utils.get_current_player().stamina_cooldown
+				if (PlayerData.equipment_data["Hotbar"]["Item"] != null and
+				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina")):
+					if stamina_cooldown != 0 and stamina_cooldown != null:
+						item_slot.get_node("Icon").set_cooldown(stamina_cooldown, "Stamina")
+				elif PlayerData.equipment_data["Hotbar"]["Item"] != null:
+					if health_cooldown != 0 and health_cooldown != null:
+						item_slot.get_node("Icon").set_cooldown(health_cooldown, "Health")
+				
+					
 					
 	# stat values
-	find_node("Inventory").get_child(0).find_node("Button").visible = false
 	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
 	if PlayerData.equipment_data["Weapon"]["Item"] != null:
 		find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Attack"]))
@@ -49,6 +56,7 @@ func _ready():
 	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
 	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))
 	find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(Utils.get_current_player().get_light_radius()))
+	find_node("Stamina").set_text(tr("STAMINA") + ": " + str(Utils.get_current_player().get_stamina()))
 	
 	data = Utils.get_current_player().get_data()
 	find_node("CharacterName").set_text(data.name)
