@@ -94,7 +94,7 @@ func _physics_process(delta):
 			
 			if velocity == Vector2.ZERO:
 				is_attacking = false
-				if playerAttackZone.mob_can_attack:
+				if can_attack():
 					update_behaviour(PRE_ATTACKING)
 				else:
 					update_behaviour(HUNTING)
