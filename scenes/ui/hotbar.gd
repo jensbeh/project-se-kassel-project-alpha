@@ -67,8 +67,12 @@ func load_hotbar():
 func _process(_delta):
 	if timer1:
 		Utils.get_current_player().health_cooldown = $Hotbar/Timer.time_left
+		if Utils.get_current_player().health_cooldown == null:
+			Utils.get_current_player().health_cooldown = 0
 	if timer2:
 		Utils.get_current_player().stamina_cooldown = $Hotbar/Timer2.time_left
+		if Utils.get_current_player().stamina_cooldown == null:
+			Utils.get_current_player().stamina_cooldown = 0
 	if type == "Stamina":
 		time_label.text = "%2.1f" % $Hotbar/Timer2.time_left
 		cooldown_texture.value = int(($Hotbar/Timer2.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
@@ -198,3 +202,23 @@ func _on_Timer2_timeout():
 	timer2 = false
 	Utils.get_current_player().stamina_cooldown = 0
 
+
+func save_and_stop_timer():
+	var data = Utils.get_current_player().get_data()
+	data.cooldown = Utils.get_current_player().health_cooldown
+	data.stamina_cooldown = Utils.get_current_player().stamina_cooldown
+	Utils.get_current_player().save_player_data(data)
+	get_node("Hotbar/Timer").stop()
+	_on_Timer_timeout()
+	get_node("Hotbar/Timer2").stop()
+	_on_Timer2_timeout()
+
+
+func resume_cooldown():
+	get_node("Hotbar/Timer").paused = false
+	get_node("Hotbar/Timer2").paused = false
+
+
+func pause_cooldown():
+	get_node("Hotbar/Timer").paused = true
+	get_node("Hotbar/Timer2").paused = true
