@@ -127,3 +127,11 @@ BOSS_SMALL_SLIME, KILLER SLIME, KILLER SLIME
 BOSS_ZOMBIE, ANGRY ZOMBIE, ZORNIGER ZOMBIE
 OPEN,Open,Offen
 FULL_INV,Your Inventory is full,Dein Inventar ist voll
+STAMINA,Stamina,Ausdauer
+Stamina,Stamina,Ausdauer
+Stamina Potion,Stamina Potion,Ausdauertrank
+Good Stamina Potion,Good Stamina Potion,Guter Ausdauertrank
+Rare Stamina Potion,Rare Stamina Potion,Seltener Ausdauertrank
+Great Stamina Potion,Great Stamina Potion,Großer Ausdauertrank
+DELETEITEM,Discard Item,Item wegwerfen
+DISCARD,Discard,Wegwerfen

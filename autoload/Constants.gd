@@ -32,9 +32,14 @@ const SHOW_BOSS_DAMAGE_AREA = false
 
 # Variables
 const NAME_LENGTH = 15
-const COOLDOWN = 20
+const HEALTH_COOLDOWN = 20
+const STAMINA_POTION_COOLDOWN = 15
 const LOOTING_TIME = 60
 const LOOT_CHANCE = 0.7 # means 70% Chance
+const MAX_LEVEL = 30
+const WEAPON_STAMINA_USE = 8 # * Weapon weight per hit
+const STAMINA_SPRINT = 15 # Points per Second
+const STAMINA_RECOVER = 10 # Points per Second
 
 # Tiles
 const TILE_SIZE = 16

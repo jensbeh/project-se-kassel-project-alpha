@@ -35,7 +35,7 @@ func _ready():
 				MerchantData.inv_data[slot]["Time"] = null
 		gridcontainer.add_child(inv_slot_new, true)
 	check_slots()
-	find_node("Inventory").get_child(0).find_node("Button").visible = false
+	find_node("Inventory").get_child(0).find_node("TextureRect").visible = false
 
 
 # Close trade inventory

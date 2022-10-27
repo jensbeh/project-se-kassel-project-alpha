@@ -555,12 +555,27 @@ func start_game():
 	Utils.get_player_ui().setup_ui()
 	
 	Utils.get_current_player().set_exp(data.exp)
+	Utils.get_current_player().set_stamina(data.stamina)
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_light(data.light)
 	
+	Utils.get_current_player().health_cooldown = data.cooldown
+	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown
+	
 	Utils.get_hotbar().load_hotbar()
-	if data.has("cooldown") and data.cooldown != 0:
-		Utils.get_hotbar().set_cooldown(data.cooldown)
+	if (PlayerData.equipment_data["Hotbar"]["Item"] != null and
+	 GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina")):
+		if data.has("cooldown") and data.cooldown != 0:
+			Utils.get_hotbar().set_cooldown_health(data.cooldown, "Stamina")
+		if data.has("stamina_cooldown") and data.stamina_cooldown != 0:
+			Utils.get_hotbar().set_cooldown_stamina(data.stamina_cooldown, "Stamina")
+			
+	elif PlayerData.equipment_data["Hotbar"]["Item"] != null:
+		if data.has("stamina_cooldown") and data.stamina_cooldown != 0:
+			Utils.get_hotbar().set_cooldown_stamina(data.stamina_cooldown, "Health")
+		if data.has("cooldown") and data.cooldown != 0:
+			Utils.get_hotbar().set_cooldown_health(data.cooldown, "Health")
+	
 	
 	# Transition
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)

@@ -2,13 +2,13 @@ extends Node
 
 var loot_data = {}
 var item_data = {}
-var item_stats = ["Attack", "Health", "Attack-Speed", "Knockback", "Radius", "Worth"]
-var item_stat_labels = ["Attack", "Health", "Speed", "Knockback", "Radius", "Worth"]
+var item_stats = ["Attack", "Health", "Attack-Speed", "Knockback", "Radius", "Stamina", "Worth"]
+var item_stat_labels = ["Attack", "Health", "Speed", "Knockback", "Radius", "Stamina", "Worth"]
 var compare_stats = ["Attack", "Attack-Speed", "Knockback", "Radius"]
 # dropable item IDs 
 var jewel_IDs = [10047, 10046, 10048, 10049]
 var weapon_IDs = [10001, 10002, 10004, 10008]
-var potion_IDs = [10026, 10027, 10030, 10029, 10011, 10013]
+var potion_IDs = [10026, 10027, 10030, 10029, 10012, 10013, 10011, 10013]
 
 # Load the item data
 func _ready():

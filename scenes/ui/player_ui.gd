@@ -7,8 +7,11 @@ onready var life_bar = get_node("Lifebar")
 onready var bossHpNode = get_node("BossHpBar")
 onready var bossHpBar = get_node("BossHpBar/ProgressBar")
 onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
+onready var stamina_bar = get_node("MarginContainer/MarginContainer/ProgressBar")
 var hearts = 3
 var boss
+var minimum_progress_size = 210
+var min_max_dif = 154
 
 
 func _ready():
@@ -19,13 +22,21 @@ func _ready():
 
 # Load the correct ui settings
 func setup_ui():
-	exp_bar.max_value = Utils.get_current_player().get_level() * 100
-	if Utils.get_current_player().get_level() >= 10:
+	var player_level = Utils.get_current_player().get_level()
+	exp_bar.max_value = player_level * 100
+	stamina_bar.max_value = player_level * 10 + 90
+	stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / (Constants.MAX_LEVEL -1)) * player_level -1)
+	if player_level >= 10:
 			change_heart_number(5)
-	elif Utils.get_current_player().get_level() >= 5:
+	elif player_level >= 5:
 			change_heart_number(4)
 	else:
 		change_heart_number(3)
+
+
+# Set stamina value 
+func set_stamina(new_value: float):
+	stamina_bar.value = new_value
 
 
 # Set expbar value
@@ -35,19 +46,29 @@ func set_exp(new_value: int):
 	# Max exp for level
 	if exp_bar.value >= exp_bar.max_value:
 		var player_level = Utils.get_current_player().get_level()
-		Utils.get_current_player().set_level(player_level +1)
-		Utils.get_current_player().set_exp(new_value - exp_bar.max_value)
-		exp_bar.max_value = (player_level + 1) * 100
-		life_bar.value = 100
-		# increase max lp by 10 by level up
-		Utils.get_current_player().set_max_health(100 + player_level*10)
-		Utils.get_current_player().set_current_health(100 + player_level*10)
-		# save player
-		Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
-		if player_level +1 == 5:
-			change_heart_number(4)
-		elif player_level +1 == 10:
-			change_heart_number(5)
+		# increase by level up
+		if player_level < Constants.MAX_LEVEL:
+			# reset exp bar
+			Utils.get_current_player().set_exp(new_value - player_level * 100)
+			# increase by level up
+			Utils.get_current_player().set_level(player_level +1)
+			exp_bar.max_value = (player_level + 1) * 100
+			stamina_bar.max_value = 100 + player_level * 10
+			Utils.get_current_player().set_max_health(100 + player_level*10)
+			player_level += 1
+			# reset life and stamina
+			Utils.get_current_player().set_stamina(90 + player_level * 10)
+			life_bar.value = 100
+			Utils.get_current_player().set_current_health(90 + player_level * 10)
+			# save player
+			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
+			stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / Constants.MAX_LEVEL -1) * player_level -1)
+			if player_level == 5:
+				change_heart_number(4)
+			elif player_level == 10:
+				change_heart_number(5)
+		else:
+			exp_bar.value = exp_bar.max_value
 
 # Clock
 func set_time(new_hour, new_minute):
@@ -132,3 +153,4 @@ func update_language():
 	# Bossname
 	if boss != null: # Boss is existing and name can be updated
 		bossName.set_text(boss.get_boss_name())
+
