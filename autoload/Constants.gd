@@ -28,6 +28,13 @@ const SHOW_BOSS_PATHES = false
 const SHOW_BOSS_HITBOX = false
 const SHOW_BOSS_DAMAGE_AREA = false
 
+#################
+## PLAYER
+#################
+const PLAYER_INVISIBLE = false
+const PLAYER_INVINCIBLE = true
+const PLAYER_INFINIT_STAMINA = true
+
 # --------------------------------------------------
 
 # Variables

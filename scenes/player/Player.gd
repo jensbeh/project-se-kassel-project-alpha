@@ -118,10 +118,10 @@ func _ready():
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
 	# Set invisibility of player
-	make_player_invisible(false)
+	make_player_invisible(Constants.PLAYER_INVISIBLE)
 	
 	# Set invincibility of player
-	make_player_invincible(false)
+	make_player_invincible(Constants.PLAYER_INVINCIBLE)
 
 
 func _physics_process(delta):
@@ -142,7 +142,8 @@ func _physics_process(delta):
 			
 		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
 			if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
-				set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+				if not Constants.PLAYER_INFINIT_STAMINA:
+					set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
 				velocity *= 1.4
 		
 		if velocity != Vector2.ZERO and player_can_interact:
@@ -247,7 +248,8 @@ func _input(event):
 		# Attack with "left_mouse"
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
-				set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				if not Constants.PLAYER_INFINIT_STAMINA:
+					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
 				is_attacking = true
 				set_movement(false)
 				animation_state.start("Attack")
