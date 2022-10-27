@@ -214,7 +214,7 @@ func _physics_process(delta):
 						PathfindingService.call_deferred("got_boss_position", self, new_position_dic["position"])
 						update_get_target_position = false
 					else:
-						printerr("PRE_ATTACKING: RAYCAST.IS_COLLIDING")
+#						printerr("PRE_ATTACKING: RAYCAST.IS_COLLIDING")
 						update_behaviour(HUNTING)
 					
 					new_position_dic.clear()
@@ -225,7 +225,7 @@ func _physics_process(delta):
 				raycast.force_raycast_update()
 				if raycast.is_colliding():
 					update_behaviour(HUNTING)
-					printerr("ATTACKING: RAYCAST.IS_COLLIDING")
+#					printerr("ATTACKING: RAYCAST.IS_COLLIDING")
 	
 	
 	# Handle behaviour
@@ -334,8 +334,7 @@ func _process(delta):
 #				print("PRE_ATTACKING")
 				if new_position_dic.empty() or new_position_dic["generate_again"]:
 					new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
-					print("GENERATE NEW POSITION for PRE_ATTACKING")
-					print(new_position_dic)
+#					print("GENERATE NEW POSITION for PRE_ATTACKING")
 	
 	
 	# Handle behaviour
@@ -443,27 +442,27 @@ func update_behaviour(new_behaviour):
 		# Set previous behaviour state
 		previous_behaviour_state = behaviour_state
 		
-		match new_behaviour:
-			0:
-				print("new_behaviour: SLEEPING")
-			1:
-				print("new_behaviour: IDLING")
-			2:
-				print("new_behaviour: SEARCHING")
-			3:
-				print("new_behaviour: WANDERING")
-			4:
-				print("new_behaviour: HUNTING")
-			5:
-				print("new_behaviour: HURTING")
-			6:
-				print("new_behaviour: DYING")
-			7:
-				print("new_behaviour: PRE_ATTACKING")
-			8:
-				print("new_behaviour: ATTACKING")
-			9:
-				print("new_behaviour: CANT_REACH_PLAYER")
+#		match new_behaviour:
+#			0:
+#				print("new_behaviour: SLEEPING")
+#			1:
+#				print("new_behaviour: IDLING")
+#			2:
+#				print("new_behaviour: SEARCHING")
+#			3:
+#				print("new_behaviour: WANDERING")
+#			4:
+#				print("new_behaviour: HUNTING")
+#			5:
+#				print("new_behaviour: HURTING")
+#			6:
+#				print("new_behaviour: DYING")
+#			7:
+#				print("new_behaviour: PRE_ATTACKING")
+#			8:
+#				print("new_behaviour: ATTACKING")
+#			9:
+#				print("new_behaviour: CANT_REACH_PLAYER")
 		
 		
 		
@@ -625,12 +624,6 @@ func update_path(new_path):
 	# Update mob path
 	path = new_path
 	mob_need_path = false
-	
-	print(global_position.distance_to(Utils.get_current_player().global_position))
-	print(global_position)
-	print(path)
-	print(behaviour_state)
-	print(CANT_REACH_DISTANCE)
 	
 	if path.size() <= 1 and behaviour_state == HUNTING and global_position.distance_to(Utils.get_current_player().global_position) >= CANT_REACH_DISTANCE:
 		update_behaviour(CANT_REACH_PLAYER)
