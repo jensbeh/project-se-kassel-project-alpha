@@ -7,9 +7,11 @@ onready var life_bar = get_node("Lifebar")
 onready var bossHpNode = get_node("BossHpBar")
 onready var bossHpBar = get_node("BossHpBar/ProgressBar")
 onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
-onready var stamina_bar = get_node("Stamina/ProgressBar")
+onready var stamina_bar = get_node("MarginContainer/MarginContainer/ProgressBar")
 var hearts = 3
 var boss
+var minimum_progress_size = 210
+var min_max_dif = 154
 
 
 func _ready():
@@ -20,11 +22,13 @@ func _ready():
 
 # Load the correct ui settings
 func setup_ui():
-	exp_bar.max_value = Utils.get_current_player().get_level() * 100
-	stamina_bar.max_value = Utils.get_current_player().get_level() * 10 + 90
-	if Utils.get_current_player().get_level() >= 10:
+	var player_level = Utils.get_current_player().get_level()
+	exp_bar.max_value = player_level * 100
+	stamina_bar.max_value = player_level * 10 + 90
+	stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / Constants.MAX_LEVEL -1) * player_level -1)
+	if player_level >= 10:
 			change_heart_number(5)
-	elif Utils.get_current_player().get_level() >= 5:
+	elif player_level >= 5:
 			change_heart_number(4)
 	else:
 		change_heart_number(3)
@@ -58,6 +62,7 @@ func set_exp(new_value: int):
 			Utils.get_current_player().set_current_health(90 + player_level * 10)
 			# save player
 			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
+			stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / Constants.MAX_LEVEL -1) * player_level -1)
 			if player_level == 5:
 				change_heart_number(4)
 			elif player_level == 10:

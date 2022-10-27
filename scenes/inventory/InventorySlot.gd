@@ -558,16 +558,17 @@ func _on_Icon_gui_input(event):
 						# sync cooldown
 						Utils.get_character_interface().find_node("Inventory").set_cooldown(cooldown, type)
 						var cooldown_type = type
-						if (GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has(type) and 
-							GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])][type] != null):
-							Utils.get_character_interface().find_node("Hotbar").get_node("Icon").set_cooldown(cooldown, type)
-							if PlayerData.equipment_data["Hotbar"]["Item"] == null:
-								Utils.get_hotbar().update_label()
-							if type == "Stamina":
-								Utils.get_hotbar().set_cooldown_stamina(cooldown, type)
-							elif type == "Health":
-								Utils.get_hotbar().set_cooldown_health(cooldown, type)
-							cooldown_type = ""
+						if PlayerData.equipment_data["Hotbar"]["Item"] != null:
+							if (GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has(type) and 
+								GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])][type] != null):
+								Utils.get_character_interface().find_node("Hotbar").get_node("Icon").set_cooldown(cooldown, type)
+								if PlayerData.equipment_data["Hotbar"]["Item"] == null:
+									Utils.get_hotbar().update_label()
+								if type == "Stamina":
+									Utils.get_hotbar().set_cooldown_stamina(cooldown, type)
+								elif type == "Health":
+									Utils.get_hotbar().set_cooldown_health(cooldown, type)
+								cooldown_type = ""
 						if type == "Stamina" and cooldown_type != "":
 							Utils.get_hotbar().set_cooldown_stamina(cooldown, "")
 						elif type == "Health" and cooldown_type != "":

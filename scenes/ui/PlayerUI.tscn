@@ -174,13 +174,20 @@ text = "DANGEROUS FUNGUS"
 align = 1
 valign = 1
 
-[node name="Stamina" type="NinePatchRect" parent="."]
-margin_left = -966.0
-margin_top = -432.0
-margin_right = -558.0
-margin_bottom = -395.0
-rect_scale = Vector2( 0.902, 0.643 )
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = -924.0
+margin_top = -426.0
+margin_right = -709.0
+margin_bottom = -402.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Stamina" type="NinePatchRect" parent="MarginContainer"]
+margin_right = 215.0
+margin_bottom = 24.0
 rect_pivot_offset = Vector2( 424, 23 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = SubResource( 14 )
 region_rect = Rect2( 3, 4.5077, 95, 95.4923 )
 patch_margin_left = 10
@@ -188,15 +195,21 @@ patch_margin_top = 9
 patch_margin_right = 8
 patch_margin_bottom = 8
 
-[node name="ProgressBar" type="ProgressBar" parent="Stamina"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -201.0
-margin_top = -15.166
-margin_right = 202.0
-margin_bottom = 15.834
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+margin_right = 215.0
+margin_bottom = 24.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 213.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 210, 0 )
+size_flags_vertical = 1
 custom_fonts/font = SubResource( 15 )
 custom_styles/fg = SubResource( 16 )
 custom_styles/bg = SubResource( 17 )

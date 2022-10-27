@@ -7,6 +7,9 @@ const STAMINA_POTION_COOLDOWN = 15
 const LOOTING_TIME = 60
 const LOOT_CHANCE = 0.7 # means 70% Chance
 const MAX_LEVEL = 30
+const WEAPON_STAMINA_USE = 8 # * Weapon weight per hit
+const STAMINA_SPRINT = 15 # Points per Second
+const STAMINA_RECOVER = 10 # Points per Second
 
 # Tiles
 const tile_size = 16
