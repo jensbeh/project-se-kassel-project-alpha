@@ -31,73 +31,70 @@ CANCLE,Cancle,Abbrechen
 DELETE,Delete,Löschen
 TRADE,Trade,Handel
 INVENTORY,Inventory,Inventar
-Attack,Attack,Angriff
-Health,Health,Leben
-Knochback,Knockback,Rückstoß
-Attack-Speed,Speed,Geschwindigkeit
-Worth,Worth,Wert
 ATTACK,Attack,Angriff
 HEALTH,Health,Leben
-ATTACK-SPEED,Speed,Geschw.
 KNOCKBACK,Knockback,Rückstoß
-Wooden Sword,Wooden Sword,Holzschwert
-Iron Sword,Iron Sword,Eisenschwert
-Great Sword,Great Sword,Großschwert
-Balanced Sword,Balanced Sword,Ausgewogenes Schwert
-Epic Sword,Epic Sword,Episches Schwert
-Legendary Sword,Legendary Sword,Legendäres Schwert
-Large Dagger,Large Dagger,Großer Dolch
-Normal Axe,Normal Axe,Normale Axt
-Greate Axe,Greate Axe,Großartige Axt
-Health Potion,Health Potion,Heiltrank
-Good Health Potion,Good Health Potion,Guter Heiltrank
-Rare Health Potion,Rare Health Potion,Seltener Heiltrank
-Axe,Axe,Axt
-Pickaxe,Pickaxe,Spitzhacke
-Lantern,Lantern,Laterne
-Torch,Torch,Fackel
-Candle,Candle,Kerze
-Treasure Key,Treasure Key,Schatztruhen Schlüssel
-Keys,Keys,Schlüssel
-Treasure,Treasure,Schatz
-Great Health Potion,Great Health Potion,Großer Heiltrank
-Apple,Apple,Apfel
-Carrot,Carrot,Karotte
-Bread,Bread,Brot
-Meat,Meat,Fleisch
-Fish,Fish,Fisch
-Copper Sand,Copper Sand,Kupfer Sand
-Coal Sand,Coal Sand,Kohle Staub
-Magic Ore Sand,Magic Ore Sand,Magischer Erzsand
-Magic Sand,Magic Sand,Magischer Sand
-Iron Sand,Iron Sand,Eisen Staub
-Iron,Iron,Eisen
-Copper,Copper,Kupfer
-Coal,Coal,Kohle
-Magic Ore,Magic Ore,Magisches Erz
-Magic Clump,Magic Clump,Magischer Klumpen
-Magic Bars,Magic Bars,Magischer Barren
-Magic Ore Bars,Magic Ore Bars,Magischer Erzbarren
-Coal Bars,Coal Bars,Kohlebarren
-Copper Bars,Copper Bars,Kupferbarren
-Iron Bars,Iron Bars,Eisenbarren
-Diamond,Diamond,Diamant
-Rubin,Rubin,Rubin
-Smaragd,Smaragd,Smaragd
-Saphir,Saphir,Saphir
-Type A Leaf,Type A Leaf,Typ A Blatt
-Type B Leaf,Type B Leaf,Typ B Blatt
-Type C Leaf,Type C Leaf,Typ C Blatt
-Mushroom,Mushroom,Pilz
-Plant Onion,Plant Onion,Pflanzenzwiebel
-Root,Root,Wurzel
-Pebble,Pebble,Kiesel
-Fossil,Fossil,Fossil
-Animal Fur,Animal Fur,Tierfell
-Monster Tooth,Monster Tooth,Monsterzahn
-Feather,Feather,Feder
-Great Empty Flask,Great Empty Flask,Große Leere Flasche
-Empty Flask,Empty Flask,Leere Flasche
+WORTH,Worth,Wert
+ATTACK-SPEED,Speed,Geschw.
+SPEED,Speed,Geschw.
+WOODEN SWORD,Wooden Sword,Holzschwert
+IRON SWORD,Iron Sword,Eisenschwert
+GREAT SWORD,Great Sword,Großschwert
+BALANCED SWORD,Balanced Sword,Ausgewogenes Schwert
+EPIC SWORD,Epic Sword,Episches Schwert
+LEGENDARY SWORD,Legendary Sword,Legendäres Schwert
+LARGE DAGGER,Large Dagger,Großer Dolch
+NORMAL AXE,Normal Axe,Normale Axt
+GREATE AXE,Greate Axe,Großartige Axt
+HEALTH POTION,Health Potion,Heiltrank
+GOOD HEALTH POTION,Good Health Potion,Guter Heiltrank
+RARE HEALTH POTION,Rare Health Potion,Seltener Heiltrank
+AXE,Axe,Axt
+PICKAXE,Pickaxe,Spitzhacke
+LANTERN,Lantern,Laterne
+TORCH,Torch,Fackel
+CANDLE,Candle,Kerze
+TREASURE KEY,Treasure Key,Schatztruhen Schlüssel
+KEYS,Keys,Schlüssel
+TREASURE,Treasure,Schatz
+GREAT HEALTH POTION,Great Health Potion,Großer Heiltrank
+APPLE,Apple,Apfel
+CARROT,Carrot,Karotte
+BREAD,Bread,Brot
+MEAT,Meat,Fleisch
+FISH,Fish,Fisch
+COPPER SAND,Copper Sand,Kupfer Sand
+COAL SAND,Coal Sand,Kohle Staub
+MAGIC ORE SAND,Magic Ore Sand,Magischer Erzsand
+MAGIC SAND,Magic Sand,Magischer Sand
+IRON SAND,Iron Sand,Eisen Staub
+IRON,Iron,Eisen
+COPPER,Copper,Kupfer
+COAL,Coal,Kohle
+MAGIC ORE,Magic Ore,Magisches Erz
+MAGIC CLUMP,Magic Clump,Magischer Klumpen
+MAGIC BARS,Magic Bars,Magischer Barren
+MAGIC ORE BARS,Magic Ore Bars,Magischer Erzbarren
+COAL BARS,Coal Bars,Kohlebarren
+COPPER BARS,Copper Bars,Kupferbarren
+IRON BARS,Iron Bars,Eisenbarren
+DIAMOND,Diamond,Diamant
+RUBIN,Rubin,Rubin
+SMARAGD,Smaragd,Smaragd
+SAPHIR,Saphir,Saphir
+TYPE A LEAF,Type A Leaf,Typ A Blatt
+TYPE B LEAF,Type B Leaf,Typ B Blatt
+TYPE C LEAF,Type C Leaf,Typ C Blatt
+MUSHROOM,Mushroom,Pilz
+PLANT ONION,Plant Onion,Pflanzenzwiebel
+ROOT,Root,Wurzel
+PEBBLE,Pebble,Kiesel
+FOSSIL,Fossil,Fossil
+ANIMAL FUR,Animal Fur,Tierfell
+MONSTER TOOTH,Monster Tooth,Monsterzahn
+FEATHER,Feather,Feder
+GREAT EMPTY FLASK,Great Empty Flask,Große Leere Flasche
+EMPTY FLASK,Empty Flask,Leere Flasche
 MOVEMENT,Movement,Bewegung
 RUN,Run,Rennen
 INVENTORY,Inventory,Inventar
@@ -128,10 +125,9 @@ BOSS_ZOMBIE, ANGRY ZOMBIE, ZORNIGER ZOMBIE
 OPEN,Open,Offen
 FULL_INV,Your Inventory is full,Dein Inventar ist voll
 STAMINA,Stamina,Ausdauer
-Stamina,Stamina,Ausdauer
-Stamina Potion,Stamina Potion,Ausdauertrank
-Good Stamina Potion,Good Stamina Potion,Guter Ausdauertrank
-Rare Stamina Potion,Rare Stamina Potion,Seltener Ausdauertrank
-Great Stamina Potion,Great Stamina Potion,Großer Ausdauertrank
+STAMINA POTION,Stamina Potion,Ausdauertrank
+GOOD STAMINA POTION,Good Stamina Potion,Guter Ausdauertrank
+RARE STAMINA POTION,Rare Stamina Potion,Seltener Ausdauertrank
+GREAT STAMINA POTION,Great Stamina Potion,Großer Ausdauertrank
 DELETEITEM,Discard Item,Item wegwerfen
 DISCARD,Discard,Wegwerfen

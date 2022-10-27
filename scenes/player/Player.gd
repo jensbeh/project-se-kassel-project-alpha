@@ -1004,6 +1004,7 @@ func player_killed():
 	Utils.get_main().show_death_screen()
 	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
 		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
+	rescue_pay()
 
 
 # Method to return true if player is dying/died otherwise false -> called from scene_manager
@@ -1074,3 +1075,25 @@ func make_player_invincible(invincible : bool):
 func is_player_invincible():
 	return is_invincible
 	
+
+func rescue_pay():
+	# Pay amount of gold
+	set_gold(int(gold * (1 - Constants.RESCUE_PAY)))
+	# Pay an item
+	var item_list = []
+	for i in range(1,31):
+		if PlayerData.inv_data["Inv" + str(i)]["Item"] != null:
+			item_list.append(i)
+		
+	randomize()
+	var worth = 0
+	# Only lose Item with min level 3 and min 3 items in inventory
+	if level >= Constants.MIN_LEVEL_ITEM_LOSE and item_list.size() >= 3:
+		# Pay min level * 10 Worth on random Items if possible
+		while worth < level * Constants.MIN_LOST_FACTOR and item_list.size() > 0:
+			var payed_item = item_list[(randi() % item_list.size())]
+			item_list.remove(payed_item)
+			worth += (GameData.item_data[str(PlayerData.inv_data["Inv" + str(payed_item)]["Item"])]["Worth"] * 
+			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"])
+			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
+			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
