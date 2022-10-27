@@ -183,7 +183,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Stamina" type="NinePatchRect" parent="MarginContainer"]
-margin_right = 215.0
+margin_right = 362.0
 margin_bottom = 24.0
 rect_pivot_offset = Vector2( 424, 23 )
 size_flags_horizontal = 3
@@ -196,7 +196,7 @@ patch_margin_right = 8
 patch_margin_bottom = 8
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
-margin_right = 215.0
+margin_right = 362.0
 margin_bottom = 24.0
 custom_constants/margin_right = 2
 custom_constants/margin_top = 2
@@ -206,9 +206,9 @@ custom_constants/margin_bottom = 2
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 213.0
+margin_right = 360.0
 margin_bottom = 22.0
-rect_min_size = Vector2( 210, 0 )
+rect_min_size = Vector2( 358, 0 )
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 15 )
 custom_styles/fg = SubResource( 16 )
