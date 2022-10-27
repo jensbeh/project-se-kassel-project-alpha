@@ -4,9 +4,29 @@ extends Node
 # --------------------------------------------------
 
 # DEBUG
-const SHOW_MOB_PATHES = false
+#################
+## AMBIENT MOBS
+#################
+const SHOW_AMBIENT_MOB_COLLISION = false
 const SHOW_AMBIENT_MOB_PATHES = false
+
+#################
+## MOBS
+#################
+const SHOW_MOB_COLLISION = false
+const SHOW_MOB_DETECTION_RADIUS = false
+const SHOW_MOB_PATHES = false
+const SHOW_MOB_HITBOX = false
+const SHOW_MOB_DAMAGE_AREA = false
+
+#################
+## BOSSES
+#################
+const SHOW_BOSS_COLLISION = false
+const SHOW_BOSS_DETECTION_RADIUS = false
 const SHOW_BOSS_PATHES = false
+const SHOW_BOSS_HITBOX = false
+const SHOW_BOSS_DAMAGE_AREA = false
 
 # --------------------------------------------------
 

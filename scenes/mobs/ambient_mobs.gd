@@ -39,7 +39,8 @@ onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Show or hide line node for debugging
+	# Show or hide nodes for debugging
+	collision.visible = Constants.SHOW_AMBIENT_MOB_COLLISION
 	line2D.visible = Constants.SHOW_AMBIENT_MOB_PATHES
 	
 	# Set spawn_position

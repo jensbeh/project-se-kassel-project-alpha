@@ -69,8 +69,10 @@ onready var playerDetectionZone = $PlayerDetectionZone
 onready var playerDetectionZoneShape = $PlayerDetectionZone/DetectionShape
 onready var playerAttackZone = $PlayerAttackZone
 onready var playerAttackZoneShape = $PlayerAttackZone/AttackShape
+onready var damageArea = $DamageArea
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
+onready var hitbox = $HitboxZone
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
 onready var raycast = $RayCast2D
@@ -78,8 +80,12 @@ onready var raycast = $RayCast2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Show or hide line node for debugging
+	# Show or hide nodes for debugging
+	collision.visible = Constants.SHOW_MOB_COLLISION
+	playerDetectionZone.visible = Constants.SHOW_MOB_DETECTION_RADIUS
 	line2D.visible = Constants.SHOW_MOB_PATHES
+	hitbox.visible = Constants.SHOW_MOB_HITBOX
+	damageArea.visible = Constants.SHOW_MOB_DAMAGE_AREA
 	
 	# Set spawn_position
 	collision_radius = collision.shape.radius

@@ -287,10 +287,13 @@ func generate_pathes():
 						var new_path = get_boss_astar_path(boss.global_position, Utils.get_current_player().global_position)
 						if new_path.size() == 0:
 							# Boss can reach player
-							call_deferred("inform_boss_with_reachable", boss, false)
+							call_deferred("inform_boss_with_reachable", boss, false, new_path)
 						else:
 							# Boss can't reach player
-							call_deferred("inform_boss_with_reachable", boss, true)
+							call_deferred("inform_boss_with_reachable", boss, true, new_path)
+				# Remove bosses from bosses_check_can_reach_player list
+				bosses_check_can_reach_player.clear()
+
 			
 			
 			# Get path for MOB which got new end_position
@@ -517,7 +520,7 @@ func get_boss_astar_path(boss_start, boss_end):
 
 
 # Method to generate global_position to tile_coord
-func world_to_tile_coords(global_position : Vector2):
+func world_to_tile_coords(global_position : Vector2) -> Vector2:
 	var point = Vector2.ZERO
 	point.x = floor(global_position.x / (float(Constants.TILE_SIZE) / (Constants.POINTS_HORIZONTAL_PER_TILE - 1)))
 	point.y = floor(global_position.y / (float(Constants.TILE_SIZE) / (Constants.POINTS_VERTICAL_PER_TILE - 1)))
@@ -526,7 +529,7 @@ func world_to_tile_coords(global_position : Vector2):
 
 
 # Method to generate tile_coord to global_position
-func point_coords_world(tile_coords : Vector2):
+func point_coords_world(tile_coords : Vector2) -> Vector2:
 	var global_position = Vector2.ZERO
 	global_position.x = tile_coords.x * (float(Constants.TILE_SIZE) / (Constants.POINTS_HORIZONTAL_PER_TILE - 1))
 	global_position.y = tile_coords.y * (float(Constants.TILE_SIZE) / (Constants.POINTS_VERTICAL_PER_TILE - 1))
@@ -684,11 +687,7 @@ func got_boss_position(boss, position):
 
 
 # Inform BOSS about reachability of player
-func inform_boss_with_reachable(boss, can_reach):
+func inform_boss_with_reachable(boss, can_reach, new_path):
 	if is_instance_valid(boss) and boss.is_inside_tree():
 		# Send reachability of player to boss
-		boss.call_deferred("can_reach_player", can_reach)
-		
-		# Remove boss from bosses_check_can_reach_player list
-		if bosses_check_can_reach_player.find(boss) != -1:
-			bosses_check_can_reach_player.remove(bosses_check_can_reach_player.find(boss))
+		boss.call_deferred("can_reach_player", can_reach, new_path)
