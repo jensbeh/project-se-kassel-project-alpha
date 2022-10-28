@@ -135,6 +135,7 @@ var save_game_data = {
 	"light": 0,
 	"cooldown": 0,
 	"stamina_cooldown": 0,
+	"has_map": false,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
@@ -602,6 +603,7 @@ func create_player_inventory():
 	# set hotbar & light
 	Utils.get_hotbar().load_hotbar()
 	Utils.get_current_player().set_light(save_game_data.light)
+	Utils.get_current_player().has_map = save_game_data.has_map
 
 	# sets lp & weapon
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)

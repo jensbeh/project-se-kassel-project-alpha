@@ -575,6 +575,12 @@ func _on_Icon_gui_input(event):
 							Utils.get_hotbar().set_cooldown_health(cooldown, "")
 						hide_tooltip()
 						show_tooltip()
+				elif GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] == "Map":
+					Utils.get_current_player().set_map(true)
+					Utils.get_minimap().update_minimap()
+					PlayerData.inv_data[slot]["Item"] = null
+					PlayerData.inv_data[slot]["Stack"] = null
+					get_node("../Icon/Sprite").set_texture(null)
 
 
 # starts cooldwon

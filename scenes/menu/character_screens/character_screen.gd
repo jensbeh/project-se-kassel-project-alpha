@@ -560,6 +560,8 @@ func start_game():
 	Utils.get_current_player().set_stamina(data.stamina)
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_light(data.light)
+	if data.has("has_map"):
+		Utils.get_current_player().has_map = data.has_map
 	
 	Utils.get_current_player().health_cooldown = data.cooldown
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown

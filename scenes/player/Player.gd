@@ -69,6 +69,7 @@ var player_light_radius: int
 var health_cooldown
 var stamina_cooldown
 var weapon_weight = 0
+var has_map = false
 
 # Variables
 var is_attacking = false
@@ -1111,3 +1112,9 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"])
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
+
+
+# Save map value
+func set_map(value):
+	has_map = value
+	data.has_map = value

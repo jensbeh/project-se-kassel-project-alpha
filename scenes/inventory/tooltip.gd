@@ -51,7 +51,7 @@ func _ready():
 					
 					item_stat += 1
 		if Utils.get_trade_inventory() == null:
-			if GameData.item_data[item_id]["Category"] in ["Potion", "Food"]:
+			if GameData.item_data[item_id]["Category"] in ["Potion", "Food", "Map"]:
 				get_node("NinePatchRect/Margin/VBox/Stats5/Stat").set_text(str(tr("USE_INV_ITEM")))
 
 func CompareItems(item_id, stat_name, stat_value):

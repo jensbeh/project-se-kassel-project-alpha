@@ -76,6 +76,10 @@ func update_minimap():
 			visible = false
 			deactivated = true
 	
+	if Utils.get_current_player() != null and !Utils.get_current_player().has_map:
+		visible = false
+		deactivated = true
+	
 	set_camera_limits()
 
 
