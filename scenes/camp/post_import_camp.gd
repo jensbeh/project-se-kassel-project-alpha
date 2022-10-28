@@ -1,10 +1,15 @@
 extends Node
 
+const CONSTANTS = preload("res://autoload/Constants.gd")
+const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
+const VILLAGE_ANIMATED_DECORATIONS_TILESET = preload("res://assets/tilesets/Village Animated Decorations.png")
 
-var chunk_size = Constants.chunk_size_tiles # Chunk tiles width/height in tiles
+
+var chunk_size = CONSTANTS.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
 var map_min_pos = Vector2.ZERO # In tiles
 var map_max_pos = Vector2.ZERO # In tiles
 var map_min_global_pos = Vector2.ZERO # In pixel
+
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
@@ -16,7 +21,7 @@ func post_import(scene):
 		for child in groundLightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -34,7 +39,7 @@ func post_import(scene):
 		for child in higherLightsObject.get_children():
 			if child is Sprite:
 				var sprite_positon = child.position
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.position = sprite_positon
 				custom_light.radius = 64
 				var sprite = custom_light.get_node("Sprite")
@@ -59,7 +64,7 @@ func post_import(scene):
 				var sprite = Sprite.new()
 				sprite.name = "sprite"
 				sprite.centered = false
-				sprite.texture = load("res://assets/tilesets/Village Animated Doors.png")
+				sprite.texture = VILLAGE_ANIMATED_DECORATIONS_TILESET
 				sprite.hframes = 20
 				sprite.vframes = 8
 				sprite.frame = frame
@@ -138,11 +143,12 @@ func post_import(scene):
 	# generate chunks -> best at the end
 	print("generate chunks...")
 	generate_chunks(scene)
+	print("chunks generated!")
 	
 	# Cleanup scene -> need to be at the end!!
 	cleanup_node(scene.find_node("ground"))
 	cleanup_node(scene.find_node("higher"))
-	print("reimported " + scene.name + "!")
+	print("reimported " + scene.name + "! \n")
 	return scene
 
 
@@ -156,10 +162,18 @@ func generate_chunks(scene):
 	var higher_duplicate = scene.find_node("higher").duplicate()
 	
 	# Map size in tiles
-	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x)
-	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y)
-	var vertical_chunks_count = ceil(map_height / chunk_size) + 1
-	var horizontal_chunks_count = ceil(map_width / chunk_size) + 1
+	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x) + 1 # +1 because (0,0)
+	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y) + 1 # +1 because (0,0)
+#	print("map_min_pos.x: " + str(map_min_pos.x))
+#	print("map_max_pos.x: " + str(map_max_pos.x))
+#	print("map_min_pos.y: " + str(map_min_pos.y))
+#	print("map_max_pos.y: " + str(map_max_pos.y))
+#	print("map_width: " + str(map_width))
+#	print("map_height: " + str(map_height))
+	var vertical_chunks_count = ceil(map_height / chunk_size)
+	var horizontal_chunks_count = ceil(map_width / chunk_size)
+#	print("vertical_chunks_count: " + str(vertical_chunks_count))
+#	print("horizontal_chunks_count: " + str(horizontal_chunks_count))
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()
@@ -168,6 +182,8 @@ func generate_chunks(scene):
 	ground_chunks_node.set_meta("vertical_chunks_count", vertical_chunks_count)
 	ground_chunks_node.set_meta("horizontal_chunks_count", horizontal_chunks_count)
 	ground_chunks_node.set_meta("map_min_global_pos", map_min_global_pos)
+	ground_chunks_node.set_meta("map_size_in_tiles", Vector2(map_width, map_height))
+	
 	# Add ground_chunks_node to ground
 	scene.find_node("ground").add_child(ground_chunks_node)
 	ground_chunks_node.set_owner(scene)
@@ -319,7 +335,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
-				var custom_light = load("res://scenes/light/CustomLight.tscn").instance()
+				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius
@@ -362,8 +378,8 @@ func get_chunk_from_position(global_position):
 	new_position.x = abs(map_min_global_pos.x) + global_position.x
 	new_position.y = abs(map_min_global_pos.y) + global_position.y
 	
-	chunk.x = floor(new_position.x / Constants.chunk_size_pixel)
-	chunk.y = floor(new_position.y / Constants.chunk_size_pixel)
+	chunk.x = floor(new_position.x / CONSTANTS.chunk_size_pixel)
+	chunk.y = floor(new_position.y / CONSTANTS.chunk_size_pixel)
 	return chunk
 
 

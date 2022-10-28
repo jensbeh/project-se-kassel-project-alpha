@@ -1,10 +1,89 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/menu/main_menu_screen.gd" type="Script" id=1]
 [ext_resource path="res://assets/gameName.png" type="Texture" id=2]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=3]
 
 [sub_resource type="Theme" id=1]
+
+[sub_resource type="Animation" id=2]
+resource_name = "FadeIn"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Start Game:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Settings:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Exit to Desktop:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Start Game:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Settings:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Exit to Desktop:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
 
 [node name="MainMenuScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -26,6 +105,7 @@ margin_bottom = 591.0
 texture = ExtResource( 2 )
 
 [node name="Start Game" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 margin_left = 824.0
 margin_top = 445.0
 margin_right = 934.0
@@ -38,6 +118,7 @@ custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 text = "Start Game"
 
 [node name="Settings" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 margin_left = 823.0
 margin_top = 576.0
 margin_right = 933.0
@@ -50,6 +131,7 @@ custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 text = "Settings"
 
 [node name="Exit to Desktop" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 margin_left = 822.0
 margin_top = 957.0
 margin_right = 932.0
@@ -60,6 +142,10 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
 custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 text = "Exit to Desktop"
+
+[node name="MainMenuAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/FadeIn = SubResource( 2 )
+anims/RESET = SubResource( 3 )
 
 [connection signal="pressed" from="Start Game" to="." method="_on_Start_Game_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_Settings_pressed"]

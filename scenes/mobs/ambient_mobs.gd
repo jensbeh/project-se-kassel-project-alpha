@@ -13,10 +13,12 @@ var velocity = Vector2(0, 0)
 var behaviour_state = IDLING
 var previous_behaviour_state = IDLING
 var ambientMobsSpawnArea
+var ambientMobsNavigationTileMap : TileMap
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var mob_need_path = false
 var update_path_time = 0.0
 var max_update_path_time = 0.4
+var scene_type
 
 # Constants
 const WANDERING_SPEED = 30
@@ -37,8 +39,12 @@ onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Show or hide nodes for debugging
+	collision.visible = Constants.SHOW_AMBIENT_MOB_COLLISION
+	line2D.visible = Constants.SHOW_AMBIENT_MOB_PATHES
+	
 	# Set spawn_position
-	var spawn_position : Vector2 = Utils.generate_position_in_polygon(ambientMobsSpawnArea, true)
+	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true, null)
 	position = spawn_position
 	
 	# Set init max_ideling_time for startstate IDLING
@@ -53,9 +59,11 @@ func _ready():
 
 
 # Method to init variables, typically called after instancing
-func init(init_ambientMobsSpawnArea, init_spawn_time):
+func init(init_ambientMobsSpawnArea, init_ambientMobsNavigationTileMap, init_spawn_time, init_scene_type):
 	ambientMobsSpawnArea = init_ambientMobsSpawnArea
+	ambientMobsNavigationTileMap = init_ambientMobsNavigationTileMap
 	spawn_time = init_spawn_time
+	scene_type = init_scene_type
 
 
 func _physics_process(delta):
@@ -87,8 +95,9 @@ func move_to_position(delta):
 	if global_position.distance_to(path[0]) < wandering_threshold:
 		path.remove(0)
 		
-		# Update line
-#		line2D.points = path
+		if Constants.SHOW_AMBIENT_MOB_PATHES:
+			# Update line
+			line2D.points = path
 	else:
 		# Move mob
 		var direction = global_position.direction_to(path[0])
@@ -98,11 +107,13 @@ func move_to_position(delta):
 		# update sprite direction
 		mobSprite.flip_h = velocity.x > 0
 		
-		# Update line position
-#		line2D.global_position = Vector2(0,0)
-		
-#	if path.size() == 0:
-#		line2D.points = []
+		if Constants.SHOW_AMBIENT_MOB_PATHES:
+			# Update line position
+			line2D.global_position = Vector2(0,0)
+	
+	if Constants.SHOW_AMBIENT_MOB_PATHES:
+		if path.size() == 0:
+			line2D.points = []
 
 
 func update_behaviour(new_behaviour):
@@ -110,8 +121,7 @@ func update_behaviour(new_behaviour):
 	previous_behaviour_state = behaviour_state
 	
 	# Reset timer
-	if ideling_time != 0.0:
-		ideling_time = 0.0
+	ideling_time = 0.0
 	
 	# Handle new bahaviour
 	match new_behaviour:
@@ -135,8 +145,9 @@ func update_behaviour(new_behaviour):
 				# Reset path in case player is seen but e.g. state is wandering
 				path.resize(0)
 				
-				# Update line path
-#				line2D.points = []
+				if Constants.SHOW_AMBIENT_MOB_PATHES:
+					# Update line path
+					line2D.points = []
 			
 #			print("WANDERING")
 			behaviour_state = WANDERING
@@ -155,8 +166,9 @@ func update_path(new_path):
 	path = new_path
 	mob_need_path = false
 	
-	# Update line path
-#	line2D.points = path
+	if Constants.SHOW_AMBIENT_MOB_PATHES:
+		# Update line path
+		line2D.points = path
 
 
 # Method is called from chunk_loader_service to set mob activity

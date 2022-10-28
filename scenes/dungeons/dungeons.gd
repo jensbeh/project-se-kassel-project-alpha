@@ -1,13 +1,14 @@
 extends Node
 
+
+# Map specific
+var scene_type = Constants.SceneType.DUNGEON
+
 # Variables
 var thread
-var next_level_to  = null
-var current_dungeon  = null
 var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
-var mob_list : Array
 var groundChunks
 var higherChunks
 var boss_spawn_area = null
@@ -20,8 +21,7 @@ var loot_panel
 var init_transition_data = null
 
 # Nodes
-onready var mobsNavigation2d = find_node("mobs_navigation2d")
-onready var mobsNavigationTileMap = find_node("NavigationTileMap")
+onready var mobsNavigationTileMap = find_node("mobs_navigation_tilemap")
 onready var mobSpawns = find_node("mobSpawns")
 onready var mobsLayer = find_node("mobslayer")
 onready var lootLayer = find_node("lootLayer")
@@ -29,46 +29,35 @@ onready var lootLayer = find_node("lootLayer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Setup scene in background
-	thread = Thread.new()
-	thread.start(self, "_setup_scene_in_background")
-
-
-# Method to setup this scene with a thread in background
-func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
-	# Setup chunks and chunkloader
-	# Get map position
+	# Get map informations
 	groundChunks = find_node("groundlayer").get_node("Chunks")
 	higherChunks = find_node("higherlayer").get_node("Chunks")
 	var vertical_chunks_count = groundChunks.get_meta("vertical_chunks_count") - 1
 	var horizontal_chunks_count = groundChunks.get_meta("horizontal_chunks_count") - 1
 	var map_min_global_pos = groundChunks.get_meta("map_min_global_pos")
+	var map_size_in_tiles = groundChunks.get_meta("map_size_in_tiles")
+	var map_name = groundChunks.get_meta("map_name")
+	
+	# Setup ChunkLoaderService
 	ChunkLoaderService.init(self, vertical_chunks_count, horizontal_chunks_count, map_min_global_pos)
 	
 	# Setup areas to change areaScenes
 	setup_change_scene_areas()
 
-	# Setup pathfinding
-	PathfindingService.init(mobsNavigation2d)
+	# Setup PathfindingService
+	PathfindingService.init(map_name, find_node("astar"), null, map_size_in_tiles, map_min_global_pos)
 	
 	# Setup spawning areas
 	setup_spawning_areas()
 	
-	# Setup Treasures
+	# Setup treasures
 	setup_treasure_areas()
 	
-	# Spawn mobs
-	MobSpawnerService.init(spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, 0, false)
-	
-	call_deferred("_on_setup_scene_done")
-
-
-# Method is called when thread is done and the scene is setup
-func _on_setup_scene_done():
-	thread.wait_to_finish()
+	# Setup MobSpawnerService
+	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -77,6 +66,19 @@ func _on_setup_scene_done():
 	if is_boss_room():
 		# Spawn boss
 		spawn_boss()
+		
+		# Show boss health bar in player ui
+		Utils.get_player_ui().show_boss_health_bar(true)
+		
+		setup_safe_area()
+		
+		# Handle locked door
+		var lockedDoorsNode = find_node("locked_doors")
+		var lockedDoorCollisionShape = lockedDoorsNode.find_node("CollisionShape2D")
+		PathfindingService.add_dynamic_obstacle(lockedDoorCollisionShape, lockedDoorCollisionShape.get_parent().global_position)
+	
+	# Start PathfindingService
+	PathfindingService.start()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -93,24 +95,32 @@ func is_boss_room() -> bool:
 # Method to spawn boss in dungeon
 func spawn_boss():
 	# Take random boss
-	var boss_path = Constants.BossPathes[randi() % Constants.BossPathes.size()]
+	var boss_path = Utils.get_random_boss_instance_path()
 	var boss_instance = load(boss_path).instance()
 	# Generate spawn position and spawn boss
-	boss_instance.init(boss_spawn_area, mobsNavigationTileMap)
+	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type, is_boss_room(), lootLayer)
 	mobsLayer.call_deferred("add_child", boss_instance)
 
 
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
+	# Check if boss room
+	if is_boss_room():
+		# Hide boss health bar in player ui
+		Utils.get_player_ui().show_boss_health_bar(false)
+	
 	# Stop pathfinder
-	PathfindingService.stop()
+	PathfindingService.cleanup()
 	
 	# Stop chunkloader
-	ChunkLoaderService.stop()
+	ChunkLoaderService.cleanup()
 	
 	# Stop mobspawner
-	MobSpawnerService.stop()
+	MobSpawnerService.cleanup()
+	
+	# Disconnect signals
+	clear_signals()
 
 
 # Method to setup the player with all informations
@@ -152,8 +162,6 @@ func interaction_detected():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
-			clear_signals()
-			
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
@@ -181,11 +189,27 @@ func clear_signals():
 	for chunk in groundChunks.get_children():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
-			for treasure in treasure_object.get_children():
-				if "treasure" in treasure.name and !"pos" in treasure.name:
+			for treasure_node in treasure_object.get_children():
+				# Find area in treasure_node
+				var treasure_area = null
+				for child in treasure_node.get_children():
+					if child is Area2D:
+						treasure_area = child
+						break
+				
+				if treasure_area != null:
 					# connect Area2D with functions to handle body action
-					treasure.disconnect("body_entered", self, "body_entered_treasure")
-					treasure.disconnect("body_exited", self, "body_exited_treasure")
+					treasure_area.disconnect("body_entered", self, "body_entered_treasure")
+					treasure_area.disconnect("body_exited", self, "body_exited_treasure")
+	
+	# Safeareas
+	var safeAreasObject = find_node("safe_area")
+	if safeAreasObject != null:
+		for child in safeAreasObject.get_children():
+			if "safe_area" in child.name:
+				# connect Area2D with functions to handle body action
+				child.disconnect("body_entered", self, "body_entered_safe_area")
+				child.disconnect("body_exited", self, "body_exited_safe_area")
 
 
 # Method which is called when a body has exited a changeSceneArea
@@ -205,6 +229,30 @@ func setup_change_scene_areas():
 			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
 			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
 
+
+# Setup all change_scene objectes/Area2D's on start
+func setup_safe_area():
+	var safeAreasObject = find_node("safe_area")
+	if safeAreasObject != null:
+		for child in safeAreasObject.get_children():
+			if "safe_area" in child.name:
+				# connect Area2D with functions to handle body action
+				child.connect("body_entered", self, "body_entered_safe_area", [child])
+				child.connect("body_exited", self, "body_exited_safe_area", [child])
+
+
+# Method which is called when a body has exited a safeArea
+func body_entered_safe_area(body, safeArea):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" ENTERED safeArea \"" + safeArea.name + "\"")
+		Utils.get_current_player().set_in_safe_area(true)
+
+
+# Method which is called when a body has exited a safeArea
+func body_exited_safe_area(body, safeArea):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" EXITED safeArea \"" + safeArea.name + "\"")
+		Utils.get_current_player().set_in_safe_area(false)
 
 func setup_spawning_areas():
 	for area in mobSpawns.get_children():
@@ -235,19 +283,19 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and ground_chunk.is_inside_tree():
+		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
 			ground_chunk.visible = true
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and higher_chunk.is_inside_tree():
+		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
 			higher_chunk.visible = true
 	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and ground_chunk.is_inside_tree():
+		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
 			ground_chunk.visible = false
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and higher_chunk.is_inside_tree():
+		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
 			higher_chunk.visible = false
 
 
@@ -256,8 +304,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
-		mobsLayer.remove_child(boss_node)
-		boss_node.queue_free()
+		boss_node.call_deferred("queue_free")
 		print("----------> Boss \"" + boss_node.name + "\" removed")
 	
 	# Disable mobs respawning
@@ -314,22 +361,60 @@ func setup_treasure_areas():
 		var treasure_object = chunk.find_node("treasures")
 		if treasure_object != null:
 			randomize()
-			for treasure in treasure_object.get_children():
-				if "treasure" in treasure.name and !"pos" in treasure.name:
-					var random_float = randf()
-					if random_float >= Constants.LOOT_CHANCE and !treasure.get_meta("boss_loot"):
-						chunk.remove_child(treasure_object)
-						treasure_object.queue_free()
-					else:
-						var treasure_data = []
-						treasure_data.append(false) # in range
-						treasure_data.append(false) # looted
-						treasure_data.append({}) # loot list
-						treasure_data.append(treasure.get_meta("selected_treasure_sprite")) # treasure type
-						treasure_dict[treasure] = treasure_data
+			var treasures_to_delete = []
+			for treasure_node in treasure_object.get_children():
+				# Skip treasure if it is broken object
+				if treasure_node.get_child_count() == 0:
+					continue
+				
+				var random_float = randf()
+				
+				# Remove existing treasure_node (add to list to remove after iteration)
+				if random_float >= Constants.LOOT_CHANCE and !treasure_node.get_meta("boss_loot"):
+					treasures_to_delete.append(treasure_node)
+				
+				# Keep existing treasure_node
+				else:
+					var treasure_data = []
+					treasure_data.append(false) # in range
+					treasure_data.append(false) # looted
+					treasure_data.append({}) # loot list
+					treasure_data.append(treasure_node.get_meta("selected_treasure_sprite")) # treasure type
+					
+					# Find area in treasure_node
+					var treasure_area = null
+					for child in treasure_node.get_children():
+						if child is Area2D:
+							treasure_area = child
+							break
+					
+					if treasure_area != null:
+						treasure_dict[treasure_area] = treasure_data
 						# connect Area2D with functions to handle body action
-						treasure.connect("body_entered", self, "body_entered_treasure", [treasure])
-						treasure.connect("body_exited", self, "body_exited_treasure", [treasure])
+						treasure_area.connect("body_entered", self, "body_entered_treasure", [treasure_area])
+						treasure_area.connect("body_exited", self, "body_exited_treasure", [treasure_area])
+					else:
+						printerr("Error in dungeons - setup_treasure_areas -> treasure_area is null")
+					
+					
+					# Add treasure to obstacles
+					# Find collision_shape and position of treasure
+					var treasure_collision = null
+					var treasure_position = Vector2.ZERO
+					for child in treasure_node.get_children():
+						if child is StaticBody2D:
+							treasure_position = child.position
+							treasure_collision = child.get_child(0)
+							break
+					PathfindingService.add_dynamic_obstacle(treasure_collision, treasure_position)
+			
+			# Delete treasure_nodes which should be removed
+			for treasure_to_delete in treasures_to_delete:
+				treasure_to_delete.call_deferred("queue_free")
+			
+			# Delete treasure_object if there are no more treasure_nodes
+			if treasure_object.get_child_count() == 0:
+				treasure_object.call_deferred("queue_free")
 
 
 # when interacted, open dialog

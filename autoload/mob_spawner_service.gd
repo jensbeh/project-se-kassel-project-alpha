@@ -3,43 +3,53 @@ extends Node
 # Variables
 var mobspawner_thread = Thread.new()
 var can_spawn_mobs = false
-var mob_spawner_timer
+var mob_spawner_timer = Timer.new()
 var mob_spawn_interval = 20.0 # in sec
-var should_spawn_mobs = true
+var should_spawn_mobs = false
 var spawning_areas = null
 var mobsNavigationTileMap : TileMap = null
 var mobsLayer : Node2D = null
 var with_ambient_mobs : bool = false
 var mob_list : Array
 var ambientMobsSpawnArea = null
+var ambientMobsNavigationTileMap : TileMap = null
 var ambientMobsLayer = null
 var current_ambient_mobs : int
 var max_ambient_mobs : int
 var is_time_sensitiv : bool = false
+var lootLayer : Node2D = null
 var mobs_to_despawn : Array
+var scene_type = null
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("START MOB_SPAWNER_SERVICE")
+	
+	# Add mob_spawner_timer
+	add_child(mob_spawner_timer)
+	mob_spawner_timer.connect("timeout", self, "spawn_despawn_mobs")
 
 
 # Method to init all important variables
-func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv):
+func init(new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv, new_lootLayer):
 	print("INIT MOB_SPAWNER_SERVICE")
 	# Check if thread is active wait to stop
 	if mobspawner_thread.is_active():
 		clean_thread()
 	
 	# Init variables
+	scene_type = new_scene_type
 	spawning_areas = new_spawning_areas
 	mobsNavigationTileMap = new_mobsNavigationTileMap
 	mobsLayer = new_mobsLayer
 	with_ambient_mobs = new_with_ambient_mobs
 	ambientMobsSpawnArea = new_ambientMobsSpawnArea
+	ambientMobsNavigationTileMap = new_ambientMobsNavigationTileMap
 	ambientMobsLayer = new_ambientMobsLayer
 	max_ambient_mobs = new_max_ambient_mobs
 	is_time_sensitiv = new_is_time_sensitiv
+	lootLayer = new_lootLayer
 	# Activate time specific mobs depending on scene_tpye
 	if is_time_sensitiv:
 		# Connect signals
@@ -49,19 +59,18 @@ func init(new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with
 	# Start mobspawner thread
 	mobspawner_thread.start(self, "handle_mob_spawns")
 	can_spawn_mobs = true
-	
-	# Create Timer to respawn mobs
-	mob_spawner_timer = Timer.new()
-	add_child(mob_spawner_timer)
-	mob_spawner_timer.connect("timeout", self, "spawn_despawn_mobs")
-	mob_spawner_timer.set_wait_time(mob_spawn_interval)
-	mob_spawner_timer.start()
+	should_spawn_mobs = false
 
 
 # Method to stop the mobspawner to change map
 func stop():
 	# Reset variables
-	call_deferred("cleanup")
+	can_spawn_mobs = null
+	mob_spawner_timer = null
+	mob_spawn_interval = null
+	should_spawn_mobs = null
+	
+	print("STOPPED MOB_SPAWNER_SERVICE")
 
 
 # Method to cleanup the mobspawner
@@ -76,9 +85,12 @@ func cleanup():
 	spawning_areas = null
 	mobsNavigationTileMap = null
 	mobsLayer = null
+	lootLayer = null
 	with_ambient_mobs = false
 	ambientMobsSpawnArea = null
+	ambientMobsNavigationTileMap = null
 	ambientMobsLayer = null
+	current_ambient_mobs = 0
 	max_ambient_mobs = 0
 	mobs_to_despawn.clear()
 	# -> Reset timer
@@ -92,15 +104,20 @@ func cleanup():
 	# -> Clean mobs
 	for mob in mob_list:
 		if is_instance_valid(mob) and mob.is_inside_tree():
-			mob.queue_free()
+			mob.call_deferred("queue_free")
 	mob_list.clear()
+	scene_type = null
 	
-	print("STOPPED MOB_SPAWNER_SERVICE")
+	print("CLEANED MOB_SPAWNER_SERVICE")
 
 
 # Method to activate spawn mobs
 func spawn_mobs():
-	should_spawn_mobs = true
+	if can_spawn_mobs:
+		should_spawn_mobs = true
+		# Activate mob_spawner_timer
+		mob_spawner_timer.set_wait_time(mob_spawn_interval)
+		mob_spawner_timer.start()
 
 
 # Method to load active chunks in background
@@ -138,12 +155,10 @@ func despawn_mobs():
 					current_ambient_mobs -= 1
 				elif mob.is_in_group("Enemy"):
 					spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-				mob.get_parent().call_deferred("remove_child", mob)
 				
-				if mob in mobs_to_despawn:
-					removed_mobs.append(mobs_to_despawn.find(mob))
+				removed_mobs.append(mobs_to_despawn.find(mob))
 				
-				mob.queue_free()
+				mob.call_deferred("queue_free")#.queue_free()
 				mob_list.remove(mob_list.find(mob))
 	
 	var i = 0
@@ -181,7 +196,7 @@ func spawn_area_mobs():
 							if mob == mob_id:
 								if is_instance_valid(mobsLayer) and mobsLayer.is_inside_tree():
 									var mob_instance = mobScene.instance()
-									mob_instance.init(current_spawn_area, mobsNavigationTileMap)
+									mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 									mobsLayer.call_deferred("add_child", mob_instance)
 									mob_list.append(mob_instance)
 									spawning_areas[current_spawn_area]["current_mobs_count"] += 1
@@ -203,7 +218,7 @@ func spawn_ambient_mobs():
 				if is_instance_valid(ambientMobsLayer) and ambientMobsLayer.is_inside_tree():
 					while current_ambient_mobs < max_ambient_mobs:
 						var mob_instance = mobScene.instance()
-						mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_NIGHT)
+						mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, Constants.SpawnTime.ONLY_NIGHT, scene_type)
 						ambientMobsLayer.call_deferred("add_child", mob_instance)
 						mob_list.append(mob_instance)
 						current_ambient_mobs += 1
@@ -217,7 +232,7 @@ func spawn_ambient_mobs():
 			if mobScene != null:
 				while current_ambient_mobs < max_ambient_mobs:
 					var mob_instance = mobScene.instance()
-					mob_instance.init(ambientMobsSpawnArea, Constants.SpawnTime.ONLY_DAY)
+					mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, Constants.SpawnTime.ONLY_DAY, scene_type)
 					ambientMobsLayer.call_deferred("add_child", mob_instance)
 					mob_list.append(mob_instance)
 					current_ambient_mobs += 1
@@ -238,14 +253,12 @@ func despawn_mob(mob):
 		# Remove from nodes
 		if mobsLayer.get_node_or_null(mob.name) != null:
 			spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
-			mobsLayer.remove_child(mob)
-			mob.queue_free()
+			mob.call_deferred("queue_free")
 			print("----------> Mob \"" + mob.name + "\" removed")
 
 
 # Method is called from mob_spawner_timer -> new mobs should be spawned or  mobs should be removed
 func spawn_despawn_mobs():
-#	remove_mobs(remove_mobs)
 	if can_spawn_mobs:
 		should_spawn_mobs = true
 		mob_spawner_timer.set_wait_time(mob_spawn_interval)

@@ -1,5 +1,9 @@
 extends Node2D
 
+
+# Map specific
+var scene_type = Constants.SceneType.CAMP
+
 # Variables
 var thread
 var player_in_change_scene_area = false
@@ -15,12 +19,6 @@ onready var higherChunks = $map_camp/higher/Chunks
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Setup scene in background
-	thread = Thread.new()
-	thread.start(self, "_setup_scene_in_background")
-
-# Method to setup this scene with a thread in background
-func _setup_scene_in_background():
 	# Setup player
 	setup_player()
 	
@@ -37,11 +35,6 @@ func _setup_scene_in_background():
 	# setup all door areas to handle action
 	setup_door_areas()
 	
-	call_deferred("_on_setup_scene_done")
-
-# Method is called when thread is done and the scene is setup
-func _on_setup_scene_done():
-	thread.wait_to_finish()
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 
@@ -50,7 +43,10 @@ func _on_setup_scene_done():
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
 	# Stop chunkloader
-	ChunkLoaderService.stop()
+	ChunkLoaderService.cleanup()
+	
+	# Disconnect signals
+	clear_signals()
 
 
 # Method to setup the player with all informations
@@ -165,3 +161,27 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null:
 			higher_chunk.visible = false
+
+
+# Method to disconnect all signals
+func clear_signals():
+	# Player
+	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
+	
+	# Change scenes
+	for child in changeScenesObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.disconnect("body_entered", self, "body_entered_change_scene_area")
+			child.disconnect("body_exited", self, "body_exited_change_scene_area")
+	
+	# Doors
+	for chunk in groundChunks.get_children():
+		var doors_object = chunk.find_node("doors")
+		if doors_object != null:
+			for door in doors_object.get_children():
+				if door is Area2D:
+					# connect Area2D with functions to handle body action
+					door.disconnect("body_entered", self, "body_entered_door")
+					door.disconnect("body_exited", self, "body_exited_door")

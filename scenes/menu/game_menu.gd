@@ -20,23 +20,29 @@ func _on_Back_to_Game_pressed():
 func _on_Settings_pressed():
 	Utils.get_main().add_settings()
 
+
 # Close game and go to main menu
 func _on_Back_to_Main_Menu_pressed():
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
-	Utils.get_game_menu().queue_free()
-	Utils.get_ui().in_world(false)
-	Utils.get_hotbar().save_and_stop_timer()
-	Utils.get_scene_manager().transition_to_scene(transition_data)
 	
-	# Stop game
-	Utils.stop_game()
+	# Remove game menu
+	Utils.get_game_menu().queue_free()
+	
+	# Make ui invisible
+	Utils.get_ui().in_world(false)
+	
+	# Save cooldown to player
+	Utils.get_hotbar().save_and_stop_timer()
+	
+	Utils.get_scene_manager().transition_to_scene(transition_data)
+
 
 func _on_Exit_Game_pressed():
+	# Remove game menu
+	Utils.get_game_menu().queue_free()
+	
 	# Save cooldown to player
 	Utils.get_hotbar().save_and_stop_timer()
 	
 	# Stop game
 	Utils.stop_game()
-	
-	# Quit and close game
-	get_tree().quit()

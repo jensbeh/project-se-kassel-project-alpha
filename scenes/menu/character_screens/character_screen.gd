@@ -1,6 +1,5 @@
 extends Node2D
 
-const SAVE_PATH = "user://character/"
 const SAVE_FILE_EXTENSION = ".json"
 var delete_id
 var delete_container
@@ -93,7 +92,7 @@ func destroy_scene():
 # loaded the player data
 func load_data():
 	var dir = Directory.new()
-	dir.open(SAVE_PATH)
+	dir.open(Constants.SAVE_CHARACTER_PATH)
 	dir.list_dir_begin()
 	while true:
 		var file = dir.get_next()
@@ -101,7 +100,7 @@ func load_data():
 			break
 		elif ((!file.begins_with(".")) and (file.ends_with(".json"))):
 			var save_game = File.new()
-			save_game.open(SAVE_PATH + file, File.READ)
+			save_game.open(Constants.SAVE_CHARACTER_PATH + file, File.READ)
 			var save_game_data = {}
 			save_game_data = parse_json(save_game.get_line())
 			save_game.close()
@@ -146,11 +145,11 @@ func on_delete_click(id, container):
 
 func delete_character():
 	var dir = Directory.new()
-	if dir.file_exists(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION):
-		dir.remove(SAVE_PATH + delete_id + SAVE_FILE_EXTENSION)
+	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION):
+		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION)
 	# remove inventory data
-	if dir.file_exists(Constants.DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
-		dir.remove(Constants.DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
+	if dir.file_exists(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
+		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -486,7 +485,7 @@ func set_animation_data():
 	player.reset_die_key("Hair:frame")
 	player._set_die_key("Hair:frame", data.hair_color * 8)
 	
-	# set the collect animation colors
+	# set the COLLECT animation colors
 	# Shoes
 	player.reset_collect_key("Shoes:frame")
 	player._set_collect_key("Shoes:frame", data.shoe_color * 8)
@@ -526,17 +525,22 @@ func set_animation_data():
 func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-
+	
 	# Set spawn
 	var player_position = Vector2(1128,616) # Camp
 #	var player_position = Vector2(768,752) # Grassland - Dungeon1
-#	var player_position = Vector2(-816,-496) # Grassland - Mountain
+#	var player_position = Vector2(1056,-80) # Grassland - Beach
+#	var player_position = Vector2(1040, 64) # Grassland - Dungeon1/Beach
+#	var player_position = Vector2(-864, -625) # Grassland - Mountain Biome Entrance
+#	var player_position = Vector2(-416,-928) # Grassland - Mountain
+#	var player_position = Vector2(-730,-1700) # Grassland - Top
 #	var player_position = Vector2(336,-62) # Dungeon1-1
-#	var player_position = Vector2(784,16) # Dungeon1-3
+#	var player_position = Vector2(432,-120) # Dungeon1-3
 #	var player_position = Vector2(240,480) # Dungeon2-4
+#	var player_position = Vector2(-300,64) # Dungeon3-2
 #	var player_position = Vector2(-384,176) # Dungeon3-4
 	var view_direction = Vector2(0,1)
-
+	
 	# Set data
 	var data = data_list[selected_character]
 	PlayerData.set_path(data.id)
@@ -579,6 +583,7 @@ func start_game():
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn", player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 

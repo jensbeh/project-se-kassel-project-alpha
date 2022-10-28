@@ -1,7 +1,6 @@
-[gd_scene load_steps=77 format=2]
+[gd_scene load_steps=75 format=2]
 
 [ext_resource path="res://scenes/mobs/PlayerDetectionZone.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/mobs/PlayerAttackZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/mobs/bosses/boss_fungus.gd" type="Script" id=3]
 [ext_resource path="res://assets/mobs/FungusBlue.png" type="Texture" id=4]
 [ext_resource path="res://scenes/mobs/HitboxZone.tscn" type="PackedScene" id=5]
@@ -448,6 +447,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("../NinePatchRect:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.0218141, 0.0425841 ) ]
+}
 
 [sub_resource type="Animation" id=52]
 resource_name = "Walk_Down"
@@ -695,9 +706,6 @@ height = 0.0
 [sub_resource type="CircleShape2D" id=8]
 radius = 100.0
 
-[sub_resource type="CircleShape2D" id=40]
-radius = 40.0
-
 [sub_resource type="CircleShape2D" id=67]
 radius = 8.0
 
@@ -715,7 +723,7 @@ margin_right = 3.58902
 
 [sub_resource type="StyleBoxTexture" id=153]
 
-[node name="Boss_FungusBlue" type="KinematicBody2D" groups=["Enemy"]]
+[node name="Boss_FungusBlue" type="KinematicBody2D" groups=["Boss"]]
 scale = Vector2( 3, 3 )
 collision_layer = 8
 script = ExtResource( 3 )
@@ -725,6 +733,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 4 )
 hframes = 6
 vframes = 8
+frame = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -768,13 +777,6 @@ position = Vector2( 0, -3 )
 [node name="DetectionShape" parent="PlayerDetectionZone" index="0"]
 shape = SubResource( 8 )
 
-[node name="PlayerAttackZone" parent="." instance=ExtResource( 2 )]
-visible = false
-position = Vector2( 0, -3 )
-
-[node name="AttackShape" parent="PlayerAttackZone" index="0"]
-shape = SubResource( 40 )
-
 [node name="Line2D" type="Line2D" parent="."]
 visible = false
 scale = Vector2( 0.33, 0.33 )
@@ -800,7 +802,7 @@ margin_left = -424.0
 margin_top = -36.0
 margin_right = 424.0
 margin_bottom = 11.0
-rect_scale = Vector2( 1e-05, 1e-05 )
+rect_scale = Vector2( 0.0218141, 0.0425841 )
 rect_pivot_offset = Vector2( 424, 23 )
 texture = ExtResource( 8 )
 region_rect = Rect2( 3, 4.5077, 95, 95.4923 )
@@ -821,9 +823,11 @@ value = 100.0
 allow_greater = true
 percent_visible = false
 
+[node name="RayCast2D" type="RayCast2D" parent="."]
+scale = Vector2( 0.33, 0.33 )
+
 [connection signal="area_entered" from="DamageArea" to="." method="_on_DamageArea_area_entered"]
 
 [editable path="PlayerDetectionZone"]
-[editable path="PlayerAttackZone"]
 [editable path="HitboxZone"]
 [editable path="DamageArea"]
