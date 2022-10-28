@@ -148,8 +148,10 @@ func delete_character():
 	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION):
 		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION)
 	# remove inventory data
-	if dir.file_exists(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
-		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
+	if dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/"):
+		for i in ["bella", "heinz", "lea", "sam", delete_id]:
+			dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/" + i + "_inv_data" + SAVE_FILE_EXTENSION)
+		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/")
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:

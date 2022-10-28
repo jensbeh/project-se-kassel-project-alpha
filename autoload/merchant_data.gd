@@ -14,7 +14,7 @@ func _ready():
 	
 
 func set_path(new_path):
-	path = "res://assets/data/" + new_path + "_inv_data.json"
+	path = Constants.SAVE_INVENTORY_DATA_PATH + Utils.get_current_player().data.id + "/" + new_path + "_inv_data.json"
 
 func save_merchant_inventory():
 	var item_data_file = File.new()

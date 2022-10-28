@@ -578,10 +578,22 @@ func create_player_inventory():
 	var dir = Directory.new()
 	if !dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH):
 		dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH)
+	dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/")
 	var save_player = File.new()
-	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
+	
+	# Create Merchant data files for this character
+	var merchant_data = File.new()
+	for i in ["bella", "heinz", "lea", "sam"]:
+		var item_data_file = File.new()
+		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
+		var item_data_json = JSON.parse(item_data_file.get_as_text())
+		item_data_file.close()
+		merchant_data.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+		merchant_data.store_line(to_json(item_data_json.result))
+		merchant_data.close()
 
 	# set player data
 	PlayerData.set_path(uuid)
