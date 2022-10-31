@@ -454,20 +454,20 @@
   </layer>
  </group>
  <objectgroup id="9" name="playerSpawns">
-  <object id="6" name="player_spawn_from_tavern" type="area" x="-155" y="-29" width="10" height="10">
+  <object id="6" name="player_spawn_from_hostel" type="area" x="-155" y="-29" width="10" height="10">
    <properties>
-    <property name="spawn_area_id" value="ps_tavern-lvl2-from-tavern"/>
+    <property name="spawn_area_id" value="ps_hostel-lvl2-from-hostel"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="7" name="changeScenes">
-  <object id="5" name="changeScene tavern" type="area" x="-180" y="-36" width="24" height="24">
+  <object id="5" name="changeScene hostel" type="area" x="-180" y="-36" width="24" height="24">
    <properties>
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
-    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
-    <property name="to_spawn_area_id" value="ps_tavern-from-tavern-lvl2"/>
-    <property name="view_direction_x" type="int" value="1"/>
-    <property name="view_direction_y" type="int" value="0"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/Hostel.tscn"/>
+    <property name="to_spawn_area_id" value="ps_hostel-from-hostel-lvl2"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

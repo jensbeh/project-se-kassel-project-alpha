@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1129" nextobjectid="3136">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1129" nextobjectid="3148">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -3474,33 +3474,29 @@
       <property name="selected_door_sprite" type="int" value="13"/>
      </properties>
     </object>
-    <object id="2149" name="door_house2" type="area" x="1744" y="832" width="16" height="17">
-     <properties>
-      <property name="enter_house" value="house2"/>
-      <property name="selected_door_sprite" type="int" value="6"/>
-     </properties>
-    </object>
-    <object id="2152" name="door_house4" type="area" x="1360" y="752" width="16" height="17">
-     <properties>
-      <property name="enter_house" value="house4"/>
-      <property name="selected_door_sprite" type="int" value="18"/>
-     </properties>
-    </object>
-    <object id="2153" name="door_house5" type="area" x="1600" y="464" width="16" height="17">
-     <properties>
-      <property name="enter_house" value="house5"/>
-      <property name="selected_door_sprite" type="int" value="2"/>
-     </properties>
-    </object>
-    <object id="2154" name="door_hostel" type="area" x="1520" y="656" width="16" height="17">
-     <properties>
-      <property name="enter_house" value="hostel"/>
-      <property name="selected_door_sprite" type="int" value="1"/>
-     </properties>
-    </object>
     <object id="3131" name="door_tavern" type="area" x="1360" y="624" width="16" height="16">
      <properties>
       <property name="selected_door_sprite" type="int" value="1"/>
+     </properties>
+    </object>
+    <object id="3140" name="door_house4" type="area" x="1360" y="752" width="16" height="16">
+     <properties>
+      <property name="selected_door_sprite" type="int" value="18"/>
+     </properties>
+    </object>
+    <object id="3141" name="door_hostel" type="area" x="1520" y="656" width="16" height="16">
+     <properties>
+      <property name="selected_door_sprite" type="int" value="1"/>
+     </properties>
+    </object>
+    <object id="3142" name="door_house2" type="area" x="1744" y="832" width="16" height="16">
+     <properties>
+      <property name="selected_door_sprite" type="int" value="6"/>
+     </properties>
+    </object>
+    <object id="3143" name="door_house5" type="area" x="1600" y="464" width="16" height="16">
+     <properties>
+      <property name="selected_door_sprite" type="int" value="2"/>
      </properties>
     </object>
    </objectgroup>
@@ -5922,29 +5918,9 @@
   </objectgroup>
  </group>
  <objectgroup id="1101" name="playerSpawns">
-  <object id="3002" name="player_spawn_from_house4" type="area" x="1356" y="772" width="24" height="23">
-   <properties>
-    <property name="from" value="house4"/>
-   </properties>
-  </object>
   <object id="3003" name="player_spawn_from_house1" type="area" x="1180" y="720" width="24" height="23">
    <properties>
     <property name="spawn_area_id" value="ps_camp-from-house1"/>
-   </properties>
-  </object>
-  <object id="3005" name="player_spawn_from_hostel" type="area" x="1516" y="676" width="24" height="23">
-   <properties>
-    <property name="from" value="hostel"/>
-   </properties>
-  </object>
-  <object id="3007" name="player_spawn_from_house2" type="area" x="1740" y="852" width="24" height="23">
-   <properties>
-    <property name="from" value="house2"/>
-   </properties>
-  </object>
-  <object id="3008" name="player_spawn_from_house5" type="area" x="1596" y="484" width="24" height="23">
-   <properties>
-    <property name="from" value="house5"/>
    </properties>
   </object>
   <object id="3010" name="player_spawn_from_grassland" type="area" x="1056" y="201" width="48" height="23">
@@ -5955,6 +5931,26 @@
   <object id="3135" name="player_spawn_from_tavern" type="area" x="1356" y="640" width="24" height="23">
    <properties>
     <property name="spawn_area_id" value="ps_camp-from-tavern"/>
+   </properties>
+  </object>
+  <object id="3136" name="player_spawn_from_house4" type="area" x="1356" y="768" width="24" height="23">
+   <properties>
+    <property name="spawn_area_id" value="ps_camp-from-house4"/>
+   </properties>
+  </object>
+  <object id="3137" name="player_spawn_from_hostel" type="area" x="1516" y="672" width="24" height="23">
+   <properties>
+    <property name="spawn_area_id" value="ps_camp-from-hostel"/>
+   </properties>
+  </object>
+  <object id="3138" name="player_spawn_from_house2" type="area" x="1740" y="848" width="24" height="23">
+   <properties>
+    <property name="spawn_area_id" value="ps_camp-from-house2"/>
+   </properties>
+  </object>
+  <object id="3139" name="player_spawn_from_house5" type="area" x="1596" y="480" width="24" height="23">
+   <properties>
+    <property name="spawn_area_id" value="ps_camp-from-house5"/>
    </properties>
   </object>
  </objectgroup>
@@ -5992,6 +5988,46 @@
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
     <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
     <property name="to_spawn_area_id" value="ps_tavern-from-camp"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="3144" name="changeScene house4" type="area" x="1363" y="752" width="10" height="18">
+   <properties>
+    <property name="door_id" value="door_house4"/>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
+    <property name="to_spawn_area_id" value="ps_house4-from-camp"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="3145" name="changeScene hostel" type="area" x="1523" y="656" width="10" height="18">
+   <properties>
+    <property name="door_id" value="door_hostel"/>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/Hostel.tscn"/>
+    <property name="to_spawn_area_id" value="ps_hostel-from-camp"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="3146" name="changeScene house2" type="area" x="1747" y="832" width="10" height="18">
+   <properties>
+    <property name="door_id" value="door_house2"/>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
+    <property name="to_spawn_area_id" value="ps_house2-from-camp"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="3147" name="changeScene house5" type="area" x="1603" y="464" width="10" height="18">
+   <properties>
+    <property name="door_id" value="door_house5"/>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
+    <property name="to_spawn_area_id" value="ps_house5-from-camp"/>
     <property name="view_direction_x" type="int" value="0"/>
     <property name="view_direction_y" type="int" value="-1"/>
    </properties>

@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/tavern-lvl2.tmx-538bfc8eee9250479a48fb1c1e334491.scn"
+path="res://.import/hostel.tmx-ee4d2b3bf04aaeac294d52e96e60cea6.scn"
 
 [deps]
 
-source_file="res://assets/map/buildings/tavern-lvl2.tmx"
-dest_files=[ "res://.import/tavern-lvl2.tmx-538bfc8eee9250479a48fb1c1e334491.scn" ]
+source_file="res://assets/map/buildings/hostel.tmx"
+dest_files=[ "res://.import/hostel.tmx-ee4d2b3bf04aaeac294d52e96e60cea6.scn" ]
 
 [params]
 
