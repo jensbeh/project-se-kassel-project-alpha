@@ -2,7 +2,7 @@ extends Node
 
 const CONSTANTS = preload("res://autoload/Constants.gd")
 const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
-const VILLAGE_ANIMATED_DECORATIONS_TILESET = preload("res://assets/tilesets/Village Animated Decorations.png")
+const VILLAGE_ANIMATED_DOORS_TILESET = preload("res://assets/tilesets/Village Animated Doors.png")
 
 
 var chunk_size = CONSTANTS.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
@@ -64,7 +64,7 @@ func post_import(scene):
 				var sprite = Sprite.new()
 				sprite.name = "sprite"
 				sprite.centered = false
-				sprite.texture = VILLAGE_ANIMATED_DECORATIONS_TILESET
+				sprite.texture = VILLAGE_ANIMATED_DOORS_TILESET
 				sprite.hframes = 20
 				sprite.vframes = 8
 				sprite.frame = frame
@@ -91,19 +91,23 @@ func post_import(scene):
 
 				var openDoorAnimation = Animation.new()
 				animationPlayer.add_animation( "openDoor", openDoorAnimation)
-				openDoorAnimation.add_track(0)
+				var sprite_track_index = openDoorAnimation.add_track(Animation.TYPE_VALUE)
 				openDoorAnimation.length = 0.4
-				openDoorAnimation.track_set_path(0, path)
-				openDoorAnimation.track_insert_key(0, 0.0, frame)
-				openDoorAnimation.track_insert_key(0, 0.1, frame + 1)
-				openDoorAnimation.track_insert_key(0, 0.2, frame + 2)
-				openDoorAnimation.track_insert_key(0, 0.3, frame + 3)
-				openDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+				openDoorAnimation.track_set_path(sprite_track_index, path)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.0, frame)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.1, frame + 1)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.2, frame + 2)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.3, frame + 3)
+				openDoorAnimation.value_track_set_update_mode(sprite_track_index, Animation.UPDATE_DISCRETE)
 				openDoorAnimation.loop = 0
+				var method_track_index = openDoorAnimation.add_track(Animation.TYPE_METHOD)
+				var method_path = "../../../../../../.."
+				openDoorAnimation.track_set_path(method_track_index, method_path)
+				openDoorAnimation.track_insert_key(method_track_index, 0.4, {"args": [], "method": "on_door_opened"})
 				
 				var closeDoorAnimation = Animation.new()
 				animationPlayer.add_animation( "closeDoor", closeDoorAnimation)
-				closeDoorAnimation.add_track(0)
+				closeDoorAnimation.add_track(Animation.TYPE_VALUE)
 				closeDoorAnimation.length = 0.4
 				closeDoorAnimation.track_set_path(0, path)
 				closeDoorAnimation.track_insert_key(0, 0.0, frame + 3)
@@ -314,6 +318,12 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var node = Area2D.new()
+				
+				# Setup door area
+				if "door" in child.name:
+					node.monitoring = false
+					node.monitorable = false
+				
 				node.name = child.name
 				node.position = child.position
 				chunk_node.add_child(node)

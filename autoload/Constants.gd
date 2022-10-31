@@ -88,6 +88,7 @@ enum TransitionType {
 enum SceneType {
 	MENU,
 	CAMP,
+	HOUSE,
 	GRASSLAND,
 	DUNGEON
 }
@@ -117,6 +118,7 @@ const MINIMAP_CAMP = "res://assets/ui/map_camp.png"
 # Pathes
 const MENU_FOLDER = "res://scenes/menu/"
 const CAMP_FOLDER = "res://scenes/camp/"
+const CAMP_BUILDING_FOLDER = "res://scenes/camp/buildings/"
 const GRASSLAND_FOLDER = "res://scenes/grassland/"
 const DUNGEONS_FOLDER = "res://scenes/dungeons/"
 

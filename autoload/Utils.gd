@@ -149,16 +149,21 @@ func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 		
 	# Set the player_position and the view_direction to the current_player
 	current_player.set_spawn(player_position, view_direction)
-	
-	
+
+
 func update_current_scene_type(transition_data):
 	# Menu
 	if Constants.MENU_FOLDER in transition_data.get_scene_path():
 #		print("Menu state")
 		return Constants.SceneType.MENU
 	
+	# House
+	elif Constants.CAMP_BUILDING_FOLDER in transition_data.get_scene_path():
+		print("House state")
+		return Constants.SceneType.HOUSE
+	
 	# Camp
-	if Constants.CAMP_FOLDER in transition_data.get_scene_path():
+	elif Constants.CAMP_FOLDER in transition_data.get_scene_path():
 #		print("Camp state")
 		return Constants.SceneType.CAMP
 	

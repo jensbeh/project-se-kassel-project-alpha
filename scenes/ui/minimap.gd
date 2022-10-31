@@ -51,7 +51,7 @@ func _on_ViewportContainer_gui_input(event):
 
 # Switch texture when change scene
 func update_minimap():
-	Utils.get_player_ui().in_dungeon(false)
+	Utils.get_player_ui().without_minimap(false)
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.CAMP:
 			max_zoom_factor = 1.8
@@ -59,6 +59,11 @@ func update_minimap():
 			zoom_factor = 1.0
 			visible = true
 			deactivated = false
+		
+		Constants.SceneType.HOUSE:
+			Utils.get_player_ui().without_minimap(true)
+			visible = false
+			deactivated = true
 		
 		Constants.SceneType.GRASSLAND:
 			max_zoom_factor = 2.1
@@ -68,7 +73,7 @@ func update_minimap():
 			deactivated = false
 		
 		Constants.SceneType.DUNGEON:
-			Utils.get_player_ui().in_dungeon(true)
+			Utils.get_player_ui().without_minimap(true)
 			visible = false
 			deactivated = true
 		

@@ -19501,6 +19501,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/camp/Camp.tscn"/>
     <property name="to_spawn_area_id" value="ps_camp-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="2486" name="changeScene dungeon1" type="area" x="852" y="661" width="8" height="12">
@@ -19508,6 +19510,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon1-lvl1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="5599" name="changeScene dungeon2" type="area" x="372" y="-218" width="8" height="12">
@@ -19515,6 +19519,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon2-lvl1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="5602" name="changeScene dungeon3" type="area" x="-604" y="-699" width="8" height="12">
@@ -19522,6 +19528,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon3/Dungeon3-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon3-lvl1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

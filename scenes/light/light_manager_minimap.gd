@@ -97,17 +97,22 @@ func update_shader_color():
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 			update_lights(false)
-			
+		
 		Constants.SceneType.CAMP:
 #			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> CAMP")
 			is_day_night_cycle = true
 			update_lights(true)
-			
+		
+		Constants.SceneType.HOUSE:
+#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> HOUSE")
+			is_day_night_cycle = false
+			update_lights(false)
+		
 		Constants.SceneType.GRASSLAND:
 #			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> GRASSLAND")
 			is_day_night_cycle = true
 			update_lights(true)
-			
+		
 		Constants.SceneType.DUNGEON:
 #			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> DUNGEON")
 			is_day_night_cycle = false

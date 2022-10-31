@@ -164,8 +164,18 @@ func interaction_detected():
 		Utils.get_current_player().set_change_scene(true)
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
-		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
+		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 		Utils.get_scene_manager().transition_to_scene(transition_data)
+
+
+# Setup all change_scene objectes/Area2D's on start
+func setup_change_scene_areas():
+	for child in changeScenesObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
+			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
 
 
 # Method which is called when a body has entered a changeSceneArea
@@ -174,11 +184,45 @@ func body_entered_change_scene_area(body, changeSceneArea):
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("-> Change scene \"GRASSLAND\" to \""  + str(next_scene_path) + "\"")
-			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
+			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
 		else:
 			player_in_change_scene_area = true
 			current_area = changeSceneArea
+
+
+# Method which is called when a body has exited a changeSceneArea
+func body_exited_change_scene_area(body, changeSceneArea):
+	if body.name == "Player":
+		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		current_area = null
+		player_in_change_scene_area = false
+
+
+# Setup all stair objectes/Area2D's on start
+func setup_stair_areas():
+	for chunk in groundChunks.get_children():
+		if chunk.has_node("stairs"):
+			for stair in chunk.get_node("stairs").get_children():
+				if "stairs" in stair.name:
+					# connect Area2D with functions to handle body action
+					stair.connect("body_entered", self, "body_entered_stair_area", [stair])
+					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
+
+
+# Method which is called when a body has entered a stairArea
+func body_entered_stair_area(body, _stairArea):
+	if body.name == "Player":
+		# reduce player speed
+		Utils.get_current_player().set_speed(Constants.PLAYER_STAIR_SPEED_FACTOR)
+
+
+# Method which is called when a body has exited a stairArea
+func body_exited_stair_area(body, _stairArea):
+	if body.name == "Player":
+		# reset player speed
+		Utils.get_current_player().reset_speed()
 
 
 # Method to disconnect all signals
@@ -211,48 +255,6 @@ func clear_signals():
 			loot.clear_signals()
 		else:
 			printerr("NOTHING TO DISCONNECT IN GRASSLAND LOOT")
-
-
-# Method which is called when a body has exited a changeSceneArea
-func body_exited_change_scene_area(body, changeSceneArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
-		current_area = null
-		player_in_change_scene_area = false
-
-
-# Method which is called when a body has entered a stairArea
-func body_entered_stair_area(body, _stairArea):
-	if body.name == "Player":
-		# reduce player speed
-		Utils.get_current_player().set_speed(Constants.PLAYER_STAIR_SPEED_FACTOR)
-
-
-# Method which is called when a body has exited a stairArea
-func body_exited_stair_area(body, _stairArea):
-	if body.name == "Player":
-		# reset player speed
-		Utils.get_current_player().reset_speed()
-
-
-# Setup all change_scene objectes/Area2D's on start
-func setup_change_scene_areas():
-	for child in changeScenesObject.get_children():
-		if "changeScene" in child.name:
-			# connect Area2D with functions to handle body action
-			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
-			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
-
-
-# Setup all stair objectes/Area2D's on start
-func setup_stair_areas():
-	for chunk in groundChunks.get_children():
-		if chunk.has_node("stairs"):
-			for stair in chunk.get_node("stairs").get_children():
-				if "stairs" in stair.name:
-					# connect Area2D with functions to handle body action
-					stair.connect("body_entered", self, "body_entered_stair_area", [stair])
-					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
 
 
 # Method to update the chunks with active and deleted chunks to make them visible or not
