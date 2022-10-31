@@ -12,7 +12,7 @@ var current_area : Area2D = null
 var init_transition_data = null
 
 # Nodes
-onready var changeScenesObject = $house1/changeScenes
+onready var changeScenesObject = find_node("changeScenes")
 
 
 # Called when the node enters the scene tree for the first time.

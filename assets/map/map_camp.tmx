@@ -5996,7 +5996,7 @@
    <properties>
     <property name="door_id" value="door_house4"/>
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
-    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/House4.tscn"/>
     <property name="to_spawn_area_id" value="ps_house4-from-camp"/>
     <property name="view_direction_x" type="int" value="0"/>
     <property name="view_direction_y" type="int" value="-1"/>
@@ -6016,7 +6016,7 @@
    <properties>
     <property name="door_id" value="door_house2"/>
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
-    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/House2.tscn"/>
     <property name="to_spawn_area_id" value="ps_house2-from-camp"/>
     <property name="view_direction_x" type="int" value="0"/>
     <property name="view_direction_y" type="int" value="-1"/>
@@ -6026,7 +6026,7 @@
    <properties>
     <property name="door_id" value="door_house5"/>
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
-    <property name="next_scene_path" value="res://scenes/camp/buildings/Tavern.tscn"/>
+    <property name="next_scene_path" value="res://scenes/camp/buildings/House5.tscn"/>
     <property name="to_spawn_area_id" value="ps_house5-from-camp"/>
     <property name="view_direction_x" type="int" value="0"/>
     <property name="view_direction_y" type="int" value="-1"/>
