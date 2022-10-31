@@ -9,13 +9,17 @@ var finished = false
 var obj_name
 var origin
 var type
+var death = false
 
 
 func start(origin_obj, looted_value, treasure_type):
 	obj_name = origin_obj.name
 	origin = origin_obj
 	type = treasure_type
-	if typeof(looted_value) == TYPE_BOOL:
+	if typeof(looted_value) != TYPE_BOOL and looted_value == "Death":
+		dialog = treasure_type
+		death = true
+	elif typeof(looted_value) == TYPE_BOOL:
 		if "treasure" in obj_name and !looted_value:
 			obj_name = "treasure"
 			if treasure_type == "1":
@@ -39,9 +43,10 @@ func start(origin_obj, looted_value, treasure_type):
 	Utils.get_control_notes().hide()
 	$Timer.wait_time = textSpeed
 	# Get language
-	var lang = TranslationServer.get_locale()
-	dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
-	dialog = getDialog()
+	if !death:
+		var lang = TranslationServer.get_locale()
+		dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
+		dialog = getDialog()
 	nextPhrase()
 
 
@@ -110,14 +115,15 @@ func close_dialog():
 		Utils.get_current_player().set_movement(true)
 		Utils.get_current_player().set_movment_animation(true)
 		# reset npc interaction state
-		if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
-			for npc in origin.get_parent().get_children():
-				npc.set_interacted(false)
-		else:
-			if type != "3":
-				Utils.get_scene_manager().get_current_scene().reset_interaction()
+		if !death:
+			if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
+				for npc in origin.get_parent().get_children():
+					npc.set_interacted(false)
 			else:
-				origin.reset_interaction()
+				if type != "3":
+					Utils.get_scene_manager().get_current_scene().reset_interaction()
+				else:
+					origin.reset_interaction()
 	Utils.get_control_notes().show()
 	get_parent().remove_child(self)
 	queue_free()

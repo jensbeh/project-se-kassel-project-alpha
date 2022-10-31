@@ -148,6 +148,9 @@ func _physics_process(delta):
 				velocity *= 1.4
 		
 		if velocity != Vector2.ZERO and player_can_interact:
+			if Utils.get_ui().get_node_or_null("DialogueBox") != null:
+				Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
+				Utils.get_control_notes().show()
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
 			animation_tree.set("parameters/Hurt/blend_position", velocity)
@@ -1005,7 +1008,6 @@ func player_killed():
 	Utils.get_main().show_death_screen()
 	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
 		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
-	rescue_pay()
 
 
 # Method to return true if player is dying/died otherwise false -> called from scene_manager
@@ -1015,6 +1017,7 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
+	rescue_pay()
 	# Make player visible again to mobs
 	make_player_invisible(false)
 	
@@ -1033,6 +1036,7 @@ func reset_player_after_dying():
 	set_movment_animation(true)
 	set_movement(true)
 	animation_state.start("Idle")
+
 
 func get_light_radius():
 	return player_light_radius
@@ -1093,6 +1097,7 @@ func is_in_safe_area():
 
 func rescue_pay():
 	# Pay amount of gold
+	var lost_gold = int(gold * Constants.RESCUE_PAY) +1
 	set_gold(int(gold * (1 - Constants.RESCUE_PAY)))
 	# Pay an item
 	var item_list = []
@@ -1102,16 +1107,26 @@ func rescue_pay():
 		
 	randomize()
 	var worth = 0
+	var lost_items = []
 	# Only lose Item with min level 3 and min 3 items in inventory
 	if level >= Constants.MIN_LEVEL_ITEM_LOSE and item_list.size() >= 3:
 		# Pay min level * 10 Worth on random Items if possible
 		while worth < level * Constants.MIN_LOST_FACTOR and item_list.size() > 0:
 			var payed_item = item_list[(randi() % item_list.size())]
 			item_list.remove(payed_item)
+			lost_items.append(tr((GameData.item_data[str(PlayerData.inv_data["Inv" + str(payed_item)]["Item"])]["Name"]).to_upper()) +
+			"*" + str(PlayerData.inv_data["Inv" + str(payed_item)]["Stack"]))
 			worth += (GameData.item_data[str(PlayerData.inv_data["Inv" + str(payed_item)]["Item"])]["Worth"] * 
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"])
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
+	var lost_string = tr("LOST_GOLD") + ": " + str(lost_gold) + "\n" + tr("LOST_ITEMS") + ": "
+	for item in lost_items:
+		lost_string += (item + ", ")
+	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
+	var dialog = load(Constants.DIALOG_PATH).instance()
+	Utils.get_ui().add_child(dialog)
+	dialog.start(self, "Death", lost_dialog)
 
 
 # Save map value
