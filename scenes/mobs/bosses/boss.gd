@@ -10,7 +10,7 @@ var WANDERING_SPEED = 50
 var BOSS_SPEED_FACTOR = 3.5
 var PRE_ATTACKING_SPEED
 var REGENERATION_HP_AMOUNT
-var CANT_REACH_DISTANCE
+var CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_GRASSLAND # Set here but will be overwritten in _ready
 
 # Mob specific
 var max_health = 100
