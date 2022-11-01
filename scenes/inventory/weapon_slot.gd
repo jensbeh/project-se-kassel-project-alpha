@@ -49,6 +49,7 @@ func can_drop_data(_pos, data):
 			data["target_item_id"] = null
 			data["target_texture"] = null
 			data["target_stack"] = null
+			data["target_frame"] = null
 			return true
 		# Swap item
 		else:
@@ -70,6 +71,9 @@ func drop_data(_pos, data):
 		if data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 			PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
+		elif data["origin_panel"] == "Delete":
+			data["origin_node"].item = PlayerData.inv_data[target_slot]["Item"]
+			data["origin_node"].stack = PlayerData.inv_data[target_slot]["Stack"]
 		
 		# Update the texture and label of the origin
 		if data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
@@ -77,7 +81,8 @@ func drop_data(_pos, data):
 			data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 		else:
 			data["origin_node"].get_child(0).texture = data["target_texture"]
-			data["origin_node"].get_child(0).frame = data["target_frame"]
+			if data["target_frame"] != null:
+				data["origin_node"].get_child(0).frame = data["target_frame"]
 			verify_origin_texture(data)
 			if data["target_stack"] != null and data["target_stack"] > 1:
 				data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
@@ -113,6 +118,15 @@ func verify_origin_texture(data):
 				data["origin_node"].get_child(0).set_vframes(27)
 			else:
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
+				data["origin_node"].get_child(0).set_hframes(13)
+				data["origin_node"].get_child(0).set_vframes(15)
+		elif data["origin_panel"] == "Delete":
+			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+				data["origin_node"].get_child(0).set_scale(Vector2(1,1))
+				data["origin_node"].get_child(0).set_hframes(16)
+				data["origin_node"].get_child(0).set_vframes(27)
+			else:
+				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
 				data["origin_node"].get_child(0).set_hframes(13)
 				data["origin_node"].get_child(0).set_vframes(15)
 		else:

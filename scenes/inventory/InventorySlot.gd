@@ -32,10 +32,10 @@ func _process(_delta):
 
 
 func _on_Timer_timeout():
+	set_process(false)
 	cooldown_texture.value = 0
 	disabled = false
 	time_label.hide()
-	set_process(false)
 
 
 # Get information about drag item
@@ -233,6 +233,9 @@ func drop_data(_pos, data):
 					else:
 						MerchantData.inv_data[origin_slot]["Time"] = null
 				check_slots()
+			elif data["origin_panel"] == "Delete":
+				data["origin_node"].item = PlayerData.inv_data[target_slot]["Item"]
+				data["origin_node"].stack = PlayerData.inv_data[target_slot]["Stack"]
 			else:
 				# change equipment
 				PlayerData.equipment_data[origin_slot]["Item"] = data["target_item_id"]
@@ -310,7 +313,12 @@ func drop_data(_pos, data):
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
 				verify_origin_texture(data)
-				if data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] != "CharacterInterface":
+				if data["origin_panel"] == "Delete":
+					if data["target_stack"] != null:
+						data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
+					else:
+						data["origin_node"].get_node("TextureRect/Stack").set_text("")
+				elif data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] != "CharacterInterface":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 				elif data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] == "CharacterInterface":
 					data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
@@ -413,7 +421,7 @@ func SplitStack(split_amount, data):
 
 
 func show_hide_stack_label(data):
-	if data["origin_panel"] != "CharacterInterface":
+	if data["origin_panel"] != "CharacterInterface" and data["origin_panel"] != "Delete":
 		if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
 		data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
 			data["origin_node"].get_parent().get_node("TextureRect").visible = true
@@ -447,6 +455,15 @@ func verify_origin_texture(data):
 				data["origin_node"].get_child(0).set_vframes(27)
 			else:
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
+				data["origin_node"].get_child(0).set_hframes(13)
+				data["origin_node"].get_child(0).set_vframes(15)
+		elif data["origin_panel"] == "Delete":
+			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+				data["origin_node"].get_child(0).set_scale(Vector2(1,1))
+				data["origin_node"].get_child(0).set_hframes(16)
+				data["origin_node"].get_child(0).set_vframes(27)
+			else:
+				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
 				data["origin_node"].get_child(0).set_hframes(13)
 				data["origin_node"].get_child(0).set_vframes(15)
 		else:
@@ -595,7 +612,20 @@ func set_cooldown(cooldown, new_type):
 
 # cooldown by move an item
 func check_cooldown(data):
-	if (data["origin_panel"] != "TradeInventory" and data["origin_node"].get_parent().get_name() != "Light" and 
+	if data["origin_panel"] == "Delete":
+		if GameData.item_data[str(data["origin_item_id"])].has("Stamina"):
+			if Utils.get_current_player().stamina_cooldown > 0:
+				timer.wait_time = Utils.get_current_player().stamina_cooldown
+				start_timer()
+			else:
+				stop_timer()
+		elif GameData.item_data[str(data["origin_item_id"])]["Health"] != null:
+			if Utils.get_current_player().health_cooldown > 0:
+				timer.wait_time = Utils.get_current_player().health_cooldown
+				start_timer()
+			else:
+				stop_timer()
+	elif (data["origin_panel"] != "TradeInventory" and data["origin_node"].get_parent().get_name() != "Light" and 
 	data["origin_node"].get_parent().get_name() != "Weapon"):
 		var cooldown
 		var cooldown_origin
@@ -612,16 +642,9 @@ func check_cooldown(data):
 			cooldown_origin = data["origin_node"].get_node("../Timer").time_left
 		if cooldown_origin != 0:
 			timer.wait_time = cooldown_origin
-			timer.start()
-			disabled = true
-			set_process(true)
-			time_label.show()
+			start_timer()
 		else:
-			timer.stop()
-			disabled = false
-			set_process(false)
-			time_label.hide()
-			cooldown_texture.value = 0
+			stop_timer()
 		if cooldown != 0:
 			data["origin_node"].get_node("../Timer").wait_time = cooldown
 			data["origin_node"].get_node("../Timer").start()
@@ -644,3 +667,17 @@ func check_cooldown(data):
 			elif GameData.item_data[str(data["target_item_id"])]["Health"] != null:
 				data["origin_node"].type = "Health"
 	
+
+func start_timer():
+	timer.start()
+	disabled = true
+	set_process(true)
+	time_label.show()
+
+
+func stop_timer():
+	timer.stop()
+	disabled = false
+	set_process(false)
+	time_label.hide()
+	cooldown_texture.value = 0

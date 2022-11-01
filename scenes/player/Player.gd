@@ -66,8 +66,8 @@ var preview = false
 var player_exp: int = 0
 var player_stamina: float
 var player_light_radius: int
-var health_cooldown
-var stamina_cooldown
+var health_cooldown = 0
+var stamina_cooldown = 0
 var weapon_weight = 0
 var has_map = false
 

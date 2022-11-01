@@ -286,7 +286,7 @@ parameters/playback = SubResource( 2 )
 [node name="Camera2D" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="20"]
 current = false
 
-[node name="CustomLight" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="22"]
+[node name="CustomLight" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer/Control/Player" index="21"]
 radius = 0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/HBoxContainer"]

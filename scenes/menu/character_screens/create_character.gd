@@ -611,6 +611,7 @@ func create_player_inventory():
 	Utils.get_current_player().set_level(save_game_data.level)
 	Utils.get_current_player().set_exp(save_game_data.exp)
 	Utils.get_current_player().set_stamina(save_game_data.stamina)
+	
 	Utils.get_current_player().set_current_health(save_game_data.currentHP)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)

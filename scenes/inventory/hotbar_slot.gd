@@ -84,6 +84,7 @@ func can_drop_data(_pos, data):
 			data["target_item_id"] = null
 			data["target_texture"] = null
 			data["target_stack"] = null
+			data["target_frame"] = null
 			return true
 		# Swap item
 		else:
@@ -125,6 +126,9 @@ func drop_data(_pos, data):
 			elif data["origin_panel"] == "Inventory":
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
+			elif data["origin_panel"] == "Delete":
+				data["origin_node"].item = PlayerData.inv_data[target_slot]["Item"]
+				data["origin_node"].stack = data["target_stack"]
 			
 			# Update the texture and label of the origin
 			# stacking
@@ -140,6 +144,14 @@ func drop_data(_pos, data):
 			elif data["origin_panel"] == "Inventory" and data["target_item_id"] == null:
 				data["origin_node"].get_child(0).texture = null
 				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
+			elif data["origin_panel"] == "Delete":
+				data["origin_node"].get_child(0).texture = data["target_texture"]
+				if data["target_stack"] != null:
+					data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
+				else:
+					data["origin_node"].get_node("TextureRect/Stack").set_text("")
+				if data["target_frame"] != null:
+					data["origin_node"].get_child(0).frame = data["target_frame"]
 			else:
 				data["origin_node"].get_child(0).texture = data["target_texture"]
 				data["origin_node"].get_child(0).frame = data["target_frame"]
@@ -222,6 +234,15 @@ func verify_origin_texture(data):
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
 				data["origin_node"].get_child(0).set_hframes(13)
 				data["origin_node"].get_child(0).set_vframes(15)
+		elif data["origin_panel"] == "Delete":
+			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
+				data["origin_node"].get_child(0).set_scale(Vector2(1,1))
+				data["origin_node"].get_child(0).set_hframes(16)
+				data["origin_node"].get_child(0).set_vframes(27)
+			else:
+				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
+				data["origin_node"].get_child(0).set_hframes(13)
+				data["origin_node"].get_child(0).set_vframes(15)
 		else:
 			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
@@ -246,16 +267,28 @@ func verify_target_texture(data):
 
 
 func show_hide_stack_label(data):
-	if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
-	data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
-		data["origin_node"].get_parent().get_node("TextureRect").visible = true
+	if data["origin_panel"] != "Delete":
+		if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
+		data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
+			data["origin_node"].get_parent().get_node("TextureRect").visible = true
+		else:
+			data["origin_node"].get_parent().get_node("TextureRect").visible = false
+		if (int(get_node("TextureRect/Stack").get_text()) > 1 and 
+		get_node("TextureRect/Stack").get_text() != null):
+			get_node("TextureRect").visible = true
+		else:
+			get_node("TextureRect").visible = false
 	else:
-		data["origin_node"].get_parent().get_node("TextureRect").visible = false
-	if (int(get_node("TextureRect/Stack").get_text()) > 1 and 
-	get_node("TextureRect/Stack").get_text() != null):
-		get_node("TextureRect").visible = true
-	else:
-		get_node("TextureRect").visible = false
+		if (int(data["origin_node"].get_node("TextureRect/Stack").get_text()) > 1 and 
+		data["origin_node"].get_node("TextureRect/Stack").get_text() != null):
+			data["origin_node"].get_node("TextureRect").visible = true
+		else:
+			data["origin_node"].get_node("TextureRect").visible = false
+		if (int(get_node("TextureRect/Stack").get_text()) > 1 and 
+		get_node("TextureRect/Stack").get_text() != null):
+			get_node("TextureRect").visible = true
+		else:
+			get_node("TextureRect").visible = false
 
 
 # ToolTips
@@ -345,51 +378,72 @@ func set_cooldown(cooldown, new_type):
 
 # cooldown by moving an item
 func check_cooldown(data):
-	var cooldown
-	var cooldown_origin
-	if stack:
-		cooldown = 0
-		cooldown_origin = timer.time_left
-		stack = false
-	elif swap:
-		cooldown = timer.time_left
-		cooldown_origin = data["origin_node"].get_node("../Timer").time_left
-		swap = false
+	if data["origin_panel"] == "Delete":
+		if GameData.item_data[str(data["origin_item_id"])].has("Stamina"):
+			if Utils.get_current_player().stamina_cooldown > 0:
+				timer.wait_time = Utils.get_current_player().stamina_cooldown
+				start_timer()
+			else:
+				stop_timer()
+		elif GameData.item_data[str(data["origin_item_id"])]["Health"] != null:
+			if Utils.get_current_player().health_cooldown > 0:
+				timer.wait_time = Utils.get_current_player().health_cooldown
+				start_timer()
+			else:
+				stop_timer()
 	else:
-		cooldown = data["origin_node"].get_node("../Timer").time_left
-		cooldown_origin = data["origin_node"].get_node("../Timer").time_left
-	if cooldown_origin != 0:
-		timer.wait_time = cooldown_origin
-		timer.start()
-		disabled = true
-		set_process(true)
-		time_label.show()
-		cooldown_texture.show()
-	else:
-		timer.stop()
-		disabled = false
-		set_process(false)
-		time_label.hide()
-		cooldown_texture.value = 0
-	if cooldown != 0:
-		data["origin_node"].get_node("../Timer").wait_time = cooldown
-		data["origin_node"].get_node("../Timer").start()
-		data["origin_node"].disabled = true
-		data["origin_node"].get_node("TextureProgress/Time").show()
-		data["origin_node"].set_process(true)
-	else:
-		data["origin_node"].get_node("../Timer").stop()
-		data["origin_node"].disabled = false
-		data["origin_node"].get_node("TextureProgress").value = 0
-		data["origin_node"].get_node("TextureProgress/Time").hide()
-		data["origin_node"].set_process(false)
-	if data["origin_slot"].has("Stamina"):
-		type = "Stamina"
-	elif data["origin_slot"].has("Health") and data["origin_slot"]["Health"] != null:
-		type = "Health"
-	if data["target_item_id"] != null:
-		if GameData.item_data[str(data["target_item_id"])].has("Stamina"):
-			data["origin_node"].type = "Stamina"
-		elif GameData.item_data[str(data["target_item_id"])]["Health"] != null:
-			data["origin_node"].type = "Health"
+		var cooldown
+		var cooldown_origin
+		if stack:
+			cooldown = 0
+			cooldown_origin = timer.time_left
+			stack = false
+		elif swap:
+			cooldown = timer.time_left
+			cooldown_origin = data["origin_node"].get_node("../Timer").time_left
+			swap = false
+		else:
+			cooldown = data["origin_node"].get_node("../Timer").time_left
+			cooldown_origin = data["origin_node"].get_node("../Timer").time_left
+		if cooldown_origin != 0:
+			timer.wait_time = cooldown_origin
+			start_timer()
+		else:
+			stop_timer()
+		if cooldown != 0:
+			data["origin_node"].get_node("../Timer").wait_time = cooldown
+			data["origin_node"].get_node("../Timer").start()
+			data["origin_node"].disabled = true
+			data["origin_node"].get_node("TextureProgress/Time").show()
+			data["origin_node"].set_process(true)
+		else:
+			data["origin_node"].get_node("../Timer").stop()
+			data["origin_node"].disabled = false
+			data["origin_node"].get_node("TextureProgress").value = 0
+			data["origin_node"].get_node("TextureProgress/Time").hide()
+			data["origin_node"].set_process(false)
+		if data["origin_slot"].has("Stamina"):
+			type = "Stamina"
+		elif data["origin_slot"].has("Health") and data["origin_slot"]["Health"] != null:
+			type = "Health"
+		if data["target_item_id"] != null:
+			if GameData.item_data[str(data["target_item_id"])].has("Stamina"):
+				data["origin_node"].type = "Stamina"
+			elif GameData.item_data[str(data["target_item_id"])]["Health"] != null:
+				data["origin_node"].type = "Health"
 	
+
+func start_timer():
+	timer.start()
+	disabled = true
+	set_process(true)
+	time_label.show()
+	cooldown_texture.show()
+
+
+func stop_timer():
+	timer.stop()
+	disabled = false
+	set_process(false)
+	time_label.hide()
+	cooldown_texture.value = 0
