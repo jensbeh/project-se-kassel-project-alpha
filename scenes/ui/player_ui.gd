@@ -69,6 +69,7 @@ func set_exp(new_value: int):
 				change_heart_number(5)
 		else:
 			exp_bar.value = exp_bar.max_value
+			exp_value.set_text("EXP: " + str(exp_bar.value))
 
 # Clock
 func set_time(new_hour, new_minute):
