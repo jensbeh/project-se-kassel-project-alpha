@@ -70,6 +70,7 @@ var health_cooldown = 0
 var stamina_cooldown = 0
 var weapon_weight = 0
 var has_map = false
+var show_map = false
 
 # Variables
 var is_attacking = false
@@ -267,6 +268,17 @@ func _input(event):
 		elif event.is_action_pressed("loot") and Utils.get_loot_panel() != null:
 			# Call Loot all Method in Loot Panel
 			Utils.get_loot_panel()._on_LootAll_pressed()
+			
+		# open map
+		elif event.is_action_pressed("map") and has_map and !show_map:
+			show_map = true
+			data.show_map = show_map
+			Utils.get_minimap().update_minimap()
+		
+		elif event.is_action_pressed("map") and has_map and show_map:
+			show_map = false
+			data.show_map = show_map
+			Utils.get_minimap().update_minimap()
 
 
 func set_change_scene(value):

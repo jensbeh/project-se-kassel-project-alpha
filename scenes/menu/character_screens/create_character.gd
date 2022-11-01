@@ -136,6 +136,7 @@ var save_game_data = {
 	"cooldown": 0,
 	"stamina_cooldown": 0,
 	"has_map": false,
+	"show_map": false,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
