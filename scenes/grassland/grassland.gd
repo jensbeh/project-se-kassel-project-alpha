@@ -11,6 +11,7 @@ var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
 var ambientMobsSpawnArea
+var next_scene_path = ""
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -162,11 +163,31 @@ func setup_spawning_areas():
 func interaction_detected():
 	if player_in_change_scene_area:
 		Utils.get_current_player().set_change_scene(true)
-		var next_scene_path = current_area.get_meta("next_scene_path")
-		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
-		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
-		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
-		Utils.get_scene_manager().transition_to_scene(transition_data)
+		next_scene_path = current_area.get_meta("next_scene_path")
+		
+		# Handle if change scene is to house
+		if Constants.GRASSLAND_BUILDING_FOLDER in next_scene_path:
+			# Get door
+			var doorArea = find_node(current_area.get_meta("door_id"))
+			for child in doorArea.get_children():
+				if "animationPlayer" in child.name:
+					# Start door animation
+					child.play("openDoor")
+					break
+		
+		else:
+			print("-> Change scene \"CAMP\" to \""  + str(next_scene_path) + "\"")
+			var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
+			Utils.get_scene_manager().transition_to_scene(transition_data)
+
+
+# Method is called after openDoor animation is finished
+func on_door_opened():
+	print("-> Change scene DOOR: \"CAMP\" to \""  + str(next_scene_path) + "\"")
+	var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+	var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
+	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 # Setup all change_scene objectes/Area2D's on start
@@ -182,7 +203,7 @@ func setup_change_scene_areas():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
-			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
+			next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("-> Change scene \"GRASSLAND\" to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)

@@ -46,6 +46,7 @@ func _ready():
 	current_hour = (int(floor(current_time / ONE_HOUR)) + DAY_TIME_START_OFFSET) % 24
 	current_minute = int((fmod(current_time, ONE_HOUR) / ONE_HOUR) * 60)
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	current_time += delta
@@ -69,10 +70,10 @@ func _process(delta):
 			is_sunrise = false
 			is_daytime = true
 			change_to_daytime()
-
+		
 		if screen_color != Constants.DAY_COLOR:
 			screen_color = Constants.DAY_COLOR
-
+	
 	# Day to Sunset
 	elif current_time <= (DAY_TIME + (SUNSET_TIME / 2)):
 		if is_sunset == false:
@@ -83,12 +84,12 @@ func _process(delta):
 		
 		var value = (current_time - DAY_TIME) / (SUNSET_TIME / 2)
 		screen_color = Constants.DAY_COLOR.linear_interpolate(Constants.SUNSET_COLOR, value)
-
+	
 	# Sunset to NIGHT
 	elif current_time <= (DAY_TIME + SUNSET_TIME):
 		var value = (current_time - (DAY_TIME + (SUNSET_TIME / 2))) / (SUNSET_TIME / 2)
 		screen_color = Constants.SUNSET_COLOR.linear_interpolate(Constants.NIGHT_COLOR, value)
-		
+	
 	# Night
 	elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME):
 		if is_night == false:
@@ -98,7 +99,7 @@ func _process(delta):
 		
 		if screen_color != Constants.NIGHT_COLOR:
 			screen_color = Constants.NIGHT_COLOR
-
+	
 	# Night to Sunrise
 	elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME + (SUNRISE_TIME / 2)):
 		if is_sunrise == false:
@@ -108,36 +109,42 @@ func _process(delta):
 		
 		var value = (current_time - (DAY_TIME + SUNSET_TIME + NIGHT_TIME)) / (SUNRISE_TIME / 2)
 		screen_color = Constants.NIGHT_COLOR.linear_interpolate(Constants.SUNRISE_COLOR, value)
-			
+	
 	# Sunrise to Day
 	elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME + SUNRISE_TIME):
 		var value = (current_time - (DAY_TIME + SUNSET_TIME + NIGHT_TIME + (SUNRISE_TIME / 2))) / (SUNRISE_TIME / 2)
 		screen_color = Constants.SUNRISE_COLOR.linear_interpolate(Constants.DAY_COLOR, value)
 
+
 # Method to return the current screen color
 func get_screen_color():
 	return screen_color
+
 
 # Method is called when day is started to call some actions
 func change_to_daytime():
 #	print("TO DAYTIME")
 	emit_signal("change_to_daytime")
 
+
 # Method is called when sunset is started to call some actions
 func change_to_sunset():
 #	print("TO SUNSET")
 	emit_signal("change_to_sunset")
+
 
 # Method is called when night is started to call some actions
 func change_to_night():
 #	print("TO NIGHT")
 	emit_signal("change_to_night")
 
+
 # Method is called when sunrise is started to call some actions
 func change_to_sunrise():
 #	print("TO SUNRISE")
 	emit_signal("change_to_sunrise")
-	
+
+
 # Method is called every minute to update the ui
 func update_ui():
 	# Updates the clock in the ui

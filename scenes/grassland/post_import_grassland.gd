@@ -2,6 +2,7 @@ extends Node
 
 const CONSTANTS = preload("res://autoload/Constants.gd")
 const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
+const VILLAGE_ANIMATED_DOORS_TILESET = preload("res://assets/tilesets/Village Animated Doors.png")
 
 
 var compressed_tilemap = TileMap.new()
@@ -38,8 +39,35 @@ func post_import(scene):
 				for child_in_light in custom_light.get_children():
 					child_in_light.set_owner(scene)
 	
-	# Setup map - performace optimisation
-	iterate_over_nodes(scene)
+	
+	# Set lights to windows with script
+	var windows_positions = scene.find_node("windows_positions")
+	if windows_positions != null and windows_positions.get_children().size() > 0:
+		for child in windows_positions.get_children():
+			if child is Position2D:
+				var custom_light = CUSTOM_LIGHT.instance()
+				# Position
+				# If child is WINDOW
+				if child.get_node_or_null("Sprite") == null:
+					var light_position = custom_light.get_node("LightPosition")
+					custom_light.position = child.position - light_position.position
+				# If child is NORMAL LIGHT
+				else:
+					custom_light.position = child.position
+				
+				if child.get_meta("big_window"):
+					custom_light.radius = 8
+				else:
+					custom_light.radius = 5
+				var sprite = custom_light.get_node("Sprite")
+				custom_light.remove_child(sprite)
+				
+				# Set custom_light to node/replace existing sprite
+				child.replace_by(custom_light, true)
+				custom_light.set_owner(scene)
+				for child_in_light in custom_light.get_children():
+					child_in_light.set_owner(scene)
+	
 	
 	# Compress all tilemaps to one - direct before creating navigation and after adding custom nodes with collision on ground
 	compress_tilemaps(scene)
@@ -80,7 +108,7 @@ func post_import(scene):
 	ambient_mobs_nav_tilemap.cell_size = Vector2(16,16)
 	ambient_mobs_nav_tilemap.name = "ambient_mobs_navigation_tilemap"
 	ambient_mobs_nav_tilemap.visible = false
-
+	
 	# Setup Navigation2D for ambient mobs
 	var ambient_mobs_navigation : Node2D = scene.find_node("ambientMobs navigation")
 	ambient_mobs_navigation.name = "ambient_mobs_navigation"
@@ -140,6 +168,78 @@ func post_import(scene):
 	ySortLoot.name = lootlayer.name
 	lootlayer.replace_by(ySortLoot, true)
 	
+	
+	# Setup all doors with animation
+	var doorsObject = scene.find_node("doors")
+	if doorsObject != null and doorsObject.get_children().size() > 0:
+		for child in doorsObject.get_children():
+			if "door_" in child.name:
+				var selected_door_sprite = child.get_meta("selected_door_sprite") # possible slected doors = 1,2,3,4,6,7,8,9,11,12,13,14,16,17,18,19,24,29
+				var frame = selected_door_sprite * 4 - 4
+				var sprite = Sprite.new()
+				sprite.name = "sprite"
+				sprite.centered = false
+				sprite.texture = VILLAGE_ANIMATED_DOORS_TILESET
+				sprite.hframes = 20
+				sprite.vframes = 8
+				sprite.frame = frame
+				sprite.position = child.position
+				sprite.position.y = sprite.position.y + sprite.texture.get_size().y / sprite.vframes
+				
+				sprite.offset = Vector2(0, -sprite.texture.get_size().y / sprite.vframes)
+				
+				doorsObject.add_child(sprite)
+				sprite.set_owner(scene)
+				
+				var animationPlayer = AnimationPlayer.new()
+				animationPlayer.name = "animationPlayer"
+				var path = "../" + sprite.name + ":frame"
+				
+				var idleDoorAnimation = Animation.new()
+				animationPlayer.add_animation( "idleDoor", idleDoorAnimation)
+				idleDoorAnimation.add_track(0)
+				idleDoorAnimation.length = 0.4
+				idleDoorAnimation.track_set_path(0, path)
+				idleDoorAnimation.track_insert_key(0, 0.0, frame)
+				idleDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+				idleDoorAnimation.loop = 0
+				
+				var openDoorAnimation = Animation.new()
+				animationPlayer.add_animation( "openDoor", openDoorAnimation)
+				var sprite_track_index = openDoorAnimation.add_track(Animation.TYPE_VALUE)
+				openDoorAnimation.length = 0.4
+				openDoorAnimation.track_set_path(sprite_track_index, path)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.0, frame)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.1, frame + 1)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.2, frame + 2)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.3, frame + 3)
+				openDoorAnimation.value_track_set_update_mode(sprite_track_index, Animation.UPDATE_DISCRETE)
+				openDoorAnimation.loop = 0
+				var method_track_index = openDoorAnimation.add_track(Animation.TYPE_METHOD)
+				var method_path = "../../../../../../.."
+				openDoorAnimation.track_set_path(method_track_index, method_path)
+				openDoorAnimation.track_insert_key(method_track_index, 0.4, {"args": [], "method": "on_door_opened"})
+				
+				var closeDoorAnimation = Animation.new()
+				animationPlayer.add_animation( "closeDoor", closeDoorAnimation)
+				closeDoorAnimation.add_track(Animation.TYPE_VALUE)
+				closeDoorAnimation.length = 0.4
+				closeDoorAnimation.track_set_path(0, path)
+				closeDoorAnimation.track_insert_key(0, 0.0, frame + 3)
+				closeDoorAnimation.track_insert_key(0, 0.1, frame + 2)
+				closeDoorAnimation.track_insert_key(0, 0.2, frame + 1)
+				closeDoorAnimation.track_insert_key(0, 0.3, frame)
+				closeDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+				closeDoorAnimation.loop = 0
+				
+				animationPlayer.current_animation = "idleDoor"
+				animationPlayer.autoplay = "idleDoor"
+				
+				child.add_child(animationPlayer)
+				animationPlayer.set_owner(scene)
+	
+	
+	
 	# Setup NPC pathes
 	var npcPathes = scene.find_node("npcPathes")
 	var pathes = []
@@ -161,6 +261,12 @@ func post_import(scene):
 	for path in pathes:
 		npcPathes.add_child(path)
 		path.set_owner(scene)
+	
+	
+	
+	
+	# Setup map - performace optimisation
+	iterate_over_nodes(scene)
 	
 	# generate chunks -> best at the end
 	print("generate chunks...")
@@ -287,7 +393,7 @@ func generate_chunks(scene):
 			chunk_node.set_owner(scene)
 			
 			# Create chunk with tilemaps and objects
-			create_chunk(scene, chunk_data, ground_duplicate, chunk_node)
+			create_chunk(scene, chunk_data, ground_duplicate, chunk_node, false)
 	
 	
 	# Create higher chunks
@@ -307,11 +413,11 @@ func generate_chunks(scene):
 			chunk_node.set_owner(scene)
 			
 			# Create chunk with tilemaps and objects
-			create_chunk(scene, chunk_data, higher_duplicate, chunk_node)
+			create_chunk(scene, chunk_data, higher_duplicate, chunk_node, true)
 
 
 # Method generates a single chunk with all nodes
-func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
+func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node, disable_tilemap_collision):
 	for child in ground_duplicate_origin.get_children():
 		if child is TileMap:
 			var empty_tilemap = true # To check if tilemap in chunk is empty or not
@@ -328,6 +434,10 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 					if child.get_cellv(cellPos) != -1:
 						empty_tilemap = false
 						new_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
+			
+			# Check if tilemap is from "higher" and disable collision
+			if disable_tilemap_collision:
+				new_tilemap.set_collision_layer_bit(0, false)
 			
 			# Check if tilemap contains tiles and if it does add tilemap to chunk
 			if not empty_tilemap:
@@ -402,21 +512,58 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		elif child is CustomLight:
 			# Check if child is in this chunk
-			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
+			var child_position = Vector2.ZERO
+			
+			# Chunk position
+			# If child is WINDOW
+			if child.get_node_or_null("Sprite") == null:
+				child_position = child.position + child.get_node("LightPosition").position
+			
+			# If child is NORMAL LIGHT
+			else:
+				child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
+			
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius
-				var sprite = custom_light.get_node("Sprite")
-				sprite.texture = child.get_node("Sprite").texture
+				
+				# Nodes
+				# If child is NORMAL LIGHT
+				if child.get_node_or_null("Sprite") != null:
+					var sprite = custom_light.get_node_or_null("Sprite")
+					sprite.texture = child.get_node("Sprite").texture
+				# If child is WINDOW
+				else:
+					var sprite = custom_light.get_node("Sprite")
+					custom_light.remove_child(sprite)
 				
 				# Set custom_light to node
 				chunk_node.add_child(custom_light)
 				custom_light.set_owner(scene)
 				for child_in_light in custom_light.get_children():
 					child_in_light.set_owner(scene)
+			continue
+		
+		elif child is AnimationPlayer:
+			# Remove parent from child
+			child.get_parent().remove_child(child)
+			
+			# Add parent and child to chunk
+			chunk_node.add_child(child)
+			child.set_owner(scene)
+		
+		elif child is Position2D:
+			var chunk = get_chunk_from_position(child.position)
+			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+				# Remove parent from child
+				child.get_parent().remove_child(child)
+				
+				# Add parent and child to chunk
+				chunk_node.add_child(child)
+				child.set_owner(scene)
 			continue
 		
 		else:
@@ -427,7 +574,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		# Take sub-nodes
 		if child.get_child_count() > 0:
-			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name))
+			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name), disable_tilemap_collision)
 			if chunk_node.get_node(child.name).get_child_count() == 0:
 				chunk_node.remove_child(chunk_node.get_node(child.name))
 	

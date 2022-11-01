@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/house2.tmx-b0127253ae595ef2513ab9dca0201a8d.scn"
+
+[deps]
+
+source_file="res://assets/map/buildings/camp/house2.tmx"
+dest_files=[ "res://.import/house2.tmx-b0127253ae595ef2513ab9dca0201a8d.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=3
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script="res://scenes/post_import_buildings.gd"

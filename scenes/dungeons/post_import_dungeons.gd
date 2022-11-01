@@ -303,7 +303,7 @@ func generate_chunks(scene):
 			chunk_node.set_owner(scene)
 			
 			# Create chunk with tilemaps and objects
-			create_chunk(scene, chunk_data, ground_duplicate, chunk_node)
+			create_chunk(scene, chunk_data, ground_duplicate, chunk_node, false)
 	
 	
 	# Create higher chunks
@@ -323,11 +323,11 @@ func generate_chunks(scene):
 			chunk_node.set_owner(scene)
 			
 			# Create chunk with tilemaps and objects
-			create_chunk(scene, chunk_data, higher_duplicate, chunk_node)
+			create_chunk(scene, chunk_data, higher_duplicate, chunk_node, true)
 
 
 # Method generates a single chunk with all nodes
-func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
+func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node, disable_tilemap_collision):
 	for child in ground_duplicate_origin.get_children():
 		if child is TileMap:
 			var empty_tilemap = true # To check if tilemap in chunk is empty or not
@@ -344,6 +344,10 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 					if child.get_cellv(cellPos) != -1:
 						empty_tilemap = false
 						new_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
+			
+			# Check if tilemap is from "higher" and disable collision
+			if disable_tilemap_collision:
+				new_tilemap.set_collision_layer_bit(0, false)
 			
 			# Check if tilemap contains tiles and if it does add tilemap to chunk
 			if not empty_tilemap:
@@ -488,7 +492,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		# Take sub-nodes
 		if child.get_child_count() > 0:
-			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name))
+			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name), disable_tilemap_collision)
 			if chunk_node.get_node(child.name).get_child_count() == 0:
 				chunk_node.remove_child(chunk_node.get_node(child.name))
 

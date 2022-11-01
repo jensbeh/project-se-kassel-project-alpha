@@ -104,9 +104,9 @@ func update_shader_color():
 			update_lights(true)
 		
 		Constants.SceneType.HOUSE:
-#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> HOUSE")
-			is_day_night_cycle = false
-			update_lights(false)
+#			print("LIGHT MANAGER SCENE TYPE CHANGED ----> HOUSE")
+			is_day_night_cycle = true
+			update_lights(true)
 		
 		Constants.SceneType.GRASSLAND:
 #			print("LIGHT MANAGER SCENE TYPE CHANGED ----> GRASSLAND")

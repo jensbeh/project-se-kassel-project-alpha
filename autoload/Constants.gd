@@ -120,6 +120,7 @@ const MENU_FOLDER = "res://scenes/menu/"
 const CAMP_FOLDER = "res://scenes/camp/"
 const CAMP_BUILDING_FOLDER = "res://scenes/camp/buildings/"
 const GRASSLAND_FOLDER = "res://scenes/grassland/"
+const GRASSLAND_BUILDING_FOLDER = "res://scenes/grassland/buildings/"
 const DUNGEONS_FOLDER = "res://scenes/dungeons/"
 
 const MAIN_MENU_PATH = "res://scenes/menu/MainMenuScreen.tscn"

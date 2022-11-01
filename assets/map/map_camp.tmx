@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1129" nextobjectid="3148">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="128" height="96" tilewidth="16" tileheight="16" infinite="1" nextlayerid="1131" nextobjectid="3172">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/water.tsx"/>
  <tileset firstgid="1033" source="../tilesets/animated_water.tsx"/>
@@ -3500,6 +3500,128 @@
      </properties>
     </object>
    </objectgroup>
+   <objectgroup id="1129" name="windows_positions" visible="0">
+    <object id="3150" name="window" x="1347" y="630">
+     <properties>
+      <property name="big_window" type="bool" value="true"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3151" name="window" x="1350" y="614">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3152" name="window" x="1385" y="614">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3153" name="window" x="1385" y="630">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3154" name="window" x="1398" y="630">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3155" name="window" x="1177" y="710">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3156" name="window" x="1209" y="710">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3157" name="window" x="1238" y="710">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3158" name="window" x="1347" y="758">
+     <properties>
+      <property name="big_window" type="bool" value="true"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3159" name="window" x="1382" y="758">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3160" name="window" x="1766" y="838">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3161" name="window" x="1721" y="838">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3162" name="window" x="1491" y="662">
+     <properties>
+      <property name="big_window" type="bool" value="true"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3163" name="window" x="1491" y="646">
+     <properties>
+      <property name="big_window" type="bool" value="true"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3164" name="window" x="1513" y="662">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3165" name="window" x="1532" y="646">
+     <properties>
+      <property name="big_window" type="bool" value="true"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3166" name="window" x="1542" y="662">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3167" name="window" x="1593" y="470">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3168" name="window" x="1622" y="470">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="3169" name="window" x="1638" y="470">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+   </objectgroup>
   </group>
   <objectgroup id="1032" name="treetrunk">
    <object id="287" x="1477" y="416" width="38" height="16"/>
@@ -4772,8 +4894,6 @@
    <object id="3069" x="1121" y="233" width="8" height="14"/>
    <object id="3070" gid="6459" x="1405" y="540" width="16" height="16"/>
    <object id="3071" x="1409" y="524" width="8" height="14"/>
-   <object id="3072" gid="6459" x="1312" y="625" width="16" height="16"/>
-   <object id="3073" x="1316" y="609" width="8" height="14"/>
    <object id="3074" gid="6459" x="1542" y="688" width="16" height="16"/>
    <object id="3075" x="1546" y="672" width="8" height="14"/>
    <object id="3076" gid="6459" x="1383" y="789" width="16" height="16"/>
@@ -4816,6 +4936,8 @@
    <object id="3125" x="1087" y="1101" width="8" height="14"/>
    <object id="3127" gid="6463" x="1664" y="-256" width="16" height="16"/>
    <object id="3128" x="1665" y="-270" width="14" height="13"/>
+   <object id="3170" gid="6459" x="1312" y="625" width="16" height="16"/>
+   <object id="3171" x="1316" y="609" width="8" height="14"/>
   </objectgroup>
  </group>
  <group id="1102" name="npclayer"/>
