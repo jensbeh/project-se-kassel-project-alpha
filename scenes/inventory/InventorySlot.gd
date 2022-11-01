@@ -42,7 +42,7 @@ func _on_Timer_timeout():
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.inv_data[slot]["Item"] != null:
-		Utils.get_current_player().set_dragging(true)
+#		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Inventory"
@@ -360,7 +360,7 @@ func drop_data(_pos, data):
 			check_cooldown(data)
 			show_hide_stack_label(data)
 			split = 0
-	Utils.get_current_player().set_dragging(false)
+#	Utils.get_current_player().set_dragging(false)
 
 
 func SplitStack(split_amount, data):
