@@ -48,8 +48,8 @@ func transition_to_scene(transition_data):
 
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
-	# Pause cooldown timer
-	Utils.get_hotbar().pause_cooldown()
+	# Pause game
+	Utils.pause_game(true)
 	
 	# Start thread
 	thread = Thread.new()
@@ -144,8 +144,8 @@ func finish_transition():
 				Utils.get_current_player().set_in_safe_area(false)
 			
 			
-			# Resume cooldown timer
-			Utils.get_hotbar().resume_cooldown()
+			# Resume game
+			Utils.pause_game(false)
 			
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")

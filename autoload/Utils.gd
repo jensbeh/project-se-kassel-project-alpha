@@ -501,6 +501,29 @@ func preload_game():
 	print("PRELOAD DONE")
 
 
+# Method to pause and resume game
+func pause_game(should_pause):
+	# Pause
+	if should_pause:
+		print("PAUSE GAME")
+		
+		# Pause cooldown timer
+		Utils.get_hotbar().pause_cooldown()
+		
+		# Pause time
+		DayNightCycle.pause_time(true)
+	
+	# Resume
+	else:
+		print("RESUME GAME")
+		
+		# Resume cooldown timer
+		Utils.get_hotbar().resume_cooldown()
+		
+		# Resume time
+		DayNightCycle.pause_time(false)
+
+
 # Method to start the stop of the game
 func stop_game():
 	print("STOP GAME")
