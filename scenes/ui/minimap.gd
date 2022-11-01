@@ -22,7 +22,7 @@ func _ready():
 func _physics_process(_delta):
 	if not deactivated:
 		# Move map position with player position
-		if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
+		if Utils.get_current_player() != null and Utils.is_node_valid(Utils.get_current_player()):
 			minimap_camera.position = Utils.get_current_player().global_position
 		
 		# Handle minimap_camera zoom

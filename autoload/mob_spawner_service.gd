@@ -103,7 +103,7 @@ func cleanup():
 			DayNightCycle.disconnect("change_to_night", self, "on_change_to_night")
 	# -> Clean mobs
 	for mob in mob_list:
-		if is_instance_valid(mob) and mob.is_inside_tree():
+		if Utils.is_node_valid(mob):
 			mob.call_deferred("queue_free")
 	mob_list.clear()
 	scene_type = null
@@ -148,7 +148,7 @@ func clean_thread():
 func despawn_mobs():
 	var removed_mobs = []
 	for mob in mobs_to_despawn:
-		if is_instance_valid(mob) and mob.is_inside_tree():
+		if Utils.is_node_valid(mob):
 			# Remove mob if it is not in camera screen
 			if not Utils.is_position_in_camera_screen(mob.global_position):
 				if mob.is_in_group("Ambient Mob"):
@@ -194,7 +194,7 @@ func spawn_area_mobs():
 						# Spawn the mob as often as it is in the list
 						for mob_id in mobs_to_spawn:
 							if mob == mob_id:
-								if is_instance_valid(mobsLayer) and mobsLayer.is_inside_tree():
+								if Utils.is_node_valid(mobsLayer):
 									var mob_instance = mobScene.instance()
 									mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 									mobsLayer.call_deferred("add_child", mob_instance)
@@ -215,7 +215,7 @@ func spawn_ambient_mobs():
 			# Spawn moths
 			var mobScene : Resource = Constants.PreloadedMobScenes["Moth"]
 			if mobScene != null:
-				if is_instance_valid(ambientMobsLayer) and ambientMobsLayer.is_inside_tree():
+				if Utils.is_node_valid(ambientMobsLayer):
 					while current_ambient_mobs < max_ambient_mobs:
 						var mob_instance = mobScene.instance()
 						mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, Constants.SpawnTime.ONLY_NIGHT, scene_type)
@@ -242,7 +242,7 @@ func spawn_ambient_mobs():
 
 # Method to despawn/remove mob
 func despawn_mob(mob):
-	if is_instance_valid(mob) and mob.is_inside_tree():
+	if Utils.is_node_valid(mob):
 		Utils.get_scene_manager().get_current_scene().spawn_loot(mob.position, mob.get_name())
 		# Remove from variables
 		if mob_list.find(mob) != -1:
@@ -271,7 +271,7 @@ func on_change_to_sunrise():
 		# Spawn specific day mobs and remove specific night mobs
 		# Remove mobs
 		for mob in mob_list:
-			if is_instance_valid(mob) and mob.is_inside_tree():
+			if Utils.is_node_valid(mob):
 				if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
 					mobs_to_despawn.append(mob)
 		# Despawn and spawn mobs
@@ -284,7 +284,7 @@ func on_change_to_night():
 		# Spawn specific night mobs and remove specific day mobs
 		# Remove mobs
 		for mob in mob_list:
-			if is_instance_valid(mob) and mob.is_inside_tree():
+			if Utils.is_node_valid(mob):
 				if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
 					mobs_to_despawn.append(mob)
 		# Despawn and spawn mobs

@@ -286,19 +286,19 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
+		if ground_chunk != null and Utils.is_node_valid(ground_chunk):
 			ground_chunk.visible = true
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
+		if higher_chunk != null and Utils.is_node_valid(higher_chunk):
 			higher_chunk.visible = true
 	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
+		if ground_chunk != null and Utils.is_node_valid(ground_chunk):
 			ground_chunk.visible = false
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
+		if higher_chunk != null and Utils.is_node_valid(higher_chunk):
 			higher_chunk.visible = false
 
 

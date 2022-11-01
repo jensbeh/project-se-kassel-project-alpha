@@ -38,6 +38,7 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
+#		continue
 		# Create new AStars and store them to use later again
 		if not astar_nodes_cache.has(map_name):
 			astar_nodes_cache[map_name] = {
@@ -211,7 +212,7 @@ func generate_pathes():
 			if enemies.size() > 0:
 				enemies_to_update.clear()
 				for enemy in enemies:
-					if is_instance_valid(enemy) and enemy.is_inside_tree():
+					if Utils.is_node_valid(enemy):
 						# Check if enemy needs new path and pathfinder is not waiting for mob to return new target position
 						if enemy.mob_need_path and not mobs_waiting.has(enemy):
 							enemies_to_update.append(enemy)
@@ -224,7 +225,7 @@ func generate_pathes():
 			if bosses.size() > 0:
 				bosses_to_update.clear()
 				for boss in bosses:
-					if is_instance_valid(boss) and boss.is_inside_tree():
+					if Utils.is_node_valid(boss):
 						# Check if boss needs new path and pathfinder is not waiting for boss to return new target position
 						if boss.mob_need_path and not bosses_waiting.has(boss):
 							bosses_to_update.append(boss)
@@ -237,7 +238,7 @@ func generate_pathes():
 			if ambient_mobs.size() > 0:
 				ambient_mobs_to_update.clear()
 				for ambient_mob in ambient_mobs:
-					if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree():
+					if Utils.is_node_valid(ambient_mob):
 						if ambient_mob.mob_need_path:
 							ambient_mobs_to_update.append(ambient_mob)
 				if ambient_mobs_to_update.size() > 0:
@@ -251,7 +252,7 @@ func generate_pathes():
 					if "enemies" == mob_key:
 						var enemies_which_need_new_path = mobs_to_update[mob_key]
 						for enemy in enemies_which_need_new_path:
-							if is_instance_valid(enemy) and enemy.is_inside_tree():
+							if Utils.is_node_valid(enemy):
 								enemy.get_target_position()
 								mob_mutex.lock()
 								mobs_waiting.append(enemy)
@@ -262,7 +263,7 @@ func generate_pathes():
 					elif "bosses" == mob_key:
 						var bosses_which_need_new_path = mobs_to_update[mob_key]
 						for boss in bosses_which_need_new_path:
-							if is_instance_valid(boss) and boss.is_inside_tree():
+							if Utils.is_node_valid(boss):
 								boss.get_target_position()
 								boss_mutex.lock()
 								bosses_waiting.append(boss)
@@ -273,7 +274,7 @@ func generate_pathes():
 					elif "ambient_mobs" == mob_key:
 						var ambient_mob_which_need_new_path = mobs_to_update[mob_key]
 						for ambient_mob in ambient_mob_which_need_new_path:
-							if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree() and is_instance_valid(ambientMobsNavigationTileMap) and ambientMobsNavigationTileMap.is_inside_tree():
+							if Utils.is_node_valid(ambient_mob) and Utils.is_node_valid(ambientMobsNavigationTileMap):
 								var target_pos = ambient_mob.get_target_position()
 								if target_pos == null:
 									# If target_pos is null then take last position of ambient_mob
@@ -286,7 +287,7 @@ func generate_pathes():
 			# Mobs which need to know if they can reach player
 			if mobs_check_can_reach_player.size() > 0:
 				for mob in mobs_check_can_reach_player:
-					if is_instance_valid(mob) and mob.is_inside_tree() and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree():
+					if Utils.is_node_valid(mob) and Utils.is_node_valid(Utils.get_current_player()):
 						var new_path = get_boss_astar_path(mob.global_position, Utils.get_current_player().global_position)
 						if new_path.size() == 0:
 							# Mob can reach player
@@ -302,7 +303,7 @@ func generate_pathes():
 			if mobs_with_new_position.size() > 0:
 				mob_mutex.lock()
 				for mob in mobs_with_new_position.keys():
-					if is_instance_valid(mob) and mob.is_inside_tree():
+					if Utils.is_node_valid(mob):
 						var new_path = get_mob_astar_path(mob.global_position, mobs_with_new_position[mob])
 						call_deferred("send_path_to_mob", mob, new_path)
 						var _was_present = mobs_with_new_position.erase(mob)
@@ -312,7 +313,7 @@ func generate_pathes():
 			if bosses_with_new_position.size() > 0:
 				boss_mutex.lock()
 				for boss in bosses_with_new_position.keys():
-					if is_instance_valid(boss) and boss.is_inside_tree():
+					if Utils.is_node_valid(boss):
 						var new_path = get_boss_astar_path(boss.global_position, bosses_with_new_position[boss])
 						call_deferred("send_path_to_boss", boss, new_path)
 						var _was_present = bosses_with_new_position.erase(boss)
@@ -321,7 +322,7 @@ func generate_pathes():
 
 # Method to send new path to mob
 func send_path_to_mob(mob, new_path):
-	if is_instance_valid(mob) and mob.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
+	if Utils.is_node_valid(mob): # Because scene could be change and/or mob is despawned meanwhile
 		# Send new path to mob
 		mob.call_deferred("update_path", new_path)
 		
@@ -334,7 +335,7 @@ func send_path_to_mob(mob, new_path):
 
 # Method to send new path to mob
 func send_path_to_boss(boss, new_path):
-	if is_instance_valid(boss) and boss.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
+	if Utils.is_node_valid(boss): # Because scene could be change and/or mob is despawned meanwhile
 		# Send new path to mob
 		boss.call_deferred("update_path", new_path)
 		
@@ -674,7 +675,7 @@ func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
 
 # New position for MOB has arrived
 func got_mob_position(mob, position):
-	if is_instance_valid(mob) and mob.is_inside_tree():
+	if Utils.is_node_valid(mob):
 		mob_mutex.lock()
 		mobs_with_new_position[mob] = position
 		mob_mutex.unlock()
@@ -682,7 +683,7 @@ func got_mob_position(mob, position):
 
 # New position for BOSS has arrived
 func got_boss_position(boss, position):
-	if is_instance_valid(boss) and boss.is_inside_tree():
+	if Utils.is_node_valid(boss):
 		boss_mutex.lock()
 		bosses_with_new_position[boss] = position
 		boss_mutex.unlock()
@@ -690,6 +691,6 @@ func got_boss_position(boss, position):
 
 # Inform mob about reachability of player
 func inform_mob_about_reachable(mob, can_reach, reachable_path):
-	if is_instance_valid(mob) and mob.is_inside_tree():
+	if Utils.is_node_valid(mob):
 		# Send reachability of player to mob
 		mob.call_deferred("can_reach_player", can_reach, reachable_path)

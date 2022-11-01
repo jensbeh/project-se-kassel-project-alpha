@@ -266,7 +266,7 @@ func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : 
 			generate_again = true
 		
 		# Before return check positions of dynamic obstacles
-		if not generate_again and lootLayer != null and is_instance_valid(lootLayer) and lootLayer.is_inside_tree():
+		if not generate_again and lootLayer != null and is_node_valid(lootLayer):
 			# Loot & treasures
 			for loot in lootLayer.get_children():
 				if "treasure" in loot.name:
@@ -440,7 +440,7 @@ func is_position_in_camera_screen(position):
 
 # Method to return the players chunk coords with players position
 func get_players_chunk(map_min_global_pos):
-	if is_instance_valid(current_player) and current_player.is_inside_tree():
+	if is_node_valid(current_player):
 		var player_position = current_player.global_position
 		var player_chunk = Vector2.ZERO
 		var new_player_position = Vector2.ZERO
@@ -501,6 +501,14 @@ func preload_game():
 	print("PRELOAD DONE")
 
 
+# Method to check if node is valid and still present
+func is_node_valid(node):
+	if is_instance_valid(node) and not node.is_queued_for_deletion() and node.is_inside_tree():
+		return true
+	else:
+		return false
+
+
 # Method to pause and resume game
 func pause_game(should_pause):
 	# Pause
@@ -526,7 +534,7 @@ func pause_game(should_pause):
 
 # Method to start the stop of the game
 func stop_game():
-	print("STOP GAME")
+	print("STOPPING GAME...")
 	
 	# Start fade to black transition in main.gd
 	get_main().start_close_game_transition()

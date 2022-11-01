@@ -136,7 +136,7 @@ func update_mobs():
 	var ambient_mobs = get_tree().get_nodes_in_group("Ambient Mob")
 	
 	for enemy in enemies:
-		if is_instance_valid(enemy) and enemy.is_inside_tree():
+		if Utils.is_node_valid(enemy):
 			var enemy_chunk = Utils.get_chunk_from_position(map_min_global_pos, enemy.global_position)
 			if enemy_chunk in active_chunks:
 				call_deferred("set_mob_activity_state", enemy, true)
@@ -144,7 +144,7 @@ func update_mobs():
 				call_deferred("set_mob_activity_state", enemy, false)
 	
 	for boss in bosses:
-		if is_instance_valid(boss) and boss.is_inside_tree():
+		if Utils.is_node_valid(boss):
 			var boss_chunk = Utils.get_chunk_from_position(map_min_global_pos, boss.global_position)
 			if boss_chunk in active_chunks:
 				call_deferred("set_mob_activity_state", boss, true)
@@ -152,7 +152,7 @@ func update_mobs():
 				call_deferred("set_mob_activity_state", boss, false)
 	
 	for ambient_mob in ambient_mobs:
-		if is_instance_valid(ambient_mob) and ambient_mob.is_inside_tree():
+		if Utils.is_node_valid(ambient_mob):
 			var ambient_mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, ambient_mob.global_position)
 			if ambient_mob_chunk in active_chunks:
 				call_deferred("set_mob_activity_state", ambient_mob, true)
@@ -162,13 +162,13 @@ func update_mobs():
 
 # Method to send mob activity to mob
 func set_mob_activity_state(mob, is_active):
-	if is_instance_valid(mob) and mob.is_inside_tree(): # Because scene could be change and/or mob is despawned meanwhile
+	if Utils.is_node_valid(mob): # Because scene could be change and/or mob is despawned meanwhile
 		mob.call_deferred("set_mob_activity", is_active)
 
 
 # Method to send active and deleted chunks to map to update
 func send_chunks_to_world(deleting_chunks):
-	if is_instance_valid(world) and world.is_inside_tree():
+	if Utils.is_node_valid(world):
 		world.call_deferred("update_chunks", active_chunks, deleting_chunks)
 
 
@@ -180,7 +180,7 @@ func clean_thread():
 
 # Method to calculate mob activity -> called from every mob after instancing
 func update_mob(mob):
-	if is_instance_valid(mob) and mob.is_inside_tree():
+	if Utils.is_node_valid(mob):
 		var mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, mob.global_position)
 		if mob_chunk in active_chunks:
 			call_deferred("set_mob_activity_state", mob, true)
