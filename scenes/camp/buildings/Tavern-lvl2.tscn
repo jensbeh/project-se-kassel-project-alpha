@@ -41,6 +41,12 @@ margin_top = -148.0
 margin_right = -38.0
 margin_bottom = -140.0
 
+[node name="ColorRect4" type="ColorRect" parent="tavern-lvl2/ground/windowBackgrounds/PseudoWindows"]
+margin_left = 19.0
+margin_top = -84.0
+margin_right = 29.0
+margin_bottom = -76.0
+
 [node name="Player" parent="tavern-lvl2/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( -128, -24 )
 
