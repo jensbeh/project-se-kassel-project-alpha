@@ -61,7 +61,6 @@ func set_transition_data(transition_data):
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if player_in_change_scene_area:
-		Utils.get_current_player().set_change_scene(true)
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("-> Change scene \"HOSTEL\" to \""  + str(next_scene_path) + "\"")
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))

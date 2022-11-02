@@ -19,6 +19,10 @@ func _ready():
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
+	# Pause player
+	if Utils.get_current_player() != null:
+		Utils.get_current_player().pause_player(true)
+	
 	# Set new and current transition_data
 	current_transition_data = transition_data
 	
@@ -71,7 +75,7 @@ func _load_scene_in_background():
 			pass_data_to_scene(scene)
 			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
 			if get_current_scene().find_node("CanvasModulate") != null:
-				get_current_scene().remove_child(get_current_scene().find_node("CanvasModulate"))
+				get_current_scene().call_deferred("remove_child", get_current_scene().find_node("CanvasModulate"))
 			
 			call_deferred("_on_load_scene_done", scene)
 			break
@@ -161,9 +165,12 @@ func finish_transition():
 		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
-		
-		if Utils.get_current_player() != null:
-			Utils.get_current_player().set_change_scene(false)
+
+
+# Method is called when "GameFadeToNormal" animation finished and game is back to normal
+func on_game_fade_to_normal_finished():
+	# Resume player
+	Utils.get_current_player().pause_player(false)
 
 
 # Method to update the current_scene_type and emits a signal

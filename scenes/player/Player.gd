@@ -79,7 +79,7 @@ var is_invincible = false
 var collecting = false
 var collected = false
 var in_safe_area = false
-var change_scene
+var is_player_paused
 
 
 func _ready():
@@ -125,62 +125,63 @@ func _ready():
 
 
 func _physics_process(delta):
-	if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
-		# Handle User Input
-		if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
-			velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
-		else:
-			velocity.x = 0
+	if not is_player_paused:
+		if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
+			# Handle User Input
+			if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
+				velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
+			else:
+				velocity.x = 0
+				
+			if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
+				velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
+			else:
+				velocity.y = 0
 			
-		if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
-			velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
-		else:
-			velocity.y = 0
-		
-		if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
-			velocity /= 1.45
+			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
+				velocity /= 1.45
+				
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
+				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
+					if not Constants.PLAYER_INFINIT_STAMINA:
+						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+					velocity *= 1.4
 			
-		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
-			if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
-				if not Constants.PLAYER_INFINIT_STAMINA:
-					set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
-				velocity *= 1.4
+			if velocity != Vector2.ZERO and player_can_interact:
+				animation_tree.set("parameters/Idle/blend_position", velocity)
+				animation_tree.set("parameters/Walk/blend_position", velocity)
+				animation_tree.set("parameters/Hurt/blend_position", velocity)
+				animation_tree.set("parameters/Collect/blend_position", velocity)
+				animation_tree.set("parameters/Collected/blend_position", velocity)
+				animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
+				animation_state.travel("Walk")
+			else:
+				animation_state.travel("Idle")
+			
+			if movement:
+				velocity = move_and_slide(velocity)
+				for i in get_slide_count():
+					var collision = get_slide_collision(i)
+					if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+						emit_signal("player_collided", collision.get_collider())
 		
-		if velocity != Vector2.ZERO and player_can_interact:
-			animation_tree.set("parameters/Idle/blend_position", velocity)
-			animation_tree.set("parameters/Walk/blend_position", velocity)
-			animation_tree.set("parameters/Hurt/blend_position", velocity)
-			animation_tree.set("parameters/Collect/blend_position", velocity)
-			animation_tree.set("parameters/Collected/blend_position", velocity)
-			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
-			animation_state.travel("Walk")
-		else:
-			animation_state.travel("Idle")
-		
-		if movement:
+		elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
+			# handle knockback when hurting or dying
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 			velocity = move_and_slide(velocity)
-			for i in get_slide_count():
-				var collision = get_slide_collision(i)
-				if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-					emit_signal("player_collided", collision.get_collider())
-	
-	elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
-		# handle knockback when hurting or dying
-		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
-		velocity = move_and_slide(velocity)
-		
-	if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
-		if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
-			set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
-		elif player_stamina < level * 10 + 90:
-			set_stamina(level * 10 + 90)
+			
+		if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
+			if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
+				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
+			elif player_stamina < level * 10 + 90:
+				set_stamina(level * 10 + 90)
 
 
 # Method handles key inputs
 func _input(event):
 	Utils.get_control_notes().update()
 	# only can do interactions while mot scene changeing
-	if not change_scene:
+	if not is_player_paused:
 		if event.is_action_pressed("e"):
 			
 			if player_can_interact and not is_attacking and not dying:
@@ -265,8 +266,16 @@ func _input(event):
 			Utils.get_loot_panel()._on_LootAll_pressed()
 
 
-func set_change_scene(value):
-	change_scene = value
+# Pause & resume player
+func pause_player(should_pause):
+	# Pause
+	if should_pause:
+		print("PAUSE PLAYER")
+		is_player_paused = true
+	# Resume
+	else:
+		print("RESUME PLAYER")
+		is_player_paused = false
 
 
 # Method is called at the end of any attack animation

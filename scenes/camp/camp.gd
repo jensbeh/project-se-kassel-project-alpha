@@ -81,7 +81,6 @@ func collision_detected(collision):
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if player_in_change_scene_area:
-		Utils.get_current_player().set_change_scene(true)
 		next_scene_path = current_area.get_meta("next_scene_path")
 		
 		# Handle if change scene is to house

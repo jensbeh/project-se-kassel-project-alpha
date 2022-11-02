@@ -503,7 +503,7 @@ func preload_game():
 
 # Method to check if node is valid and still present
 func is_node_valid(node):
-	if is_instance_valid(node) and not node.is_queued_for_deletion() and node.is_inside_tree():
+	if is_instance_valid(node) and node != null and not node.is_queued_for_deletion() and node.is_inside_tree():
 		return true
 	else:
 		return false

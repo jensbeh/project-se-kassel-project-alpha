@@ -60,7 +60,7 @@ func _ready():
 	spawn_treasures()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
+	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -162,7 +162,6 @@ func setup_spawning_areas():
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if player_in_change_scene_area:
-		Utils.get_current_player().set_change_scene(true)
 		next_scene_path = current_area.get_meta("next_scene_path")
 		
 		# Handle if change scene is to house
@@ -340,3 +339,21 @@ func spawn_treasures():
 				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 				lootLayer.call_deferred("add_child", treasure)
 			quantity -= 1
+
+
+# Method is called from MobSpawnerService to instance and spawn the mob -> instancing in other threads causes random errors
+func spawn_mob(packedMobScene, current_spawn_area):
+	if Utils.is_node_valid(mobsLayer):
+		var mob_instance = packedMobScene.instance()
+		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
+		mobsLayer.call_deferred("add_child", mob_instance)
+		MobSpawnerService.new_mob_spawned(mob_instance)
+
+
+# Method is called from MobSpawnerService to instance and spawn the ambient mob -> instancing in other threads causes random errors
+func spawn_ambient_mob(mobScene, spawn_time):
+	if Utils.is_node_valid(ambientMobsLayer):
+		var mob_instance = mobScene.instance()
+		mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, spawn_time, scene_type)
+		ambientMobsLayer.call_deferred("add_child", mob_instance)
+		MobSpawnerService.new_mob_spawned(mob_instance)
