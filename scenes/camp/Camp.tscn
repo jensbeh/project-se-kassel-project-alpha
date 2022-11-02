@@ -10148,7 +10148,7 @@ script = ExtResource( 2 )
 frame = 7
 
 [node name="clarke" parent="map_camp/entitylayer/npclayer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 832, 1187 )
+position = Vector2( 830, 1187 )
 
 [node name="Body" parent="map_camp/entitylayer/npclayer/clarke" index="1"]
 texture = ExtResource( 14 )
