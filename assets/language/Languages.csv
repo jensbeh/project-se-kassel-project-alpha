@@ -131,7 +131,6 @@ RARE STAMINA POTION,Rare Stamina Potion,Seltener Ausdauertrank
 GREAT STAMINA POTION,Great Stamina Potion,Großer Ausdauertrank
 DELETEITEM,Discard Item,Item wegwerfen
 DISCARD,Discard,Wegwerfen
-LOST_GOLD,You lost gold,Du hast Gold verloren
-LOST_ITEMS,You lost these Items,Du hast diese Items Verloren
-DEATH,Death panalty,Sterbe Strafe
+LOST_ITEMS,You lost these items,Du hast diese Items verloren
+DEATH,You lost,Du hast verloren
 MAP,Map,Karte

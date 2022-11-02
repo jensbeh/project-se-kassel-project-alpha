@@ -508,7 +508,7 @@ func save_game():
 	var data = get_current_player().get_data()
 	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
 	data.position = var2str(get_current_player().position)
-	data.view_direction = get_current_player().direction
+	data.view_direction = var2str(get_current_player().direction)
 	data.time = DayNightCycle.current_time
 	save_player_data(data)
 	PlayerData.save_inventory()
