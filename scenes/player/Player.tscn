@@ -5657,7 +5657,6 @@ visible = false
 position = Vector2( 0, -9 )
 texture = ExtResource( 17 )
 vframes = 4
-frame = 3
 
 [node name="DamageAreaBottom" type="Area2D" parent="AttackSwing"]
 collision_layer = 0
@@ -5713,7 +5712,6 @@ scale = Vector2( 0.031, 0.031 )
 texture = ExtResource( 18 )
 hframes = 4
 vframes = 4
-frame = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

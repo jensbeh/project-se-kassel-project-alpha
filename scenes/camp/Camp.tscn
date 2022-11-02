@@ -10188,7 +10188,7 @@ position = Vector2( 8, 6 )
 parameters/playback = SubResource( 2 )
 
 [node name="anna" parent="map_camp/entitylayer/npclayer" index="1" instance=ExtResource( 4 )]
-position = Vector2( 1033, 1304 )
+position = Vector2( 1032, 1304 )
 
 [node name="Body" parent="map_camp/entitylayer/npclayer/anna" index="1"]
 texture = ExtResource( 14 )

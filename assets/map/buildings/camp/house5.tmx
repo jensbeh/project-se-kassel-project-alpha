@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="16" nextobjectid="9">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="9">
  <tileset firstgid="1" source="../../../tilesets/quiet_cabin_furniture.tsx"/>
  <tileset firstgid="301" source="../../../tilesets/cabin_animated_tiles.tsx"/>
  <tileset firstgid="325" source="../../../tilesets/marketplace.tsx"/>
@@ -286,8 +286,10 @@
    <object id="8" x="-27" y="-35" width="6" height="11"/>
   </objectgroup>
  </group>
- <group id="15" name="npclayer"/>
- <group id="10" name="playerlayer"/>
+ <group id="16" name="entitylayer">
+  <group id="15" name="npclayer"/>
+  <group id="10" name="playerlayer"/>
+ </group>
  <group id="3" name="higher">
   <layer id="11" name="decorations layer1" width="30" height="20">
    <data encoding="csv">

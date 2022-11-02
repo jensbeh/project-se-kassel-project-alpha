@@ -25,6 +25,24 @@ func post_import(scene):
 				for child_in_light in custom_light.get_children():
 					child_in_light.set_owner(scene)
 	
+	
+	# Setup entitylayer to YSorts
+	var entitylayer : Node2D = scene.find_node("entitylayer")
+	var ySortEntities = YSort.new()
+	ySortEntities.name = entitylayer.name
+	entitylayer.replace_by(ySortEntities, true)
+	# Setup playerlayer
+	var playerlayer : Node2D = scene.find_node("playerlayer")
+	var ySortPlayer = YSort.new()
+	ySortPlayer.name = playerlayer.name
+	playerlayer.replace_by(ySortPlayer, true)
+	# Setup npclayer
+	var npclayer : Node2D = scene.find_node("npclayer")
+	var ySortNPCS = YSort.new()
+	ySortNPCS.name = npclayer.name
+	npclayer.replace_by(ySortNPCS, true)
+	
+	
 	# Setup map - performace optimisation
 	iterate_over_nodes(scene)
 	

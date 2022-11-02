@@ -41,18 +41,18 @@ margin_top = -52.0
 margin_right = 10.0
 margin_bottom = -44.0
 
-[node name="Player" parent="house4/playerlayer" index="0" instance=ExtResource( 3 )]
+[node name="Player" parent="house4/entitylayer/playerlayer" index="0" instance=ExtResource( 3 )]
 position = Vector2( -24, 8 )
 
-[node name="AnimationTree" parent="house4/playerlayer/Player" index="19"]
+[node name="AnimationTree" parent="house4/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 
-[node name="Camera2D" parent="house4/playerlayer/Player" index="20"]
+[node name="Camera2D" parent="house4/entitylayer/playerlayer/Player" index="20"]
 limit_left = -215
 limit_top = -135
 limit_right = 198
 limit_bottom = 134
 
 [editable path="house4"]
-[editable path="house4/playerlayer/Player"]
-[editable path="house4/playerlayer/Player/HitboxZone"]
+[editable path="house4/entitylayer/playerlayer/Player"]
+[editable path="house4/entitylayer/playerlayer/Player/HitboxZone"]

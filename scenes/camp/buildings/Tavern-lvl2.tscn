@@ -47,18 +47,18 @@ margin_top = -84.0
 margin_right = 29.0
 margin_bottom = -76.0
 
-[node name="Player" parent="tavern-lvl2/playerlayer" index="0" instance=ExtResource( 2 )]
+[node name="Player" parent="tavern-lvl2/entitylayer/playerlayer" index="0" instance=ExtResource( 2 )]
 position = Vector2( -128, -24 )
 
-[node name="AnimationTree" parent="tavern-lvl2/playerlayer/Player" index="19"]
+[node name="AnimationTree" parent="tavern-lvl2/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 
-[node name="Camera2D" parent="tavern-lvl2/playerlayer/Player" index="20"]
+[node name="Camera2D" parent="tavern-lvl2/entitylayer/playerlayer/Player" index="20"]
 limit_left = -270
 limit_top = -232
 limit_right = 175
 limit_bottom = 100
 
 [editable path="tavern-lvl2"]
-[editable path="tavern-lvl2/playerlayer/Player"]
-[editable path="tavern-lvl2/playerlayer/Player/HitboxZone"]
+[editable path="tavern-lvl2/entitylayer/playerlayer/Player"]
+[editable path="tavern-lvl2/entitylayer/playerlayer/Player/HitboxZone"]

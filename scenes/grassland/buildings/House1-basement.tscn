@@ -19,18 +19,18 @@ color = Color( 0, 0, 0, 1 )
 
 [node name="house1 - basement" parent="." instance=ExtResource( 1 )]
 
-[node name="Player" parent="house1 - basement/playerlayer" index="0" instance=ExtResource( 3 )]
+[node name="Player" parent="house1 - basement/entitylayer/playerlayer" index="0" instance=ExtResource( 3 )]
 position = Vector2( -152, -88 )
 
-[node name="AnimationTree" parent="house1 - basement/playerlayer/Player" index="19"]
+[node name="AnimationTree" parent="house1 - basement/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 
-[node name="Camera2D" parent="house1 - basement/playerlayer/Player" index="20"]
+[node name="Camera2D" parent="house1 - basement/entitylayer/playerlayer/Player" index="20"]
 limit_left = -241
 limit_top = -284
 limit_right = 273
 limit_bottom = 19
 
 [editable path="house1 - basement"]
-[editable path="house1 - basement/playerlayer/Player"]
-[editable path="house1 - basement/playerlayer/Player/HitboxZone"]
+[editable path="house1 - basement/entitylayer/playerlayer/Player"]
+[editable path="house1 - basement/entitylayer/playerlayer/Player/HitboxZone"]
