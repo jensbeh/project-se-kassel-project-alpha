@@ -24,16 +24,16 @@ color = Color( 0, 0, 0, 1 )
 script = ExtResource( 4 )
 
 [node name="ColorRect" type="ColorRect" parent="tavern-lvl2/ground/windowBackgrounds/PseudoWindows"]
-margin_left = -170.0
-margin_top = -148.0
-margin_right = -150.0
-margin_bottom = -140.0
+margin_left = -205.0
+margin_top = -180.0
+margin_right = -195.0
+margin_bottom = -172.0
 
 [node name="ColorRect2" type="ColorRect" parent="tavern-lvl2/ground/windowBackgrounds/PseudoWindows"]
-margin_left = -109.0
-margin_top = -148.0
-margin_right = -99.0
-margin_bottom = -140.0
+margin_left = -170.0
+margin_top = -180.0
+margin_right = -150.0
+margin_bottom = -172.0
 
 [node name="ColorRect3" type="ColorRect" parent="tavern-lvl2/ground/windowBackgrounds/PseudoWindows"]
 margin_left = -58.0
