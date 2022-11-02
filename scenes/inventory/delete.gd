@@ -49,7 +49,6 @@ func delete_item():
 
 func get_drag_data(_pos):
 	if item != null:
-#		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Delete"
@@ -100,7 +99,6 @@ func drop_data(_pos, data):
 	get_child(0).frame = data["origin_frame"]
 	delete_item()
 	verify_target_texture(data)
-#	Utils.get_current_player().set_dragging(false)
 
 
 func verify_target_texture(data):

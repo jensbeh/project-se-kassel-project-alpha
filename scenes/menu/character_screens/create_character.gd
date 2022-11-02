@@ -595,7 +595,7 @@ func create_player_inventory():
 		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
 		var item_data_json = JSON.parse(item_data_file.get_as_text())
 		item_data_file.close()
-		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/trader/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 		merchant_data.store_line(to_json(item_data_json.result))
 		merchant_data.close()
 
@@ -606,7 +606,8 @@ func create_player_inventory():
 	# set hotbar & light
 	Utils.get_hotbar().load_hotbar()
 	Utils.get_current_player().set_light(save_game_data.light)
-	Utils.get_current_player().has_map = save_game_data.has_map
+	Utils.get_ui().has_map = save_game_data.has_map
+	Utils.get_ui().show_map = save_game_data.show_map
 
 	# sets lp & weapon
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)

@@ -119,8 +119,7 @@ func change_heart_number(number_heart):
 
 # position for hotbar with or without minimap
 func in_dungeon(value):
-	if (value or (Utils.get_current_player() != null and (!Utils.get_current_player().has_map or 
-	!Utils.get_current_player().show_map))):
+	if (value or (!Utils.get_ui().has_map or !Utils.get_ui().show_map)):
 		get_node("Hotbar").rect_position = Vector2(-916,456)
 	else:
 		get_node("Hotbar").rect_position = Vector2(-504,456)

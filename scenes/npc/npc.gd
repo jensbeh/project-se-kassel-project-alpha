@@ -25,7 +25,7 @@ func _ready():
 	# Syncronize time
 	time = DayNightCycle.current_minute
 	# Connect player interaction
-	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
+	Utils.get_ui().connect("player_interact", self, "interaction_detected")
 	# Get npc path
 	path_exists = (self.get_parent().get_parent().find_node(self.name + "_Path") != null)
 	if path_exists:

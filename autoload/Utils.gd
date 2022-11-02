@@ -510,6 +510,9 @@ func save_game():
 	data.position = var2str(get_current_player().position)
 	data.view_direction = var2str(get_current_player().direction)
 	data.time = DayNightCycle.current_time
+	# map informations
+	data.show_map = get_ui().show_map
+	data.has_map = get_ui().has_map
 	save_player_data(data)
 	PlayerData.save_inventory()
 

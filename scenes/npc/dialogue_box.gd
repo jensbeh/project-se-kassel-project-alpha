@@ -13,6 +13,7 @@ var death = false
 
 
 func start(origin_obj, looted_value, treasure_type):
+	Utils.get_ui().is_dialog = true
 	obj_name = origin_obj.name
 	origin = origin_obj
 	type = treasure_type
@@ -114,6 +115,8 @@ func close_dialog():
 		Utils.get_current_player().set_player_can_interact(true)
 		Utils.get_current_player().set_movement(true)
 		Utils.get_current_player().set_movment_animation(true)
+		Utils.get_current_player().pause_player(false)
+		Utils.get_ui().is_dialog = false
 		# reset npc interaction state
 		if !death:
 			if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:

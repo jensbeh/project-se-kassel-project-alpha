@@ -2,7 +2,6 @@ extends KinematicBody2D
 
 # Signals
 signal player_collided(collision)
-signal player_interact
 signal player_looting
 
 # Animation
@@ -62,16 +61,12 @@ var max_health: int
 var current_health: int
 var data
 var level: int = 1
-var dragging = false
-var preview = false
 var player_exp: int = 0
 var player_stamina: float
 var player_light_radius: int
 var health_cooldown = 0
 var stamina_cooldown = 0
 var weapon_weight = 0
-var has_map = false
-var show_map = false
 
 # Variables
 var is_attacking = false
@@ -82,7 +77,7 @@ var is_invincible = false
 var collecting = false
 var collected = false
 var in_safe_area = false
-var change_scene
+var is_player_paused = false
 
 
 func _ready():
@@ -128,128 +123,64 @@ func _ready():
 
 
 func _physics_process(delta):
-	if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
-		# Handle User Input
-		if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
-			velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
-		else:
-			velocity.x = 0
+	if not is_player_paused:
+		if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
+			# Handle User Input
+			if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
+				velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
+			else:
+				velocity.x = 0
+				
+			if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
+				velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
+			else:
+				velocity.y = 0
 			
-		if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
-			velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
-		else:
-			velocity.y = 0
-		
-		if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
-			velocity /= 1.45
+			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
+				velocity /= 1.45
+				
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
+				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
+					if not Constants.PLAYER_INFINIT_STAMINA:
+						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+					velocity *= 1.4
 			
-		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
-			if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
-				if not Constants.PLAYER_INFINIT_STAMINA:
-					set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
-				velocity *= 1.4
+			if velocity != Vector2.ZERO and player_can_interact:
+				direction = velocity
+				animation_tree.set("parameters/Idle/blend_position", velocity)
+				animation_tree.set("parameters/Walk/blend_position", velocity)
+				animation_tree.set("parameters/Hurt/blend_position", velocity)
+				animation_tree.set("parameters/Collect/blend_position", velocity)
+				animation_tree.set("parameters/Collected/blend_position", velocity)
+				animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
+				animation_state.travel("Walk")
+			else:
+				animation_state.travel("Idle")
+			
+			if movement:
+				velocity = move_and_slide(velocity)
+				for i in get_slide_count():
+					var collision = get_slide_collision(i)
+					if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+						emit_signal("player_collided", collision.get_collider())
 		
-		if velocity != Vector2.ZERO and player_can_interact:
-			direction = velocity
-			if Utils.get_ui().get_node_or_null("DialogueBox") != null:
-				Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
-				Utils.get_control_notes().show()
-			animation_tree.set("parameters/Idle/blend_position", velocity)
-			animation_tree.set("parameters/Walk/blend_position", velocity)
-			animation_tree.set("parameters/Hurt/blend_position", velocity)
-			animation_tree.set("parameters/Collect/blend_position", velocity)
-			animation_tree.set("parameters/Collected/blend_position", velocity)
-			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
-			animation_state.travel("Walk")
-		else:
-			animation_state.travel("Idle")
-		
-		if movement:
+		elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
+			# handle knockback when hurting or dying
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 			velocity = move_and_slide(velocity)
-			for i in get_slide_count():
-				var collision = get_slide_collision(i)
-				if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-					emit_signal("player_collided", collision.get_collider())
-	
-	elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
-		# handle knockback when hurting or dying
-		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
-		velocity = move_and_slide(velocity)
-		
-	if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
-		if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
-			set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
-		elif player_stamina < level * 10 + 90:
-			set_stamina(level * 10 + 90)
+			
+		if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
+			if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
+				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
+			elif player_stamina < level * 10 + 90:
+				set_stamina(level * 10 + 90)
 
 
 # Method handles key inputs
 func _input(event):
-	Utils.get_control_notes().update()
-	# only can do interactions while mot scene changeing
-	if not change_scene:
-		if event.is_action_pressed("e"):
-			
-			if player_can_interact and not is_attacking and not dying:
-				emit_signal("player_interact")
-				
-			# Remove the Loot Panel
-			elif Utils.get_loot_panel() != null:
-				# Call close Method in Loot Panel
-				Utils.get_loot_panel()._on_Close_pressed()
-				
-			# Remove the trade inventory
-			if Utils.get_trade_inventory() != null and !dragging:
-				Utils.get_trade_inventory().queue_free()
-				set_player_can_interact(true)
-				set_movement(true)
-				set_movment_animation(true)
-				# Reset npc interaction state
-				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
-					npc.set_interacted(false)
-				Utils.save_game()
-				MerchantData.save_merchant_inventory()
-		
-		# Open game menu with "esc"
-		elif event.is_action_pressed("esc") and movement and not hurting and not dying and Utils.get_game_menu() == null:
-			set_movement(false)
-			set_movment_animation(false)
-			set_player_can_interact(false)
-			Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
-		# Close game menu with "esc" when game menu is open
-		elif event.is_action_pressed("esc") and !movement and Utils.get_game_menu() != null:
-			set_movement(true)
-			set_movment_animation(true)
-			set_player_can_interact(true)
-			Utils.get_game_menu().queue_free()
-		
-		# Open character inventory with "i"
-		elif event.is_action_pressed("character_inventory") and movement and not collecting and not dying and Utils.get_character_interface() == null:
-			set_movement(false)
-			set_movment_animation(false)
-			set_player_can_interact(false)
-			Utils.get_ui().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
-		# Close character inventory with "i"
-		elif event.is_action_pressed("character_inventory") and !movement and Utils.get_character_interface() != null and !dragging:
-			set_movement(true)
-			set_movment_animation(true)
-			set_player_can_interact(true)
-			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
-			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
-			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
-			Utils.save_game()
-			Utils.get_character_interface().queue_free()
-		
-		# Use Item from Hotbar
-		elif event.is_action_pressed("hotbar") and !preview and not dying:
-			Utils.get_hotbar().use_item()
-			
-		# Control Notes
-		elif event.is_action_pressed("control_notes") and !preview:
-			Utils.get_control_notes().show_hide_control_notes()
-		
+	if not is_player_paused:
 		# Attack with "left_mouse"
-		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
+		if event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.PLAYER_INFINIT_STAMINA:
 					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
@@ -266,21 +197,6 @@ func _input(event):
 		elif event.is_action_pressed("loot") and Utils.get_loot_panel() != null:
 			# Call Loot all Method in Loot Panel
 			Utils.get_loot_panel()._on_LootAll_pressed()
-			
-		# open map
-		elif event.is_action_pressed("map") and has_map and !show_map:
-			show_map = true
-			data.show_map = show_map
-			Utils.get_minimap().update_minimap()
-		
-		elif event.is_action_pressed("map") and has_map and show_map:
-			show_map = false
-			data.show_map = show_map
-			Utils.get_minimap().update_minimap()
-
-
-func set_change_scene(value):
-	change_scene = value
 
 
 # Method is called at the end of any attack animation
@@ -818,14 +734,6 @@ func get_data():
 	return data
 
 
-func set_preview(value):
-	preview = value
-
-
-func set_dragging(value):
-	dragging = value
-
-
 func set_level(new_level: int):
 	level = new_level
 	data.level = new_level
@@ -1111,9 +1019,9 @@ func rescue_pay():
 	var worth = 0
 	var lost_items = []
 	# Only lose Item with min level 3 and min 3 items in inventory
-	if level >= Constants.MIN_LEVEL_ITEM_LOSE and item_list.size() >= 3:
+	if level >= Constants.MIN_LEVEL_ITEM_LOSE and item_list.size() >= 4:
 		# Pay min level * 10 Worth on random Items if possible
-		while worth < level * Constants.MIN_LOST_FACTOR and item_list.size() > 0:
+		while worth < level * Constants.MIN_LOST_FACTOR and item_list.size() > 3:
 			var payed_item = item_list[(randi() % item_list.size())]
 			item_list.erase(payed_item)
 			if PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] > 1:
@@ -1139,16 +1047,10 @@ func rescue_pay():
 	if lost_items.size() > 0 or lost_gold > 0:
 		set_player_can_interact(false)
 		set_movement(false)
-		set_movment_animation(false)
+		pause_player(true)
 		var dialog = load(Constants.DIALOG_PATH).instance()
 		Utils.get_ui().add_child(dialog)
 		dialog.start(self, "Death", lost_dialog)
-
-
-# Save map value
-func set_map(value):
-	has_map = value
-	data.has_map = value
 
 
 func set_health_cooldown(new_cooldown):
@@ -1162,3 +1064,6 @@ func set_stamina_cooldown(new_cooldown):
 	# for save
 	data.stamina_cooldown = new_cooldown
 
+
+func pause_player(value):
+	is_player_paused = value

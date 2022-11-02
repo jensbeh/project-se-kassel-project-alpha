@@ -139,8 +139,8 @@ func setup_player():
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals
-	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
-	Utils.get_current_player().connect("player_interact", self, "interaction")
+	Utils.get_ui().connect("player_interact", self, "interaction_detected")
+	Utils.get_ui().connect("player_interact", self, "interaction")
 
 
 # Method to set transition_data which contains stuff about the player and the transition
@@ -151,7 +151,6 @@ func set_transition_data(transition_data):
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if player_in_change_scene_area:
-		Utils.get_current_player().set_change_scene(true)
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
@@ -174,8 +173,8 @@ func body_entered_change_scene_area(body, changeSceneArea):
 # Method to disconnect all signals
 func clear_signals():
 	# Player
-	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
-	Utils.get_current_player().disconnect("player_interact", self, "interaction")
+	Utils.get_ui().disconnect("player_interact", self, "interaction_detected")
+	Utils.get_ui().disconnect("player_interact", self, "interaction")
 	
 	# Change scene areas
 	var changeScenesObject = find_node("changeScenes")

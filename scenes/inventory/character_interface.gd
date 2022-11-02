@@ -82,8 +82,6 @@ func _ready():
 			"Hair":
 				hair = child
 	load_character()
-	find_node("Player").set_preview(true)
-	find_node("Player").set_dragging(true)
 
 
 func load_character():

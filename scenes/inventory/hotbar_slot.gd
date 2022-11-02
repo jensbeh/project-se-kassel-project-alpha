@@ -40,7 +40,6 @@ func _on_Timer_timeout():
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.equipment_data[slot]["Item"] != null:
-#		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -186,8 +185,6 @@ func drop_data(_pos, data):
 			check_cooldown(data)
 	
 	Utils.get_hotbar().load_hotbar()
-	
-#	Utils.get_current_player().set_dragging(false)
 
 
 

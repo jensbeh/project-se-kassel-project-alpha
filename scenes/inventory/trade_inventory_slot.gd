@@ -8,7 +8,6 @@ var inv_slot = load(Constants.TRADE_INV_SLOT)
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if MerchantData.inv_data[slot]["Item"] != null:
-#		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "TradeInventory"
@@ -192,7 +191,7 @@ func drop_data(_pos, data):
 
 			show_hide_stack_label(data)
 		check_slots()
-#	Utils.get_current_player().set_dragging(false)
+
 
 func SplitStack(split_amount, data):
 	var target_slot = get_parent().get_name()

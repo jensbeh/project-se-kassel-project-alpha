@@ -7,7 +7,6 @@ var tool_tip = load(Constants.TOOLTIP)
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.equipment_data[slot]["Item"] != null:
-#		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -101,7 +100,6 @@ func drop_data(_pos, data):
 		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(light_value))
 		Utils.get_current_player().set_light(light_value)
 	
-#	Utils.get_current_player().set_dragging(false)
 
 
 func verify_origin_texture(data):
