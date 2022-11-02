@@ -27,9 +27,10 @@ func _ready():
 	# Connect player interaction
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 	# Get npc path
-	path_exists = (self.get_parent().get_parent().find_node(self.name + "_Path") != null)
+	var npcPathesNode = self.get_parent().get_parent().get_parent().find_node("npcPathes")
+	path_exists = (npcPathesNode.find_node(self.name + "_Path") != null)
 	if path_exists:
-		path_1 = self.get_parent().get_parent().find_node(self.name + "_Path")
+		path_1 = npcPathesNode.find_node(self.name + "_Path")
 		var points = path_1.get_curve().get_baked_points()
 		for i in points:
 			i = i + path_1.position
@@ -106,11 +107,13 @@ func _physics_process(delta):
 	if !stop and target != null and !stay:
 		velocity = move_and_slide(velocity)
 
+
 # When player enter npc zone, npc has to stay
 func _on_interactionZone_NPC_body_entered(body):
 	if body == Utils.get_current_player():
 		player_in_interacting_zone = true
 		stop = true
+
 
 # When player leave npc zone, npc can walk again
 func _on_interactionZone_NPC_body_exited(body):
@@ -118,20 +121,22 @@ func _on_interactionZone_NPC_body_exited(body):
 		player_in_interacting_zone = false
 		stop = false
 
+
 # When player interact with npc with "e"
 func interaction_detected():
-	if player_in_interacting_zone:
-		# Proof if some interactions in process
-		for npc in self.get_parent().get_children():
-			if npc != self and npc.get_interaction():
+	if not Utils.get_current_player().is_in_change_scene_area():
+		if player_in_interacting_zone:
+			# Proof if some interactions in process
+			for npc in self.get_parent().get_children():
+				if npc != self and npc.get_interaction():
+					interacted = true
+			if !interacted:
 				interacted = true
-		if !interacted:
-			interacted = true
-			Utils.get_current_player().set_player_can_interact(false)
-			Utils.get_current_player().set_movement(false)
-			var dialog = load(Constants.DIALOG_PATH).instance()
-			Utils.get_ui().add_child(dialog)
-			dialog.start(self, false, "")
+				Utils.get_current_player().set_player_can_interact(false)
+				Utils.get_current_player().set_movement(false)
+				var dialog = load(Constants.DIALOG_PATH).instance()
+				Utils.get_ui().add_child(dialog)
+				dialog.start(self, false, "")
 
 
 # When npc enters stairs to slow down
@@ -139,14 +144,17 @@ func _on_interactionZone_NPC_area_entered(area):
 	if area.get_parent().name == "stairs":
 		walk_speed = Constants.NPC_STAIRS_SPEED
 
+
 # When npc exited stairs to speed up
 func _on_interactionZone_NPC_area_exited(area):
 	if area.get_parent().name == "stairs":
 		walk_speed = Constants.NPC_NORMAL_SPEED
 
+
 # To get interaction state
 func get_interaction():
 	return interacted
+
 
 # To set npc is interacting state
 func set_interacted(interaction):

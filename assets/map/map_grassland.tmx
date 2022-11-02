@@ -18676,8 +18676,8 @@
    <object id="5640" x="918" y="-691" width="8" height="14"/>
   </objectgroup>
  </group>
- <group id="67" name="npclayer"/>
  <group id="8" name="entitylayer">
+  <group id="67" name="npclayer"/>
   <group id="76" name="lootLayer"/>
   <group id="68" name="playerlayer"/>
   <group id="69" name="mobslayer"/>

@@ -1,11 +1,9 @@
-[gd_scene load_steps=102 format=2]
+[gd_scene load_steps=100 format=2]
 
 [ext_resource path="res://assets/map/map_camp.tmx" type="PackedScene" id=1]
 [ext_resource path="res://scenes/camp/camp.gd" type="Script" id=2]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/npc/NPC.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/player/clothes/pants.png" type="Texture" id=5]
-[ext_resource path="res://assets/player/hair/gentleman.png" type="Texture" id=6]
 [ext_resource path="res://assets/player/hair/wavy.png" type="Texture" id=7]
 [ext_resource path="res://assets/player/acc/hat_witch.png" type="Texture" id=8]
 [ext_resource path="res://assets/player/hair/buzzcut.png" type="Texture" id=9]
@@ -10149,105 +10147,96 @@ script = ExtResource( 2 )
 [node name="sprite" parent="map_camp/ground/Chunks/Chunk (11,2)/Buildings/doors" index="1"]
 frame = 7
 
-[node name="clarke" parent="map_camp/npclayer" index="0" instance=ExtResource( 4 )]
-position = Vector2( 824, 1176 )
+[node name="clarke" parent="map_camp/entitylayer/npclayer" index="0" instance=ExtResource( 4 )]
+position = Vector2( 832, 1187 )
 
-[node name="Body" parent="map_camp/npclayer/clarke" index="1"]
+[node name="Body" parent="map_camp/entitylayer/npclayer/clarke" index="1"]
 texture = ExtResource( 14 )
 
-[node name="Shoes" parent="map_camp/npclayer/clarke" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/clarke" index="2"]
 texture = SubResource( 81 )
 
-[node name="Pants" parent="map_camp/npclayer/clarke" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/clarke" index="3"]
 visible = false
-texture = ExtResource( 5 )
 
-[node name="Clothes" parent="map_camp/npclayer/clarke" index="4"]
-position = Vector2( -8, -15.9999 )
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/clarke" index="4"]
 texture = SubResource( 82 )
 
-[node name="Blush" parent="map_camp/npclayer/clarke" index="5"]
+[node name="Blush" parent="map_camp/entitylayer/npclayer/clarke" index="5"]
 texture = SubResource( 83 )
 
-[node name="Lipstick" parent="map_camp/npclayer/clarke" index="6"]
+[node name="Lipstick" parent="map_camp/entitylayer/npclayer/clarke" index="6"]
 texture = SubResource( 84 )
 
-[node name="Beard" parent="map_camp/npclayer/clarke" index="7"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/clarke" index="7"]
 visible = false
 
-[node name="Eyes" parent="map_camp/npclayer/clarke" index="8"]
+[node name="Eyes" parent="map_camp/entitylayer/npclayer/clarke" index="8"]
 texture = SubResource( 85 )
 
-[node name="Earring" parent="map_camp/npclayer/clarke" index="9"]
+[node name="Earring" parent="map_camp/entitylayer/npclayer/clarke" index="9"]
 visible = true
 texture = SubResource( 86 )
 
-[node name="Hair" parent="map_camp/npclayer/clarke" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/clarke" index="10"]
 texture = SubResource( 87 )
 
-[node name="CollisionShape2D" parent="map_camp/npclayer/clarke" index="14"]
-visible = false
-
-[node name="interactionZone NPC" parent="map_camp/npclayer/clarke" index="15"]
-visible = false
-
-[node name="InteractionArea" parent="map_camp/npclayer/clarke/interactionZone NPC" index="0"]
+[node name="InteractionArea" parent="map_camp/entitylayer/npclayer/clarke/interactionZone NPC" index="0"]
 position = Vector2( 8, 6 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/clarke" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/clarke" index="17"]
 parameters/playback = SubResource( 2 )
 
-[node name="anna" parent="map_camp/npclayer" index="1" instance=ExtResource( 4 )]
-position = Vector2( 1024, 1304 )
+[node name="anna" parent="map_camp/entitylayer/npclayer" index="1" instance=ExtResource( 4 )]
+position = Vector2( 1033, 1304 )
 
-[node name="Body" parent="map_camp/npclayer/anna" index="1"]
+[node name="Body" parent="map_camp/entitylayer/npclayer/anna" index="1"]
 texture = ExtResource( 14 )
 frame = 376
 
-[node name="Shoes" parent="map_camp/npclayer/anna" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/anna" index="2"]
 frame = 3760
 
-[node name="Pants" parent="map_camp/npclayer/anna" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/anna" index="3"]
 frame = 3760
 
-[node name="Clothes" parent="map_camp/npclayer/anna" index="4"]
-position = Vector2( -8, -15.9999 )
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/anna" index="4"]
 texture = ExtResource( 16 )
 frame = 3760
 
-[node name="Blush" parent="map_camp/npclayer/anna" index="5"]
+[node name="Blush" parent="map_camp/entitylayer/npclayer/anna" index="5"]
 frame = 1880
 
-[node name="Lipstick" parent="map_camp/npclayer/anna" index="6"]
+[node name="Lipstick" parent="map_camp/entitylayer/npclayer/anna" index="6"]
 frame = 1880
 
-[node name="Beard" parent="map_camp/npclayer/anna" index="7"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/anna" index="7"]
 visible = false
 frame = 5264
 
-[node name="Eyes" parent="map_camp/npclayer/anna" index="8"]
+[node name="Eyes" parent="map_camp/entitylayer/npclayer/anna" index="8"]
 frame = 5264
 
-[node name="Earring" parent="map_camp/npclayer/anna" index="9"]
+[node name="Earring" parent="map_camp/entitylayer/npclayer/anna" index="9"]
 frame = 376
 
-[node name="Hair" parent="map_camp/npclayer/anna" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/anna" index="10"]
 texture = ExtResource( 7 )
 frame = 5264
 
-[node name="Mask" parent="map_camp/npclayer/anna" index="11"]
+[node name="Mask" parent="map_camp/entitylayer/npclayer/anna" index="11"]
 frame = 376
 
-[node name="Glasses" parent="map_camp/npclayer/anna" index="12"]
+[node name="Glasses" parent="map_camp/entitylayer/npclayer/anna" index="12"]
 frame = 3760
 
-[node name="Hat" parent="map_camp/npclayer/anna" index="13"]
+[node name="Hat" parent="map_camp/entitylayer/npclayer/anna" index="13"]
 frame = 376
 
-[node name="InteractionArea" parent="map_camp/npclayer/anna/interactionZone NPC" index="0"]
+[node name="InteractionArea" parent="map_camp/entitylayer/npclayer/anna/interactionZone NPC" index="0"]
 position = Vector2( 8, 6 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/anna" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/anna" index="16"]
 anims/IdleDown = SubResource( 23 )
 anims/IdleLeft = SubResource( 24 )
 anims/IdleRight = SubResource( 88 )
@@ -10258,42 +10247,36 @@ anims/WalkLeft = SubResource( 29 )
 anims/WalkRight = SubResource( 30 )
 anims/WalkUp = SubResource( 31 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/anna" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/anna" index="17"]
 parameters/playback = SubResource( 32 )
 parameters/Walk/blend_position = Vector2( 0.998333, 0.910072 )
 
-[node name="lea" parent="map_camp/npclayer" index="2" instance=ExtResource( 4 )]
-position = Vector2( 1216, 515 )
+[node name="lea" parent="map_camp/entitylayer/npclayer" index="2" instance=ExtResource( 4 )]
+position = Vector2( 1224, 519 )
 
-[node name="Shoes" parent="map_camp/npclayer/lea" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/lea" index="2"]
 frame = 0
 
-[node name="Pants" parent="map_camp/npclayer/lea" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/lea" index="3"]
 visible = false
-texture = ExtResource( 5 )
 
-[node name="Clothes" parent="map_camp/npclayer/lea" index="4"]
-position = Vector2( -8, -15.9999 )
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/lea" index="4"]
 texture = ExtResource( 18 )
 frame = 8
 
-[node name="Blush" parent="map_camp/npclayer/lea" index="5"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/lea" index="7"]
 visible = false
 
-[node name="Beard" parent="map_camp/npclayer/lea" index="7"]
-visible = false
-
-[node name="Earring" parent="map_camp/npclayer/lea" index="9"]
+[node name="Earring" parent="map_camp/entitylayer/npclayer/lea" index="9"]
 visible = true
 
-[node name="Hair" parent="map_camp/npclayer/lea" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/lea" index="10"]
 texture = ExtResource( 21 )
 
-[node name="InteractionArea" parent="map_camp/npclayer/lea/interactionZone NPC" index="0"]
-position = Vector2( 8, 18.0625 )
+[node name="InteractionArea" parent="map_camp/entitylayer/npclayer/lea/interactionZone NPC" index="0"]
 shape = SubResource( 78 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/lea" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/lea" index="16"]
 anims/IdleDown = SubResource( 34 )
 anims/IdleLeft = SubResource( 35 )
 anims/IdleRight = SubResource( 36 )
@@ -10304,35 +10287,28 @@ anims/WalkLeft = SubResource( 40 )
 anims/WalkRight = SubResource( 41 )
 anims/WalkUp = SubResource( 42 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/lea" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/lea" index="17"]
 parameters/playback = SubResource( 43 )
 
-[node name="steven" parent="map_camp/npclayer" index="3" instance=ExtResource( 4 )]
-position = Vector2( 1744, 856 )
+[node name="steven" parent="map_camp/entitylayer/npclayer" index="3" instance=ExtResource( 4 )]
+position = Vector2( 1680, 843 )
 
-[node name="Shoes" parent="map_camp/npclayer/steven" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/steven" index="2"]
 frame = 0
 
-[node name="Pants" parent="map_camp/npclayer/steven" index="3"]
-texture = ExtResource( 5 )
-
-[node name="Clothes" parent="map_camp/npclayer/steven" index="4"]
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/steven" index="4"]
 frame = 0
 
-[node name="Blush" parent="map_camp/npclayer/steven" index="5"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/steven" index="7"]
 visible = false
 
-[node name="Beard" parent="map_camp/npclayer/steven" index="7"]
-visible = false
-
-[node name="Eyes" parent="map_camp/npclayer/steven" index="8"]
+[node name="Eyes" parent="map_camp/entitylayer/npclayer/steven" index="8"]
 frame = 0
 
-[node name="Hair" parent="map_camp/npclayer/steven" index="10"]
-texture = ExtResource( 6 )
+[node name="Hair" parent="map_camp/entitylayer/npclayer/steven" index="10"]
 frame = 0
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/steven" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/steven" index="16"]
 anims/IdleDown = SubResource( 3 )
 anims/IdleLeft = SubResource( 4 )
 anims/IdleRight = SubResource( 5 )
@@ -10343,40 +10319,37 @@ anims/WalkLeft = SubResource( 9 )
 anims/WalkRight = SubResource( 10 )
 anims/WalkUp = SubResource( 11 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/steven" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/steven" index="17"]
 parameters/playback = SubResource( 12 )
 
-[node name="sam" parent="map_camp/npclayer" index="4" instance=ExtResource( 4 )]
-position = Vector2( 896, 579 )
+[node name="sam" parent="map_camp/entitylayer/npclayer" index="4" instance=ExtResource( 4 )]
+position = Vector2( 904, 583 )
 
-[node name="Shoes" parent="map_camp/npclayer/sam" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/sam" index="2"]
 frame = 0
 
-[node name="Pants" parent="map_camp/npclayer/sam" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/sam" index="3"]
 texture = ExtResource( 19 )
 frame = 16
 
-[node name="Clothes" parent="map_camp/npclayer/sam" index="4"]
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/sam" index="4"]
 texture = ExtResource( 17 )
 frame = 0
 
-[node name="Blush" parent="map_camp/npclayer/sam" index="5"]
+[node name="Lipstick" parent="map_camp/entitylayer/npclayer/sam" index="6"]
 visible = false
 
-[node name="Lipstick" parent="map_camp/npclayer/sam" index="6"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/sam" index="7"]
 visible = false
 
-[node name="Beard" parent="map_camp/npclayer/sam" index="7"]
-visible = false
-
-[node name="Hair" parent="map_camp/npclayer/sam" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/sam" index="10"]
 texture = ExtResource( 9 )
 
-[node name="InteractionArea" parent="map_camp/npclayer/sam/interactionZone NPC" index="0"]
+[node name="InteractionArea" parent="map_camp/entitylayer/npclayer/sam/interactionZone NPC" index="0"]
 position = Vector2( 8, 18 )
 shape = SubResource( 79 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/sam" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/sam" index="16"]
 anims/IdleDown = SubResource( 45 )
 anims/IdleLeft = SubResource( 46 )
 anims/IdleRight = SubResource( 47 )
@@ -10387,46 +10360,43 @@ anims/WalkLeft = SubResource( 51 )
 anims/WalkRight = SubResource( 52 )
 anims/WalkUp = SubResource( 53 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/sam" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/sam" index="17"]
 parameters/playback = SubResource( 54 )
 
-[node name="bella" parent="map_camp/npclayer" index="5" instance=ExtResource( 4 )]
-position = Vector2( 1074, 531 )
+[node name="bella" parent="map_camp/entitylayer/npclayer" index="5" instance=ExtResource( 4 )]
+position = Vector2( 1082, 535 )
 
-[node name="Shoes" parent="map_camp/npclayer/bella" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/bella" index="2"]
 frame = 0
 
-[node name="Pants" parent="map_camp/npclayer/bella" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/bella" index="3"]
 frame = 56
 
-[node name="Clothes" parent="map_camp/npclayer/bella" index="4"]
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/bella" index="4"]
 texture = ExtResource( 16 )
 frame = 56
 
-[node name="Blush" parent="map_camp/npclayer/bella" index="5"]
-visible = false
-
-[node name="Lipstick" parent="map_camp/npclayer/bella" index="6"]
+[node name="Lipstick" parent="map_camp/entitylayer/npclayer/bella" index="6"]
 frame = 32
 
-[node name="Beard" parent="map_camp/npclayer/bella" index="7"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/bella" index="7"]
 visible = false
 
-[node name="Eyes" parent="map_camp/npclayer/bella" index="8"]
+[node name="Eyes" parent="map_camp/entitylayer/npclayer/bella" index="8"]
 frame = 40
 
-[node name="Hair" parent="map_camp/npclayer/bella" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/bella" index="10"]
 frame = 64
 
-[node name="Hat" parent="map_camp/npclayer/bella" index="13"]
+[node name="Hat" parent="map_camp/entitylayer/npclayer/bella" index="13"]
 visible = true
 texture = ExtResource( 8 )
 
-[node name="InteractionArea" parent="map_camp/npclayer/bella/interactionZone NPC" index="0"]
+[node name="InteractionArea" parent="map_camp/entitylayer/npclayer/bella/interactionZone NPC" index="0"]
 position = Vector2( 6, 18 )
 shape = SubResource( 80 )
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/bella" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/bella" index="16"]
 anims/IdleDown = SubResource( 13 )
 anims/IdleLeft = SubResource( 14 )
 anims/IdleRight = SubResource( 15 )
@@ -10437,40 +10407,37 @@ anims/WalkLeft = SubResource( 19 )
 anims/WalkRight = SubResource( 20 )
 anims/WalkUp = SubResource( 21 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/bella" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/bella" index="17"]
 parameters/playback = SubResource( 22 )
 
-[node name="murphy" parent="map_camp/npclayer" index="6" instance=ExtResource( 4 )]
-position = Vector2( 1328, 512 )
+[node name="murphy" parent="map_camp/entitylayer/npclayer" index="6" instance=ExtResource( 4 )]
+position = Vector2( 1690, 563 )
 
-[node name="Body" parent="map_camp/npclayer/murphy" index="1"]
+[node name="Body" parent="map_camp/entitylayer/npclayer/murphy" index="1"]
 texture = ExtResource( 13 )
 
-[node name="Pants" parent="map_camp/npclayer/murphy" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/murphy" index="3"]
 texture = ExtResource( 19 )
 frame = 72
 
-[node name="Clothes" parent="map_camp/npclayer/murphy" index="4"]
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/murphy" index="4"]
 texture = ExtResource( 15 )
 frame = 16
 
-[node name="Blush" parent="map_camp/npclayer/murphy" index="5"]
+[node name="Lipstick" parent="map_camp/entitylayer/npclayer/murphy" index="6"]
 visible = false
 
-[node name="Lipstick" parent="map_camp/npclayer/murphy" index="6"]
-visible = false
-
-[node name="Beard" parent="map_camp/npclayer/murphy" index="7"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/murphy" index="7"]
 frame = 16
 
-[node name="Eyes" parent="map_camp/npclayer/murphy" index="8"]
+[node name="Eyes" parent="map_camp/entitylayer/npclayer/murphy" index="8"]
 frame = 24
 
-[node name="Hair" parent="map_camp/npclayer/murphy" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/murphy" index="10"]
 texture = ExtResource( 10 )
 frame = 0
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/murphy" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/murphy" index="16"]
 anims/IdleDown = SubResource( 56 )
 anims/IdleLeft = SubResource( 57 )
 anims/IdleRight = SubResource( 58 )
@@ -10481,37 +10448,33 @@ anims/WalkLeft = SubResource( 62 )
 anims/WalkRight = SubResource( 63 )
 anims/WalkUp = SubResource( 64 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/murphy" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/murphy" index="17"]
 parameters/playback = SubResource( 65 )
 
-[node name="octavia" parent="map_camp/npclayer" index="7" instance=ExtResource( 4 )]
-position = Vector2( 1360, 784 )
+[node name="octavia" parent="map_camp/entitylayer/npclayer" index="7" instance=ExtResource( 4 )]
+position = Vector2( 1307, 772 )
 
-[node name="Shoes" parent="map_camp/npclayer/octavia" index="2"]
+[node name="Shoes" parent="map_camp/entitylayer/npclayer/octavia" index="2"]
 frame = 0
 
-[node name="Pants" parent="map_camp/npclayer/octavia" index="3"]
+[node name="Pants" parent="map_camp/entitylayer/npclayer/octavia" index="3"]
 visible = false
-texture = ExtResource( 5 )
 
-[node name="Clothes" parent="map_camp/npclayer/octavia" index="4"]
+[node name="Clothes" parent="map_camp/entitylayer/npclayer/octavia" index="4"]
 texture = ExtResource( 18 )
 frame = 0
 
-[node name="Blush" parent="map_camp/npclayer/octavia" index="5"]
+[node name="Beard" parent="map_camp/entitylayer/npclayer/octavia" index="7"]
 visible = false
 
-[node name="Beard" parent="map_camp/npclayer/octavia" index="7"]
-visible = false
-
-[node name="Eyes" parent="map_camp/npclayer/octavia" index="8"]
+[node name="Eyes" parent="map_camp/entitylayer/npclayer/octavia" index="8"]
 frame = 0
 
-[node name="Hair" parent="map_camp/npclayer/octavia" index="10"]
+[node name="Hair" parent="map_camp/entitylayer/npclayer/octavia" index="10"]
 texture = ExtResource( 11 )
 frame = 0
 
-[node name="AnimationPlayer" parent="map_camp/npclayer/octavia" index="16"]
+[node name="AnimationPlayer" parent="map_camp/entitylayer/npclayer/octavia" index="16"]
 anims/IdleDown = SubResource( 67 )
 anims/IdleLeft = SubResource( 68 )
 anims/IdleRight = SubResource( 69 )
@@ -10522,30 +10485,27 @@ anims/WalkLeft = SubResource( 73 )
 anims/WalkRight = SubResource( 74 )
 anims/WalkUp = SubResource( 75 )
 
-[node name="AnimationTree" parent="map_camp/npclayer/octavia" index="17"]
+[node name="AnimationTree" parent="map_camp/entitylayer/npclayer/octavia" index="17"]
 parameters/playback = SubResource( 76 )
 
-[node name="Player" parent="map_camp/playerlayer" index="0" instance=ExtResource( 3 )]
+[node name="Player" parent="map_camp/entitylayer/playerlayer" index="0" instance=ExtResource( 3 )]
 position = Vector2( 1176, 600 )
 
-[node name="CollisionShape2D" parent="map_camp/playerlayer/Player" index="16"]
-visible = true
-
-[node name="AnimationTree" parent="map_camp/playerlayer/Player" index="19"]
+[node name="AnimationTree" parent="map_camp/entitylayer/playerlayer/Player" index="19"]
 parameters/playback = SubResource( 1 )
 
-[node name="Camera2D" parent="map_camp/playerlayer/Player" index="20"]
+[node name="Camera2D" parent="map_camp/entitylayer/playerlayer/Player" index="20"]
 zoom = Vector2( 0.2, 0.2 )
 limit_top = 186
 
 [editable path="map_camp"]
-[editable path="map_camp/npclayer/clarke"]
-[editable path="map_camp/npclayer/anna"]
-[editable path="map_camp/npclayer/lea"]
-[editable path="map_camp/npclayer/steven"]
-[editable path="map_camp/npclayer/sam"]
-[editable path="map_camp/npclayer/bella"]
-[editable path="map_camp/npclayer/murphy"]
-[editable path="map_camp/npclayer/octavia"]
-[editable path="map_camp/playerlayer/Player"]
-[editable path="map_camp/playerlayer/Player/HitboxZone"]
+[editable path="map_camp/entitylayer/npclayer/clarke"]
+[editable path="map_camp/entitylayer/npclayer/anna"]
+[editable path="map_camp/entitylayer/npclayer/lea"]
+[editable path="map_camp/entitylayer/npclayer/steven"]
+[editable path="map_camp/entitylayer/npclayer/sam"]
+[editable path="map_camp/entitylayer/npclayer/bella"]
+[editable path="map_camp/entitylayer/npclayer/murphy"]
+[editable path="map_camp/entitylayer/npclayer/octavia"]
+[editable path="map_camp/entitylayer/playerlayer/Player"]
+[editable path="map_camp/entitylayer/playerlayer/Player/HitboxZone"]

@@ -146,6 +146,8 @@ func finish_transition():
 				Utils.get_current_player().is_attacking = false
 			if Utils.get_current_player().is_in_safe_area() == true:
 				Utils.get_current_player().set_in_safe_area(false)
+			if Utils.get_current_player().is_in_change_scene_area() == true:
+				Utils.get_current_player().set_in_change_scene_area(false)
 			
 			
 			# Resume game

@@ -167,6 +167,11 @@ func post_import(scene):
 	var ySortLoot = YSort.new()
 	ySortLoot.name = lootlayer.name
 	lootlayer.replace_by(ySortLoot, true)
+	# Setup npclayer
+	var npclayer : Node2D = scene.find_node("npclayer")
+	var ySortNPCS = YSort.new()
+	ySortNPCS.name = npclayer.name
+	npclayer.replace_by(ySortNPCS, true)
 	
 	
 	# Setup all doors with animation

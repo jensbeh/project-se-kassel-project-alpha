@@ -7,7 +7,6 @@ var max_ambient_mobs = 50
 
 # Variables
 var thread
-var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
 var ambientMobsSpawnArea
@@ -161,7 +160,7 @@ func setup_spawning_areas():
 
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
-	if player_in_change_scene_area:
+	if Utils.get_current_player().is_in_change_scene_area():
 		next_scene_path = current_area.get_meta("next_scene_path")
 		
 		# Handle if change scene is to house
@@ -208,7 +207,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
 		else:
-			player_in_change_scene_area = true
+			Utils.get_current_player().set_in_change_scene_area(true)
 			current_area = changeSceneArea
 
 
@@ -217,7 +216,7 @@ func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		print("GRASSLAND: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
-		player_in_change_scene_area = false
+		Utils.get_current_player().set_in_change_scene_area(false)
 
 
 # Setup all stair objectes/Area2D's on start

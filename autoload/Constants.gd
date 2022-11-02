@@ -39,7 +39,7 @@ const HAS_PLAYER_INFINIT_STAMINA = true
 ## LOADED MAPS
 #################
 const LOAD_GRASSLAND_MAP = false
-const LOAD_DUNGEONS_MAPS = true
+const LOAD_DUNGEONS_MAPS = false
 
 # --------------------------------------------------
 

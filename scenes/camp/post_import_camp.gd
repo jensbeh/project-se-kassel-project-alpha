@@ -151,6 +151,24 @@ func post_import(scene):
 				animationPlayer.set_owner(scene)
 	
 	
+	# Setup entitylayer to YSorts
+	var entitylayer : Node2D = scene.find_node("entitylayer")
+	var ySortEntities = YSort.new()
+	ySortEntities.name = entitylayer.name
+	entitylayer.replace_by(ySortEntities, true)
+	# Setup playerlayer
+	var playerlayer : Node2D = scene.find_node("playerlayer")
+	var ySortPlayer = YSort.new()
+	ySortPlayer.name = playerlayer.name
+	playerlayer.replace_by(ySortPlayer, true)
+	# Setup npclayer
+	var npclayer : Node2D = scene.find_node("npclayer")
+	var ySortNPCS = YSort.new()
+	ySortNPCS.name = npclayer.name
+	npclayer.replace_by(ySortNPCS, true)
+	
+	
+	# NPC pathes
 	var npcPathes = scene.find_node("npcPathes")
 	var pathes = []
 	for child in npcPathes.get_children():

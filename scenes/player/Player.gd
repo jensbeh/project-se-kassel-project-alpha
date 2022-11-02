@@ -79,6 +79,7 @@ var is_invincible = false
 var collecting = false
 var collected = false
 var in_safe_area = false
+var in_change_scene_area = false
 var is_player_paused
 
 
@@ -1105,3 +1106,13 @@ func set_in_safe_area(new_in_safe_area):
 # Method to get in_safe_area
 func is_in_safe_area():
 	return in_safe_area
+
+
+# Method to set in_change_scene_area
+func set_in_change_scene_area(new_in_change_scene_area):
+	in_change_scene_area = new_in_change_scene_area
+
+
+# Method to get in_change_scene_area
+func is_in_change_scene_area():
+	return in_change_scene_area
