@@ -25,18 +25,28 @@ var mobs_with_new_position : Dictionary = {}
 var bosses_with_new_position : Dictionary = {}
 
 func _ready():
-	print("START PATHFINDING_SERVICE")
+	print("PATHFINDING_SERVICE: Start")
 
 
 # Method to preload the astar nodes
 func preload_astars():
-	print("preload_astars")
-	
 	# Load astar points and connections
 	var astar_nodes_file_dics : Dictionary = load_astar_files()
 	
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
+		
+		
+		# For debugging
+		if "grassland" in map_name and not Constants.LOAD_GRASSLAND_MAP:
+			# Skip grassland
+			printerr("PATHFINDING: NOT LOADED MAP \"" + str(map_name) + "\"")
+			continue
+		elif "dungeon" in map_name and not Constants.LOAD_DUNGEONS_MAPS:
+			# Skip all dungeons
+			printerr("PATHFINDING: NOT LOADED MAP \"" + str(map_name) + "\"")
+			continue
+		
 		
 		# Create new AStars and store them to use later again
 		if not astar_nodes_cache.has(map_name):
@@ -65,17 +75,15 @@ func preload_astars():
 			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
 			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
 		
-		print("LOADED \"" + str(map_name) + "\"")
+		print("PATHFINDING: LOADED MAP \"" + str(map_name) + "\"")
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
-	
-	print("preload_astars DONE")
 
 
 # Method is called when new scene is loaded with mobs with pathfinding
 func init(new_map_name = "", _new_astar2DVisualizerNode = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
-	print("INIT PATHFINDING_SERVICE")
+	print("PATHFINDING_SERVICE: Init")
 	# Check if thread is active wait to stop
 	if pathfinder_thread.is_active():
 		clean_thread()
@@ -129,7 +137,7 @@ func load_astar_files():
 		return astar_files_dic
 	
 	else:
-		printerr("An error occurred when trying to access the PATHFINDING PATH.")
+		printerr("ERROR: An error occurred when trying to access the PATHFINDING PATH.")
 
 
 # Method to stop the pathfinder to change map
@@ -148,7 +156,7 @@ func stop():
 	astar_nodes_cache.clear()
 	astar_nodes_cache = null
 	
-	print("STOPPED PATHFINDING_SERVICE")
+	print("PATHFINDING_SERVICE: Stopped")
 
 
 # Method to cleanup the pathfinder
@@ -193,7 +201,7 @@ func cleanup():
 	
 	map_name = ""
 	
-	print("CLEANED PATHFINDING_SERVICE")
+	print("PATHFINDING_SERVICE: Cleaned")
 
 
 # Method to generate pathes in background
@@ -473,7 +481,7 @@ func get_mob_astar_path(mob_start, mob_end):
 		return path_world
 	
 	else:
-#		printerr("ERROR - \"get_mob_astar_path\" NO PATH AVAILABLE")
+#		printerr("ERROR: \"get_mob_astar_path\" NO PATH AVAILABLE")
 		return []
 
 
@@ -517,7 +525,7 @@ func get_boss_astar_path(boss_start, boss_end):
 		return path_world
 	
 	else:
-#		printerr("ERROR - \"get_boss_astar_path\" NO PATH AVAILABLE")
+#		printerr("ERROR: \"get_boss_astar_path\" NO PATH AVAILABLE")
 		return []
 
 
@@ -574,7 +582,7 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 		return path_world
 	
 	else:
-		printerr("ERROR - \"get_ambient_mob_astar_path\" NO PATH AVAILABLE")
+		printerr("ERROR: \"get_ambient_mob_astar_path\" NO PATH AVAILABLE")
 		return []
 
 

@@ -17,7 +17,7 @@ var offset = Vector2(0,0)
 
 
 func visualize(new_astar : AStar):
-	print("visualize")
+	print("ASTAR_VISUALIZER: Visualize")
 	astar = new_astar
 	update()
 

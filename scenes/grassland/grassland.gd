@@ -90,7 +90,7 @@ func spawn_bosses():
 				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false, lootLayer)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
-				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
+				print("GRASSLAND: Spawned boss \""+ str(boss_path) +"\" in " + str(biome_name))
 
 
 # Method to destroy the scene
@@ -175,7 +175,7 @@ func interaction_detected():
 					break
 		
 		else:
-			print("-> Change scene \"CAMP\" to \""  + str(next_scene_path) + "\"")
+			print("GRASSLAND: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -183,7 +183,7 @@ func interaction_detected():
 
 # Method is called after openDoor animation is finished
 func on_door_opened():
-	print("-> Change scene DOOR: \"CAMP\" to \""  + str(next_scene_path) + "\"")
+	print("GRASSLAND: Change scene with DOOR to \""  + str(next_scene_path) + "\"")
 	var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 	var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -203,7 +203,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"GRASSLAND\" to \""  + str(next_scene_path) + "\"")
+			print("GRASSLAND: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -215,7 +215,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		print("GRASSLAND: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
 
@@ -274,7 +274,7 @@ func clear_signals():
 		elif "loot" in loot.name:
 			loot.clear_signals()
 		else:
-			printerr("NOTHING TO DISCONNECT IN GRASSLAND LOOT")
+			printerr("ERROR: Nothing to disconnect in grassland - clear_signals - loot")
 
 
 # Method to update the chunks with active and deleted chunks to make them visible or not
@@ -304,7 +304,7 @@ func despawn_boss(boss_node):
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
 		boss_node.call_deferred("queue_free")
-		print("----------> Boss \"" + boss_node.name + "\" removed")
+		print("GRASSLAND: Boss \"" + boss_node.name + "\" removed")
 
 
 # Method to spawn loot after monster died

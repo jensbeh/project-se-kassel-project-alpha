@@ -69,7 +69,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"HOUSE1\" to \""  + str(next_scene_path) + "\"")
+			print("HOUSE: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -81,7 +81,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		print("HOUSE: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
 

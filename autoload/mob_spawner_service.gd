@@ -25,7 +25,7 @@ var world
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("START MOB_SPAWNER_SERVICE")
+	print("MOB_SPAWNER_SERVICE: Start")
 	
 	# Add mob_spawner_timer
 	add_child(mob_spawner_timer)
@@ -34,7 +34,7 @@ func _ready():
 
 # Method to init all important variables
 func init(init_world, new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv, new_lootLayer):
-	print("INIT MOB_SPAWNER_SERVICE")
+	print("MOB_SPAWNER_SERVICE: Init")
 	# Check if thread is active wait to stop
 	if mobspawner_thread.is_active():
 		clean_thread()
@@ -72,7 +72,7 @@ func stop():
 	mob_spawn_interval = null
 	should_spawn_mobs = null
 	
-	print("STOPPED MOB_SPAWNER_SERVICE")
+	print("MOB_SPAWNER_SERVICE: Stopped")
 
 
 # Method to cleanup the mobspawner
@@ -111,7 +111,7 @@ func cleanup():
 	scene_type = null
 	world = null
 	
-	print("CLEANED MOB_SPAWNER_SERVICE")
+	print("MOB_SPAWNER_SERVICE: Cleaned")
 
 
 # Method to activate spawn mobs
@@ -201,7 +201,7 @@ func spawn_area_mobs():
 								spawning_areas[current_spawn_area]["current_mobs_count"] += 1
 					
 					else:
-						printerr("\""+ biome_mobs[mob] + "\" scene can't be loaded!")
+						printerr("ERROR: \""+ biome_mobs[mob] + "\" scene can't be loaded!")
 
 
 # Method to spawn ambient mobs
@@ -220,7 +220,7 @@ func spawn_ambient_mobs():
 					current_ambient_mobs += 1
 			
 			else:
-				printerr("\"Moth\" scene can't be loaded!")
+				printerr("ERROR: \"Moth\" scene can't be loaded!")
 		
 		else:
 			# DAY
@@ -231,7 +231,7 @@ func spawn_ambient_mobs():
 					world.call_deferred("spawn_ambient_mob", mobScene, Constants.SpawnTime.ONLY_DAY)
 					current_ambient_mobs += 1
 			else:
-				printerr("\"Butterfly\" scene can't be loaded!")
+				printerr("ERROR: \"Butterfly\" scene can't be loaded!")
 
 
 # Method to despawn/remove mob - NOT FOR AMBIENT MOBS
@@ -247,7 +247,7 @@ func despawn_mob(mob):
 		# Remove from nodes
 		spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
 		mob.call_deferred("queue_free")
-		print("----------> Mob \"" + mob.name + "\" removed")
+		print("MOB_SPAWNER_SERVICE: Mob \"" + mob.name + "\" removed")
 
 
 # Method is called from mob_spawner_timer -> new mobs should be spawned or  mobs should be removed

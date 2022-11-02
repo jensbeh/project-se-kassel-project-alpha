@@ -31,9 +31,15 @@ const SHOW_BOSS_DAMAGE_AREA = false
 #################
 ## PLAYER
 #################
-const PLAYER_INVISIBLE = false
-const PLAYER_INVINCIBLE = true
-const PLAYER_INFINIT_STAMINA = true
+const IS_PLAYER_INVISIBLE = false
+const IS_PLAYER_INVINCIBLE = true
+const HAS_PLAYER_INFINIT_STAMINA = true
+
+#################
+## LOADED MAPS
+#################
+const LOAD_GRASSLAND_MAP = false
+const LOAD_DUNGEONS_MAPS = true
 
 # --------------------------------------------------
 

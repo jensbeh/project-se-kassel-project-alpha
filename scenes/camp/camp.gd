@@ -63,19 +63,12 @@ func setup_player():
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals
-	Utils.get_current_player().connect("player_collided", self, "collision_detected")
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
 
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
-
-
-# Method to handle collision detetcion dependent of the collision object type
-func collision_detected(collision):
-	var _type = collision.get_parent().get_meta("type") # type is string
-	print("collision_detected")
 
 
 # Method to handle collision detetcion dependent of the collision object type
@@ -94,7 +87,7 @@ func interaction_detected():
 					break
 		
 		else:
-			print("-> Change scene \"CAMP\" to \""  + str(next_scene_path) + "\"")
+			print("CAMP: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -102,7 +95,7 @@ func interaction_detected():
 
 # Method is called after openDoor animation is finished
 func on_door_opened():
-	print("-> Change scene DOOR: \"CAMP\" to \""  + str(next_scene_path) + "\"")
+	print("CAMP: Change scene with DOOR to \""  + str(next_scene_path) + "\"")
 	var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 	var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -113,7 +106,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"CAMP\" to \""  + str(next_scene_path) + "\"")
+			print("CAMP: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -125,7 +118,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		print("CAMP: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
 
@@ -163,7 +156,6 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 # Method to disconnect all signals
 func clear_signals():
 	# Player
-	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
 	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
 	
 	# Change scenes

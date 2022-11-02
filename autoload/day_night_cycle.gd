@@ -66,7 +66,7 @@ func _process(delta):
 		if current_minute != previouse_current_minute:
 			previouse_current_minute = current_minute
 			update_ui()
-#			print(str(current_hour) + ":" + str(current_minute))
+#			print("DAY_NIGHT_CYCLE: " + str(current_hour) + ":" + str(current_minute))
 		
 		# Daytime
 		if current_time <= DAY_TIME:
@@ -127,25 +127,25 @@ func get_screen_color():
 
 # Method is called when day is started to call some actions
 func change_to_daytime():
-#	print("TO DAYTIME")
+#	print("DAY_NIGHT_CYCLE: TO DAYTIME")
 	emit_signal("change_to_daytime")
 
 
 # Method is called when sunset is started to call some actions
 func change_to_sunset():
-#	print("TO SUNSET")
+#	print("DAY_NIGHT_CYCLE: TO SUNSET")
 	emit_signal("change_to_sunset")
 
 
 # Method is called when night is started to call some actions
 func change_to_night():
-#	print("TO NIGHT")
+#	print("DAY_NIGHT_CYCLE: TO NIGHT")
 	emit_signal("change_to_night")
 
 
 # Method is called when sunrise is started to call some actions
 func change_to_sunrise():
-#	print("TO SUNRISE")
+#	print("DAY_NIGHT_CYCLE: TO SUNRISE")
 	emit_signal("change_to_sunrise")
 
 
@@ -159,10 +159,10 @@ func update_ui():
 func pause_time(should_pause):
 	# Pass
 	if should_pause:
-		print("PAUSE TIME")
+		print("DAY_NIGHT_CYCLE: Pause")
 		game_time_active = false
 	
 	# Resume
 	else:
-		print("RESUME TIME")
+		print("DAY_NIGHT_CYCLE: Resume")
 		game_time_active = true

@@ -152,7 +152,7 @@ func set_transition_data(transition_data):
 func interaction_detected():
 	if player_in_change_scene_area:
 		var next_scene_path = current_area.get_meta("next_scene_path")
-		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
+		print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 		Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -173,7 +173,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
+			print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -185,7 +185,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		print("DUNGEONS: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
 
@@ -204,14 +204,14 @@ func setup_safe_area():
 # Method which is called when a body has exited a safeArea
 func body_entered_safe_area(body, safeArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" ENTERED safeArea \"" + safeArea.name + "\"")
+		print("DUNGEONS: Body \""  + str(body.name) + "\" ENTERED safeArea \"" + safeArea.name + "\"")
 		Utils.get_current_player().set_in_safe_area(true)
 
 
 # Method which is called when a body has exited a safeArea
 func body_exited_safe_area(body, safeArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED safeArea \"" + safeArea.name + "\"")
+		print("DUNGEONS: Body \""  + str(body.name) + "\" EXITED safeArea \"" + safeArea.name + "\"")
 		Utils.get_current_player().set_in_safe_area(false)
 
 
@@ -307,7 +307,7 @@ func despawn_boss(boss_node):
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
 		boss_node.call_deferred("queue_free")
-		print("----------> Boss \"" + boss_node.name + "\" removed")
+		print("DUNGEON: Boss \"" + boss_node.name + "\" removed")
 	
 	# Disable mobs respawning
 	MobSpawnerService.disable_mob_respawning(true)
@@ -396,7 +396,7 @@ func setup_treasure_areas():
 						treasure_area.connect("body_entered", self, "body_entered_treasure", [treasure_area])
 						treasure_area.connect("body_exited", self, "body_exited_treasure", [treasure_area])
 					else:
-						printerr("Error in dungeons - setup_treasure_areas -> treasure_area is null")
+						printerr("ERROR: Error in dungeons - setup_treasure_areas -> treasure_area is null")
 					
 					
 					# Add treasure to obstacles

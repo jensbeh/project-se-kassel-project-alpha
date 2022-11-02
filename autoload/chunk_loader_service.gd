@@ -17,7 +17,7 @@ var should_load_chunks = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("START CHUNK_LOADER_SERVICE")
+	print("CHUNK_LOADER_SERVICE: Start")
 	
 	# Add chunk_loader_timer
 	add_child(chunk_loader_timer)
@@ -26,7 +26,7 @@ func _ready():
 
 # Method to init all important variables
 func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, init_map_min_global_pos):
-	print("INIT CHUNK_LOADER_SERVICE")
+	print("CHUNK_LOADER_SERVICE: Init")
 	# Check if thread is active wait to stop
 	if chunkloader_thread.is_active():
 		clean_thread()
@@ -54,7 +54,7 @@ func stop():
 	chunk_load_interval = null
 	should_load_chunks = null
 	
-	print("STOPPED CHUNK_LOADER_SERVICE")
+	print("CHUNK_LOADER_SERVICE: Stopped")
 
 
 # Method to cleanup the chunkloader
@@ -74,7 +74,7 @@ func cleanup():
 	active_chunks.clear()
 	chunk_loader_timer.stop()
 	
-	print("CLEANED CHUNK_LOADER_SERVICE")
+	print("CHUNK_LOADER_SERVICE: Cleaned")
 
 
 # Method to set should_load_chunks back to true

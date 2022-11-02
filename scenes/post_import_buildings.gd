@@ -5,7 +5,7 @@ const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print("reimporte " + scene.name + "...")
+	print("POST_IMPORT_BUILDINGS: Reimporte " + scene.name + "...")
 	
 	# Set lights with script to lightsObject
 	var lightsObject = scene.find_node("lights")
@@ -31,7 +31,7 @@ func post_import(scene):
 	# Setup higher tilemaps
 	remove_collision_from_higher_tilemaps(scene.find_node("higher"))
 	
-	print("reimported " + scene.name + "! \n")
+	print("POST_IMPORT_BUILDINGS: Reimported " + scene.name + "! \n")
 	return scene
 
 

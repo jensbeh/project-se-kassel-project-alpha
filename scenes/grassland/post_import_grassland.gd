@@ -19,7 +19,7 @@ var map_size_in_tiles = Vector2.ZERO # In tiles
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print("reimporte " + scene.name + "...")
+	print("POST_IMPORT_GRASSLAND: Reimporte " + scene.name + "...")
 	
 	# Set lights with script to lightsObject
 	var lightsObject = scene.find_node("lights")
@@ -269,20 +269,20 @@ func post_import(scene):
 	iterate_over_nodes(scene)
 	
 	# generate chunks -> best at the end
-	print("generate chunks...")
+	print("POST_IMPORT_GRASSLAND: Generate chunks...")
 	generate_chunks(scene)
-	print("chunks generated!")
+	print("POST_IMPORT_GRASSLAND: Chunks generated!")
 	
 	# Create astar pathfinding
-	print("generate AStars...")
+	print("POST_IMPORT_GRASSLAND: Generate AStars...")
 	create_astar(scene)
-	print("AStars generated!")
+	print("POST_IMPORT_GRASSLAND: AStars generated!")
 	
 	
 	# Cleanup scene -> need to be at the end!!
 	cleanup_node(scene.find_node("ground"))
 	cleanup_node(scene.find_node("higher"))
-	print("reimported " + scene.name + "! \n")
+	print("POST_IMPORT_GRASSLAND: Reimported " + scene.name + "! \n")
 	return scene
 
 
@@ -302,13 +302,13 @@ func create_astar(scene):
 						}
 	astar_add_walkable_cells_for_mobs(astar_nodes_dics)
 	astar_connect_walkable_cells_for_mobs(astar_nodes_dics)
-	print("Generated AStar for MOBS!")
+	print("POST_IMPORT_GRASSLAND: Generated AStar for MOBS!")
 	astar_add_walkable_cells_for_bosses(astar_nodes_dics)
 	astar_connect_walkable_cells_for_bosses(astar_nodes_dics)
-	print("Generated AStar for BOSSES!")
+	print("POST_IMPORT_GRASSLAND: Generated AStar for BOSSES!")
 	astar_add_walkable_cells_for_ambient_mobs(astar_nodes_dics)
 	astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_dics)
-	print("Generated AStar for AMBIENT_MOBS!")
+	print("POST_IMPORT_GRASSLAND: Generated AStar for AMBIENT_MOBS!")
 	
 	# Store astar
 	# Check if directory is existing
@@ -323,7 +323,7 @@ func create_astar(scene):
 	astar_save.open(CONSTANTS.SAVE_GAME_PATHFINDING_PATH + scene.name + ".sav", File.WRITE)
 	astar_save.store_var(astar_nodes_dics)
 	astar_save.close()
-	print("Saved AStars to file!")
+	print("POST_IMPORT_GRASSLAND: Saved AStars to file!")
 
 
 # Method to generate chunks in map
@@ -338,16 +338,9 @@ func generate_chunks(scene):
 	# Map size in tiles
 	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x) + 1 # +1 because (0,0)
 	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y) + 1 # +1 because (0,0)
-#	print("map_min_pos.x: " + str(map_min_pos.x))
-#	print("map_max_pos.x: " + str(map_max_pos.x))
-#	print("map_min_pos.y: " + str(map_min_pos.y))
-#	print("map_max_pos.y: " + str(map_max_pos.y))
-#	print("map_width: " + str(map_width))
-#	print("map_height: " + str(map_height))
 	var vertical_chunks_count = ceil(map_height / chunk_size)
 	var horizontal_chunks_count = ceil(map_width / chunk_size)
-#	print("vertical_chunks_count: " + str(vertical_chunks_count))
-#	print("horizontal_chunks_count: " + str(horizontal_chunks_count))
+	
 	map_size_in_tiles = Vector2(map_width, map_height)
 	map_offset_in_tiles = map_min_global_pos / CONSTANTS.TILE_SIZE
 	

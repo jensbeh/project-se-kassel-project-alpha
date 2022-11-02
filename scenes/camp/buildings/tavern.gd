@@ -62,7 +62,7 @@ func set_transition_data(transition_data):
 func interaction_detected():
 	if player_in_change_scene_area:
 		var next_scene_path = current_area.get_meta("next_scene_path")
-		print("-> Change scene \"TAVERN\" to \""  + str(next_scene_path) + "\"")
+		print("TAVERN: Change scene to \""  + str(next_scene_path) + "\"")
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 		Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -79,11 +79,10 @@ func setup_change_scene_areas():
 
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
-	print("body_entered_change_scene_area")
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"TAVERN\" to \""  + str(next_scene_path) + "\"")
+			print("TAVERN: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -95,7 +94,7 @@ func body_entered_change_scene_area(body, changeSceneArea):
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		print("TAVERN: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		player_in_change_scene_area = false
 

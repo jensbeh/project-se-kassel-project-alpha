@@ -89,9 +89,9 @@ func _on_load_scene_done(scene):
 	# Cleanup previous scene
 	if get_current_scene().has_method("destroy_scene"):
 		get_current_scene().destroy_scene()
-		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		print("SCENE_MANAGER: Destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	else:
-		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		printerr("SCENE_MANAGER: NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	
 	# Cleanup UI
 	# Remove death screen
@@ -208,21 +208,11 @@ func without_transition_to_scene(new_current_scene : Node):
 	# Cleanup previous scene
 	if get_current_scene().has_method("destroy_scene"):
 		get_current_scene().destroy_scene()
-		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		print("SCENE_MANAGER: Destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	else:
-		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		printerr("SCENE_MANAGER: NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	
 	# Remove previous scene
 	get_current_scene().queue_free()
 	# Load new scene
 	current_scene.call_deferred("add_child",new_current_scene)
-
-
-# Methods and stuff for better debugging
-const TIMER_LIMIT = 2.0
-var timer = 0.0
-func _process(delta):
-	timer += delta
-	if timer > TIMER_LIMIT:
-		timer = 0.0
-#		print("fps: " + str(Engine.get_frames_per_second()))
