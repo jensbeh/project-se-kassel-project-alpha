@@ -578,10 +578,22 @@ func create_player_inventory():
 	var dir = Directory.new()
 	if !dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH):
 		dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH)
+	dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/")
 	var save_player = File.new()
-	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
+	
+	# Create Merchant data files for this character
+	var merchant_data = File.new()
+	for i in ["bella", "heinz", "lea", "sam"]:
+		var item_data_file = File.new()
+		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
+		var item_data_json = JSON.parse(item_data_file.get_as_text())
+		item_data_file.close()
+		merchant_data.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+		merchant_data.store_line(to_json(item_data_json.result))
+		merchant_data.close()
 
 	# set player data
 	PlayerData.set_path(uuid)
@@ -595,9 +607,10 @@ func create_player_inventory():
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	Utils.get_current_player().set_gold(save_game_data.gold)
 	Utils.get_current_player().set_level(save_game_data.level)
+	Utils.get_current_player().set_current_health(save_game_data.currentHP)
+	Utils.get_player_ui().setup_ui()
 	Utils.get_current_player().set_exp(save_game_data.exp)
 	Utils.get_current_player().set_stamina(save_game_data.stamina)
-	Utils.get_current_player().set_current_health(save_game_data.currentHP)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
 

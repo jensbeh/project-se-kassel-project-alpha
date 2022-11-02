@@ -148,7 +148,10 @@ func delete_character():
 	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION):
 		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION)
 	# remove inventory data
-	if dir.file_exists(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
+	if dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/"):
+		for i in ["bella", "heinz", "lea", "sam", delete_id]:
+			dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/" + i + "_inv_data" + SAVE_FILE_EXTENSION)
+		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/")
 		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
@@ -527,7 +530,7 @@ func start_game():
 	Utils.set_current_player(Utils.get_player())
 	
 	# Set spawn
-	var player_position = Vector2(1128,616) # Camp
+#	var player_position = Vector2(1128,616) # Camp
 #	var player_position = Vector2(768,752) # Grassland - Dungeon1
 #	var player_position = Vector2(1056,-80) # Grassland - Beach
 #	var player_position = Vector2(1040, 64) # Grassland - Dungeon1/Beach
@@ -539,7 +542,7 @@ func start_game():
 #	var player_position = Vector2(240,480) # Dungeon2-4
 #	var player_position = Vector2(-300,64) # Dungeon3-2
 #	var player_position = Vector2(-384,176) # Dungeon3-4
-	var view_direction = Vector2(0,1)
+#	var view_direction = Vector2(0,1)
 	
 	# Set data
 	var data = data_list[selected_character]
@@ -562,6 +565,8 @@ func start_game():
 	Utils.get_current_player().health_cooldown = data.cooldown
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown
 	
+	DayNightCycle.current_time = data.time
+	
 	Utils.get_hotbar().load_hotbar()
 	if (PlayerData.equipment_data["Hotbar"]["Item"] != null and
 	 GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina")):
@@ -578,13 +583,17 @@ func start_game():
 	
 	
 	# Transition
-	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn", player_position, view_direction)
+	
+	# Set spawn & transition
+	var transition_data = TransitionData.GamePosition.new(data.scene_transition, str2var(data.position), str2var(data.view_direction))
+	
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

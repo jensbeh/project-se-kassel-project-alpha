@@ -66,13 +66,13 @@ func load_hotbar():
 # Update cooldown label
 func _process(_delta):
 	if timer1:
-		Utils.get_current_player().health_cooldown = $Hotbar/Timer.time_left
+		Utils.get_current_player().set_health_cooldown($Hotbar/Timer.time_left)
 		if Utils.get_current_player().health_cooldown == null:
-			Utils.get_current_player().health_cooldown = 0
+			Utils.get_current_player().set_health_cooldown(0)
 	if timer2:
-		Utils.get_current_player().stamina_cooldown = $Hotbar/Timer2.time_left
+		Utils.get_current_player().set_stamina_cooldown($Hotbar/Timer2.time_left)
 		if Utils.get_current_player().stamina_cooldown == null:
-			Utils.get_current_player().stamina_cooldown = 0
+			Utils.get_current_player().set_stamina_cooldown(0)
 	if type == "Stamina":
 		time_label.text = "%2.1f" % $Hotbar/Timer2.time_left
 		cooldown_texture.value = int(($Hotbar/Timer2.time_left / Constants.STAMINA_POTION_COOLDOWN) * 100)
@@ -87,7 +87,7 @@ func _on_Timer_timeout():
 		disabled = false
 		time_label.hide()
 	timer1 = false
-	Utils.get_current_player().health_cooldown = 0
+	Utils.get_current_player().set_health_cooldown(0)
 
 
 # updates the label from the hotbar slot
@@ -124,14 +124,14 @@ func use_item():
 				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Stamina"])
 				type = "Stamina"
 				cooldown = Constants.STAMINA_POTION_COOLDOWN
-				Utils.get_current_player().stamina_cooldown = cooldown
+				Utils.get_current_player().set_stamina_cooldown(cooldown)
 				set_cooldown_stamina(cooldown, type)
 			else:
 				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 				int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
 				type = "Health"
 				cooldown = Constants.HEALTH_COOLDOWN
-				Utils.get_current_player().health_cooldown = cooldown
+				Utils.get_current_player().set_health_cooldown(cooldown)
 				set_cooldown_health(cooldown, type)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
@@ -200,14 +200,13 @@ func _on_Timer2_timeout():
 		disabled = false
 		time_label.hide()
 	timer2 = false
-	Utils.get_current_player().stamina_cooldown = 0
+	Utils.get_current_player().set_stamina_cooldown(0)
 
 
 func save_and_stop_timer():
-	var data = Utils.get_current_player().get_data()
-	data.cooldown = Utils.get_current_player().health_cooldown
-	data.stamina_cooldown = Utils.get_current_player().stamina_cooldown
-	Utils.get_current_player().save_player_data(data)
+	# save player data
+	Utils.get_current_player().save_game()
+	# stop timer
 	get_node("Hotbar/Timer").stop()
 	_on_Timer_timeout()
 	get_node("Hotbar/Timer2").stop()

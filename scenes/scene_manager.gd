@@ -143,6 +143,8 @@ func finish_transition():
 			if Utils.get_current_player().is_in_safe_area() == true:
 				Utils.get_current_player().set_in_safe_area(false)
 			
+			# Save Player Data
+			Utils.get_current_player().save_game()
 			
 			# Resume cooldown timer
 			Utils.get_hotbar().resume_cooldown()

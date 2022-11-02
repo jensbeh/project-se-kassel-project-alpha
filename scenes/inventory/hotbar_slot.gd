@@ -295,13 +295,13 @@ func _on_Icon_gui_input(event):
 						GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Stamina"])
 						type = "Stamina"
 						cooldown = Constants.STAMINA_POTION_COOLDOWN
-						Utils.get_current_player().stamina_cooldown = cooldown
+						Utils.get_current_player().set_stamina_cooldown(cooldown)
 					else:
 						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 						int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
 						type = "Health"
 						cooldown = Constants.HEALTH_COOLDOWN
-						Utils.get_current_player().health_cooldown = cooldown
+						Utils.get_current_player().set_health_cooldown(cooldown)
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
 						set_cooldown(cooldown, type)
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:

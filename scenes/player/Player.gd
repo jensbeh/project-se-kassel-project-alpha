@@ -47,6 +47,7 @@ var curr_hat: int = 0 #0-4, 1
 # Walk
 var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
+var direction = Vector2(0,1)
 var movement
 
 # Interaction
@@ -147,6 +148,7 @@ func _physics_process(delta):
 				velocity *= 1.4
 		
 		if velocity != Vector2.ZERO and player_can_interact:
+			direction = velocity
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
 			animation_tree.set("parameters/Hurt/blend_position", velocity)
@@ -200,8 +202,7 @@ func _input(event):
 				# Reset npc interaction state
 				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 					npc.set_interacted(false)
-				PlayerData.save_inventory()
-				save_player_data(Utils.get_current_player().get_data())
+				save_game()
 				MerchantData.save_merchant_inventory()
 		
 		# Open game menu with "esc"
@@ -210,8 +211,6 @@ func _input(event):
 			set_movment_animation(false)
 			set_player_can_interact(false)
 			Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
-			save_player_data(Utils.get_current_player().get_data())
-			PlayerData.save_inventory()
 		# Close game menu with "esc" when game menu is open
 		elif event.is_action_pressed("esc") and !movement and Utils.get_game_menu() != null:
 			set_movement(true)
@@ -233,8 +232,7 @@ func _input(event):
 			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
-			PlayerData.save_inventory()
-			save_player_data(Utils.get_current_player().get_data())
+			save_game()
 			Utils.get_character_interface().queue_free()
 		
 		# Use Item from Hotbar
@@ -1088,3 +1086,24 @@ func set_in_safe_area(new_in_safe_area):
 # Method to get in_safe_area
 func is_in_safe_area():
 	return in_safe_area
+
+
+func set_health_cooldown(new_cooldown):
+	health_cooldown = new_cooldown
+	# for save
+	data.cooldown = new_cooldown
+
+
+func set_stamina_cooldown(new_cooldown):
+	stamina_cooldown = new_cooldown
+	# for save
+	data.stamina_cooldown = new_cooldown
+
+
+func save_game():
+	data.scene_transition = Utils.get_scene_manager().current_transition_data.get_scene_path()
+	data.position = var2str(position)
+	data.view_direction = var2str(direction)
+	data.time = DayNightCycle.current_time
+	save_player_data(data)
+	PlayerData.save_inventory()
