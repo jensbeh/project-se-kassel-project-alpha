@@ -834,4 +834,17 @@
 	"Texture": "item_icons_1",
 	"Worth": null
   },
+  "10065": {
+	"Name": "Map",
+    "Category": "Map",
+    "EquipmentSlot": null,
+    "Attack": null,
+	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": null,
+	"Stackable": false,
+	"Frame": 220,
+	"Texture": "item_icons_1",
+	"Worth": 500
+  },
 }

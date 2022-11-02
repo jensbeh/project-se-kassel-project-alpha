@@ -67,9 +67,11 @@ var preview = false
 var player_exp: int = 0
 var player_stamina: float
 var player_light_radius: int
-var health_cooldown
-var stamina_cooldown
+var health_cooldown = 0
+var stamina_cooldown = 0
 var weapon_weight = 0
+var has_map = false
+var show_map = false
 
 # Variables
 var is_attacking = false
@@ -149,6 +151,9 @@ func _physics_process(delta):
 		
 		if velocity != Vector2.ZERO and player_can_interact:
 			direction = velocity
+			if Utils.get_ui().get_node_or_null("DialogueBox") != null:
+				Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
+				Utils.get_control_notes().show()
 			animation_tree.set("parameters/Idle/blend_position", velocity)
 			animation_tree.set("parameters/Walk/blend_position", velocity)
 			animation_tree.set("parameters/Hurt/blend_position", velocity)
@@ -261,6 +266,17 @@ func _input(event):
 		elif event.is_action_pressed("loot") and Utils.get_loot_panel() != null:
 			# Call Loot all Method in Loot Panel
 			Utils.get_loot_panel()._on_LootAll_pressed()
+			
+		# open map
+		elif event.is_action_pressed("map") and has_map and !show_map:
+			show_map = true
+			data.show_map = show_map
+			Utils.get_minimap().update_minimap()
+		
+		elif event.is_action_pressed("map") and has_map and show_map:
+			show_map = false
+			data.show_map = show_map
+			Utils.get_minimap().update_minimap()
 
 
 func set_change_scene(value):
@@ -1015,8 +1031,8 @@ func reset_player_after_dying():
 	make_player_invisible(false)
 	
 	# reset cooldown
-	health_cooldown = 0
-	stamina_cooldown = 0
+	set_health_cooldown(0)
+	set_stamina_cooldown(0)
 	Utils.get_hotbar().get_node("Hotbar/Timer").stop()
 	Utils.get_hotbar()._on_Timer_timeout()
 	
@@ -1028,7 +1044,10 @@ func reset_player_after_dying():
 	set_stamina(level * 10 + 90)
 	set_movment_animation(true)
 	set_movement(true)
+	
+	rescue_pay()
 	animation_state.start("Idle")
+
 
 func get_light_radius():
 	return player_light_radius
@@ -1087,6 +1106,46 @@ func set_in_safe_area(new_in_safe_area):
 func is_in_safe_area():
 	return in_safe_area
 
+func rescue_pay():
+	# Pay amount of gold
+	var lost_gold = int(gold * Constants.RESCUE_PAY) +1
+	set_gold(int(gold * (1 - Constants.RESCUE_PAY)))
+	# Pay an item
+	var item_list = []
+	for i in range(1,31):
+		if PlayerData.inv_data["Inv" + str(i)]["Item"] != null:
+			item_list.append(i)
+		
+	randomize()
+	var worth = 0
+	var lost_items = []
+	# Only lose Item with min level 3 and min 3 items in inventory
+	if level >= Constants.MIN_LEVEL_ITEM_LOSE and item_list.size() >= 3:
+		# Pay min level * 10 Worth on random Items if possible
+		while worth < level * Constants.MIN_LOST_FACTOR and item_list.size() > 0:
+			var payed_item = item_list[(randi() % item_list.size())]
+			item_list.remove(payed_item)
+			lost_items.append(tr((GameData.item_data[str(PlayerData.inv_data["Inv" + str(payed_item)]["Item"])]["Name"]).to_upper()) +
+			" * " + str(PlayerData.inv_data["Inv" + str(payed_item)]["Stack"]))
+			worth += (GameData.item_data[str(PlayerData.inv_data["Inv" + str(payed_item)]["Item"])]["Worth"] * 
+			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"])
+			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
+			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
+	save_game()
+	var lost_string = tr("LOST_GOLD") + ": " + str(lost_gold) + "\n" + tr("LOST_ITEMS") + ": "
+	for item in lost_items:
+		lost_string += (item + ", ")
+	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
+	var dialog = load(Constants.DIALOG_PATH).instance()
+	Utils.get_ui().add_child(dialog)
+	dialog.start(self, "Death", lost_dialog)
+
+
+# Save map value
+func set_map(value):
+	has_map = value
+	data.has_map = value
+
 
 func set_health_cooldown(new_cooldown):
 	health_cooldown = new_cooldown
@@ -1101,6 +1160,7 @@ func set_stamina_cooldown(new_cooldown):
 
 
 func save_game():
+	data.show_map = show_map
 	data.scene_transition = Utils.get_scene_manager().current_transition_data.get_scene_path()
 	data.position = var2str(position)
 	data.view_direction = var2str(direction)

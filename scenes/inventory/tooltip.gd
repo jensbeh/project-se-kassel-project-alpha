@@ -23,7 +23,7 @@ func _ready():
 	
 	# get data and create tooltip
 	if valid:
-		get_node("NinePatchRect/Margin/VBox/ItemName").set_text(tr(GameData.item_data[item_id]["Name"]))
+		get_node("NinePatchRect/Margin/VBox/ItemName").set_text(tr((GameData.item_data[item_id]["Name"]).to_upper()))
 		var item_stat = 1
 		for i in range(GameData.item_stats.size()):
 			var stat_name = GameData.item_stats[i]
@@ -33,9 +33,9 @@ func _ready():
 				if GameData.item_data[item_id].has(stat_name) and GameData.item_data[item_id][stat_name] != null:
 					var stat_value = GameData.item_data[item_id][stat_name]
 					if stat_name != "Worth":
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr(stat_label) + ": " + str(stat_value))
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr((stat_label).to_upper()) + ": " + str(stat_value))
 					else:
-						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr(stat_label) + ": " + str(stat_value) + " Gold")
+						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr((stat_label).to_upper()) + ": " + str(stat_value) + " Gold")
 					
 					if GameData.item_data[item_id]["EquipmentSlot"] != null and (origin == "Inventory" or origin == "TradeInventory") and stat_name in GameData.compare_stats:
 						var stat_difference = CompareItems(item_id, stat_name, stat_value)
@@ -51,7 +51,7 @@ func _ready():
 					
 					item_stat += 1
 		if Utils.get_trade_inventory() == null:
-			if GameData.item_data[item_id]["Category"] in ["Potion", "Food"]:
+			if GameData.item_data[item_id]["Category"] in ["Potion", "Food", "Map"]:
 				get_node("NinePatchRect/Margin/VBox/Stats5/Stat").set_text(str(tr("USE_INV_ITEM")))
 
 func CompareItems(item_id, stat_name, stat_value):

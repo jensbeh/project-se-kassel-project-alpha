@@ -152,7 +152,6 @@ func delete_character():
 		for i in ["bella", "heinz", "lea", "sam", delete_id]:
 			dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/" + i + "_inv_data" + SAVE_FILE_EXTENSION)
 		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "/")
-		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -561,6 +560,10 @@ func start_game():
 	Utils.get_current_player().set_stamina(data.stamina)
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_light(data.light)
+	if data.has("has_map"):
+		Utils.get_current_player().has_map = data.has_map
+	if data.has("show_map"):
+		Utils.get_current_player().show_map = data.show_map
 	
 	Utils.get_current_player().health_cooldown = data.cooldown
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown

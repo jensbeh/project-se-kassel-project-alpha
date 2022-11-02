@@ -16,6 +16,7 @@ func _ready():
 	get_node("Control/Label3").set_text(tr("INVENTORY"))
 	get_node("Control/Label4").set_text(tr("RUN"))
 	get_node("Control/Label6").set_text(tr("MOVEMENT"))
+	get_node("Control/Label9").set_text(tr("MAP"))
 	get_node("Control/Panel6/Label").set_text(tr("MOUSE"))
 	get_node("Control/Label8").set_text(tr("LOOT"))
 	get_node("Dialog/Label2").set_text(tr("INTERACTION"))

@@ -69,6 +69,7 @@ func set_exp(new_value: int):
 				change_heart_number(5)
 		else:
 			exp_bar.value = exp_bar.max_value
+			exp_value.set_text("EXP: " + str(exp_bar.value))
 
 # Clock
 func set_time(new_hour, new_minute):
@@ -118,7 +119,8 @@ func change_heart_number(number_heart):
 
 # position for hotbar with or without minimap
 func in_dungeon(value):
-	if value:
+	if (value or (Utils.get_current_player() != null and (!Utils.get_current_player().has_map or 
+	!Utils.get_current_player().show_map))):
 		get_node("Hotbar").rect_position = Vector2(-916,456)
 	else:
 		get_node("Hotbar").rect_position = Vector2(-504,456)

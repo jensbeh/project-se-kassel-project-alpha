@@ -114,7 +114,6 @@ custom_fonts/font = SubResource( 3 )
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 5 )
 value = 30.0
-allow_greater = true
 percent_visible = false
 
 [node name="EXPValue" type="Label" parent="NinePatchRect/ProgressBar"]
