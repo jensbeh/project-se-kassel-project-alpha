@@ -165,4 +165,4 @@ func _on_Button_gui_input(event):
 			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
-			Utils.get_current_player().save_game()
+			Utils.save_game()

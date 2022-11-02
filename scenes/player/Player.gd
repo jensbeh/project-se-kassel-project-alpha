@@ -47,7 +47,7 @@ var curr_hat: int = 0 #0-4, 1
 # Walk
 var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
-var direction = Vector2(0,1)
+var direction
 var movement
 
 # Interaction
@@ -150,7 +150,7 @@ func _physics_process(delta):
 				velocity *= 1.4
 		
 		if velocity != Vector2.ZERO and player_can_interact:
-			direction = velocity
+			direction = var2str(velocity)
 			if Utils.get_ui().get_node_or_null("DialogueBox") != null:
 				Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
 				Utils.get_control_notes().show()
@@ -207,7 +207,7 @@ func _input(event):
 				# Reset npc interaction state
 				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 					npc.set_interacted(false)
-				save_game()
+				Utils.save_game()
 				MerchantData.save_merchant_inventory()
 		
 		# Open game menu with "esc"
@@ -237,7 +237,7 @@ func _input(event):
 			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
-			save_game()
+			Utils.save_game()
 			Utils.get_character_interface().queue_free()
 		
 		# Use Item from Hotbar
@@ -818,16 +818,6 @@ func get_data():
 	return data
 
 
-func save_player_data(player_data):
-	var dir = Directory.new()
-	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
-		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
-	var save_game = File.new()
-	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + ".json", File.WRITE)
-	save_game.store_line(to_json(player_data))
-	save_game.close()
-
-
 func set_preview(value):
 	preview = value
 
@@ -1131,7 +1121,7 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"])
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
-	save_game()
+	Utils.save_game()
 	var lost_string = tr("LOST_GOLD") + ": " + str(lost_gold) + "\n" + tr("LOST_ITEMS") + ": "
 	for item in lost_items:
 		lost_string += (item + ", ")
@@ -1158,12 +1148,3 @@ func set_stamina_cooldown(new_cooldown):
 	# for save
 	data.stamina_cooldown = new_cooldown
 
-
-func save_game():
-	data.show_map = show_map
-	data.scene_transition = Utils.get_scene_manager().current_transition_data.get_scene_path()
-	data.position = var2str(position)
-	data.view_direction = var2str(direction)
-	data.time = DayNightCycle.current_time
-	save_player_data(data)
-	PlayerData.save_inventory()

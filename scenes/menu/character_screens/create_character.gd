@@ -158,7 +158,8 @@ var save_game_data = {
 	"mask": curr_mask,
 	"earring": curr_earring,
 	"glasses": curr_glasses,
-	"id" : uuid
+	"id" : uuid,
+	"view_direction": var2str(Vector2(0,1))
 }
 
 var save_inventory = {
@@ -203,7 +204,7 @@ func save_data():
 	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
 		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
 	var save_game = File.new()
-	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
+	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))
 	save_game.close()
 	print("Savegame saved")
@@ -578,22 +579,23 @@ func start_game():
 
 func create_player_inventory():
 	var dir = Directory.new()
-	if !dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH):
-		dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH)
-	dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/")
+	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
+		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
+	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
 	var save_player = File.new()
-	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/" + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
 	
 	# Create Merchant data files for this character
+	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/")
 	var merchant_data = File.new()
 	for i in ["bella", "heinz", "lea", "sam"]:
 		var item_data_file = File.new()
 		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
 		var item_data_json = JSON.parse(item_data_file.get_as_text())
 		item_data_file.close()
-		merchant_data.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 		merchant_data.store_line(to_json(item_data_json.result))
 		merchant_data.close()
 

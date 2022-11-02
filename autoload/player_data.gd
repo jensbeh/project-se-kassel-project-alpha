@@ -31,7 +31,7 @@ func _ready():
 
 
 func set_path(new_path):
-	path = Constants.SAVE_INVENTORY_DATA_PATH + new_path + "/" + new_path + "_inv_data.json"
+	path = Constants.SAVE_CHARACTER_PATH + new_path + "/" + Utils.get_current_player().get_data().name + "_inv_data.json"
 	
 func save_inventory():
 	var item_data_file = File.new()

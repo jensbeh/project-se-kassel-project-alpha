@@ -502,3 +502,20 @@ func stop_game():
 	
 	# Start fade to black transition in main.gd
 	get_main().start_close_game_transition()
+
+
+func save_game():
+	var data = get_current_player().get_data()
+	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
+	data.position = var2str(get_current_player().position)
+	data.view_direction = get_current_player().direction
+	data.time = DayNightCycle.current_time
+	save_player_data(data)
+	PlayerData.save_inventory()
+
+
+func save_player_data(player_data):
+	var save_game = File.new()
+	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + "/" + player_data.name + ".json", File.WRITE)
+	save_game.store_line(to_json(player_data))
+	save_game.close()

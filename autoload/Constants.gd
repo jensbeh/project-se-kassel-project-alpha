@@ -152,10 +152,8 @@ const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 
 # Save file pathes
-const SAVE_PATH = "user://"
-const SAVE_SETTINGS_PATH = "user://settings.json"
+const SAVE_SETTINGS_PATH = "user://game/settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"
-const SAVE_INVENTORY_DATA_PATH = "user://data/"
 const SAVE_GAME_PATH = "user://game/"
 const SAVE_GAME_PATHFINDING_PATH = SAVE_GAME_PATH + "pathfinding/"
 
