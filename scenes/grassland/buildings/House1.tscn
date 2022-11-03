@@ -1759,135 +1759,59 @@ margin_bottom = -108.0
 
 [node name="heinz" parent="house1/entitylayer/npclayer" index="0" instance=ExtResource( 18 )]
 position = Vector2( 80, -72 )
-scale = Vector2( 0.9, 0.9 )
-collision_layer = 0
-collision_mask = 18
 script = SubResource( 54 )
 
 [node name="Shadow" parent="house1/entitylayer/npclayer/heinz" index="0"]
-visible = false
-position = Vector2( -8, -5 )
 texture = ExtResource( 19 )
-centered = false
 
 [node name="Body" parent="house1/entitylayer/npclayer/heinz" index="1"]
-position = Vector2( -16, -25 )
 texture = ExtResource( 9 )
-centered = false
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Shoes" parent="house1/entitylayer/npclayer/heinz" index="2"]
-position = Vector2( -16, -24 )
 texture = ExtResource( 13 )
-centered = false
-hframes = 80
-vframes = 49
 
 [node name="Pants" parent="house1/entitylayer/npclayer/heinz" index="3"]
-position = Vector2( -16, -25 )
 texture = ExtResource( 10 )
-centered = false
-hframes = 80
-vframes = 49
 frame = 32
 
 [node name="Clothes" parent="house1/entitylayer/npclayer/heinz" index="4"]
-position = Vector2( -16, -25 )
 texture = ExtResource( 12 )
-centered = false
-hframes = 80
-vframes = 49
 frame = 16
 
 [node name="Blush" parent="house1/entitylayer/npclayer/heinz" index="5"]
-visible = false
-position = Vector2( -16, -25 )
 texture = ExtResource( 5 )
-centered = false
-hframes = 40
-vframes = 49
 
 [node name="Lipstick" parent="house1/entitylayer/npclayer/heinz" index="6"]
 visible = false
-position = Vector2( -16, -25 )
 texture = ExtResource( 6 )
-centered = false
-hframes = 40
-vframes = 49
 
 [node name="Beard" parent="house1/entitylayer/npclayer/heinz" index="7"]
-position = Vector2( -16, -25 )
 texture = ExtResource( 16 )
-centered = false
-hframes = 112
-vframes = 49
 frame = 56
 
 [node name="Eyes" parent="house1/entitylayer/npclayer/heinz" index="8"]
-position = Vector2( -16, -25 )
 texture = ExtResource( 7 )
-centered = false
-hframes = 112
-vframes = 49
-frame = 16
 
 [node name="Earring" parent="house1/entitylayer/npclayer/heinz" index="9"]
-visible = false
-position = Vector2( -16, -25 )
 texture = ExtResource( 15 )
-centered = false
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Hair" parent="house1/entitylayer/npclayer/heinz" index="10"]
-position = Vector2( -16, -25 )
 texture = ExtResource( 17 )
-centered = false
-hframes = 112
-vframes = 49
 frame = 56
 
 [node name="Mask" parent="house1/entitylayer/npclayer/heinz" index="11"]
-visible = false
-position = Vector2( -16, -25 )
 texture = ExtResource( 14 )
-centered = false
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Glasses" parent="house1/entitylayer/npclayer/heinz" index="12"]
-visible = false
-position = Vector2( -16, -25 )
 texture = ExtResource( 11 )
-centered = false
-hframes = 80
-vframes = 49
 
 [node name="Hat" parent="house1/entitylayer/npclayer/heinz" index="13"]
-visible = false
-position = Vector2( -16, -25 )
 texture = ExtResource( 8 )
-centered = false
-hframes = 8
-vframes = 49
-region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="CollisionShape2D" parent="house1/entitylayer/npclayer/heinz" index="14"]
-visible = false
-position = Vector2( 0, 2 )
 shape = SubResource( 25 )
 
-[node name="interactionZone NPC" parent="house1/entitylayer/npclayer/heinz" index="15"]
-visible = false
-position = Vector2( -8, -4 )
-collision_mask = 2
-
 [node name="InteractionArea" parent="house1/entitylayer/npclayer/heinz/interactionZone NPC" index="0"]
-visible = false
 position = Vector2( 8.00001, 18.2153 )
 shape = SubResource( 26 )
 
@@ -1904,10 +1828,7 @@ anims/WalkUp = SubResource( 11 )
 
 [node name="AnimationTree" parent="house1/entitylayer/npclayer/heinz" index="17"]
 tree_root = SubResource( 52 )
-anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 53 )
-parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
-parameters/Walk/blend_position = Vector2( -0.852667, 0.595376 )
 
 [node name="Player" parent="house1/entitylayer/playerlayer" index="0" instance=ExtResource( 3 )]
 position = Vector2( -8, 16 )
@@ -1921,11 +1842,6 @@ limit_left = -105
 limit_top = -291
 limit_right = 287
 limit_bottom = 142
-
-[connection signal="area_entered" from="house1/entitylayer/npclayer/heinz/interactionZone NPC" to="house1/entitylayer/npclayer/heinz" method="_on_interactionZone_NPC_area_entered"]
-[connection signal="area_exited" from="house1/entitylayer/npclayer/heinz/interactionZone NPC" to="house1/entitylayer/npclayer/heinz" method="_on_interactionZone_NPC_area_exited"]
-[connection signal="body_entered" from="house1/entitylayer/npclayer/heinz/interactionZone NPC" to="house1/entitylayer/npclayer/heinz" method="_on_interactionZone_NPC_body_entered"]
-[connection signal="body_exited" from="house1/entitylayer/npclayer/heinz/interactionZone NPC" to="house1/entitylayer/npclayer/heinz" method="_on_interactionZone_NPC_body_exited"]
 
 [editable path="house1"]
 [editable path="house1/entitylayer/npclayer/heinz"]

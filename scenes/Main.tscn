@@ -20,42 +20,34 @@ shader_param/default_light_color = null
 shader_param/light_strength_modifier = 1.0
 
 [sub_resource type="AtlasTexture" id=15]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 0, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=16]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 16, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=17]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 32, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=18]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 48, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=11]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 0, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=12]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 16, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=13]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 32, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=14]
-flags = 3
 atlas = ExtResource( 4 )
 region = Rect2( 48, 16, 16, 16 )
 
