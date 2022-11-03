@@ -590,12 +590,12 @@ func create_player_inventory():
 	# Create Merchant data files for this character
 	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/")
 	var merchant_data = File.new()
-	for i in ["bella", "heinz", "lea", "sam"]:
+	for i in ["bella", "heinz", "lea", "sam", "haley"]:
 		var item_data_file = File.new()
 		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
 		var item_data_json = JSON.parse(item_data_file.get_as_text())
 		item_data_file.close()
-		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/trader/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 		merchant_data.store_line(to_json(item_data_json.result))
 		merchant_data.close()
 

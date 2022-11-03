@@ -112,12 +112,12 @@ func close_dialog():
 	$Trade.visible = false
 	phraseNum = 0
 	finished = false
+	Utils.get_ui().is_dialog = false
 	if !trade:
 		Utils.get_current_player().set_player_can_interact(true)
 		Utils.get_current_player().set_movement(true)
 		Utils.get_current_player().set_movment_animation(true)
 		Utils.get_current_player().pause_player(false)
-		Utils.get_ui().is_dialog = false
 		# reset npc interaction state
 		if !death:
 			if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
