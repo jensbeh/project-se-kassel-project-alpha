@@ -28,19 +28,20 @@ func _ready():
 	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 	# Get npc path
 	var npcPathesNode = self.get_parent().get_parent().get_parent().find_node("npcPathes")
-	path_exists = (npcPathesNode.find_node(self.name + "_Path") != null)
-	if path_exists:
-		path_1 = npcPathesNode.find_node(self.name + "_Path")
-		var points = path_1.get_curve().get_baked_points()
+	if npcPathesNode != null and npcPathesNode.find_node(self.name + "_Path"):
+		var npcPath = npcPathesNode.find_node(self.name + "_Path")
+		path_exists = true
+		
+		var points = npcPath.get_curve().get_baked_points()
 		for i in points:
-			i = i + path_1.position
+			i = i + npcPath.position
 			patrol_points.append(i)
 		self.position = patrol_points[0]
 		animation_tree.active = true
 		animation_tree.set("parameters/Idle/blend_position", velocity)
 		animation_tree.set("parameters/Walk/blend_position", velocity)
-		if path_1.has_meta("is_circle"):
-			circle = path_1.get_meta("is_circle")
+		if npcPath.has_meta("is_circle"):
+			circle = npcPath.get_meta("is_circle")
 
 
 func _physics_process(delta):

@@ -7,39 +7,39 @@ extends Node
 #################
 ## AMBIENT MOBS
 #################
-const SHOW_AMBIENT_MOB_COLLISION = false
-const SHOW_AMBIENT_MOB_PATHES = false
+const SHOW_AMBIENT_MOB_COLLISION = false # Default: false
+const SHOW_AMBIENT_MOB_PATHES = false # Default: false
 
 #################
 ## MOBS
 #################
-const SHOW_MOB_COLLISION = false
-const SHOW_MOB_DETECTION_RADIUS = false
-const SHOW_MOB_PATHES = false
-const SHOW_MOB_HITBOX = false
-const SHOW_MOB_DAMAGE_AREA = false
+const SHOW_MOB_COLLISION = false # Default: false
+const SHOW_MOB_DETECTION_RADIUS = false # Default: false
+const SHOW_MOB_PATHES = false # Default: false
+const SHOW_MOB_HITBOX = false # Default: false
+const SHOW_MOB_DAMAGE_AREA = false # Default: false
 
 #################
 ## BOSSES
 #################
-const SHOW_BOSS_COLLISION = false
-const SHOW_BOSS_DETECTION_RADIUS = false
-const SHOW_BOSS_PATHES = false
-const SHOW_BOSS_HITBOX = false
-const SHOW_BOSS_DAMAGE_AREA = false
+const SHOW_BOSS_COLLISION = false # Default: false
+const SHOW_BOSS_DETECTION_RADIUS = false # Default: false
+const SHOW_BOSS_PATHES = false # Default: false
+const SHOW_BOSS_HITBOX = false # Default: false
+const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 
 #################
 ## PLAYER
 #################
-const IS_PLAYER_INVISIBLE = false
-const IS_PLAYER_INVINCIBLE = true
-const HAS_PLAYER_INFINIT_STAMINA = true
+const IS_PLAYER_INVISIBLE = false # Default: false
+const IS_PLAYER_INVINCIBLE = false # Default: false
+const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 
 #################
 ## LOADED MAPS
 #################
-const LOAD_GRASSLAND_MAP = false
-const LOAD_DUNGEONS_MAPS = false
+const LOAD_GRASSLAND_MAP = true # Default: true
+const LOAD_DUNGEONS_MAPS = true # Default: true
 
 # --------------------------------------------------
 
