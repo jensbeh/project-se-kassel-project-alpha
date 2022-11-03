@@ -10186,12 +10186,13 @@ texture = SubResource( 86 )
 texture = SubResource( 87 )
 
 [node name="CollisionShape2D" parent="map_camp/npclayer/clarke" index="14"]
-visible = false
+visible = true
 
 [node name="interactionZone NPC" parent="map_camp/npclayer/clarke" index="15"]
-visible = false
+visible = true
 
 [node name="InteractionArea" parent="map_camp/npclayer/clarke/interactionZone NPC" index="0"]
+visible = true
 position = Vector2( 8, 6 )
 
 [node name="AnimationTree" parent="map_camp/npclayer/clarke" index="17"]
@@ -10244,7 +10245,14 @@ frame = 3760
 [node name="Hat" parent="map_camp/npclayer/anna" index="13"]
 frame = 376
 
+[node name="CollisionShape2D" parent="map_camp/npclayer/anna" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/anna" index="15"]
+visible = true
+
 [node name="InteractionArea" parent="map_camp/npclayer/anna/interactionZone NPC" index="0"]
+visible = true
 position = Vector2( 8, 6 )
 
 [node name="AnimationPlayer" parent="map_camp/npclayer/anna" index="16"]
@@ -10289,7 +10297,14 @@ visible = true
 [node name="Hair" parent="map_camp/npclayer/lea" index="10"]
 texture = ExtResource( 21 )
 
+[node name="CollisionShape2D" parent="map_camp/npclayer/lea" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/lea" index="15"]
+visible = true
+
 [node name="InteractionArea" parent="map_camp/npclayer/lea/interactionZone NPC" index="0"]
+visible = true
 position = Vector2( 8, 18.0625 )
 shape = SubResource( 78 )
 
@@ -10332,6 +10347,15 @@ frame = 0
 texture = ExtResource( 6 )
 frame = 0
 
+[node name="CollisionShape2D" parent="map_camp/npclayer/steven" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/steven" index="15"]
+visible = true
+
+[node name="InteractionArea" parent="map_camp/npclayer/steven/interactionZone NPC" index="0"]
+visible = true
+
 [node name="AnimationPlayer" parent="map_camp/npclayer/steven" index="16"]
 anims/IdleDown = SubResource( 3 )
 anims/IdleLeft = SubResource( 4 )
@@ -10372,7 +10396,14 @@ visible = false
 [node name="Hair" parent="map_camp/npclayer/sam" index="10"]
 texture = ExtResource( 9 )
 
+[node name="CollisionShape2D" parent="map_camp/npclayer/sam" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/sam" index="15"]
+visible = true
+
 [node name="InteractionArea" parent="map_camp/npclayer/sam/interactionZone NPC" index="0"]
+visible = true
 position = Vector2( 8, 18 )
 shape = SubResource( 79 )
 
@@ -10422,7 +10453,14 @@ frame = 64
 visible = true
 texture = ExtResource( 8 )
 
+[node name="CollisionShape2D" parent="map_camp/npclayer/bella" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/bella" index="15"]
+visible = true
+
 [node name="InteractionArea" parent="map_camp/npclayer/bella/interactionZone NPC" index="0"]
+visible = true
 position = Vector2( 6, 18 )
 shape = SubResource( 80 )
 
@@ -10470,6 +10508,15 @@ frame = 24
 texture = ExtResource( 10 )
 frame = 0
 
+[node name="CollisionShape2D" parent="map_camp/npclayer/murphy" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/murphy" index="15"]
+visible = true
+
+[node name="InteractionArea" parent="map_camp/npclayer/murphy/interactionZone NPC" index="0"]
+visible = true
+
 [node name="AnimationPlayer" parent="map_camp/npclayer/murphy" index="16"]
 anims/IdleDown = SubResource( 56 )
 anims/IdleLeft = SubResource( 57 )
@@ -10510,6 +10557,15 @@ frame = 0
 [node name="Hair" parent="map_camp/npclayer/octavia" index="10"]
 texture = ExtResource( 11 )
 frame = 0
+
+[node name="CollisionShape2D" parent="map_camp/npclayer/octavia" index="14"]
+visible = true
+
+[node name="interactionZone NPC" parent="map_camp/npclayer/octavia" index="15"]
+visible = true
+
+[node name="InteractionArea" parent="map_camp/npclayer/octavia/interactionZone NPC" index="0"]
+visible = true
 
 [node name="AnimationPlayer" parent="map_camp/npclayer/octavia" index="16"]
 anims/IdleDown = SubResource( 67 )

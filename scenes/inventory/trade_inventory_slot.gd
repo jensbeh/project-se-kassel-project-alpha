@@ -109,7 +109,7 @@ func drop_data(_pos, data):
 			# Update the data of the origin
 			# stacking 
 			if (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
-			data["origin_panel"] == "TradeInventory"):
+			data["origin_panel"] == "TradeInventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					MerchantData.inv_data[origin_slot]["Item"] = null
 					MerchantData.inv_data[origin_slot]["Stack"] = null
@@ -119,7 +119,7 @@ func drop_data(_pos, data):
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
 			elif (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
-			data["origin_panel"] == "Inventory"):
+			data["origin_panel"] == "Inventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[origin_slot]["Item"] = null
 					PlayerData.inv_data[origin_slot]["Stack"] = null
@@ -140,7 +140,7 @@ func drop_data(_pos, data):
 				
 			# Update the texture of the origin
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0):
+			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					data["origin_node"].get_child(0).texture = null
 					data["origin_node"].get_node("../TextureRect/Stack").set_text("")
@@ -163,7 +163,7 @@ func drop_data(_pos, data):
 				
 			# Update the texture, label and data of the target
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0):
+			if data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 				if data["target_stack"] != 0:
 					var new_stack = data["target_stack"] + data["origin_stack"]
 					if new_stack > Constants.MAX_STACK_SIZE:
@@ -198,6 +198,8 @@ func SplitStack(split_amount, data):
 	var origin_slot = data["origin_node"].get_parent().get_name()
 	var player_gold = int(Utils.get_current_player().get_gold())
 	var new_stack_size
+	if data["target_stack"] != null and data["target_stack"] + split_amount > Constants.MAX_STACK_SIZE:
+		split_amount = Constants.MAX_STACK_SIZE - data["target_stack"]
 	# paying in case of buying and selling
 	if data["origin_panel"] == "Inventory":
 		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))

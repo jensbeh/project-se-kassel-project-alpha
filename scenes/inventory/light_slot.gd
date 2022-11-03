@@ -104,22 +104,13 @@ func drop_data(_pos, data):
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
-		if data["origin_panel"] == "TradeInventory" or data["origin_panel"] == "Inventory":
+		if data["origin_panel"] == "TradeInventory" or data["origin_panel"] == "Inventory" or data["origin_panel"] == "Delete":
 			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
 				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
 				data["origin_node"].get_child(0).set_hframes(16)
 				data["origin_node"].get_child(0).set_vframes(27)
 			else:
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
-				data["origin_node"].get_child(0).set_hframes(13)
-				data["origin_node"].get_child(0).set_vframes(15)
-		elif data["origin_panel"] == "Delete":
-			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
-				data["origin_node"].get_child(0).set_scale(Vector2(1,1))
-				data["origin_node"].get_child(0).set_hframes(16)
-				data["origin_node"].get_child(0).set_vframes(27)
-			else:
-				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
 				data["origin_node"].get_child(0).set_hframes(13)
 				data["origin_node"].get_child(0).set_vframes(15)
 		else:

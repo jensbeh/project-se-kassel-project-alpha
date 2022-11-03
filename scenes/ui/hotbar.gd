@@ -58,7 +58,7 @@ func load_hotbar():
 		item_slot.get_node("TextureRect/Stack").set_text("")
 		item_slot.get_node("TextureRect").visible = false
 		item_slot.get_node("Icon/Sprite").set_texture(null)
-		
+		type = ""
 		cooldown_texture.hide()
 		time_label.hide()
 

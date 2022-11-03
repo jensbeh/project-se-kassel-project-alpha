@@ -185,7 +185,7 @@ func drop_data(_pos, data):
 			# Update the data of the origin
 			# stacking
 			if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "Inventory"):
+			data["origin_panel"] == "Inventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[origin_slot]["Item"] = null
 					PlayerData.inv_data[origin_slot]["Stack"] = null
@@ -193,7 +193,7 @@ func drop_data(_pos, data):
 					PlayerData.inv_data[origin_slot]["Stack"] = (PlayerData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "TradeInventory"):
+			data["origin_panel"] == "TradeInventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if split != 0:
 					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
 				elif data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
@@ -207,7 +207,7 @@ func drop_data(_pos, data):
 				check_slots()
 			# stacking for hotbar
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "CharacterInterface"):
+			data["origin_panel"] == "CharacterInterface" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.equipment_data[origin_slot]["Item"] = null
 					PlayerData.equipment_data[origin_slot]["Stack"] = null
@@ -282,7 +282,7 @@ func drop_data(_pos, data):
 
 			# Update the texture and label of the origin
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0:
+			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0 and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 				if data["origin_panel"] == "CharacterInterface":
 					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 						data["origin_node"].get_child(0).texture = null
@@ -328,7 +328,8 @@ func drop_data(_pos, data):
 				
 			# Update the texture, label and data of the target
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+			if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
+			(data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE and split + data["target_stack"] <= Constants.MAX_STACK_SIZE)):
 				var new_stack = 0
 				if split != 0:
 					new_stack = split
@@ -367,6 +368,8 @@ func SplitStack(split_amount, data):
 	var player_gold = int(Utils.get_current_player().get_gold())
 	var valid = true
 	var new_stack_size
+	if data["target_stack"] != null and data["target_stack"] + split_amount > Constants.MAX_STACK_SIZE:
+		split_amount = Constants.MAX_STACK_SIZE - data["target_stack"]
 	# paying in case of buying and selling
 	if data["origin_panel"] == "TradeInventory":
 		if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount <= player_gold:
@@ -455,15 +458,6 @@ func verify_origin_texture(data):
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
 				data["origin_node"].get_child(0).set_hframes(13)
 				data["origin_node"].get_child(0).set_vframes(15)
-#		elif data["origin_panel"] == "Delete":
-#			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
-#				data["origin_node"].get_child(0).set_scale(Vector2(1,1))
-#				data["origin_node"].get_child(0).set_hframes(16)
-#				data["origin_node"].get_child(0).set_vframes(27)
-#			else:
-#				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
-#				data["origin_node"].get_child(0).set_hframes(13)
-#				data["origin_node"].get_child(0).set_vframes(15)
 		else:
 			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
 				data["origin_node"].get_child(0).set_scale(Vector2(2.5,2.5))
@@ -597,6 +591,8 @@ func _on_Icon_gui_input(event):
 					PlayerData.inv_data[slot]["Item"] = null
 					PlayerData.inv_data[slot]["Stack"] = null
 					get_node("../Icon/Sprite").set_texture(null)
+					hide_tooltip()
+					show_tooltip()
 
 
 # starts cooldwon

@@ -5,7 +5,6 @@ var inv_slot = load(Constants.TRADE_INV_SLOT)
 onready var gridcontainer = find_node("TradeGridContainer")
 
 func _ready():
-	print("+++++++++++++++++++++++")
 	for i in range(1,MerchantData.inv_data.size()+1):
 		var inv_slot_new = inv_slot.instance()
 		var slot = "Inv" + str(i)
@@ -72,7 +71,6 @@ func check_slots():
 	for i in MerchantData.inv_data:
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
-	print(free)
 	if !free:
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
