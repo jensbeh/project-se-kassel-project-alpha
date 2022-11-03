@@ -159,7 +159,7 @@ func update_current_scene_type(transition_data):
 	
 	# House
 	elif Constants.CAMP_BUILDING_FOLDER in transition_data.get_scene_path() or Constants.GRASSLAND_BUILDING_FOLDER in transition_data.get_scene_path():
-		print("House state")
+#		print("House state")
 		return Constants.SceneType.HOUSE
 	
 	# Camp
