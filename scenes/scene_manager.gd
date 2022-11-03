@@ -55,9 +55,6 @@ func load_new_scene():
 	# Pause game
 	Utils.pause_game(true)
 	
-	# pause player input
-	Utils.get_ui().player_input(false)
-	
 	# Start thread
 	thread = Thread.new()
 	thread.start(self, "_load_scene_in_background")
@@ -172,9 +169,6 @@ func finish_transition():
 		
 		# Mouse actions works now again
 		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
-		
-		# resume player input
-		Utils.get_ui().player_input(true)
 
 
 # Method is called when "GameFadeToNormal" animation finished and game is back to normal

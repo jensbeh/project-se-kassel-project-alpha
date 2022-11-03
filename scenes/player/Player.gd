@@ -29,7 +29,7 @@ onready var attackSwingSprite = $AttackSwing
 
 const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
-var curr_body: int = 0 #0-7, 1
+var curr_body: int = 0 #0-7, 1S
 var curr_shoes: int = 0 #0, 10
 var curr_pants: int = 0 #0-2, 10
 var curr_clothes: int = 0 #0-10, 10 -> not by everyone
@@ -156,7 +156,7 @@ func _physics_process(delta):
 				
 			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
-					if not Constants.PLAYER_INFINIT_STAMINA:
+					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
 					velocity *= 1.4
 			
@@ -972,6 +972,7 @@ func reset_player_after_dying():
 func get_light_radius():
 	return player_light_radius
 
+
 func set_light(new_light: int):
 	player_light_radius = new_light
 	data.light = player_light_radius
@@ -1035,6 +1036,7 @@ func set_in_change_scene_area(new_in_change_scene_area):
 # Method to get in_change_scene_area
 func is_in_change_scene_area():
 	return in_change_scene_area
+
 
 func rescue_pay():
 	# Pay amount of gold

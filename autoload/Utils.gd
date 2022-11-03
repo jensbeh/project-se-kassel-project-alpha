@@ -517,6 +517,9 @@ func pause_game(should_pause):
 		
 		# Pause time
 		DayNightCycle.pause_time(true)
+		
+		# Pause player input
+		Utils.get_ui().player_input(false)
 	
 	# Resume
 	else:
@@ -527,6 +530,9 @@ func pause_game(should_pause):
 		
 		# Resume time
 		DayNightCycle.pause_time(false)
+		
+		# Resume player input
+		Utils.get_ui().player_input(true)
 
 
 # Method to start the stop of the game
