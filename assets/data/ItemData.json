@@ -327,20 +327,6 @@
 	"Worth": 70
   },
   "10026": {
-    "Name": "Great Stamina Potion",
-    "Category": "Potion",
-    "EquipmentSlot": null,
-    "Attack": null,
-	"Knockback":null,
-	"Attack-Speed":null,
-    "Health": null,
-    "Stamina": 150,
-	"Stackable": true,
-	"Frame": 310,
-	"Texture": "item_icons_1",
-	"Worth": 50
-  },
-  "10026": {
     "Name": "Apple",
     "Category": "Food",
     "EquipmentSlot": null,
@@ -833,5 +819,19 @@
 	"Frame": 203,
 	"Texture": "item_icons_1",
 	"Worth": null
+  },
+  "10065": {
+    "Name": "Great Stamina Potion",
+    "Category": "Potion",
+    "EquipmentSlot": null,
+    "Attack": null,
+	"Knockback":null,
+	"Attack-Speed":null,
+    "Health": null,
+    "Stamina": 150,
+	"Stackable": true,
+	"Frame": 310,
+	"Texture": "item_icons_1",
+	"Worth": 50
   },
 }
