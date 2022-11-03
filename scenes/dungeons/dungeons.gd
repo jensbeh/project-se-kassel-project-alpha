@@ -6,7 +6,6 @@ var scene_type = Constants.SceneType.DUNGEON
 
 # Variables
 var thread
-var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
 var groundChunks
@@ -57,8 +56,8 @@ func _ready():
 	setup_treasure_areas()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
-	
+	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
+
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
 	
@@ -150,12 +149,22 @@ func set_transition_data(transition_data):
 
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
-	if player_in_change_scene_area:
-		Utils.get_current_player().set_change_scene(true)
+	if Utils.get_current_player().is_in_change_scene_area():
 		var next_scene_path = current_area.get_meta("next_scene_path")
-		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
-		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
+		print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
+		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 		Utils.get_scene_manager().transition_to_scene(transition_data)
+
+
+# Setup all change_scene objectes/Area2D's on start
+func setup_change_scene_areas():
+	var changeScenesObject = find_node("changeScenes")
+	for child in changeScenesObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
+			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
 
 
 # Method which is called when a body has entered a changeSceneArea
@@ -163,12 +172,46 @@ func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
-			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
+			print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
+			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
 		else:
-			player_in_change_scene_area = true
+			Utils.get_current_player().set_in_change_scene_area(true)
 			current_area = changeSceneArea
+
+
+# Method which is called when a body has exited a changeSceneArea
+func body_exited_change_scene_area(body, changeSceneArea):
+	if body.name == "Player":
+		print("DUNGEONS: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		current_area = null
+		Utils.get_current_player().set_in_change_scene_area(false)
+
+
+# Setup all change_scene objectes/Area2D's on start
+func setup_safe_area():
+	var safeAreasObject = find_node("safe_area")
+	if safeAreasObject != null:
+		for child in safeAreasObject.get_children():
+			if "safe_area" in child.name:
+				# connect Area2D with functions to handle body action
+				child.connect("body_entered", self, "body_entered_safe_area", [child])
+				child.connect("body_exited", self, "body_exited_safe_area", [child])
+
+
+# Method which is called when a body has exited a safeArea
+func body_entered_safe_area(body, safeArea):
+	if body.name == "Player":
+		print("DUNGEONS: Body \""  + str(body.name) + "\" ENTERED safeArea \"" + safeArea.name + "\"")
+		Utils.get_current_player().set_in_safe_area(true)
+
+
+# Method which is called when a body has exited a safeArea
+func body_exited_safe_area(body, safeArea):
+	if body.name == "Player":
+		print("DUNGEONS: Body \""  + str(body.name) + "\" EXITED safeArea \"" + safeArea.name + "\"")
+		Utils.get_current_player().set_in_safe_area(false)
 
 
 # Method to disconnect all signals
@@ -212,48 +255,6 @@ func clear_signals():
 				child.disconnect("body_exited", self, "body_exited_safe_area")
 
 
-# Method which is called when a body has exited a changeSceneArea
-func body_exited_change_scene_area(body, changeSceneArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
-		current_area = null
-		player_in_change_scene_area = false
-
-
-# Setup all change_scene objectes/Area2D's on start
-func setup_change_scene_areas():
-	var changeScenesObject = find_node("changeScenes")
-	for child in changeScenesObject.get_children():
-		if "changeScene" in child.name:
-			# connect Area2D with functions to handle body action
-			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
-			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
-
-
-# Setup all change_scene objectes/Area2D's on start
-func setup_safe_area():
-	var safeAreasObject = find_node("safe_area")
-	if safeAreasObject != null:
-		for child in safeAreasObject.get_children():
-			if "safe_area" in child.name:
-				# connect Area2D with functions to handle body action
-				child.connect("body_entered", self, "body_entered_safe_area", [child])
-				child.connect("body_exited", self, "body_exited_safe_area", [child])
-
-
-# Method which is called when a body has exited a safeArea
-func body_entered_safe_area(body, safeArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" ENTERED safeArea \"" + safeArea.name + "\"")
-		Utils.get_current_player().set_in_safe_area(true)
-
-
-# Method which is called when a body has exited a safeArea
-func body_exited_safe_area(body, safeArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED safeArea \"" + safeArea.name + "\"")
-		Utils.get_current_player().set_in_safe_area(false)
-
 func setup_spawning_areas():
 	for area in mobSpawns.get_children():
 		var biome : String = area.get_meta("biome")
@@ -283,19 +284,19 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
+		if ground_chunk != null and Utils.is_node_valid(ground_chunk):
 			ground_chunk.visible = true
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
+		if higher_chunk != null and Utils.is_node_valid(higher_chunk):
 			higher_chunk.visible = true
 	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and is_instance_valid(ground_chunk) and ground_chunk.is_inside_tree():
+		if ground_chunk != null and Utils.is_node_valid(ground_chunk):
 			ground_chunk.visible = false
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and is_instance_valid(higher_chunk) and higher_chunk.is_inside_tree():
+		if higher_chunk != null and Utils.is_node_valid(higher_chunk):
 			higher_chunk.visible = false
 
 
@@ -305,7 +306,7 @@ func despawn_boss(boss_node):
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
 		boss_node.call_deferred("queue_free")
-		print("----------> Boss \"" + boss_node.name + "\" removed")
+		print("DUNGEON: Boss \"" + boss_node.name + "\" removed")
 	
 	# Disable mobs respawning
 	MobSpawnerService.disable_mob_respawning(true)
@@ -394,7 +395,7 @@ func setup_treasure_areas():
 						treasure_area.connect("body_entered", self, "body_entered_treasure", [treasure_area])
 						treasure_area.connect("body_exited", self, "body_exited_treasure", [treasure_area])
 					else:
-						printerr("Error in dungeons - setup_treasure_areas -> treasure_area is null")
+						printerr("ERROR: Error in dungeons - setup_treasure_areas -> treasure_area is null")
 					
 					
 					# Add treasure to obstacles
@@ -500,3 +501,12 @@ func player_has_key(treasureArea):
 		return false
 	else:
 		return true
+
+
+# Method is called from MobSpawnerService to instance and spawn the mob -> instancing in other threads causes random errors
+func spawn_mob(packedMobScene, current_spawn_area):
+	if Utils.is_node_valid(mobsLayer):
+		var mob_instance = packedMobScene.instance()
+		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
+		mobsLayer.call_deferred("add_child", mob_instance)
+		MobSpawnerService.new_mob_spawned(mob_instance)

@@ -149,16 +149,21 @@ func calculate_and_set_player_spawn(scene: Node, init_transition_data):
 		
 	# Set the player_position and the view_direction to the current_player
 	current_player.set_spawn(player_position, view_direction)
-	
-	
+
+
 func update_current_scene_type(transition_data):
 	# Menu
 	if Constants.MENU_FOLDER in transition_data.get_scene_path():
 #		print("Menu state")
 		return Constants.SceneType.MENU
 	
+	# House
+	elif Constants.CAMP_BUILDING_FOLDER in transition_data.get_scene_path() or Constants.GRASSLAND_BUILDING_FOLDER in transition_data.get_scene_path():
+#		print("House state")
+		return Constants.SceneType.HOUSE
+	
 	# Camp
-	if Constants.CAMP_FOLDER in transition_data.get_scene_path():
+	elif Constants.CAMP_FOLDER in transition_data.get_scene_path():
 #		print("Camp state")
 		return Constants.SceneType.CAMP
 	
@@ -235,7 +240,7 @@ func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : 
 		elif scene_type == Constants.SceneType.DUNGEON:
 			obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
 		else:
-			printerr("Invalid scene type in generate_position_in_mob_area for \"obstacle_tile_id\"")
+			printerr("ERROR: Invalid scene type in generate_position_in_mob_area for \"obstacle_tile_id\"")
 		
 		if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
 		 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
@@ -261,7 +266,7 @@ func generate_position_in_mob_area(scene_type, area_info, navigation_tile_map : 
 			generate_again = true
 		
 		# Before return check positions of dynamic obstacles
-		if not generate_again and lootLayer != null and is_instance_valid(lootLayer) and lootLayer.is_inside_tree():
+		if not generate_again and lootLayer != null and is_node_valid(lootLayer):
 			# Loot & treasures
 			for loot in lootLayer.get_children():
 				if "treasure" in loot.name:
@@ -337,7 +342,7 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 	elif scene_type == Constants.SceneType.DUNGEON:
 		obstacle_tile_id = Constants.PSEUDO_OBSTACLE_TILE_ID_DUNGEONS
 	else:
-		printerr("Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")
+		printerr("ERROR: Invalid scene type in generate_position_near_mob for \"obstacle_tile_id\"")
 		
 	if cell != obstacle_tile_id and cell != Constants.INVALID_TILE_ID \
 	 and cellBottom != obstacle_tile_id and cellBottom != Constants.INVALID_TILE_ID \
@@ -354,10 +359,8 @@ func generate_position_near_mob(scene_type, mob_global_position, min_radius, max
 			var shapes = tile_set.tile_get_shapes(cell_to_check)
 			if shapes.size() > 0:
 				for shape in shapes:
-					print(shapes)
 					# If shape on tile is collision then generate again
 					if shape["shape"] is RectangleShape2D:
-						print("COLLISION")
 						generate_again = true
 	
 	# One of these cells is obstacles/invalid
@@ -435,7 +438,7 @@ func is_position_in_camera_screen(position):
 
 # Method to return the players chunk coords with players position
 func get_players_chunk(map_min_global_pos):
-	if is_instance_valid(current_player) and current_player.is_inside_tree():
+	if is_node_valid(current_player):
 		var player_position = current_player.global_position
 		var player_chunk = Vector2.ZERO
 		var new_player_position = Vector2.ZERO
@@ -478,7 +481,7 @@ func get_random_boss_instance_path():
 
 # Method to preload game -> called ONLY! from start screen
 func preload_game():
-	print("PRELOAD GAME")
+	print("GAME: Preloading...")
 	# Measure time
 	var time_start = OS.get_system_time_msecs()
 	var time_now = 0
@@ -491,14 +494,44 @@ func preload_game():
 	# Calculate needed time
 	time_now = OS.get_system_time_msecs()
 	var time_elapsed = time_now - time_start
-	print("Needed " + str(time_elapsed / 1000.0) + " sec to preload game!")
 	
-	print("PRELOAD DONE")
+	print("GAME: Preload finished! (" + str(time_elapsed / 1000.0) + " sec)")
+
+
+# Method to check if node is valid and still present
+func is_node_valid(node):
+	if is_instance_valid(node) and node != null and not node.is_queued_for_deletion() and node.is_inside_tree():
+		return true
+	else:
+		return false
+
+
+# Method to pause and resume game
+func pause_game(should_pause):
+	# Pause
+	if should_pause:
+		print("GAME: Pause")
+		
+		# Pause cooldown timer
+		Utils.get_hotbar().pause_cooldown()
+		
+		# Pause time
+		DayNightCycle.pause_time(true)
+	
+	# Resume
+	else:
+		print("GAME: Resume")
+		
+		# Resume cooldown timer
+		Utils.get_hotbar().resume_cooldown()
+		
+		# Resume time
+		DayNightCycle.pause_time(false)
 
 
 # Method to start the stop of the game
 func stop_game():
-	print("STOP GAME")
+	print("GAME: Stopping...")
 	
 	# Start fade to black transition in main.gd
 	get_main().start_close_game_transition()

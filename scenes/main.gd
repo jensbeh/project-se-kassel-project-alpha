@@ -68,12 +68,15 @@ func start_close_game_transition():
 
 # Method to stop the game after animation "CloseGameFadeToBlack" is done - called from animation "CloseGameFadeToBlack"
 func stop_game():
+	# Pause game
+	Utils.pause_game(true)
+	
 	# Cleanup previous scene
 	if Utils.get_scene_manager().get_current_scene().has_method("destroy_scene"):
 		Utils.get_scene_manager().get_current_scene().destroy_scene()
-		print("----> destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
+		print("MAIN: Destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
 	else:
-		printerr("----> NOT destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
+		printerr("MAIN: NOT destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
 	
 	# Stop threads
 	# Stop Chunkloader
@@ -85,6 +88,8 @@ func stop_game():
 	
 	# Quit and close game
 	get_tree().quit()
+	
+	print("GAME: Stopped!")
 
 
 # Handle notifications

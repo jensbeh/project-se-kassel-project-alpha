@@ -1189,6 +1189,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/grassland/Grassland.tscn"/>
     <property name="to_spawn_area_id" value="ps_grassland-from-dungeon3"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="21" name="changeScene dungeon3-lvl2" type="area" x="-228" y="-416" width="24" height="16">
@@ -1196,6 +1198,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon3-lvl2-from-dungeon3-lvl1"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

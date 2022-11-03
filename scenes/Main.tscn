@@ -247,6 +247,20 @@ tracks/4/keys = {
 "update": 1,
 "values": [ false ]
 }
+tracks/5/type = "method"
+tracks/5/path = NodePath("../../Game/Viewport/SceneManager")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "on_game_fade_to_normal_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=22]
 resource_name = "MenuFadeToBlack"
@@ -417,6 +431,7 @@ margin_bottom = 1067.0
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 
 [node name="BlackScreen" type="ColorRect" parent="LoadingScreen"]
+visible = false
 margin_right = 1920.0
 margin_bottom = 1080.0
 mouse_filter = 2

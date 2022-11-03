@@ -7,33 +7,39 @@ extends Node
 #################
 ## AMBIENT MOBS
 #################
-const SHOW_AMBIENT_MOB_COLLISION = false
-const SHOW_AMBIENT_MOB_PATHES = false
+const SHOW_AMBIENT_MOB_COLLISION = false # Default: false
+const SHOW_AMBIENT_MOB_PATHES = false # Default: false
 
 #################
 ## MOBS
 #################
-const SHOW_MOB_COLLISION = false
-const SHOW_MOB_DETECTION_RADIUS = false
-const SHOW_MOB_PATHES = false
-const SHOW_MOB_HITBOX = false
-const SHOW_MOB_DAMAGE_AREA = false
+const SHOW_MOB_COLLISION = false # Default: false
+const SHOW_MOB_DETECTION_RADIUS = false # Default: false
+const SHOW_MOB_PATHES = false # Default: false
+const SHOW_MOB_HITBOX = false # Default: false
+const SHOW_MOB_DAMAGE_AREA = false # Default: false
 
 #################
 ## BOSSES
 #################
-const SHOW_BOSS_COLLISION = false
-const SHOW_BOSS_DETECTION_RADIUS = false
-const SHOW_BOSS_PATHES = false
-const SHOW_BOSS_HITBOX = false
-const SHOW_BOSS_DAMAGE_AREA = false
+const SHOW_BOSS_COLLISION = false # Default: false
+const SHOW_BOSS_DETECTION_RADIUS = false # Default: false
+const SHOW_BOSS_PATHES = false # Default: false
+const SHOW_BOSS_HITBOX = false # Default: false
+const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 
 #################
 ## PLAYER
 #################
-const PLAYER_INVISIBLE = false
-const PLAYER_INVINCIBLE = true
-const PLAYER_INFINIT_STAMINA = true
+const IS_PLAYER_INVISIBLE = false # Default: false
+const IS_PLAYER_INVINCIBLE = false # Default: false
+const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
+
+#################
+## LOADED MAPS
+#################
+const LOAD_GRASSLAND_MAP = true # Default: true
+const LOAD_DUNGEONS_MAPS = true # Default: true
 
 # --------------------------------------------------
 
@@ -88,6 +94,7 @@ enum TransitionType {
 enum SceneType {
 	MENU,
 	CAMP,
+	HOUSE,
 	GRASSLAND,
 	DUNGEON
 }
@@ -117,7 +124,9 @@ const MINIMAP_CAMP = "res://assets/ui/map_camp.png"
 # Pathes
 const MENU_FOLDER = "res://scenes/menu/"
 const CAMP_FOLDER = "res://scenes/camp/"
+const CAMP_BUILDING_FOLDER = "res://scenes/camp/buildings/"
 const GRASSLAND_FOLDER = "res://scenes/grassland/"
+const GRASSLAND_BUILDING_FOLDER = "res://scenes/grassland/buildings/"
 const DUNGEONS_FOLDER = "res://scenes/dungeons/"
 
 const MAIN_MENU_PATH = "res://scenes/menu/MainMenuScreen.tscn"

@@ -79,7 +79,8 @@ var is_invincible = false
 var collecting = false
 var collected = false
 var in_safe_area = false
-var change_scene
+var in_change_scene_area = false
+var is_player_paused
 
 
 func _ready():
@@ -117,70 +118,85 @@ func _ready():
 	animation_tree.set("parameters/Collected/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
-	# Set invisibility of player
-	make_player_invisible(Constants.PLAYER_INVISIBLE)
 	
-	# Set invincibility of player
-	make_player_invincible(Constants.PLAYER_INVINCIBLE)
+	# For debugging
+	# Invisibility
+	if Constants.IS_PLAYER_INVISIBLE:
+		printerr("PLAYER: Is invisible")
+		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
+	else:
+		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
+	
+	# Invincibility
+	if Constants.IS_PLAYER_INVINCIBLE:
+		printerr("PLAYER: Is invincible")
+		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
+	else:
+		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
+	
+	# Infinit stamina
+	if Constants.HAS_PLAYER_INFINIT_STAMINA:
+		printerr("PLAYER: Has infinit stamina")
 
 
 func _physics_process(delta):
-	if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
-		# Handle User Input
-		if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
-			velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
-		else:
-			velocity.x = 0
+	if not is_player_paused:
+		if not is_attacking and not hurting and not dying and not collecting: # Disable walking if attacking
+			# Handle User Input
+			if Input.is_action_pressed("d") or Input.is_action_pressed("a"):
+				velocity.x = (int(Input.is_action_pressed("d")) - int(Input.is_action_pressed("a"))) * current_walk_speed
+			else:
+				velocity.x = 0
+				
+			if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
+				velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
+			else:
+				velocity.y = 0
 			
-		if Input.is_action_pressed("s") or Input.is_action_pressed("w"):
-			velocity.y = (int(Input.is_action_pressed("s")) - int(Input.is_action_pressed("w"))) * current_walk_speed
-		else:
-			velocity.y = 0
-		
-		if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
-			velocity /= 1.45
+			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
+				velocity /= 1.45
+				
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
+				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
+					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
+						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+					velocity *= 1.4
 			
-		if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
-			if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
-				if not Constants.PLAYER_INFINIT_STAMINA:
-					set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
-				velocity *= 1.4
+			if velocity != Vector2.ZERO and player_can_interact:
+				animation_tree.set("parameters/Idle/blend_position", velocity)
+				animation_tree.set("parameters/Walk/blend_position", velocity)
+				animation_tree.set("parameters/Hurt/blend_position", velocity)
+				animation_tree.set("parameters/Collect/blend_position", velocity)
+				animation_tree.set("parameters/Collected/blend_position", velocity)
+				animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
+				animation_state.travel("Walk")
+			else:
+				animation_state.travel("Idle")
+			
+			if movement:
+				velocity = move_and_slide(velocity)
+				for i in get_slide_count():
+					var collision = get_slide_collision(i)
+					if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
+						emit_signal("player_collided", collision.get_collider())
 		
-		if velocity != Vector2.ZERO and player_can_interact:
-			animation_tree.set("parameters/Idle/blend_position", velocity)
-			animation_tree.set("parameters/Walk/blend_position", velocity)
-			animation_tree.set("parameters/Hurt/blend_position", velocity)
-			animation_tree.set("parameters/Collect/blend_position", velocity)
-			animation_tree.set("parameters/Collected/blend_position", velocity)
-			animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
-			animation_state.travel("Walk")
-		else:
-			animation_state.travel("Idle")
-		
-		if movement:
+		elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
+			# handle knockback when hurting or dying
+			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 			velocity = move_and_slide(velocity)
-			for i in get_slide_count():
-				var collision = get_slide_collision(i)
-				if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
-					emit_signal("player_collided", collision.get_collider())
-	
-	elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
-		# handle knockback when hurting or dying
-		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
-		velocity = move_and_slide(velocity)
-		
-	if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
-		if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
-			set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
-		elif player_stamina < level * 10 + 90:
-			set_stamina(level * 10 + 90)
+			
+		if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
+			if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
+				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
+			elif player_stamina < level * 10 + 90:
+				set_stamina(level * 10 + 90)
 
 
 # Method handles key inputs
 func _input(event):
 	Utils.get_control_notes().update()
 	# only can do interactions while mot scene changeing
-	if not change_scene:
+	if not is_player_paused:
 		if event.is_action_pressed("e"):
 			
 			if player_can_interact and not is_attacking and not dying:
@@ -248,7 +264,7 @@ func _input(event):
 		# Attack with "left_mouse"
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
-				if not Constants.PLAYER_INFINIT_STAMINA:
+				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
 				is_attacking = true
 				set_movement(false)
@@ -265,8 +281,16 @@ func _input(event):
 			Utils.get_loot_panel()._on_LootAll_pressed()
 
 
-func set_change_scene(value):
-	change_scene = value
+# Pause & resume player
+func pause_player(should_pause):
+	# Pause
+	if should_pause:
+		print("PLAYER: Pause")
+		is_player_paused = true
+	# Resume
+	else:
+		print("PLAYER: Resume")
+		is_player_paused = false
 
 
 # Method is called at the end of any attack animation
@@ -864,7 +888,7 @@ func _on_DamageAreaBottom_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -875,7 +899,7 @@ func _on_DamageAreaLeft_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -886,7 +910,7 @@ func _on_DamageAreaTop_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -897,7 +921,7 @@ func _on_DamageAreaRight_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -909,12 +933,6 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 	if not is_invincible:
 		# Add damage
 		current_health -= damage_to_player
-		
-#		print("health: " + str(current_health))
-#		print("max_health: " + str(max_health))
-#		print("damage_to_player: " + str(damage_to_player))
-#		print("knockback_to_player: " + str(knockback_to_player))
-		
 		
 		# handle here healthbar
 		if current_health <= 0:
@@ -1047,11 +1065,11 @@ func make_player_invisible(invisible : bool):
 	if invisible:
 		# Remove player from player layer so the mobs wont recognize the player anymore
 		set_collision_layer_bit(1, false)
-		print("---> PLAYER VISIBILITY: False")
+		print("PLAYER: Invisibility == True")
 	else:
 		# Add player to player layer so the mobs will recognize the player again
 		set_collision_layer_bit(1, true)
-		print("---> PLAYER VISIBILITY: True")
+		print("PLAYER: Invisibility == False")
 
 
 # Method to get player invisibility
@@ -1067,7 +1085,7 @@ func is_player_invisible():
 # Method to make to player invincible to mobs or not -> no damage
 func make_player_invincible(invincible : bool):
 	is_invincible = invincible
-	print("---> PLAYER INVINCIBILITY: " + str(is_invincible))
+	print("PLAYER: Invincibility == " + str(is_invincible))
 
 
 # Method to get player invincibility
@@ -1088,3 +1106,13 @@ func set_in_safe_area(new_in_safe_area):
 # Method to get in_safe_area
 func is_in_safe_area():
 	return in_safe_area
+
+
+# Method to set in_change_scene_area
+func set_in_change_scene_area(new_in_change_scene_area):
+	in_change_scene_area = new_in_change_scene_area
+
+
+# Method to get in_change_scene_area
+func is_in_change_scene_area():
+	return in_change_scene_area

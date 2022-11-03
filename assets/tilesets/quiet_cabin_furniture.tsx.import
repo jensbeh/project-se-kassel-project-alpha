@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/quiet_cabin_furniture.tsx-eeb0e3b0f9e79744857d267ce367e2bf.res"
+
+[deps]
+
+source_file="res://assets/tilesets/quiet_cabin_furniture.tsx"
+dest_files=[ "res://.import/quiet_cabin_furniture.tsx-eeb0e3b0f9e79744857d267ce367e2bf.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

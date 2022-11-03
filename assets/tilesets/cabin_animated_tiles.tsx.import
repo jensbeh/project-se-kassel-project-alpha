@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/cabin_animated_tiles.tsx-bd31753c3b65050cf211b3a91019d3cd.res"
+
+[deps]
+
+source_file="res://assets/tilesets/cabin_animated_tiles.tsx"
+dest_files=[ "res://.import/cabin_animated_tiles.tsx-bd31753c3b65050cf211b3a91019d3cd.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=3
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

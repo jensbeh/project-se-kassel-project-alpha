@@ -497,6 +497,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl3.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon2-lvl3-from-dungeon2-lvl4"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="36" name="changeScene dungeon2-lvl1" type="area" x="348" y="368" width="24" height="16">
@@ -504,6 +506,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="true"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon2-lvl1-from-dungeon2-lvl2"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

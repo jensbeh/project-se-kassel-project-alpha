@@ -204,7 +204,7 @@ func save_data():
 	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))
 	save_game.close()
-	print("Savegame saved")
+	print("CREATE_CHARACTER: Savegame saved")
 
 
 func _on_Back_pressed():

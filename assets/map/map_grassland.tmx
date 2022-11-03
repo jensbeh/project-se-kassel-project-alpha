@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="78" nextobjectid="5668">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="80" nextobjectid="5674">
  <tileset firstgid="1" source="../tilesets/terrarin.tsx"/>
  <tileset firstgid="457" source="../tilesets/trees-treetrunks.tsx"/>
  <tileset firstgid="461" source="../tilesets/small-trees-treetrunks.tsx"/>
@@ -14481,11 +14481,30 @@
     </layer>
    </group>
    <objectgroup id="56" name="doors">
-    <object id="1380" name="door_house1" type="area" x="-2112" y="80" width="16" height="17">
+    <object id="5669" name="door_house1" type="area" x="-2112" y="80" width="16" height="16">
      <properties>
-      <property name="enter_house" value="house1"/>
       <property name="selected_door_sprite" type="int" value="13"/>
      </properties>
+    </object>
+   </objectgroup>
+   <objectgroup id="79" name="windows_positions" visible="0">
+    <object id="5671" name="window" x="-2119" y="86">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="5672" name="window" x="-2087" y="86">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
+    </object>
+    <object id="5673" name="window" x="-2058" y="86">
+     <properties>
+      <property name="big_window" type="bool" value="false"/>
+     </properties>
+     <point/>
     </object>
    </objectgroup>
   </group>
@@ -18657,8 +18676,8 @@
    <object id="5640" x="918" y="-691" width="8" height="14"/>
   </objectgroup>
  </group>
- <group id="67" name="npclayer"/>
  <group id="8" name="entitylayer">
+  <group id="67" name="npclayer"/>
   <group id="76" name="lootLayer"/>
   <group id="68" name="playerlayer"/>
   <group id="69" name="mobslayer"/>
@@ -19479,11 +19498,6 @@
     <property name="spawn_area_id" value="ps_grassland-from-dungeon1"/>
    </properties>
   </object>
-  <object id="5597" name="player_spawn_from_house1" type="area" x="-2116" y="97" width="24" height="23">
-   <properties>
-    <property name="from" value="house1"/>
-   </properties>
-  </object>
   <object id="5600" name="player_spawn_from_dungeon2" type="area" x="352" y="-205" width="48" height="23">
    <properties>
     <property name="spawn_area_id" value="ps_grassland-from-dungeon2"/>
@@ -19494,6 +19508,11 @@
     <property name="spawn_area_id" value="ps_grassland-from-dungeon3"/>
    </properties>
   </object>
+  <object id="5668" name="player_spawn_from_house1" type="area" x="-2116" y="96" width="24" height="23">
+   <properties>
+    <property name="spawn_area_id" value="ps_grassland-from-house1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="changeScenes">
   <object id="586" name="changeScene camp" type="area" x="-48" y="784" width="80" height="32">
@@ -19501,6 +19520,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/camp/Camp.tscn"/>
     <property name="to_spawn_area_id" value="ps_camp-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="2486" name="changeScene dungeon1" type="area" x="852" y="661" width="8" height="12">
@@ -19508,6 +19529,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon1-lvl1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="5599" name="changeScene dungeon2" type="area" x="372" y="-218" width="8" height="12">
@@ -19515,6 +19538,8 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon2-lvl1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
   <object id="5602" name="changeScene dungeon3" type="area" x="-604" y="-699" width="8" height="12">
@@ -19522,6 +19547,18 @@
     <property name="need_to_press_button_for_change" type="bool" value="false"/>
     <property name="next_scene_path" value="res://scenes/dungeons/dungeon3/Dungeon3-lvl1.tscn"/>
     <property name="to_spawn_area_id" value="ps_dungeon3-lvl1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="5670" name="changeScene house1" type="area" x="-2109" y="80" width="10" height="18">
+   <properties>
+    <property name="door_id" value="door_house1"/>
+    <property name="need_to_press_button_for_change" type="bool" value="true"/>
+    <property name="next_scene_path" value="res://scenes/grassland/buildings/House1.tscn"/>
+    <property name="to_spawn_area_id" value="ps_house1-from-grassland"/>
+    <property name="view_direction_x" type="int" value="0"/>
+    <property name="view_direction_y" type="int" value="-1"/>
    </properties>
   </object>
  </objectgroup>

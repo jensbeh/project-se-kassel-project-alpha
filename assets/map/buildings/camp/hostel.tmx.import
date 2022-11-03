@@ -1,0 +1,22 @@
+[remap]
+
+importer="vnen.tiled_importer"
+type="PackedScene"
+path="res://.import/hostel.tmx-0d04ae44f8dc5aa7cf5b7a5a21fe066c.scn"
+
+[deps]
+
+source_file="res://assets/map/buildings/camp/hostel.tmx"
+dest_files=[ "res://.import/hostel.tmx-0d04ae44f8dc5aa7cf5b7a5a21fe066c.scn" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+uv_clip=true
+image_flags=3
+collision_layer=1
+embed_internal_images=false
+save_tiled_properties=false
+add_background=true
+post_import_script="res://scenes/post_import_buildings.gd"
