@@ -2,10 +2,10 @@ extends Control
 
 var inv_slot = load(Constants.TRADE_INV_SLOT)
 
-onready var gridcontainer = get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
-
+onready var gridcontainer = find_node("TradeGridContainer")
 
 func _ready():
+	print("+++++++++++++++++++++++")
 	for i in range(1,MerchantData.inv_data.size()+1):
 		var inv_slot_new = inv_slot.instance()
 		var slot = "Inv" + str(i)
@@ -35,7 +35,7 @@ func _ready():
 				MerchantData.inv_data[slot]["Time"] = null
 		gridcontainer.add_child(inv_slot_new, true)
 	check_slots()
-	find_node("Inventory").get_child(0).find_node("TextureRect").visible = false
+	find_node("Inventory").get_child(0).find_node("Deletebox").visible = false
 
 
 # Close trade inventory
@@ -72,6 +72,7 @@ func check_slots():
 	for i in MerchantData.inv_data:
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
+	print(free)
 	if !free:
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
@@ -87,3 +88,7 @@ func check_slots():
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+
+
+func get_trade_gridcontainer():
+	return gridcontainer

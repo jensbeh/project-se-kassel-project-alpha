@@ -104,11 +104,11 @@ func drop_data(_pos, data):
 func verify_target_texture(data):
 	if data["origin_item_id"] != null:
 		if GameData.item_data[str(data["origin_item_id"])]["Texture"] == "item_icons_1":
-			get_child(0).set_scale(Vector2(1,1))
+			get_child(0).set_scale(Vector2(1.5,1.5))
 			get_child(0).set_hframes(16)
 			get_child(0).set_vframes(27)
 		else:
-			get_child(0).set_scale(Vector2(1.5,1.5))
+			get_child(0).set_scale(Vector2(2.5,2.5))
 			get_child(0).set_hframes(13)
 			get_child(0).set_vframes(15)
 

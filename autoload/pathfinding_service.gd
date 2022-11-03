@@ -37,7 +37,7 @@ func preload_astars():
 	
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
-
+		continue
 		# Create new AStars and store them to use later again
 		if not astar_nodes_cache.has(map_name):
 			astar_nodes_cache[map_name] = {
