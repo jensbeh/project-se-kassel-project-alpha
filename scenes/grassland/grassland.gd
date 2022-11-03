@@ -7,10 +7,10 @@ var max_ambient_mobs = 50
 
 # Variables
 var thread
-var player_in_change_scene_area = false
 var current_area : Area2D = null
 var spawning_areas = {}
 var ambientMobsSpawnArea
+var next_scene_path = ""
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -59,7 +59,7 @@ func _ready():
 	spawn_treasures()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
+	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -89,7 +89,7 @@ func spawn_bosses():
 				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false, lootLayer)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
-				print("SPAWNED BOSS \""+ str(boss_path) +"\" in " + str(biome_name))
+				print("GRASSLAND: Spawned boss \""+ str(boss_path) +"\" in " + str(biome_name))
 
 
 # Method to destroy the scene
@@ -160,24 +160,88 @@ func setup_spawning_areas():
 
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
-	if player_in_change_scene_area:
-		var next_scene_path = current_area.get_meta("next_scene_path")
-		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
-		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
-		Utils.get_scene_manager().transition_to_scene(transition_data)
+	if Utils.get_current_player().is_in_change_scene_area():
+		next_scene_path = current_area.get_meta("next_scene_path")
+		
+		# Handle if change scene is to house
+		if Constants.GRASSLAND_BUILDING_FOLDER in next_scene_path:
+			# Get door
+			var doorArea = find_node(current_area.get_meta("door_id"))
+			for child in doorArea.get_children():
+				if "animationPlayer" in child.name:
+					# Start door animation
+					child.play("openDoor")
+					break
+		
+		else:
+			print("GRASSLAND: Change scene to \""  + str(next_scene_path) + "\"")
+			var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
+			Utils.get_scene_manager().transition_to_scene(transition_data)
+
+
+# Method is called after openDoor animation is finished
+func on_door_opened():
+	print("GRASSLAND: Change scene with DOOR to \""  + str(next_scene_path) + "\"")
+	var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+	var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
+	Utils.get_scene_manager().transition_to_scene(transition_data)
+
+
+# Setup all change_scene objectes/Area2D's on start
+func setup_change_scene_areas():
+	for child in changeScenesObject.get_children():
+		if "changeScene" in child.name:
+			# connect Area2D with functions to handle body action
+			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
+			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
 
 
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
-			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"GRASSLAND\" to \""  + str(next_scene_path) + "\"")
-			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, 1))
+			next_scene_path = changeSceneArea.get_meta("next_scene_path")
+			print("GRASSLAND: Change scene to \""  + str(next_scene_path) + "\"")
+			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
 		else:
-			player_in_change_scene_area = true
+			Utils.get_current_player().set_in_change_scene_area(true)
 			current_area = changeSceneArea
+
+
+# Method which is called when a body has exited a changeSceneArea
+func body_exited_change_scene_area(body, changeSceneArea):
+	if body.name == "Player":
+		print("GRASSLAND: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		current_area = null
+		Utils.get_current_player().set_in_change_scene_area(false)
+
+
+# Setup all stair objectes/Area2D's on start
+func setup_stair_areas():
+	for chunk in groundChunks.get_children():
+		if chunk.has_node("stairs"):
+			for stair in chunk.get_node("stairs").get_children():
+				if "stairs" in stair.name:
+					# connect Area2D with functions to handle body action
+					stair.connect("body_entered", self, "body_entered_stair_area", [stair])
+					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
+
+
+# Method which is called when a body has entered a stairArea
+func body_entered_stair_area(body, _stairArea):
+	if body.name == "Player":
+		# reduce player speed
+		Utils.get_current_player().set_speed(Constants.PLAYER_STAIR_SPEED_FACTOR)
+
+
+# Method which is called when a body has exited a stairArea
+func body_exited_stair_area(body, _stairArea):
+	if body.name == "Player":
+		# reset player speed
+		Utils.get_current_player().reset_speed()
 
 
 # Method to disconnect all signals
@@ -209,49 +273,7 @@ func clear_signals():
 		elif "loot" in loot.name:
 			loot.clear_signals()
 		else:
-			printerr("NOTHING TO DISCONNECT IN GRASSLAND LOOT")
-
-
-# Method which is called when a body has exited a changeSceneArea
-func body_exited_change_scene_area(body, changeSceneArea):
-	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
-		current_area = null
-		player_in_change_scene_area = false
-
-
-# Method which is called when a body has entered a stairArea
-func body_entered_stair_area(body, _stairArea):
-	if body.name == "Player":
-		# reduce player speed
-		Utils.get_current_player().set_speed(Constants.PLAYER_STAIR_SPEED_FACTOR)
-
-
-# Method which is called when a body has exited a stairArea
-func body_exited_stair_area(body, _stairArea):
-	if body.name == "Player":
-		# reset player speed
-		Utils.get_current_player().reset_speed()
-
-
-# Setup all change_scene objectes/Area2D's on start
-func setup_change_scene_areas():
-	for child in changeScenesObject.get_children():
-		if "changeScene" in child.name:
-			# connect Area2D with functions to handle body action
-			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
-			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
-
-
-# Setup all stair objectes/Area2D's on start
-func setup_stair_areas():
-	for chunk in groundChunks.get_children():
-		if chunk.has_node("stairs"):
-			for stair in chunk.get_node("stairs").get_children():
-				if "stairs" in stair.name:
-					# connect Area2D with functions to handle body action
-					stair.connect("body_entered", self, "body_entered_stair_area", [stair])
-					stair.connect("body_exited", self, "body_exited_stair_area", [stair])
+			printerr("ERROR: Nothing to disconnect in grassland - clear_signals - loot")
 
 
 # Method to update the chunks with active and deleted chunks to make them visible or not
@@ -259,19 +281,19 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 	# Activate chunks
 	for chunk in new_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and ground_chunk.is_inside_tree():
+		if ground_chunk != null and Utils.is_node_valid(ground_chunk):
 			ground_chunk.visible = true
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and higher_chunk.is_inside_tree():
+		if higher_chunk != null and Utils.is_node_valid(higher_chunk):
 			higher_chunk.visible = true
 	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if ground_chunk != null and ground_chunk.is_inside_tree():
+		if ground_chunk != null and Utils.is_node_valid(ground_chunk):
 			ground_chunk.visible = false
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
-		if higher_chunk != null and higher_chunk.is_inside_tree():
+		if higher_chunk != null and Utils.is_node_valid(higher_chunk):
 			higher_chunk.visible = false
 
 
@@ -281,7 +303,7 @@ func despawn_boss(boss_node):
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
 		boss_node.call_deferred("queue_free")
-		print("----------> Boss \"" + boss_node.name + "\" removed")
+		print("GRASSLAND: Boss \"" + boss_node.name + "\" removed")
 
 
 # Method to spawn loot after monster died
@@ -316,3 +338,21 @@ func spawn_treasures():
 				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 				lootLayer.call_deferred("add_child", treasure)
 			quantity -= 1
+
+
+# Method is called from MobSpawnerService to instance and spawn the mob -> instancing in other threads causes random errors
+func spawn_mob(packedMobScene, current_spawn_area):
+	if Utils.is_node_valid(mobsLayer):
+		var mob_instance = packedMobScene.instance()
+		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
+		mobsLayer.call_deferred("add_child", mob_instance)
+		MobSpawnerService.new_mob_spawned(mob_instance)
+
+
+# Method is called from MobSpawnerService to instance and spawn the ambient mob -> instancing in other threads causes random errors
+func spawn_ambient_mob(mobScene, spawn_time):
+	if Utils.is_node_valid(ambientMobsLayer):
+		var mob_instance = mobScene.instance()
+		mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, spawn_time, scene_type)
+		ambientMobsLayer.call_deferred("add_child", mob_instance)
+		MobSpawnerService.new_mob_spawned(mob_instance)

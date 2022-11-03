@@ -2,7 +2,7 @@ extends Node
 
 const CONSTANTS = preload("res://autoload/Constants.gd")
 const CUSTOM_LIGHT = preload("res://scenes/light/CustomLight.tscn")
-const VILLAGE_ANIMATED_DECORATIONS_TILESET = preload("res://assets/tilesets/Village Animated Decorations.png")
+const VILLAGE_ANIMATED_DOORS_TILESET = preload("res://assets/tilesets/Village Animated Doors.png")
 
 
 var chunk_size = CONSTANTS.CHUNK_SIZE_TILES # Chunk tiles width/height in tiles
@@ -13,7 +13,7 @@ var map_min_global_pos = Vector2.ZERO # In pixel
 
 # Method to change the scene directly after it is imported by Tiled Map Importer
 func post_import(scene):
-	print("reimporte " + scene.name + "...")
+	print("POST_IMPORT_CAMP: Reimporte " + scene.name + "...")
 	
 	# Set lights with script to groundLightsObject
 	var groundLightsObject = scene.find_node("ground_lights")
@@ -51,8 +51,35 @@ func post_import(scene):
 				for child_in_light in custom_light.get_children():
 					child_in_light.set_owner(scene)
 	
-	# Setup map - performace optimisation
-	iterate_over_nodes(scene)
+	
+	# Set lights to windows with script
+	var windows_positions = scene.find_node("windows_positions")
+	if windows_positions != null and windows_positions.get_children().size() > 0:
+		for child in windows_positions.get_children():
+			if child is Position2D:
+				var custom_light = CUSTOM_LIGHT.instance()
+				# Position
+				# If child is WINDOW
+				if child.get_node_or_null("Sprite") == null:
+					var light_position = custom_light.get_node("LightPosition")
+					custom_light.position = child.position - light_position.position
+				# If child is NORMAL LIGHT
+				else:
+					custom_light.position = child.position
+				
+				if child.get_meta("big_window"):
+					custom_light.radius = 8
+				else:
+					custom_light.radius = 5
+				var sprite = custom_light.get_node("Sprite")
+				custom_light.remove_child(sprite)
+				
+				# Set custom_light to node/replace existing sprite
+				child.replace_by(custom_light, true)
+				custom_light.set_owner(scene)
+				for child_in_light in custom_light.get_children():
+					child_in_light.set_owner(scene)
+	
 	
 	# Setup all doors with animation
 	var doorsObject = scene.find_node("doors")
@@ -64,7 +91,7 @@ func post_import(scene):
 				var sprite = Sprite.new()
 				sprite.name = "sprite"
 				sprite.centered = false
-				sprite.texture = VILLAGE_ANIMATED_DECORATIONS_TILESET
+				sprite.texture = VILLAGE_ANIMATED_DOORS_TILESET
 				sprite.hframes = 20
 				sprite.vframes = 8
 				sprite.frame = frame
@@ -88,22 +115,26 @@ func post_import(scene):
 				idleDoorAnimation.track_insert_key(0, 0.0, frame)
 				idleDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
 				idleDoorAnimation.loop = 0
-
+				
 				var openDoorAnimation = Animation.new()
 				animationPlayer.add_animation( "openDoor", openDoorAnimation)
-				openDoorAnimation.add_track(0)
+				var sprite_track_index = openDoorAnimation.add_track(Animation.TYPE_VALUE)
 				openDoorAnimation.length = 0.4
-				openDoorAnimation.track_set_path(0, path)
-				openDoorAnimation.track_insert_key(0, 0.0, frame)
-				openDoorAnimation.track_insert_key(0, 0.1, frame + 1)
-				openDoorAnimation.track_insert_key(0, 0.2, frame + 2)
-				openDoorAnimation.track_insert_key(0, 0.3, frame + 3)
-				openDoorAnimation.value_track_set_update_mode(0, Animation.UPDATE_DISCRETE)
+				openDoorAnimation.track_set_path(sprite_track_index, path)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.0, frame)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.1, frame + 1)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.2, frame + 2)
+				openDoorAnimation.track_insert_key(sprite_track_index, 0.3, frame + 3)
+				openDoorAnimation.value_track_set_update_mode(sprite_track_index, Animation.UPDATE_DISCRETE)
 				openDoorAnimation.loop = 0
+				var method_track_index = openDoorAnimation.add_track(Animation.TYPE_METHOD)
+				var method_path = "../../../../../../.."
+				openDoorAnimation.track_set_path(method_track_index, method_path)
+				openDoorAnimation.track_insert_key(method_track_index, 0.4, {"args": [], "method": "on_door_opened"})
 				
 				var closeDoorAnimation = Animation.new()
 				animationPlayer.add_animation( "closeDoor", closeDoorAnimation)
-				closeDoorAnimation.add_track(0)
+				closeDoorAnimation.add_track(Animation.TYPE_VALUE)
 				closeDoorAnimation.length = 0.4
 				closeDoorAnimation.track_set_path(0, path)
 				closeDoorAnimation.track_insert_key(0, 0.0, frame + 3)
@@ -119,6 +150,25 @@ func post_import(scene):
 				child.add_child(animationPlayer)
 				animationPlayer.set_owner(scene)
 	
+	
+	# Setup entitylayer to YSorts
+	var entitylayer : Node2D = scene.find_node("entitylayer")
+	var ySortEntities = YSort.new()
+	ySortEntities.name = entitylayer.name
+	entitylayer.replace_by(ySortEntities, true)
+	# Setup playerlayer
+	var playerlayer : Node2D = scene.find_node("playerlayer")
+	var ySortPlayer = YSort.new()
+	ySortPlayer.name = playerlayer.name
+	playerlayer.replace_by(ySortPlayer, true)
+	# Setup npclayer
+	var npclayer : Node2D = scene.find_node("npclayer")
+	var ySortNPCS = YSort.new()
+	ySortNPCS.name = npclayer.name
+	npclayer.replace_by(ySortNPCS, true)
+	
+	
+	# NPC pathes
 	var npcPathes = scene.find_node("npcPathes")
 	var pathes = []
 	for child in npcPathes.get_children():
@@ -140,15 +190,20 @@ func post_import(scene):
 		npcPathes.add_child(path)
 		path.set_owner(scene)
 	
+	
+	# Setup map - performace optimisation
+	iterate_over_nodes(scene)
+	
+	
 	# generate chunks -> best at the end
-	print("generate chunks...")
+	print("POST_IMPORT_CAMP: Generate chunks...")
 	generate_chunks(scene)
-	print("chunks generated!")
+	print("POST_IMPORT_CAMP: Chunks generated!")
 	
 	# Cleanup scene -> need to be at the end!!
 	cleanup_node(scene.find_node("ground"))
 	cleanup_node(scene.find_node("higher"))
-	print("reimported " + scene.name + "! \n")
+	print("POST_IMPORT_CAMP: Reimported " + scene.name + "! \n")
 	return scene
 
 
@@ -164,16 +219,8 @@ func generate_chunks(scene):
 	# Map size in tiles
 	var map_width = abs(map_min_pos.x) + abs(map_max_pos.x) + 1 # +1 because (0,0)
 	var map_height = abs(map_min_pos.y) + abs(map_max_pos.y) + 1 # +1 because (0,0)
-#	print("map_min_pos.x: " + str(map_min_pos.x))
-#	print("map_max_pos.x: " + str(map_max_pos.x))
-#	print("map_min_pos.y: " + str(map_min_pos.y))
-#	print("map_max_pos.y: " + str(map_max_pos.y))
-#	print("map_width: " + str(map_width))
-#	print("map_height: " + str(map_height))
 	var vertical_chunks_count = ceil(map_height / chunk_size)
 	var horizontal_chunks_count = ceil(map_width / chunk_size)
-#	print("vertical_chunks_count: " + str(vertical_chunks_count))
-#	print("horizontal_chunks_count: " + str(horizontal_chunks_count))
 	
 	# Ground chunks
 	var ground_chunks_node = Node2D.new()
@@ -217,7 +264,7 @@ func generate_chunks(scene):
 			chunk_node.set_owner(scene)
 			
 			# Create chunk with tilemaps and objects
-			create_chunk(scene, chunk_data, ground_duplicate, chunk_node)
+			create_chunk(scene, chunk_data, ground_duplicate, chunk_node, false)
 	
 	
 	# Create higher chunks
@@ -237,11 +284,11 @@ func generate_chunks(scene):
 			chunk_node.set_owner(scene)
 			
 			# Create chunk with tilemaps and objects
-			create_chunk(scene, chunk_data, higher_duplicate, chunk_node)
+			create_chunk(scene, chunk_data, higher_duplicate, chunk_node, true)
 
 
 # Method generates a single chunk with all nodes
-func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
+func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node, disable_tilemap_collision):
 	for child in ground_duplicate_origin.get_children():
 		if child is TileMap:
 			var empty_tilemap = true # To check if tilemap in chunk is empty or not
@@ -258,6 +305,10 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 					if child.get_cellv(cellPos) != -1:
 						empty_tilemap = false
 						new_tilemap.set_cell(cellPos.x, cellPos.y, child.get_cellv(cellPos))
+			
+			# Check if tilemap is from "higher" and disable collision
+			if disable_tilemap_collision:
+				new_tilemap.set_collision_layer_bit(0, false)
 			
 			# Check if tilemap contains tiles and if it does add tilemap to chunk
 			if not empty_tilemap:
@@ -314,6 +365,12 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var node = Area2D.new()
+				
+				# Setup door area
+				if "door" in child.name:
+					node.monitoring = false
+					node.monitorable = false
+				
 				node.name = child.name
 				node.position = child.position
 				chunk_node.add_child(node)
@@ -332,15 +389,33 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		elif child is CustomLight:
 			# Check if child is in this chunk
-			var child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
+			var child_position = Vector2.ZERO
+			
+			# Chunk position
+			# If child is WINDOW
+			if child.get_node_or_null("Sprite") == null:
+				child_position = child.position + child.get_node("LightPosition").position
+			
+			# If child is NORMAL LIGHT
+			else:
+				child_position = Vector2(child.position.x + (child.get_node("Sprite").texture.get_size().x - 1) * child.scale.x, child.position.y)
+			
 			var chunk = get_chunk_from_position(child_position)
 			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
 				var custom_light = CUSTOM_LIGHT.instance()
 				custom_light.name = child.name
 				custom_light.position = child.position
 				custom_light.radius = child.radius
-				var sprite = custom_light.get_node("Sprite")
-				sprite.texture = child.get_node("Sprite").texture
+				
+				# Nodes
+				# If child is NORMAL LIGHT
+				if child.get_node_or_null("Sprite") != null:
+					var sprite = custom_light.get_node_or_null("Sprite")
+					sprite.texture = child.get_node("Sprite").texture
+				# If child is WINDOW
+				else:
+					var sprite = custom_light.get_node("Sprite")
+					custom_light.remove_child(sprite)
 				
 				# Set custom_light to node
 				chunk_node.add_child(custom_light)
@@ -357,6 +432,17 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 			chunk_node.add_child(child)
 			child.set_owner(scene)
 		
+		elif child is Position2D:
+			var chunk = get_chunk_from_position(child.position)
+			if chunk.x == chunk_data["chunk_x"] and chunk.y == chunk_data["chunk_y"]:
+				# Remove parent from child
+				child.get_parent().remove_child(child)
+				
+				# Add parent and child to chunk
+				chunk_node.add_child(child)
+				child.set_owner(scene)
+			continue
+		
 		else:
 			var node = Node2D.new()
 			node.name = child.name
@@ -365,7 +451,7 @@ func create_chunk(scene, chunk_data, ground_duplicate_origin, chunk_node):
 		
 		# Take sub-nodes
 		if child.get_child_count() > 0:
-			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name))
+			create_chunk(scene, chunk_data, ground_duplicate_origin.get_node(child.name), chunk_node.get_node(child.name), disable_tilemap_collision)
 			if chunk_node.get_node(child.name).get_child_count() == 0:
 				chunk_node.remove_child(chunk_node.get_node(child.name))
 	return chunk_node

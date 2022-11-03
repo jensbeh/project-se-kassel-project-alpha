@@ -37,8 +37,6 @@ func _preload_game_in_background():
 func _on_preload_game_done():
 	thread.wait_to_finish()
 	
-	print("PRELOADING DONE")
-	
 	# Loading is done -> fade out
 	animationPlayer.play("FadeOut")
 

@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/light/custom_light.gd"
 }, {
+"base": "Node2D",
+"class": "PseudoWindows",
+"language": "GDScript",
+"path": "res://scenes/pseudo_windows.gd"
+}, {
 "base": "Reference",
 "class": "TransitionData",
 "language": "GDScript",
@@ -33,6 +38,7 @@ _global_script_class_icons={
 "AStar2DVisualizer": "",
 "CustomAstar": "",
 "CustomLight": "",
+"PseudoWindows": "",
 "TransitionData": ""
 }
 

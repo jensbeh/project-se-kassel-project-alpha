@@ -90,8 +90,9 @@ func nextPhrase():
 		finished = true
 		phraseNum += 1
 	
+	# Show trade symbol
 	if phraseNum >= len(dialog):
-		if obj_name in ["bella", "sam", "lea", "heinz"]:
+		if obj_name in ["bella", "sam", "lea", "heinz", "haley"]: # names of npc which can trade
 			$Trade.visible = true
 			trade = true
 		elif "treasure" in obj_name or "open" in obj_name:

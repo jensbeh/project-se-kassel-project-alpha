@@ -23,7 +23,7 @@ func _ready():
 
 
 func _process(_delta):
-	if Utils.get_current_player() != null and is_instance_valid(Utils.get_current_player()) and Utils.get_current_player().is_inside_tree() and is_instance_valid(Utils.get_current_player().get_node("Camera2D")) and Utils.get_current_player().get_node("Camera2D").is_inside_tree():
+	if Utils.get_current_player() != null and Utils.is_node_valid(Utils.get_current_player()) and Utils.is_node_valid(Utils.get_current_player().get_node("Camera2D")):
 		update_shader()
 		var t = Transform2D(0, Vector2())
 		# Use camera for the correct position of the current screen to show correct light positions
@@ -48,7 +48,7 @@ func update_shader():
 	image.lock()
 	for i in lights.size():
 		var light = lights[i]
-		if light is CustomLight and is_instance_valid(light) and light.is_inside_tree():
+		if light is CustomLight and Utils.is_node_valid(light):
 			# Set player light position
 			if light.get_parent() is KinematicBody2D:
 				var light_position = light.get_light_position() + light.get_parent().position
@@ -93,23 +93,28 @@ func update_shader_transformation():
 func update_shader_color():
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.MENU:
-#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> MENU")
+#			print("LIGHT_MANAGER_MINIMAP: Scene type changed ----> MENU")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DAY_COLOR)
 			update_lights(false)
-			
+		
 		Constants.SceneType.CAMP:
-#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> CAMP")
+#			print("LIGHT_MANAGER_MINIMAP: Scene type changed ----> CAMP")
 			is_day_night_cycle = true
 			update_lights(true)
-			
+		
+		Constants.SceneType.HOUSE:
+#			print("LIGHT_MANAGER_MINIMAP: Scene type changed ----> HOUSE")
+			is_day_night_cycle = true
+			update_lights(true)
+		
 		Constants.SceneType.GRASSLAND:
-#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> GRASSLAND")
+#			print("LIGHT_MANAGER_MINIMAP: Scene type changed ----> GRASSLAND")
 			is_day_night_cycle = true
 			update_lights(true)
-			
+		
 		Constants.SceneType.DUNGEON:
-#			print("LIGHT MANAGER MINIMAP SCENE TYPE CHANGED ----> DUNGEON")
+#			print("LIGHT_MANAGER_MINIMAP: Scene type changed ----> DUNGEON")
 			is_day_night_cycle = false
 			material.set_shader_param("night_screen_color", Constants.DUNGEON_COLOR)
 			update_lights(true)

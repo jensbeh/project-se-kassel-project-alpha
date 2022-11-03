@@ -19,6 +19,10 @@ func _ready():
 
 # Method to start transition to next scene with transition_data information
 func transition_to_scene(transition_data):
+	# Pause player
+	if Utils.get_current_player() != null:
+		Utils.get_current_player().pause_player(true)
+	
 	# Set new and current transition_data
 	current_transition_data = transition_data
 	
@@ -48,8 +52,8 @@ func transition_to_scene(transition_data):
 
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
-	# Pause cooldown timer
-	Utils.get_hotbar().pause_cooldown()
+	# Pause game
+	Utils.pause_game(true)
 	
 	# pause player input
 	Utils.get_ui().player_input(false)
@@ -74,7 +78,7 @@ func _load_scene_in_background():
 			pass_data_to_scene(scene)
 			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
 			if get_current_scene().find_node("CanvasModulate") != null:
-				get_current_scene().remove_child(get_current_scene().find_node("CanvasModulate"))
+				get_current_scene().call_deferred("remove_child", get_current_scene().find_node("CanvasModulate"))
 			
 			call_deferred("_on_load_scene_done", scene)
 			break
@@ -88,9 +92,9 @@ func _on_load_scene_done(scene):
 	# Cleanup previous scene
 	if get_current_scene().has_method("destroy_scene"):
 		get_current_scene().destroy_scene()
-		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		print("SCENE_MANAGER: Destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	else:
-		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		printerr("SCENE_MANAGER: NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	
 	# Cleanup UI
 	# Remove death screen
@@ -145,12 +149,14 @@ func finish_transition():
 				Utils.get_current_player().is_attacking = false
 			if Utils.get_current_player().is_in_safe_area() == true:
 				Utils.get_current_player().set_in_safe_area(false)
+			if Utils.get_current_player().is_in_change_scene_area() == true:
+				Utils.get_current_player().set_in_change_scene_area(false)
 			
 			# Save Player Data
 			Utils.save_game()
 			
-			# Resume cooldown timer
-			Utils.get_hotbar().resume_cooldown()
+			# Resume game
+			Utils.pause_game(false)
 			
 			# Start fade to normal to game
 			Utils.get_main().play_loading_screen_animation("GameFadeToNormal")
@@ -169,6 +175,12 @@ func finish_transition():
 		
 		# resume player input
 		Utils.get_ui().player_input(true)
+
+
+# Method is called when "GameFadeToNormal" animation finished and game is back to normal
+func on_game_fade_to_normal_finished():
+	# Resume player
+	Utils.get_current_player().pause_player(false)
 
 
 # Method to update the current_scene_type and emits a signal
@@ -206,21 +218,11 @@ func without_transition_to_scene(new_current_scene : Node):
 	# Cleanup previous scene
 	if get_current_scene().has_method("destroy_scene"):
 		get_current_scene().destroy_scene()
-		print("----> destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		print("SCENE_MANAGER: Destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	else:
-		printerr("----> NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
+		printerr("SCENE_MANAGER: NOT destroyed scene: \"" + str(get_current_scene().name) + "\"")
 	
 	# Remove previous scene
 	get_current_scene().queue_free()
 	# Load new scene
 	current_scene.call_deferred("add_child",new_current_scene)
-
-
-# Methods and stuff for better debugging
-const TIMER_LIMIT = 2.0
-var timer = 0.0
-func _process(delta):
-	timer += delta
-	if timer > TIMER_LIMIT:
-		timer = 0.0
-#		print("fps: " + str(Engine.get_frames_per_second()))

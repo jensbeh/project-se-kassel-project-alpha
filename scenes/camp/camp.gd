@@ -5,9 +5,8 @@ extends Node2D
 var scene_type = Constants.SceneType.CAMP
 
 # Variables
-var thread
-var player_in_change_scene_area = false
 var current_area : Area2D = null
+var next_scene_path = ""
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -32,8 +31,6 @@ func _ready():
 	
 	# setup areas to change areaScenes
 	setup_change_scene_areas()
-	# setup all door areas to handle action
-	setup_door_areas()
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -65,61 +62,65 @@ func setup_player():
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals
-	Utils.get_current_player().connect("player_collided", self, "collision_detected")
 	Utils.get_ui().connect("player_interact", self, "interaction_detected")
+
 
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
 
-# Method to handle collision detetcion dependent of the collision object type
-func collision_detected(collision):
-	var _type = collision.get_parent().get_meta("type") # type is string
-	print("collision_detected")
-	
+
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
-	if player_in_change_scene_area:
-		var next_scene_path = current_area.get_meta("next_scene_path")
-		print("-> Change scene \"DUNGEON\" to \""  + str(next_scene_path) + "\"")
-		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), Vector2(0, 1))
-		Utils.get_scene_manager().transition_to_scene(transition_data)
+	if Utils.get_current_player().is_in_change_scene_area():
+		next_scene_path = current_area.get_meta("next_scene_path")
 		
+		# Handle if change scene is to house
+		if Constants.CAMP_BUILDING_FOLDER in next_scene_path:
+			# Get door
+			var doorArea = find_node(current_area.get_meta("door_id"))
+			for child in doorArea.get_children():
+				if "animationPlayer" in child.name:
+					# Start door animation
+					child.play("openDoor")
+					break
 		
-# Method which is called when a body has entered a doorArea
-func body_entered_door(body, doorArea):
-	if body.name == "Player":
-		for child in doorArea.get_children():
-			if "animationPlayer" in child.name:
-				# Start door animation
-				child.play("openDoor")
+		else:
+			print("CAMP: Change scene to \""  + str(next_scene_path) + "\"")
+			var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
+			Utils.get_scene_manager().transition_to_scene(transition_data)
 
-# Method which is called when a body has exited a doorArea
-func body_exited_door(body, doorArea):
-	if body.name == "Player":
-		for child in doorArea.get_children():
-			if "animationPlayer" in child.name:
-				# Start door animation
-				child.play("closeDoor")
+
+# Method is called after openDoor animation is finished
+func on_door_opened():
+	print("CAMP: Change scene with DOOR to \""  + str(next_scene_path) + "\"")
+	var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
+	var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
+	Utils.get_scene_manager().transition_to_scene(transition_data)
+
 
 # Method which is called when a body has entered a changeSceneArea
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
-			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
-			print("-> Change scene \"CAMP\" to \""  + str(next_scene_path) + "\"")
-			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), Vector2(0, -1))
+			next_scene_path = changeSceneArea.get_meta("next_scene_path")
+			print("CAMP: Change scene to \""  + str(next_scene_path) + "\"")
+			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
+			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
 		else:
-			player_in_change_scene_area = true
+			Utils.get_current_player().set_in_change_scene_area(true)
 			current_area = changeSceneArea
-	
+
+
 # Method which is called when a body has exited a changeSceneArea
 func body_exited_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
-		print("-> Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
+		print("CAMP: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
-		player_in_change_scene_area = false
+		Utils.get_current_player().set_in_change_scene_area(false)
+
 
 # Setup all change_scene objectes/Area2D's on start
 func setup_change_scene_areas():
@@ -128,17 +129,6 @@ func setup_change_scene_areas():
 			# connect Area2D with functions to handle body action
 			child.connect("body_entered", self, "body_entered_change_scene_area", [child])
 			child.connect("body_exited", self, "body_exited_change_scene_area", [child])
-
-# Setup all door objectes/Area2D's on start
-func setup_door_areas():
-	for chunk in groundChunks.get_children():
-		var doors_object = chunk.find_node("doors")
-		if doors_object != null:
-			for door in doors_object.get_children():
-				if door is Area2D:
-					# connect Area2D with functions to handle body action
-					door.connect("body_entered", self, "body_entered_door", [door])
-					door.connect("body_exited", self, "body_exited_door", [door])
 
 
 # Method to update the chunks with active and deleted chunks to make them visible or not
@@ -151,7 +141,7 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 		var higher_chunk = higherChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
 		if higher_chunk != null:
 			higher_chunk.visible = true
-
+	
 	# Disable chunks
 	for chunk in deleting_chunks:
 		var ground_chunk = groundChunks.get_node("Chunk (" + str(chunk.x) + "," + str(chunk.y) + ")")
@@ -165,7 +155,6 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 # Method to disconnect all signals
 func clear_signals():
 	# Player
-	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
 	Utils.get_ui().disconnect("player_interact", self, "interaction_detected")
 	
 	# Change scenes
@@ -174,13 +163,3 @@ func clear_signals():
 			# connect Area2D with functions to handle body action
 			child.disconnect("body_entered", self, "body_entered_change_scene_area")
 			child.disconnect("body_exited", self, "body_exited_change_scene_area")
-	
-	# Doors
-	for chunk in groundChunks.get_children():
-		var doors_object = chunk.find_node("doors")
-		if doors_object != null:
-			for door in doors_object.get_children():
-				if door is Area2D:
-					# connect Area2D with functions to handle body action
-					door.disconnect("body_entered", self, "body_entered_door")
-					door.disconnect("body_exited", self, "body_exited_door")

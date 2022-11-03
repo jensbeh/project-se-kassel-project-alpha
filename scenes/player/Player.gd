@@ -77,6 +77,7 @@ var is_invincible = false
 var collecting = false
 var collected = false
 var in_safe_area = false
+var in_change_scene_area = false
 var is_player_paused = false
 
 
@@ -115,11 +116,25 @@ func _ready():
 	animation_tree.set("parameters/Collected/blend_position", velocity)
 	animation_tree.set("parameters/Attack/AttackCases/blend_position", velocity)
 	
-	# Set invisibility of player
-	make_player_invisible(Constants.PLAYER_INVISIBLE)
 	
-	# Set invincibility of player
-	make_player_invincible(Constants.PLAYER_INVINCIBLE)
+	# For debugging
+	# Invisibility
+	if Constants.IS_PLAYER_INVISIBLE:
+		printerr("PLAYER: Is invisible")
+		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
+	else:
+		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
+	
+	# Invincibility
+	if Constants.IS_PLAYER_INVINCIBLE:
+		printerr("PLAYER: Is invincible")
+		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
+	else:
+		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
+	
+	# Infinit stamina
+	if Constants.HAS_PLAYER_INFINIT_STAMINA:
+		printerr("PLAYER: Has infinit stamina")
 
 
 func _physics_process(delta):
@@ -182,7 +197,7 @@ func _input(event):
 		# Attack with "left_mouse"
 		if event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
-				if not Constants.PLAYER_INFINIT_STAMINA:
+				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
 				is_attacking = true
 				set_movement(false)
@@ -197,6 +212,18 @@ func _input(event):
 		elif event.is_action_pressed("loot") and Utils.get_loot_panel() != null:
 			# Call Loot all Method in Loot Panel
 			Utils.get_loot_panel()._on_LootAll_pressed()
+
+
+# Pause & resume player
+func pause_player(should_pause):
+	# Pause
+	if should_pause:
+		print("PLAYER: Pause")
+		is_player_paused = true
+	# Resume
+	else:
+		print("PLAYER: Resume")
+		is_player_paused = false
 
 
 # Method is called at the end of any attack animation
@@ -776,7 +803,7 @@ func _on_DamageAreaBottom_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE BOTTOM ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -787,7 +814,7 @@ func _on_DamageAreaLeft_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE LEFT ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -798,7 +825,7 @@ func _on_DamageAreaTop_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE TOP ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -809,7 +836,7 @@ func _on_DamageAreaRight_area_entered(area):
 	if area.name == "HitboxZone":
 		var entity = area.owner
 		
-#		print("MOB \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
+#		print("PLAYER: Mob \"" + str(entity.name) + "\" DAMAGE RIGHT ----> " + str(area.name))
 		
 		if entity.has_method("simulate_damage"):
 			var damage = get_attack_damage()
@@ -821,12 +848,6 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 	if not is_invincible:
 		# Add damage
 		current_health -= damage_to_player
-		
-#		print("health: " + str(current_health))
-#		print("max_health: " + str(max_health))
-#		print("damage_to_player: " + str(damage_to_player))
-#		print("knockback_to_player: " + str(knockback_to_player))
-		
 		
 		# handle here healthbar
 		if current_health <= 0:
@@ -963,11 +984,11 @@ func make_player_invisible(invisible : bool):
 	if invisible:
 		# Remove player from player layer so the mobs wont recognize the player anymore
 		set_collision_layer_bit(1, false)
-		print("---> PLAYER VISIBILITY: False")
+		print("PLAYER: Invisibility == True")
 	else:
 		# Add player to player layer so the mobs will recognize the player again
 		set_collision_layer_bit(1, true)
-		print("---> PLAYER VISIBILITY: True")
+		print("PLAYER: Invisibility == False")
 
 
 # Method to get player invisibility
@@ -983,7 +1004,7 @@ func is_player_invisible():
 # Method to make to player invincible to mobs or not -> no damage
 func make_player_invincible(invincible : bool):
 	is_invincible = invincible
-	print("---> PLAYER INVINCIBILITY: " + str(is_invincible))
+	print("PLAYER: Invincibility == " + str(is_invincible))
 
 
 # Method to get player invincibility
@@ -1004,6 +1025,16 @@ func set_in_safe_area(new_in_safe_area):
 # Method to get in_safe_area
 func is_in_safe_area():
 	return in_safe_area
+
+
+# Method to set in_change_scene_area
+func set_in_change_scene_area(new_in_change_scene_area):
+	in_change_scene_area = new_in_change_scene_area
+
+
+# Method to get in_change_scene_area
+func is_in_change_scene_area():
+	return in_change_scene_area
 
 func rescue_pay():
 	# Pay amount of gold
@@ -1063,7 +1094,3 @@ func set_stamina_cooldown(new_cooldown):
 	stamina_cooldown = new_cooldown
 	# for save
 	data.stamina_cooldown = new_cooldown
-
-
-func pause_player(value):
-	is_player_paused = value
