@@ -97,3 +97,7 @@ func _notification(notification):
 	# If game is closed
 	if (notification == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
 		stop_game()
+
+
+func play_save_notification():
+	get_node("LoadingScreen/SaveScreen").play("Saved")

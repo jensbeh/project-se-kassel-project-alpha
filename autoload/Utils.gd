@@ -543,8 +543,10 @@ func stop_game():
 	get_main().start_close_game_transition()
 
 
-func save_game():
+func save_game(animation):
 	get_main().get_node("LoadingScreen/Save").set_text(tr("SAVED"))
+	if animation:
+		get_main().play_save_notification()
 	var data = get_current_player().get_data()
 	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
 	data.position = var2str(get_current_player().position)

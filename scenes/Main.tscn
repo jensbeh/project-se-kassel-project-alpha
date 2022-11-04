@@ -448,11 +448,12 @@ margin_left = 1818.0
 margin_top = 92.0
 margin_right = 1882.0
 margin_bottom = 156.0
+value = 82.0
 texture_progress = ExtResource( 11 )
 fill_mode = 4
 
 [node name="Save" type="Label" parent="LoadingScreen"]
-modulate = Color( 1, 1, 1, 0 )
+modulate = Color( 1, 1, 1, 0.0333934 )
 margin_left = 1764.0
 margin_top = 84.0
 margin_right = 1918.0

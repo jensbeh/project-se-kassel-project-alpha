@@ -153,8 +153,7 @@ func finish_transition():
 			
 			# Save Player Data
 			if previouse_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
-				Utils.save_game()
-				Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
+				Utils.save_game(true)
 			
 			# Resume game
 			Utils.pause_game(false)

@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-signal player_interact
-
 var input
 var show_map = false
 var has_map = false
@@ -31,13 +29,9 @@ func _input(event):
 	# only can do interactions while mot scene changeing
 	if input:
 		if event.is_action_pressed("e"):
-			
-			if (Utils.get_current_player().get_player_can_interact() and 
-			not Utils.get_current_player().is_attacking and not Utils.get_current_player().is_player_dying()):
-				emit_signal("player_interact")
 				
 			# Remove the Loot Panel
-			elif Utils.get_loot_panel() != null:
+			if Utils.get_loot_panel() != null:
 				# Call close Method in Loot Panel
 				Utils.get_loot_panel()._on_Close_pressed()
 				
@@ -50,8 +44,7 @@ func _input(event):
 				# Reset npc interaction state
 				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 					npc.set_interacted(false)
-				Utils.save_game()
-				Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
+				Utils.save_game(true)
 				MerchantData.save_merchant_inventory()
 		
 		# Open game menu with "esc"
@@ -86,8 +79,7 @@ func _input(event):
 			PlayerData.inv_data["Weapon"] = PlayerData.equipment_data["Weapon"]
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
-			Utils.save_game()
-			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
+			Utils.save_game(true)
 			Utils.get_character_interface().queue_free()
 		
 		# Use Item from Hotbar

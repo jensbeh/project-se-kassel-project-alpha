@@ -166,3 +166,7 @@ func pause_time(should_pause):
 	else:
 		print("DAY_NIGHT_CYCLE: Resume")
 		game_time_active = true
+
+
+func death_time():
+	current_time += ONE_HOUR * 8

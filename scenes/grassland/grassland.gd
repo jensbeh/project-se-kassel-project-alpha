@@ -130,7 +130,7 @@ func setup_player():
 	
 	# Connect signals
 	Utils.get_current_player().connect("player_collided", self, "collision_detected")
-	Utils.get_ui().connect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
 
 # Method to create spawning areas
@@ -248,7 +248,7 @@ func body_exited_stair_area(body, _stairArea):
 func clear_signals():
 	# Player
 	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
-	Utils.get_ui().disconnect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
 	
 	# Change scene areas
 	for child in changeScenesObject.get_children():

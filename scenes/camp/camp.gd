@@ -62,7 +62,7 @@ func setup_player():
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals
-	Utils.get_ui().connect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 
 
 # Method to set transition_data which contains stuff about the player and the transition
@@ -155,7 +155,7 @@ func update_chunks(new_chunks : Array, deleting_chunks : Array):
 # Method to disconnect all signals
 func clear_signals():
 	# Player
-	Utils.get_ui().disconnect("player_interact", self, "interaction_detected")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
 	
 	# Change scenes
 	for child in changeScenesObject.get_children():

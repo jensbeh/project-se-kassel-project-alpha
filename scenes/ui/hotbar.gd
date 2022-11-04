@@ -205,7 +205,7 @@ func _on_Timer2_timeout():
 
 func save_and_stop_timer():
 	# save player data
-	Utils.save_game()
+	Utils.save_game(false)
 	# stop timer
 	get_node("Hotbar/Timer").stop()
 	_on_Timer_timeout()

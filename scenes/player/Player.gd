@@ -3,6 +3,7 @@ extends KinematicBody2D
 # Signals
 signal player_collided(collision)
 signal player_looting
+signal player_interact
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -29,7 +30,7 @@ onready var attackSwingSprite = $AttackSwing
 
 const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
-var curr_body: int = 0 #0-7, 1S
+var curr_body: int = 0 #0-7, 1
 var curr_shoes: int = 0 #0, 10
 var curr_pants: int = 0 #0-2, 10
 var curr_clothes: int = 0 #0-10, 10 -> not by everyone
@@ -194,6 +195,10 @@ func _physics_process(delta):
 # Method handles key inputs
 func _input(event):
 	if not is_player_paused:
+		if event.is_action_pressed("e"):
+			if (Utils.get_current_player().get_player_can_interact() and 
+				not Utils.get_current_player().is_attacking and not Utils.get_current_player().is_player_dying()):
+					emit_signal("player_interact")
 		# Attack with "left_mouse"
 		if event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
@@ -946,7 +951,7 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
-	DayNightCycle.current_time += DayNightCycle.ONE_HOUR * 8
+	DayNightCycle.death_time()
 	animation_state.start("Idle")
 	
 	# Make player visible again to mobs
@@ -1067,8 +1072,7 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"])
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
-	Utils.save_game()
-	Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
+	Utils.save_game(true)
 	var lost_string = tr("LOST_ITEMS") + ": "
 	if lost_gold > 0:
 		lost_string += str(lost_gold) + " Gold" + "\n"
