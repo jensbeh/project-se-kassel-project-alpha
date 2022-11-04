@@ -8,6 +8,7 @@ var current_scene_type = Constants.SceneType.MENU # Default on startup -> Menu
 var thread
 var previouse_scene_path = ""
 var current_transition_data = null
+var previouse_transition_data = null
 
 # Nodes CurrentScreen
 onready var current_scene = $CurrentScene
@@ -24,6 +25,7 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().pause_player(true)
 	
 	# Set new and current transition_data
+	previouse_transition_data = current_transition_data
 	current_transition_data = transition_data
 	
 	# Mouse actions will be stopped until transition is done
@@ -150,8 +152,9 @@ func finish_transition():
 				Utils.get_current_player().set_in_change_scene_area(false)
 			
 			# Save Player Data
-			Utils.save_game()
-			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
+			if previouse_transition_data.get_transition_type() != Constants.TransitionType.MENU_SCENE:
+				Utils.save_game()
+				Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 			
 			# Resume game
 			Utils.pause_game(false)

@@ -946,6 +946,7 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
+	DayNightCycle.current_time += DayNightCycle.ONE_HOUR * 8
 	animation_state.start("Idle")
 	
 	# Make player visible again to mobs
