@@ -28,27 +28,8 @@ func _input(event):
 	Utils.get_control_notes().update()
 	# only can do interactions while mot scene changeing
 	if input:
-		if event.is_action_pressed("e"):
-				
-			# Remove the Loot Panel
-			if Utils.get_loot_panel() != null:
-				# Call close Method in Loot Panel
-				Utils.get_loot_panel()._on_Close_pressed()
-				
-			# Remove the trade inventory
-			elif Utils.get_trade_inventory() != null:
-				Utils.get_trade_inventory().queue_free()
-				Utils.get_current_player().set_player_can_interact(true)
-				Utils.get_current_player().set_movement(true)
-				Utils.get_current_player().set_movment_animation(true)
-				# Reset npc interaction state
-				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
-					npc.set_interacted(false)
-				Utils.save_game(true)
-				MerchantData.save_merchant_inventory()
-		
 		# Open game menu with "esc"
-		elif (event.is_action_pressed("esc") and Utils.get_current_player().get_movement() and 
+		if (event.is_action_pressed("esc") and Utils.get_current_player().get_movement() and 
 		not Utils.get_current_player().hurting and not Utils.get_current_player().is_player_dying() and 
 		Utils.get_game_menu() == null):
 			Utils.get_current_player().set_movement(false)

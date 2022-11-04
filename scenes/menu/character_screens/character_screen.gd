@@ -567,6 +567,8 @@ func start_game():
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown
 	
 	DayNightCycle.current_time = data.time
+	if data.has("passed_days"):
+		DayNightCycle.passed_days_since_start = data.passed_days
 	
 	Utils.get_hotbar().load_hotbar()
 	if (PlayerData.equipment_data["Hotbar"]["Item"] != null and

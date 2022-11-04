@@ -203,7 +203,7 @@ func drop_data(_pos, data):
 				else:
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				check_slots()
 			# stacking for hotbar
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
@@ -223,12 +223,12 @@ func drop_data(_pos, data):
 			elif data["origin_panel"] == "TradeInventory":
 				if split != 0:
 					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
-					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				else:
 					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 					if data["target_item_id"] != null:
-						MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+						MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 					else:
 						MerchantData.inv_data[origin_slot]["Time"] = null
 				check_slots()
@@ -384,7 +384,7 @@ func SplitStack(split_amount, data):
 		if data["origin_panel"] == "TradeInventory":
 			if MerchantData.inv_data[origin_slot]["Stack"] != 0:
 				MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
-				MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+				MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				check_slots()
 		elif data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount

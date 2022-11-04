@@ -9,7 +9,9 @@ func _ready():
 		var inv_slot_new = inv_slot.instance()
 		var slot = "Inv" + str(i)
 		if MerchantData.inv_data[slot]["Item"] != null:
-			if MerchantData.inv_data[slot]["Time"] == null or (MerchantData.inv_data[slot]["Time"] + (2000* DayNightCycle.COMPLETE_DAY_TIME)) >  OS.get_system_time_msecs():
+			if (MerchantData.inv_data[slot]["Time"] == null or 
+			(MerchantData.inv_data[slot]["Time"] + (3* DayNightCycle.COMPLETE_DAY_TIME)) > 
+			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time)):
 				var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
 				var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
 				var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")

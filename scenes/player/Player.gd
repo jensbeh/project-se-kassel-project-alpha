@@ -196,11 +196,28 @@ func _physics_process(delta):
 func _input(event):
 	if not is_player_paused:
 		if event.is_action_pressed("e"):
-			if (Utils.get_current_player().get_player_can_interact() and 
-				not Utils.get_current_player().is_attacking and not Utils.get_current_player().is_player_dying()):
-					emit_signal("player_interact")
+			if (player_can_interact and not is_attacking and not is_player_dying()):
+				emit_signal("player_interact")
+			
+			# Remove the Loot Panel
+			elif Utils.get_loot_panel() != null:
+				# Call close Method in Loot Panel
+				Utils.get_loot_panel()._on_Close_pressed()
+				
+			# Remove the trade inventory
+			elif Utils.get_trade_inventory() != null:
+				Utils.get_trade_inventory().queue_free()
+				Utils.get_current_player().set_player_can_interact(true)
+				Utils.get_current_player().set_movement(true)
+				Utils.get_current_player().set_movment_animation(true)
+				# Reset npc interaction state
+				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
+					npc.set_interacted(false)
+				Utils.save_game(true)
+				MerchantData.save_merchant_inventory()
+					
 		# Attack with "left_mouse"
-		if event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
+		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
@@ -951,7 +968,6 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
-	DayNightCycle.skip_time(8)
 	animation_state.start("Idle")
 	
 	# Make player visible again to mobs

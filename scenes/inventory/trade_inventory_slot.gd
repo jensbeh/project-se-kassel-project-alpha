@@ -117,7 +117,7 @@ func drop_data(_pos, data):
 				else:
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 			elif (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
 			data["origin_panel"] == "Inventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
@@ -131,7 +131,7 @@ func drop_data(_pos, data):
 				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 				if data["target_item_id"] != null:
-					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[origin_slot]["Time"] =DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				else:
 					MerchantData.inv_data[origin_slot]["Time"] = null
 			else:
@@ -169,7 +169,7 @@ func drop_data(_pos, data):
 					if new_stack > Constants.MAX_STACK_SIZE:
 						new_stack = Constants.MAX_STACK_SIZE
 					MerchantData.inv_data[target_slot]["Stack"] = new_stack
-					MerchantData.inv_data[target_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 					get_node("../TextureRect/Stack").set_text(str(new_stack))
 			else:
 				# swaping
@@ -179,7 +179,7 @@ func drop_data(_pos, data):
 				get_child(0).frame = data["origin_frame"]
 				MerchantData.inv_data[target_slot]["Stack"] = data["origin_stack"]
 				if MerchantData.inv_data[target_slot]["Item"] != null:
-					MerchantData.inv_data[target_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				else:
 					MerchantData.inv_data[target_slot]["Time"] = null
 				if data["origin_stack"] != null and data["origin_stack"] > 1:
@@ -211,7 +211,7 @@ func SplitStack(split_amount, data):
 	elif PlayerData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "Inventory":
 		PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
-	MerchantData.inv_data[target_slot]["Time"] = OS.get_system_time_msecs()
+	MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 	if data["target_stack"] != null:
 		new_stack_size = data["target_stack"] + split_amount
 	else:

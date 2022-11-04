@@ -159,7 +159,8 @@ var save_game_data = {
 	"earring": curr_earring,
 	"glasses": curr_glasses,
 	"id" : uuid,
-	"view_direction": var2str(Vector2(0,1))
+	"view_direction": var2str(Vector2(0,1)),
+	"passed_days": 0
 }
 
 var save_inventory = {
@@ -573,6 +574,7 @@ func start_game():
 	var view_direction = Vector2(0,1)
 	
 	DayNightCycle.current_time = 0.0
+	DayNightCycle.passed_days_since_start = 0
 	
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()

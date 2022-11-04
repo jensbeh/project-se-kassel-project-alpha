@@ -552,6 +552,7 @@ func save_game(animation):
 	data.position = var2str(get_current_player().position)
 	data.view_direction = var2str(get_current_player().view_direction)
 	data.time = DayNightCycle.current_time
+	data.passed_days = DayNightCycle.passed_days_since_start
 	# map informations
 	data.show_map = get_ui().show_map
 	data.has_map = get_ui().has_map

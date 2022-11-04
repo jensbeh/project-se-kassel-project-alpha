@@ -18,6 +18,8 @@ var lights_visible = false # when night; day == false
 var screen_color : Color
 var game_time_active = false
 
+var passed_days_since_start
+
 var is_daytime : bool = false
 var is_sunset : bool = false
 var is_night : bool = false
@@ -60,6 +62,7 @@ func _process(delta):
 		current_minute = int((fmod(current_time, ONE_HOUR) / ONE_HOUR) * 60)
 		# Reset current_time on new day
 		if current_time >= COMPLETE_DAY_TIME:
+			passed_days_since_start += 1
 			current_time = 0
 		
 		# Calls stuff every 1min (ingame time)
@@ -171,5 +174,10 @@ func pause_time(should_pause):
 func skip_time(hours_to_skip):
 	if (current_time + ONE_HOUR * hours_to_skip) > COMPLETE_DAY_TIME:
 		current_time = (current_time + ONE_HOUR * hours_to_skip) - COMPLETE_DAY_TIME
+		passed_days_since_start += 1
 	else:
 		current_time = (current_time + ONE_HOUR * hours_to_skip)
+
+
+func get_passed_days_since_start():
+	return passed_days_since_start
