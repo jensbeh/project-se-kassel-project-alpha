@@ -47,7 +47,7 @@ var curr_hat: int = 0 #0-4, 1
 # Walk
 var current_walk_speed = Constants.PLAYER_WALK_SPEED
 var velocity = Vector2(0,1)
-var direction = Vector2(0,1)
+var view_direction = Vector2(0,1)
 var movement
 
 # Interaction
@@ -162,7 +162,7 @@ func _physics_process(delta):
 					velocity *= 1.4
 			
 			if velocity != Vector2.ZERO and player_can_interact:
-				direction = velocity
+				view_direction = velocity
 				animation_tree.set("parameters/Idle/blend_position", velocity)
 				animation_tree.set("parameters/Walk/blend_position", velocity)
 				animation_tree.set("parameters/Hurt/blend_position", velocity)
@@ -629,14 +629,14 @@ func get_movment_animation():
 
 
 # Method to set the spawn_position and view_direction of the current player
-func set_spawn(spawn_position: Vector2, view_direction: Vector2):
+func set_spawn(spawn_position: Vector2, init_view_direction: Vector2):
 	animation_tree.active = false # Otherwise player_view_direction won't change
-	animation_tree.set("parameters/Idle/blend_position", view_direction)
-	animation_tree.set("parameters/Walk/blend_position", view_direction)
+	animation_tree.set("parameters/Idle/blend_position", init_view_direction)
+	animation_tree.set("parameters/Walk/blend_position", init_view_direction)
 	animation_tree.set("parameters/Hurt/blend_position", velocity)
 	animation_tree.set("parameters/Collect/blend_position", velocity)
 	animation_tree.set("parameters/Collected/blend_position", velocity)
-	animation_tree.set("parameters/Attack/AttackCases/blend_position", view_direction)
+	animation_tree.set("parameters/Attack/AttackCases/blend_position", init_view_direction)
 	position = spawn_position
 	animation_tree.active = true
 
@@ -951,7 +951,7 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
-	DayNightCycle.death_time()
+	DayNightCycle.skip_time(8)
 	animation_state.start("Idle")
 	
 	# Make player visible again to mobs
@@ -1046,7 +1046,7 @@ func is_in_change_scene_area():
 
 func rescue_pay():
 	# Pay amount of gold
-	var lost_gold = int(gold * Constants.RESCUE_PAY) +1
+	var lost_gold = int(gold * Constants.RESCUE_PAY)
 	set_gold(int(gold * (1 - Constants.RESCUE_PAY)))
 	# Pay an item
 	var item_list = []

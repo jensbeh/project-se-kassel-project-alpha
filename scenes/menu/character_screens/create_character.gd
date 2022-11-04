@@ -203,6 +203,8 @@ func save_data():
 	var dir = Directory.new()
 	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
 		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
+	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH + uuid + "/"):
+		dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
 	var save_game = File.new()
 	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))
@@ -569,6 +571,8 @@ func start_game():
 	Utils.set_current_player(Utils.get_player())
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
+	
+	DayNightCycle.current_time = 0.0
 	
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()

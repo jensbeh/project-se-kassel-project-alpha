@@ -337,15 +337,6 @@ tracks/1/keys = {
 [sub_resource type="Animation" id=24]
 resource_name = "RESET"
 length = 0.001
-
-[sub_resource type="DynamicFont" id=27]
-size = 24
-font_data = ExtResource( 10 )
-
-[sub_resource type="Animation" id=28]
-resource_name = "Saved"
-length = 3.0
-step = 1.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Loading:value")
 tracks/0/interp = 1
@@ -353,7 +344,38 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1, 1.01457 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Save:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="DynamicFont" id=27]
+font_data = ExtResource( 10 )
+
+[sub_resource type="Animation" id=28]
+resource_name = "Saved"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Loading:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.498783, 0.514565 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ 0.0, 100.0, 0.0 ]
@@ -365,7 +387,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 1, 2, 3 ),
+"times": PoolRealArray( 0.5, 1, 1.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
@@ -395,8 +417,6 @@ render_target_update_mode = 3
 material = SubResource( 25 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -2.0
-margin_right = -2.0
 mouse_filter = 2
 script = ExtResource( 8 )
 __meta__ = {
@@ -421,18 +441,17 @@ margin_bottom = 1067.0
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 
 [node name="BlackScreen" type="ColorRect" parent="LoadingScreen"]
-margin_top = -2.0
 margin_right = 1920.0
-margin_bottom = 1078.0
+margin_bottom = 1080.0
 mouse_filter = 2
 color = Color( 0, 0, 0, 0 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="LoadingScreen"]
 visible = false
-self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 19 )
+frame = 3
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
 root_node = NodePath("../BlackScreen")
@@ -444,24 +463,24 @@ anims/MenuFadeToNormal = SubResource( 23 )
 anims/RESET = SubResource( 24 )
 
 [node name="Loading" type="TextureProgress" parent="LoadingScreen"]
-margin_left = 1818.0
+margin_left = 1816.0
 margin_top = 92.0
-margin_right = 1882.0
+margin_right = 1880.0
 margin_bottom = 156.0
-value = 82.0
 texture_progress = ExtResource( 11 )
 fill_mode = 4
 
 [node name="Save" type="Label" parent="LoadingScreen"]
-modulate = Color( 1, 1, 1, 0.0333934 )
-margin_left = 1764.0
-margin_top = 84.0
-margin_right = 1918.0
-margin_bottom = 163.0
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 1792.0
+margin_top = 93.0
+margin_right = 1903.0
+margin_bottom = 155.0
 custom_fonts/font = SubResource( 27 )
 text = "Gespeichert"
 align = 1
 valign = 1
 
 [node name="SaveScreen" type="AnimationPlayer" parent="LoadingScreen"]
+anims/RESET = SubResource( 24 )
 anims/Saved = SubResource( 28 )

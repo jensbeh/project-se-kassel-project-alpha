@@ -60,7 +60,7 @@ func _process(delta):
 		current_minute = int((fmod(current_time, ONE_HOUR) / ONE_HOUR) * 60)
 		# Reset current_time on new day
 		if current_time >= COMPLETE_DAY_TIME:
-			current_time -= COMPLETE_DAY_TIME
+			current_time = 0
 		
 		# Calls stuff every 1min (ingame time)
 		if current_minute != previouse_current_minute:
@@ -168,5 +168,8 @@ func pause_time(should_pause):
 		game_time_active = true
 
 
-func death_time():
-	current_time += ONE_HOUR * 8
+func skip_time(hours_to_skip):
+	if (current_time + ONE_HOUR * hours_to_skip) > COMPLETE_DAY_TIME:
+		current_time = (current_time + ONE_HOUR * hours_to_skip) - COMPLETE_DAY_TIME
+	else:
+		current_time = (current_time + ONE_HOUR * hours_to_skip)
