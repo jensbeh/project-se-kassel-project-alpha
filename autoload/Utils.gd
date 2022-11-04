@@ -544,6 +544,8 @@ func stop_game():
 
 
 func save_game():
+	get_main().get_node("LoadingScreen/Save").set_text(tr("SAVED"))
+	get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 	var data = get_current_player().get_data()
 	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
 	data.position = var2str(get_current_player().position)

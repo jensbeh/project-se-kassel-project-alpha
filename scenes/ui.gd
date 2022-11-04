@@ -7,8 +7,10 @@ var show_map = false
 var has_map = false
 var is_dialog = false
 
+
 func _ready():
-	pass # Replace with function body.
+	pass
+
 
 func in_world(value):
 	if value:
@@ -106,3 +108,4 @@ func _input(event):
 				show_map = false
 				Utils.get_current_player().get_data().show_map = show_map
 				Utils.get_minimap().update_minimap()
+
