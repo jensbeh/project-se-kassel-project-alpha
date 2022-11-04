@@ -2,15 +2,16 @@ extends Control
 
 var inv_slot = load(Constants.TRADE_INV_SLOT)
 
-onready var gridcontainer = get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
-
+onready var gridcontainer = find_node("TradeGridContainer")
 
 func _ready():
 	for i in range(1,MerchantData.inv_data.size()+1):
 		var inv_slot_new = inv_slot.instance()
 		var slot = "Inv" + str(i)
 		if MerchantData.inv_data[slot]["Item"] != null:
-			if MerchantData.inv_data[slot]["Time"] == null or (MerchantData.inv_data[slot]["Time"] + (2000* DayNightCycle.COMPLETE_DAY_TIME)) >  OS.get_system_time_msecs():
+			if (MerchantData.inv_data[slot]["Time"] == null or 
+			(MerchantData.inv_data[slot]["Time"] + (3* DayNightCycle.COMPLETE_DAY_TIME)) > 
+			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time)):
 				var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
 				var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
 				var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
@@ -35,7 +36,7 @@ func _ready():
 				MerchantData.inv_data[slot]["Time"] = null
 		gridcontainer.add_child(inv_slot_new, true)
 	check_slots()
-	find_node("Inventory").get_child(0).find_node("TextureRect").visible = false
+	find_node("Inventory").get_child(0).find_node("Deletebox").visible = false
 
 
 # Close trade inventory
@@ -50,8 +51,8 @@ func _on_Button_gui_input(event):
 			for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
 				npc.set_interacted(false)
 			MerchantData.save_merchant_inventory()
-			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
-			PlayerData.save_inventory()
+			Utils.save_game(true)
+
 
 # Sets the correct name of the npc
 func set_name(npc_name):
@@ -88,3 +89,7 @@ func check_slots():
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+
+
+func get_trade_gridcontainer():
+	return gridcontainer

@@ -517,6 +517,9 @@ func pause_game(should_pause):
 		
 		# Pause time
 		DayNightCycle.pause_time(true)
+		
+		# Pause player input
+		Utils.get_ui().player_input(false)
 	
 	# Resume
 	else:
@@ -527,6 +530,9 @@ func pause_game(should_pause):
 		
 		# Resume time
 		DayNightCycle.pause_time(false)
+		
+		# Resume player input
+		Utils.get_ui().player_input(true)
 
 
 # Method to start the stop of the game
@@ -535,3 +541,27 @@ func stop_game():
 	
 	# Start fade to black transition in main.gd
 	get_main().start_close_game_transition()
+
+
+func save_game(animation):
+	get_main().get_node("LoadingScreen/Save").set_text(tr("SAVED"))
+	if animation:
+		get_main().play_save_notification()
+	var data = get_current_player().get_data()
+	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
+	data.position = var2str(get_current_player().position)
+	data.view_direction = var2str(get_current_player().view_direction)
+	data.time = DayNightCycle.current_time
+	data.passed_days = DayNightCycle.passed_days_since_start
+	# map informations
+	data.show_map = get_ui().show_map
+	data.has_map = get_ui().has_map
+	save_player_data(data)
+	PlayerData.save_inventory()
+
+
+func save_player_data(player_data):
+	var save_game = File.new()
+	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + "/" + player_data.name + ".json", File.WRITE)
+	save_game.store_line(to_json(player_data))
+	save_game.close()

@@ -3,6 +3,7 @@
 [ext_resource path="res://scenes/npc/npc.gd" type="Script" id=1]
 
 [sub_resource type="StreamTexture" id=55]
+flags = 4
 load_path = "res://.import/shadow.png-3eafe32b22fc48522807b9c171b4769a.stex"
 
 [sub_resource type="StreamTexture" id=56]

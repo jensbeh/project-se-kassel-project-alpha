@@ -61,7 +61,7 @@ func set_exp(new_value: int):
 			life_bar.value = 100
 			Utils.get_current_player().set_current_health(90 + player_level * 10)
 			# save player
-			Utils.get_current_player().save_player_data(Utils.get_current_player().get_data())
+			Utils.save_game(true)
 			stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / Constants.MAX_LEVEL -1) * player_level -1)
 			if player_level == 5:
 				change_heart_number(4)
@@ -69,6 +69,7 @@ func set_exp(new_value: int):
 				change_heart_number(5)
 		else:
 			exp_bar.value = exp_bar.max_value
+			exp_value.set_text("EXP: " + str(exp_bar.value))
 
 # Clock
 func set_time(new_hour, new_minute):
@@ -118,7 +119,7 @@ func change_heart_number(number_heart):
 
 # position for hotbar with or without minimap
 func without_minimap(value):
-	if value:
+	if (value or (!Utils.get_ui().has_map or !Utils.get_ui().show_map)):
 		get_node("Hotbar").rect_position = Vector2(-916,456)
 	else:
 		get_node("Hotbar").rect_position = Vector2(-504,456)

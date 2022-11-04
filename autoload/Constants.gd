@@ -50,9 +50,12 @@ const STAMINA_POTION_COOLDOWN = 15
 const LOOTING_TIME = 60
 const LOOT_CHANCE = 0.7 # means 70% Chance
 const MAX_LEVEL = 30
+const RESCUE_PAY = 0.1 # 10% 
 const WEAPON_STAMINA_USE = 8 # * Weapon weight per hit
 const STAMINA_SPRINT = 15 # Points per Second
 const STAMINA_RECOVER = 10 # Points per Second
+const MIN_LEVEL_ITEM_LOSE = 3
+const MIN_LOST_FACTOR = 10
 
 # Tiles
 const TILE_SIZE = 16
@@ -148,7 +151,7 @@ const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 
 # inventory
-const MAX_STACK_SIZE = 999
+const MAX_STACK_SIZE = 5
 const TRADE_INV_SLOT = "res://scenes/inventory/TradeInventorySlot.tscn"
 const INV_SLOT = "res://scenes/inventory/InventorySlot.tscn"
 const TOOLTIP = "res://scenes/inventory/ToolTip.tscn"
@@ -158,10 +161,8 @@ const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 
 # Save file pathes
-const SAVE_PATH = "user://"
-const SAVE_SETTINGS_PATH = "user://settings.json"
+const SAVE_SETTINGS_PATH = "user://game/settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"
-const SAVE_INVENTORY_DATA_PATH = "user://data/"
 const SAVE_GAME_PATH = "user://game/"
 const SAVE_GAME_PATHFINDING_PATH = SAVE_GAME_PATH + "pathfinding/"
 

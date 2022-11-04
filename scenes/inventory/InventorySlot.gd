@@ -32,17 +32,16 @@ func _process(_delta):
 
 
 func _on_Timer_timeout():
+	set_process(false)
 	cooldown_texture.value = 0
 	disabled = false
 	time_label.hide()
-	set_process(false)
 
 
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.inv_data[slot]["Item"] != null:
-		Utils.get_current_player().set_dragging(true)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Inventory"
@@ -186,7 +185,7 @@ func drop_data(_pos, data):
 			# Update the data of the origin
 			# stacking
 			if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "Inventory"):
+			data["origin_panel"] == "Inventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[origin_slot]["Item"] = null
 					PlayerData.inv_data[origin_slot]["Stack"] = null
@@ -194,7 +193,7 @@ func drop_data(_pos, data):
 					PlayerData.inv_data[origin_slot]["Stack"] = (PlayerData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "TradeInventory"):
+			data["origin_panel"] == "TradeInventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if split != 0:
 					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
 				elif data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
@@ -204,11 +203,11 @@ func drop_data(_pos, data):
 				else:
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				check_slots()
 			# stacking for hotbar
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
-			data["origin_panel"] == "CharacterInterface"):
+			data["origin_panel"] == "CharacterInterface" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.equipment_data[origin_slot]["Item"] = null
 					PlayerData.equipment_data[origin_slot]["Stack"] = null
@@ -224,15 +223,18 @@ func drop_data(_pos, data):
 			elif data["origin_panel"] == "TradeInventory":
 				if split != 0:
 					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
-					MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				else:
 					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 					if data["target_item_id"] != null:
-						MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+						MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 					else:
 						MerchantData.inv_data[origin_slot]["Time"] = null
 				check_slots()
+			elif data["origin_panel"] == "Delete":
+				data["origin_node"].item = PlayerData.inv_data[target_slot]["Item"]
+				data["origin_node"].stack = PlayerData.inv_data[target_slot]["Stack"]
 			else:
 				# change equipment
 				PlayerData.equipment_data[origin_slot]["Item"] = data["target_item_id"]
@@ -280,7 +282,7 @@ func drop_data(_pos, data):
 
 			# Update the texture and label of the origin
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0:
+			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0 and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 				if data["origin_panel"] == "CharacterInterface":
 					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 						data["origin_node"].get_child(0).texture = null
@@ -310,7 +312,12 @@ func drop_data(_pos, data):
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
 				verify_origin_texture(data)
-				if data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] != "CharacterInterface":
+				if data["origin_panel"] == "Delete":
+					if data["target_stack"] != null:
+						data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
+					else:
+						data["origin_node"].get_node("TextureRect/Stack").set_text("")
+				elif data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] != "CharacterInterface":
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 				elif data["target_stack"] != null and data["target_stack"] > 1 and data["origin_panel"] == "CharacterInterface":
 					data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
@@ -321,7 +328,8 @@ func drop_data(_pos, data):
 				
 			# Update the texture, label and data of the target
 			# stacking
-			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
+			if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
+			(data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE and split + data["target_stack"] <= Constants.MAX_STACK_SIZE)):
 				var new_stack = 0
 				if split != 0:
 					new_stack = split
@@ -352,7 +360,6 @@ func drop_data(_pos, data):
 			check_cooldown(data)
 			show_hide_stack_label(data)
 			split = 0
-	Utils.get_current_player().set_dragging(false)
 
 
 func SplitStack(split_amount, data):
@@ -361,6 +368,8 @@ func SplitStack(split_amount, data):
 	var player_gold = int(Utils.get_current_player().get_gold())
 	var valid = true
 	var new_stack_size
+	if data["target_stack"] != null and data["target_stack"] + split_amount > Constants.MAX_STACK_SIZE:
+		split_amount = Constants.MAX_STACK_SIZE - data["target_stack"]
 	# paying in case of buying and selling
 	if data["origin_panel"] == "TradeInventory":
 		if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount <= player_gold:
@@ -375,7 +384,7 @@ func SplitStack(split_amount, data):
 		if data["origin_panel"] == "TradeInventory":
 			if MerchantData.inv_data[origin_slot]["Stack"] != 0:
 				MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
-				MerchantData.inv_data[origin_slot]["Time"] = OS.get_system_time_msecs()
+				MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
 				check_slots()
 		elif data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
@@ -413,7 +422,7 @@ func SplitStack(split_amount, data):
 
 
 func show_hide_stack_label(data):
-	if data["origin_panel"] != "CharacterInterface":
+	if data["origin_panel"] != "CharacterInterface" and data["origin_panel"] != "Delete":
 		if (int(data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text()) > 1 and 
 		data["origin_node"].get_parent().get_node("TextureRect/Stack").get_text() != null):
 			data["origin_node"].get_parent().get_node("TextureRect").visible = true
@@ -440,7 +449,7 @@ func show_hide_stack_label(data):
 
 func verify_origin_texture(data):
 	if data["target_item_id"] != null:
-		if data["origin_panel"] == "TradeInventory" or data["origin_panel"] == "Inventory":
+		if data["origin_panel"] == "TradeInventory" or data["origin_panel"] == "Inventory" or data["origin_panel"] == "Delete":
 			if GameData.item_data[str(data["target_item_id"])]["Texture"] == "item_icons_1":
 				data["origin_node"].get_child(0).set_scale(Vector2(1.5,1.5))
 				data["origin_node"].get_child(0).set_hframes(16)
@@ -498,7 +507,7 @@ func hide_tooltip():
 func check_slots():
 	var free = false
 	var free2 = false
-	var trade = Utils.get_trade_inventory().get_node("ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/GridContainer")
+	var trade = Utils.get_trade_inventory().get_trade_gridcontainer()
 	var slots = MerchantData.inv_data.size()
 	for i in MerchantData.inv_data:
 		if MerchantData.inv_data[i]["Item"] == null:
@@ -535,13 +544,13 @@ func _on_Icon_gui_input(event):
 							GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Stamina"])
 							type = "Stamina"
 							cooldown = Constants.STAMINA_POTION_COOLDOWN
-							Utils.get_current_player().stamina_cooldown = cooldown
+							Utils.get_current_player().set_stamina_cooldown(cooldown)
 						else:
 							Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 							int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
 							type = "Health"
 							cooldown = Constants.HEALTH_COOLDOWN
-							Utils.get_current_player().health_cooldown = cooldown
+							Utils.get_current_player().set_health_cooldown(cooldown)
 						if PlayerData.inv_data[slot]["Stack"] > 0:
 							set_cooldown(cooldown, type)
 						if PlayerData.inv_data[slot]["Stack"] <= 0:
@@ -575,6 +584,15 @@ func _on_Icon_gui_input(event):
 							Utils.get_hotbar().set_cooldown_health(cooldown, "")
 						hide_tooltip()
 						show_tooltip()
+				elif GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] == "Map" and !Utils.get_ui().has_map:
+					Utils.get_ui().has_map = true
+					Utils.get_ui().show_map = true
+					Utils.get_minimap().update_minimap()
+					PlayerData.inv_data[slot]["Item"] = null
+					PlayerData.inv_data[slot]["Stack"] = null
+					get_node("../Icon/Sprite").set_texture(null)
+					hide_tooltip()
+					show_tooltip()
 
 
 # starts cooldwon
@@ -589,7 +607,20 @@ func set_cooldown(cooldown, new_type):
 
 # cooldown by move an item
 func check_cooldown(data):
-	if (data["origin_panel"] != "TradeInventory" and data["origin_node"].get_parent().get_name() != "Light" and 
+	if data["origin_panel"] == "Delete":
+		if GameData.item_data[str(data["origin_item_id"])].has("Stamina"):
+			if Utils.get_current_player().stamina_cooldown > 0:
+				timer.wait_time = Utils.get_current_player().stamina_cooldown
+				start_timer()
+			else:
+				stop_timer()
+		elif GameData.item_data[str(data["origin_item_id"])]["Health"] != null:
+			if Utils.get_current_player().health_cooldown > 0:
+				timer.wait_time = Utils.get_current_player().health_cooldown
+				start_timer()
+			else:
+				stop_timer()
+	elif (data["origin_panel"] != "TradeInventory" and data["origin_node"].get_parent().get_name() != "Light" and 
 	data["origin_node"].get_parent().get_name() != "Weapon"):
 		var cooldown
 		var cooldown_origin
@@ -606,16 +637,9 @@ func check_cooldown(data):
 			cooldown_origin = data["origin_node"].get_node("../Timer").time_left
 		if cooldown_origin != 0:
 			timer.wait_time = cooldown_origin
-			timer.start()
-			disabled = true
-			set_process(true)
-			time_label.show()
+			start_timer()
 		else:
-			timer.stop()
-			disabled = false
-			set_process(false)
-			time_label.hide()
-			cooldown_texture.value = 0
+			stop_timer()
 		if cooldown != 0:
 			data["origin_node"].get_node("../Timer").wait_time = cooldown
 			data["origin_node"].get_node("../Timer").start()
@@ -638,3 +662,17 @@ func check_cooldown(data):
 			elif GameData.item_data[str(data["target_item_id"])]["Health"] != null:
 				data["origin_node"].type = "Health"
 	
+
+func start_timer():
+	timer.start()
+	disabled = true
+	set_process(true)
+	time_label.show()
+
+
+func stop_timer():
+	timer.stop()
+	disabled = false
+	set_process(false)
+	time_label.hide()
+	cooldown_texture.value = 0

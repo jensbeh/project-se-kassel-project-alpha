@@ -98,18 +98,28 @@ func load_data():
 		var file = dir.get_next()
 		if file == "":
 			break
-		elif ((!file.begins_with(".")) and (file.ends_with(".json"))):
-			var save_game = File.new()
-			save_game.open(Constants.SAVE_CHARACTER_PATH + file, File.READ)
-			var save_game_data = {}
-			save_game_data = parse_json(save_game.get_line())
-			save_game.close()
-			data_list.append(save_game_data)
-			var name = save_game_data.name
-			var gold = save_game_data.gold
-			var level = save_game_data.level
-			var character_id = save_game_data.id
-			create_item(name, level, gold, character_id)
+		elif !file.begins_with("."):
+			var save_path = Directory.new()
+			save_path.open(Constants.SAVE_CHARACTER_PATH + file)
+			save_path.list_dir_begin()
+			while true:
+				var data_file = save_path.get_next()
+				if data_file == "":
+					break
+				elif data_file.ends_with(".json") and !"inv_data" in data_file.get_basename() and !file.begins_with("."):
+					data_file.get_file()
+					var save_game = File.new()
+					save_game.open(Constants.SAVE_CHARACTER_PATH + file + "/" + data_file, File.READ)
+					var save_game_data = {}
+					save_game_data = parse_json(save_game.get_line())
+					save_game.close()
+					data_list.append(save_game_data)
+					var name = save_game_data.name
+					var gold = save_game_data.gold
+					var level = save_game_data.level
+					var character_id = save_game_data.id
+					create_item(name, level, gold, character_id)
+			save_path.list_dir_end()
 	dir.list_dir_end()
 
 
@@ -145,11 +155,16 @@ func on_delete_click(id, container):
 
 func delete_character():
 	var dir = Directory.new()
-	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION):
-		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + SAVE_FILE_EXTENSION)
+	var name = data_list[selected_character].name
+	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + SAVE_FILE_EXTENSION):
+		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + SAVE_FILE_EXTENSION)
 	# remove inventory data
-	if dir.file_exists(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION):
-		dir.remove(Constants.SAVE_INVENTORY_DATA_PATH + delete_id + "_inv_data" + SAVE_FILE_EXTENSION)
+	if dir.dir_exists(Constants.SAVE_CHARACTER_PATH + delete_id + "/"):
+		for i in ["bella", "heinz", "lea", "sam", "haley", delete_id]:
+			dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION)
+		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/merchant/")
+		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + "_inv_data" + SAVE_FILE_EXTENSION)
+		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/")
 	list.remove_child(delete_container)
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -526,27 +541,11 @@ func start_game():
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
 	
-	# Set spawn
-	var player_position = Vector2(1128,616) # Camp
-#	var player_position = Vector2(768,752) # Grassland - Dungeon1
-#	var player_position = Vector2(1056,-80) # Grassland - Beach
-#	var player_position = Vector2(1040, 64) # Grassland - Dungeon1/Beach
-#	var player_position = Vector2(-864, -625) # Grassland - Mountain Biome Entrance
-#	var player_position = Vector2(-416,-928) # Grassland - Mountain
-#	var player_position = Vector2(-730,-1700) # Grassland - Top
-#	var player_position = Vector2(-2080,150) # Grassland - House1
-#	var player_position = Vector2(336,-62) # Dungeon1-1
-#	var player_position = Vector2(432,-120) # Dungeon1-3
-#	var player_position = Vector2(240,480) # Dungeon2-4
-#	var player_position = Vector2(-300,64) # Dungeon3-2
-#	var player_position = Vector2(-384,176) # Dungeon3-4
-	var view_direction = Vector2(0,1)
-	
 	# Set data
 	var data = data_list[selected_character]
+	Utils.get_current_player().set_data(data)
 	PlayerData.set_path(data.id)
 	PlayerData._ready()
-	Utils.get_current_player().set_data(data)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_max_health(data.maxLP)
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
@@ -559,9 +558,17 @@ func start_game():
 	Utils.get_current_player().set_stamina(data.stamina)
 	Utils.get_current_player().set_gold(data.gold)
 	Utils.get_current_player().set_light(data.light)
+	if data.has("has_map"):
+		Utils.get_ui().has_map = data.has_map
+	if data.has("show_map"):
+		Utils.get_ui().show_map = data.show_map
 	
 	Utils.get_current_player().health_cooldown = data.cooldown
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown
+	
+	DayNightCycle.current_time = data.time
+	if data.has("passed_days"):
+		DayNightCycle.passed_days_since_start = data.passed_days
 	
 	Utils.get_hotbar().load_hotbar()
 	if (PlayerData.equipment_data["Hotbar"]["Item"] != null and
@@ -576,16 +583,37 @@ func start_game():
 			Utils.get_hotbar().set_cooldown_stamina(data.stamina_cooldown, "Health")
 		if data.has("cooldown") and data.cooldown != 0:
 			Utils.get_hotbar().set_cooldown_health(data.cooldown, "Health")
-	
+		
+	# Set spawn
+#	var player_position = Vector2(1128,616) # Camp
+#	var player_position = Vector2(768,752) # Grassland - Dungeon1
+#	var player_position = Vector2(1056,-80) # Grassland - Beach
+#	var player_position = Vector2(1040, 64) # Grassland - Dungeon1/Beach
+#	var player_position = Vector2(-864, -625) # Grassland - Mountain Biome Entrance
+#	var player_position = Vector2(-416,-928) # Grassland - Mountain
+#	var player_position = Vector2(-730,-1700) # Grassland - Top
+#	var player_position = Vector2(-2080,150) # Grassland - House1
+	var player_position = Vector2(336,-62) # Dungeon1-1
+#	var player_position = Vector2(432,-120) # Dungeon1-3
+#	var player_position = Vector2(240,480) # Dungeon2-4
+#	var player_position = Vector2(-300,64) # Dungeon3-2
+#	var player_position = Vector2(-384,176) # Dungeon3-4
+	var view_direction = Vector2(0,1)
 	
 	# Transition
-	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+#	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new(Constants.GRASSLAND_SCENE_PATH, player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn", player_position, view_direction)
 #	var transition_data = TransitionData.GamePosition.new("res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn", player_position, view_direction)
+	
+	# Set spawn & transition
+	player_position = str2var(data.position)
+	view_direction = str2var(data.view_direction)
+	var transition_data = TransitionData.GamePosition.new(data.scene_transition, player_position, view_direction)
+	
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

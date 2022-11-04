@@ -81,6 +81,10 @@ func update_minimap():
 			visible = false
 			deactivated = true
 	
+	if (!Utils.get_ui().has_map or !Utils.get_ui().show_map):
+		visible = false
+		deactivated = true
+	
 	set_camera_limits()
 
 

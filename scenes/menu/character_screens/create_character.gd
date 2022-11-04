@@ -135,6 +135,8 @@ var save_game_data = {
 	"light": 0,
 	"cooldown": 0,
 	"stamina_cooldown": 0,
+	"has_map": false,
+	"show_map": false,
 	"skincolor": curr_body,
 	"hairs": curr_hair,
 	"hair_color": curr_hair_color,
@@ -156,7 +158,9 @@ var save_game_data = {
 	"mask": curr_mask,
 	"earring": curr_earring,
 	"glasses": curr_glasses,
-	"id" : uuid
+	"id" : uuid,
+	"view_direction": var2str(Vector2(0,1)),
+	"passed_days": 0
 }
 
 var save_inventory = {
@@ -200,8 +204,10 @@ func save_data():
 	var dir = Directory.new()
 	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
 		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
+	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH + uuid + "/"):
+		dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
 	var save_game = File.new()
-	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + SAVE_FILE_EXTENSION, File.WRITE)
+	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + SAVE_FILE_EXTENSION, File.WRITE)
 	save_game.store_line(to_json(save_game_data))
 	save_game.close()
 	print("CREATE_CHARACTER: Savegame saved")
@@ -567,6 +573,9 @@ func start_game():
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
+	DayNightCycle.current_time = 0.0
+	DayNightCycle.passed_days_since_start = 0
+	
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()
 	
@@ -576,12 +585,25 @@ func start_game():
 
 func create_player_inventory():
 	var dir = Directory.new()
-	if !dir.dir_exists(Constants.SAVE_INVENTORY_DATA_PATH):
-		dir.make_dir(Constants.SAVE_INVENTORY_DATA_PATH)
+	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
+		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
+	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
 	var save_player = File.new()
-	save_player.open(Constants.SAVE_INVENTORY_DATA_PATH + uuid + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+	save_player.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
 	save_player.store_line(to_json(save_inventory))
 	save_player.close()
+	
+	# Create Merchant data files for this character
+	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/")
+	var merchant_data = File.new()
+	for i in ["bella", "heinz", "lea", "sam", "haley"]:
+		var item_data_file = File.new()
+		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
+		var item_data_json = JSON.parse(item_data_file.get_as_text())
+		item_data_file.close()
+		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
+		merchant_data.store_line(to_json(item_data_json.result))
+		merchant_data.close()
 
 	# set player data
 	PlayerData.set_path(uuid)
@@ -590,13 +612,18 @@ func create_player_inventory():
 	# set hotbar & light
 	Utils.get_hotbar().load_hotbar()
 	Utils.get_current_player().set_light(save_game_data.light)
+	Utils.get_ui().has_map = save_game_data.has_map
+	Utils.get_ui().show_map = save_game_data.show_map
 
 	# sets lp & weapon
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	Utils.get_current_player().set_gold(save_game_data.gold)
 	Utils.get_current_player().set_level(save_game_data.level)
+	Utils.get_current_player().set_current_health(save_game_data.currentHP)
+	Utils.get_player_ui().setup_ui()
 	Utils.get_current_player().set_exp(save_game_data.exp)
 	Utils.get_current_player().set_stamina(save_game_data.stamina)
+	
 	Utils.get_current_player().set_current_health(save_game_data.currentHP)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_weapon(item_id, save_game_data.attack, save_game_data.attack_speed, save_game_data.knockback)
