@@ -62,6 +62,7 @@ func set_exp(new_value: int):
 			Utils.get_current_player().set_current_health(90 + player_level * 10)
 			# save player
 			Utils.save_game()
+			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 			stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / Constants.MAX_LEVEL -1) * player_level -1)
 			if player_level == 5:
 				change_heart_number(4)

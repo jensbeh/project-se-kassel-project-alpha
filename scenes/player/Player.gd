@@ -1067,6 +1067,7 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
 	Utils.save_game()
+	Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 	var lost_string = tr("LOST_ITEMS") + ": "
 	if lost_gold > 0:
 		lost_string += str(lost_gold) + " Gold" + "\n"

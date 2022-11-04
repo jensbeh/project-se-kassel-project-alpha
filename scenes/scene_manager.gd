@@ -151,6 +151,7 @@ func finish_transition():
 			
 			# Save Player Data
 			Utils.save_game()
+			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 			
 			# Resume game
 			Utils.pause_game(false)

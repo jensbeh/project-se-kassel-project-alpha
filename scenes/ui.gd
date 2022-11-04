@@ -51,6 +51,7 @@ func _input(event):
 				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
 					npc.set_interacted(false)
 				Utils.save_game()
+				Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 				MerchantData.save_merchant_inventory()
 		
 		# Open game menu with "esc"
@@ -86,6 +87,7 @@ func _input(event):
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			Utils.save_game()
+			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 			Utils.get_character_interface().queue_free()
 		
 		# Use Item from Hotbar

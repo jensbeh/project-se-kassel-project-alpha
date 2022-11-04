@@ -164,3 +164,4 @@ func _on_Button_gui_input(event):
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			Utils.save_game()
+			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")

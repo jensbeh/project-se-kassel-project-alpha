@@ -50,6 +50,7 @@ func _on_Button_gui_input(event):
 				npc.set_interacted(false)
 			MerchantData.save_merchant_inventory()
 			Utils.save_game()
+			Utils.get_main().get_node("LoadingScreen/SaveScreen").play("Saved")
 
 # Sets the correct name of the npc
 func set_name(npc_name):
