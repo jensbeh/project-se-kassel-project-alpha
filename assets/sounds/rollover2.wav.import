@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/rollover2.wav-2a5ec6d675e26f1377f6e74d00d5b731.sample"
+
+[deps]
+
+source_file="res://assets/sounds/rollover2.wav"
+dest_files=[ "res://.import/rollover2.wav-2a5ec6d675e26f1377f6e74d00d5b731.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

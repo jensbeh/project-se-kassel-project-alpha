@@ -214,11 +214,15 @@ func save_data():
 
 
 func _on_Back_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+	Utils.get_sound_player().play(0.03)
 	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Select
+	Utils.get_sound_player().play(0.03)
 	if charac_name != "":
 		save_game_data.skincolor = curr_body
 		save_game_data.shoes = curr_shoes
@@ -246,8 +250,11 @@ func _on_Create_Character_pressed():
 		save_data()
 
 		start_game()
-		
+
+
 func _on_HairLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_hair -= 1
 	if curr_hair < 0:
 		curr_hair = 13
@@ -264,6 +271,8 @@ func _on_HairLeft_pressed():
 
 
 func _on_HairRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_hair += 1
 	if curr_hair > 13:
 		curr_hair = 0
@@ -280,6 +289,8 @@ func _on_HairRight_pressed():
 
 
 func _on_HairColorLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_hair_color = (curr_hair_color -1)
 	if curr_hair_color < 0:
 		curr_hair_color = 13
@@ -290,6 +301,8 @@ func _on_HairColorLeft_pressed():
 
 
 func _on_HairColorRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_hair_color = (curr_hair_color +1)
 	if curr_hair_color > 13:
 		curr_hair_color = 0
@@ -300,6 +313,8 @@ func _on_HairColorRight_pressed():
 
 
 func _on_SkinLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	if curr_body > 0:
 		curr_body = (curr_body -1)%8
 	else:
@@ -310,6 +325,8 @@ func _on_SkinLeft_pressed():
 
 
 func _on_SkinRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_body = (curr_body +1)%8
 	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinCount.set_text(str(curr_body))
 	player.set_texture("curr_body", curr_body)
@@ -317,6 +334,8 @@ func _on_SkinRight_pressed():
 
 
 func _on_TorsoLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_clothes -= 1
 	if curr_clothes < 0:
 		curr_clothes = 10
@@ -325,6 +344,8 @@ func _on_TorsoLeft_pressed():
 
 
 func _on_TorsoRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_clothes += 1
 	if curr_clothes > 10:
 		curr_clothes = 0
@@ -333,6 +354,8 @@ func _on_TorsoRight_pressed():
 
 
 func _on_TorsoColorLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_clothes_color = (curr_clothes_color -1)
 	if curr_clothes_color < 0:
 		curr_clothes_color = 9
@@ -343,6 +366,8 @@ func _on_TorsoColorLeft_pressed():
 
 
 func _on_TorsoColorRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_clothes_color = (curr_clothes_color +1)
 	if curr_clothes_color > 9:
 		curr_clothes_color = 0
@@ -353,6 +378,8 @@ func _on_TorsoColorRight_pressed():
 
 
 func _on_LegsLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_pants -= 1
 	if curr_pants < 0:
 		curr_pants = 2
@@ -361,6 +388,8 @@ func _on_LegsLeft_pressed():
 
 
 func _on_LegsRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_pants += 1
 	if curr_pants > 2:
 		curr_pants = 0
@@ -369,6 +398,8 @@ func _on_LegsRight_pressed():
 
 
 func _on_LegsColorLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_pants_color = (curr_pants_color -1)
 	if curr_pants_color < 0:
 		curr_pants_color = 9
@@ -379,6 +410,8 @@ func _on_LegsColorLeft_pressed():
 
 
 func _on_LegsColorRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_pants_color = (curr_pants_color +1)
 	if curr_pants_color > 9:
 		curr_pants_color = 0
@@ -389,6 +422,8 @@ func _on_LegsColorRight_pressed():
 
 
 func _on_ShoesLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_shoe_color = (curr_shoe_color -1)
 	if curr_shoe_color < 0:
 		curr_shoe_color = 9
@@ -400,6 +435,8 @@ func _on_ShoesLeft_pressed():
 
 
 func _on_ShoesRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_shoe_color = (curr_shoe_color +1)
 	if curr_shoe_color > 9:
 		curr_shoe_color = 0
@@ -411,6 +448,8 @@ func _on_ShoesRight_pressed():
 
 
 func _on_EyesLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_eyes_color = (curr_eyes_color -1)
 	if curr_eyes_color < 0:
 		curr_eyes_color = 13
@@ -422,6 +461,8 @@ func _on_EyesLeft_pressed():
 
 
 func _on_EyesRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_eyes_color = (curr_eyes_color +1)
 	if curr_eyes_color > 13:
 		curr_eyes_color = 0
@@ -433,6 +474,8 @@ func _on_EyesRight_pressed():
 
 
 func _on_MakeupLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_lipstick_color = (curr_lipstick_color -1)
 	if curr_lipstick_color < 0:
 		curr_lipstick_color = 5
@@ -460,6 +503,8 @@ func _on_MakeupLeft_pressed():
 
 
 func _on_MakeupRight_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_lipstick_color = (curr_lipstick_color +1)
 	if curr_lipstick_color > 5:
 		curr_lipstick_color = 0
@@ -487,6 +532,8 @@ func _on_MakeupRight_pressed():
 
 
 func _on_BeardLeft_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_beard_color = (curr_beard_color -1)
 	if curr_beard_color < 0:
 		curr_beard_color = 14
@@ -502,6 +549,8 @@ func _on_BeardLeft_pressed():
 
 
 func _on_BeardRight_pressed(): 
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
+	Utils.get_sound_player().play(0.03)
 	curr_beard_color = (curr_beard_color +1)
 	if curr_beard_color > 14:
 		curr_beard_color = 0

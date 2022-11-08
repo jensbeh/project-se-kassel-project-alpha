@@ -38,8 +38,8 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 #################
 ## LOADED MAPS
 #################
-const LOAD_GRASSLAND_MAP = true # Default: true
-const LOAD_DUNGEONS_MAPS = true # Default: true
+const LOAD_GRASSLAND_MAP = false # Default: true
+const LOAD_DUNGEONS_MAPS = false # Default: true
 
 # --------------------------------------------------
 
@@ -244,6 +244,22 @@ const PreloadedMobScenes = {
 	"ZombieBlue" : preload("res://scenes/mobs/ZombieBlue.tscn"),
 	"ZombieGreen" : preload("res://scenes/mobs/ZombieGreen.tscn"),
 	"ZombieGrey" : preload("res://scenes/mobs/ZombieGrey.tscn"),
+}
+
+# Music
+const PreloadedMusic = {
+	"Menu_Music" : preload("res://assets/sounds/menuLoops_smooth.ogg"),
+	"Loading_Music":  preload("res://assets/sounds/menuLoops_microtonalSynthpop(22EDO).ogg"),
+	
+}
+
+# Sounds
+const PreloadedSounds = {
+	"Switch" : preload("res://assets/sounds/switch6.wav"),
+	"Click" : preload("res://assets/sounds/click3.wav"),
+	"Choose" : preload("res://assets/sounds/rollover2.wav"),
+	"Select" : preload("res://assets/sounds/Menu_Select_00.mp3"),
+	"Delete" : preload("res://assets/sounds/UI_027.wav"),
 }
 
 

@@ -3,6 +3,8 @@ extends Node
 # Variables
 var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
+var sound_volume = 0
+var music_volume = 0
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 
@@ -39,6 +41,16 @@ func get_scene_manager():
 # Sets the current language
 func set_language(lang):
 	language = lang
+
+
+# Sets the current music volume
+func set_music_volume(value):
+	music_volume = value
+
+
+# Sets the current sound volume
+func set_sound_volume(value):
+	sound_volume = value
 
 
 # Returns the current language
@@ -119,6 +131,26 @@ func get_hotbar():
 # Method to return LootPanel node
 func get_loot_panel():
 	return get_ui().get_node_or_null("LootPanel")
+
+
+# method to return the swound volume
+func get_sound_volume():
+	return sound_volume
+
+
+# Method to return the music volume
+func get_music_volume():
+	return music_volume
+
+
+# Method to return the music player
+func get_music_player():
+	return get_main().get_node("Musicplayer")
+
+
+# Method to return the sound player
+func get_sound_player():
+	return get_main().get_node("Soundplayer")
 
 
 # Method to calculate the new player_position and view_direction with the transition_data and sets the spawn of the current player
