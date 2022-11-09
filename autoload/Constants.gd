@@ -39,7 +39,7 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 ## LOADED MAPS
 #################
 const LOAD_GRASSLAND_MAP = false # Default: true
-const LOAD_DUNGEONS_MAPS = false # Default: true
+const LOAD_DUNGEONS_MAPS = true # Default: true
 
 # --------------------------------------------------
 
@@ -253,14 +253,14 @@ const PreloadedMusic = {
 	"Camp" : preload("res://assets/sounds/little town - orchestral.ogg"),
 	"House_Grassland" : preload("res://assets/sounds/forest.mp3"),
 	"Grassland" : preload("res://assets/sounds/AmbientNatureOutside.wav"),
-#	"Night-Water" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.wav"),
-	"Grassland2" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),
+	"Night" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.mp3"),#
+	"Grassland2" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),#
 	"Dungeon" : preload("res://assets/sounds/Ambience_Cave_00.mp3"),
 	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
 	"Hostel" : preload("res://assets/sounds/Ove Melaa - Times.mp3"),
-	"Boss_Fight" : preload("res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"),
-	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),
-	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),
+	"Boss_Fight" : preload("res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"),#
+	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),#
+	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),#
 }
 
 # Sounds
@@ -270,6 +270,22 @@ const PreloadedSounds = {
 	"Choose" : preload("res://assets/sounds/rollover2.wav"),
 	"Select" : preload("res://assets/sounds/Menu_Select_00.mp3"),
 	"Delete" : preload("res://assets/sounds/UI_027.wav"),
+	"Levelup" : preload("res://assets/sounds/snare.wav"),
+	"OpenUI" : preload("res://assets/sounds/Inventory_Open_00.mp3"),
+	"OpenUI2" : preload("res://assets/sounds/Inventory_Open_01.mp3"),
+	"Sucsess" : preload ("res://assets/sounds/Jingle_Achievement_00.mp3"),#
+	"Lose" : preload("res://assets/sounds/Jingle_Lose_00.mp3"),
+	"Win" : preload("res://assets/sounds/Jingle_Win_00.mp3"),#
+	"Collect" : preload("res://assets/sounds/Pickup_Gold_00.mp3"),#
+	"Collect2" : preload("res://assets/sounds/chainmail1.wav"),#
+	"open_door" : preload("res://assets/sounds/doorOpen_2.ogg"),
+	"close_door" : preload("res://assets/sounds/doorClose_2.ogg"),#
+	"Potion" : preload("res://assets/sounds/bubble.wav"),
+	"Potion1" : preload("res://assets/sounds/bubble2.wav"),
+	"Dialog" : preload("res://assets/sounds/Fast_Complete_v2_wav.wav"),
+	"Equip" : preload("res://assets/sounds/SetSomething.ogg"),
+	"open_close" : preload("res://assets/sounds/interface2.wav"),
+	"Denied" : preload("res://assets/sounds/Weird.ogg"),
 }
 
 

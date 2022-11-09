@@ -6,6 +6,8 @@ var tool_tip = load(Constants.TOOLTIP)
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.equipment_data[slot]["Item"] != null:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Select
+		Utils.get_sound_player().play(0.03)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -66,6 +68,8 @@ func drop_data(_pos, data):
 	if data["origin_node"] == self:
 		pass
 	else:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Equip
+		Utils.get_sound_player().play(0.03)
 		# Update the data of the origin
 		if data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]

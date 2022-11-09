@@ -6,6 +6,8 @@ var old_text = ""
 onready var split_amount_node = get_node("NinePatchRect/MarginContainer/HBoxContainer/Amount")
 
 func _ready():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+	Utils.get_sound_player().play(0.03)
 	line_editRegEx.compile("^[0-9.]*$")
 	split_amount_node.grab_focus()
 	
@@ -19,6 +21,8 @@ func _on_Amount_text_changed(new_text):
 		split_amount_node.set_cursor_position(split_amount_node.text.length())
 
 func _on_Confirm_pressed():
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+	Utils.get_sound_player().play(0.03)
 	var split_amount = split_amount_node.get_text()
 	if split_amount == "":
 		split_amount = 1

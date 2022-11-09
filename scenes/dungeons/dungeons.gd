@@ -462,6 +462,8 @@ func open_loot_panel(treasure):
 	loot_panel.connect("looted", self, "save_loot")
 	if !treasure_dict[treasure][1]:
 		treasure_dict[treasure][1] = true
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+		Utils.get_sound_player().play(0.03)
 		for child in treasure.get_children():
 			if "animationPlayer" in child.name:
 				# Start treasure animation

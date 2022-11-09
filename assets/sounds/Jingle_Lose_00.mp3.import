@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Jingle_Lose_00.mp3-c0c8f06f631def96ee8fe5a5f1d084c4.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Jingle_Lose_00.mp3"
+dest_files=[ "res://.import/Jingle_Lose_00.mp3-c0c8f06f631def96ee8fe5a5f1d084c4.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

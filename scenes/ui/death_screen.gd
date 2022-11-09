@@ -3,6 +3,10 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Sound
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Lose
+	Utils.get_sound_player().play(0.03)
+	
 	get_node("Label").set_text(tr("DEATH_MESSAGE"))
 
 

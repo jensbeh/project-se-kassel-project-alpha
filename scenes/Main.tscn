@@ -12,7 +12,7 @@
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://assets/ui/loading.png" type="Texture" id=11]
 [ext_resource path="res://assets/sounds/menuLoops_smooth.ogg" type="AudioStream" id=12]
-[ext_resource path="res://assets/sounds/click3.wav" type="AudioStream" id=13]
+[ext_resource path="res://assets/sounds/Fast_Complete_v2_wav.wav" type="AudioStream" id=13]
 
 [sub_resource type="ShaderMaterial" id=25]
 shader = ExtResource( 7 )
@@ -515,7 +515,7 @@ self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 19 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]

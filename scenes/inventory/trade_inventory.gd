@@ -43,6 +43,9 @@ func _ready():
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
+			# Sound
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI
+			Utils.get_sound_player().play(0.03)
 			Utils.get_trade_inventory().queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
@@ -75,6 +78,8 @@ func check_slots():
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
 	if !free:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
+		Utils.get_sound_player().play(0.03)
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
 			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
@@ -85,6 +90,8 @@ func check_slots():
 			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
 				free2 = true
 		if !free2:
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
+			Utils.get_sound_player().play(0.03)
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
@@ -93,3 +100,7 @@ func check_slots():
 
 func get_trade_gridcontainer():
 	return gridcontainer
+
+
+func get_sound_player():
+	return get_node("Sound")

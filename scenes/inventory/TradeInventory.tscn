@@ -236,6 +236,10 @@ patch_margin_top = 29
 patch_margin_right = 21
 patch_margin_bottom = 31
 
+[node name="Sound" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+bus = "Sounds"
+
 [connection signal="gui_input" from="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Exit/Button" to="." method="_on_Button_gui_input"]
 
 [editable path="ColorRect/MarginContainer/HBoxContainer/Inventory"]

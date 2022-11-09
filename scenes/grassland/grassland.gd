@@ -31,8 +31,16 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Music
-	Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
-	Utils.get_music_player().play(0.03)
+	if DayNightCycle.is_night:
+		Utils.get_music_player().stream = Constants.PreloadedMusic.Night
+		Utils.get_music_player().play(0.03)
+	else:
+		Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
+		Utils.get_music_player().play(0.03)
+	
+	var _day = DayNightCycle.connect("change_to_sunrise", self, "day_sound")
+	var _night = DayNightCycle.connect("change_to_night", self, "night_sound")
+	
 	
 	# Setup player
 	setup_player()
@@ -76,6 +84,15 @@ func _ready():
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+
+
+func day_sound():
+	Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
+	Utils.get_music_player().play(0.03)
+	
+func night_sound():
+	Utils.get_music_player().stream = Constants.PreloadedMusic.Night
+	Utils.get_music_player().play(0.03)
 
 
 # Method to spawn bosses in grassland
@@ -250,6 +267,9 @@ func body_exited_stair_area(body, _stairArea):
 
 # Method to disconnect all signals
 func clear_signals():
+	DayNightCycle.disconnect("change_to_night", self, "night_sound")
+	DayNightCycle.disconnect("change_to_sunrise", self, "day_sound")
+	
 	# Player
 	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
 	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")

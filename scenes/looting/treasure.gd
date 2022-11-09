@@ -77,6 +77,8 @@ func open_loot_panel():
 	get_node("AnimationPlayer").play("OpenTreasure")
 	loot_panel.connect("looted", self, "save_loot")
 	if !looted:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+		Utils.get_sound_player().play(0.03)
 		looted = true
 		loot_panel.set_loot_type("Treasure3", true)
 		loot_panel.loot()

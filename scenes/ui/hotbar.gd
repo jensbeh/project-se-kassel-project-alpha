@@ -126,6 +126,9 @@ func use_item():
 				cooldown = Constants.STAMINA_POTION_COOLDOWN
 				Utils.get_current_player().set_stamina_cooldown(cooldown)
 				set_cooldown_stamina(cooldown, type)
+				# Sound
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion
+				Utils.get_sound_player().play(0.03)
 			else:
 				Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 				int(GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Health"]))
@@ -133,6 +136,9 @@ func use_item():
 				cooldown = Constants.HEALTH_COOLDOWN
 				Utils.get_current_player().set_health_cooldown(cooldown)
 				set_cooldown_health(cooldown, type)
+				# Sound
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion1
+				Utils.get_sound_player().play(0.03)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null
 				PlayerData.equipment_data["Hotbar"]["Item"] = null

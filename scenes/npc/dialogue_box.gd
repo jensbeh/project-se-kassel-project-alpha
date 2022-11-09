@@ -48,12 +48,15 @@ func start(origin_obj, looted_value, treasure_type):
 		var lang = TranslationServer.get_locale()
 		dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
 		dialog = getDialog()
+	# Sound
 	nextPhrase()
 
 
 func _process(_delta):
 	$Skip.visible = finished
 	if Input.is_action_just_pressed("e") and $Text.visible_characters > 2:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+		Utils.get_sound_player().play(0.03)
 		if finished:
 			nextPhrase()
 		else:
@@ -83,10 +86,14 @@ func nextPhrase():
 		$Name.bbcode_text = dialog[phraseNum].name + ":"
 		$Text.bbcode_text = dialog[phraseNum].text
 		$Text.visible_characters = 0
+		# Sound
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Dialog
+		Utils.get_sound_player().play()
 		while $Text.visible_characters < len($Text.text):
 			$Text.visible_characters += 1
 			$Timer.start()
 			yield($Timer, "timeout")
+		Utils.get_sound_player().stop()
 		finished = true
 		phraseNum += 1
 	
@@ -101,6 +108,9 @@ func nextPhrase():
 
 
 func _on_Button_pressed():
+	# Sound
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+	Utils.get_sound_player().play(0.03)
 	if finished:
 		nextPhrase()
 		trade = false
@@ -134,6 +144,9 @@ func close_dialog():
 
 
 func _on_Trade_pressed():
+	# Sound
+	Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
+	Utils.get_sound_player().play(0.03)
 	if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
 		Utils.get_control_notes().show()
 		MerchantData.set_path(obj_name)

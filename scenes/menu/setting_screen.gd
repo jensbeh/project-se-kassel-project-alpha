@@ -39,16 +39,28 @@ func save_settings():
 
 
 func _on_Musicslieder_value_changed(value):
+	if !Utils.get_sound_player().is_playing():
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+		Utils.get_sound_player().play(0.03)
 	AudioServer.set_bus_volume_db(1, value)
 	Utils.set_music_volume(value)
+	if value == -30:
+		AudioServer.set_bus_mute(1, true)
+	else:
+		AudioServer.set_bus_mute(1, false)
 	save_settings()
 
 
 func _on_Soundslider_value_changed(value):
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	if !Utils.get_sound_player().is_playing():
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+		Utils.get_sound_player().play(0.03)
 	AudioServer.set_bus_volume_db(2, value)
 	Utils.set_sound_volume(value)
+	if value == -30:
+		AudioServer.set_bus_mute(2, true)
+	else:
+		AudioServer.set_bus_mute(2, false)
 	save_settings()
 
 
