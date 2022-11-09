@@ -249,8 +249,18 @@ const PreloadedMobScenes = {
 # Music
 const PreloadedMusic = {
 	"Menu_Music" : preload("res://assets/sounds/menuLoops_smooth.ogg"),
-	"Loading_Music":  preload("res://assets/sounds/menuLoops_microtonalSynthpop(22EDO).ogg"),
-	
+	"House":  preload("res://assets/sounds/menuLoops_microtonalSynthpop(22EDO).ogg"),
+	"Camp" : preload("res://assets/sounds/little town - orchestral.ogg"),
+	"House_Grassland" : preload("res://assets/sounds/forest.mp3"),
+	"Grassland" : preload("res://assets/sounds/AmbientNatureOutside.wav"),
+#	"Night-Water" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.wav"),
+	"Grassland2" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),
+	"Dungeon" : preload("res://assets/sounds/Ambience_Cave_00.mp3"),
+	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
+	"Hostel" : preload("res://assets/sounds/Ove Melaa - Times.mp3"),
+	"Boss_Fight" : preload("res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"),
+	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),
+	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),
 }
 
 # Sounds

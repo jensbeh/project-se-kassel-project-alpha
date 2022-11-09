@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Ove Melaa - Times.mp3-6e73a3b5b61cd9fdeafd9ccbdf8d57fb.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Ove Melaa - Times.mp3"
+dest_files=[ "res://.import/Ove Melaa - Times.mp3-6e73a3b5b61cd9fdeafd9ccbdf8d57fb.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -16,6 +16,10 @@ onready var changeScenesObject = find_node("changeScenes")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	Utils.get_music_player().stream = Constants.PreloadedMusic.House
+	Utils.get_music_player().play(0.03)
+	
 	# Setup player
 	setup_player()
 	

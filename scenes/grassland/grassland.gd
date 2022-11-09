@@ -30,6 +30,10 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
+	Utils.get_music_player().play(0.03)
+	
 	# Setup player
 	setup_player()
 	

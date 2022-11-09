@@ -4,6 +4,10 @@ extends Node2D
 onready var mainMenuAnimationPlayer = $MainMenuAnimationPlayer
 
 func _ready():
+	if 	Utils.get_music_player().stream != Constants.PreloadedMusic.Menu_Music:
+		Utils.get_music_player().stream = Constants.PreloadedMusic.Menu_Music
+		Utils.get_music_player().play(0.03)
+	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 	

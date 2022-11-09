@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/AmbientNatureOutside.wav-94d676354467fab6e39d87d5d063d5f2.sample"
+
+[deps]
+
+source_file="res://assets/sounds/AmbientNatureOutside.wav"
+dest_files=[ "res://.import/AmbientNatureOutside.wav-94d676354467fab6e39d87d5d063d5f2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0
