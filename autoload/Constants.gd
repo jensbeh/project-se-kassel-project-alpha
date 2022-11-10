@@ -38,7 +38,7 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 #################
 ## LOADED MAPS
 #################
-const LOAD_GRASSLAND_MAP = false # Default: true
+const LOAD_GRASSLAND_MAP = true # Default: true
 const LOAD_DUNGEONS_MAPS = true # Default: true
 
 # --------------------------------------------------
@@ -253,7 +253,7 @@ const PreloadedMusic = {
 	"Camp" : preload("res://assets/sounds/little town - orchestral.ogg"),
 	"House_Grassland" : preload("res://assets/sounds/forest.mp3"),
 	"Grassland" : preload("res://assets/sounds/AmbientNatureOutside.wav"),
-	"Night" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.mp3"),#
+	"Night" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.mp3"),
 	"Grassland2" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),#
 	"Dungeon" : preload("res://assets/sounds/Ambience_Cave_00.mp3"),
 	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
@@ -273,12 +273,13 @@ const PreloadedSounds = {
 	"Levelup" : preload("res://assets/sounds/snare.wav"),
 	"OpenUI" : preload("res://assets/sounds/Inventory_Open_00.mp3"),
 	"OpenUI2" : preload("res://assets/sounds/Inventory_Open_01.mp3"),
-	"Sucsess" : preload ("res://assets/sounds/Jingle_Achievement_00.mp3"),#
+	"Sucsess" : preload ("res://assets/sounds/Jingle_Achievement_00.mp3"),
 	"Lose" : preload("res://assets/sounds/Jingle_Lose_00.mp3"),
 	"Win" : preload("res://assets/sounds/Jingle_Win_00.mp3"),#
-	"Collect" : preload("res://assets/sounds/Pickup_Gold_00.mp3"),#
-	"Collect2" : preload("res://assets/sounds/chainmail1.wav"),#
+	"Collect" : preload("res://assets/sounds/Pickup_Gold_00.mp3"),
+	"Collect2" : preload("res://assets/sounds/chainmail1.wav"),
 	"open_door" : preload("res://assets/sounds/doorOpen_2.ogg"),
+	"locked" : preload("res://assets/sounds/lockeddoor.wav"),
 	"close_door" : preload("res://assets/sounds/doorClose_2.ogg"),#
 	"Potion" : preload("res://assets/sounds/bubble.wav"),
 	"Potion1" : preload("res://assets/sounds/bubble2.wav"),
@@ -286,6 +287,13 @@ const PreloadedSounds = {
 	"Equip" : preload("res://assets/sounds/SetSomething.ogg"),
 	"open_close" : preload("res://assets/sounds/interface2.wav"),
 	"Denied" : preload("res://assets/sounds/Weird.ogg"),
+	"Steps" : preload("res://assets/sounds/stepdirt_7.wav"),
+	"Steps2" : preload("res://assets/sounds/Footstep_Dirt_00.mp3"),
+	"Steps_Stairs" : preload("res://assets/sounds/stepstone_7.wav"),
+	"Breath" : preload("res://assets/sounds/breath-male.mp3"),
+	"Hurt" : preload("res://assets/sounds/hit.wav"),
+	"Attack" : preload("res://assets/sounds/swing.wav"),
+	"Drop" : preload("res://assets/sounds/plugpull.wav"),
 }
 
 

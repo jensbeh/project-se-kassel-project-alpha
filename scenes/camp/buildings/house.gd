@@ -71,6 +71,8 @@ func setup_change_scene_areas():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+			Utils.get_sound_player().play()
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("HOUSE: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))

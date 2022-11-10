@@ -48,7 +48,6 @@ func start(origin_obj, looted_value, treasure_type):
 		var lang = TranslationServer.get_locale()
 		dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
 		dialog = getDialog()
-	# Sound
 	nextPhrase()
 
 
@@ -87,13 +86,13 @@ func nextPhrase():
 		$Text.bbcode_text = dialog[phraseNum].text
 		$Text.visible_characters = 0
 		# Sound
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Dialog
-		Utils.get_sound_player().play()
+		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
+		get_node("Sound").play()
 		while $Text.visible_characters < len($Text.text):
 			$Text.visible_characters += 1
 			$Timer.start()
 			yield($Timer, "timeout")
-		Utils.get_sound_player().stop()
+		get_node("Sound").stop()
 		finished = true
 		phraseNum += 1
 	
@@ -144,10 +143,10 @@ func close_dialog():
 
 
 func _on_Trade_pressed():
-	# Sound
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
-	Utils.get_sound_player().play(0.03)
 	if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
+		# Sound
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
+		Utils.get_sound_player().play(0.03)
 		Utils.get_control_notes().show()
 		MerchantData.set_path(obj_name)
 		MerchantData._ready()
@@ -160,9 +159,15 @@ func _on_Trade_pressed():
 		Utils.get_control_notes().show()
 		if type != "3":
 			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
+				Utils.get_sound_player().play(0.03)
 				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
 			else:
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.locked
+				Utils.get_sound_player().play(0.03)
 				trade = false
 		else:
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
+			Utils.get_sound_player().play(0.03)
 			origin.open_loot_panel()
 		close_dialog()

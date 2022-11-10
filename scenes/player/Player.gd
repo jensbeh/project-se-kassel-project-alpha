@@ -27,6 +27,9 @@ onready var glassesSprite = $Glasses
 onready var hatSprite = $Hat
 onready var weaponSprite = $Weapon
 onready var attackSwingSprite = $AttackSwing
+onready var sound_walk = $SoundWalk
+onready var sound = $Sound
+onready var sound_breath = $SoundBreath
 
 const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
@@ -68,6 +71,7 @@ var player_light_radius: int
 var health_cooldown = 0
 var stamina_cooldown = 0
 var weapon_weight = 0
+var stairs_speed = false
 
 # Variables
 var is_attacking = false
@@ -159,7 +163,12 @@ func _physics_process(delta):
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+					step_sound(0.7)
 					velocity *= 1.4
+				else:
+					step_sound(0.5)
+			else:
+				step_sound(0.5)
 			
 			if velocity != Vector2.ZERO and player_can_interact:
 				view_direction = velocity
@@ -174,6 +183,10 @@ func _physics_process(delta):
 				animation_state.travel("Idle")
 			
 			if movement:
+				if !sound_walk.is_playing() and velocity != Vector2.ZERO:
+					sound_walk.play()
+				elif velocity == Vector2.ZERO and sound_walk.is_playing():
+					sound_walk.stop()
 				velocity = move_and_slide(velocity)
 				for i in get_slide_count():
 					var collision = get_slide_collision(i)
@@ -190,6 +203,22 @@ func _physics_process(delta):
 				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
 			elif player_stamina < level * 10 + 90:
 				set_stamina(level * 10 + 90)
+		# Breath Sound
+		if player_stamina < level * 2 + 18 and !Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.MENU:
+			if !sound_breath.is_playing():
+				sound_breath.play()
+		elif sound_breath.is_playing():
+			sound_breath.stop()
+
+
+# Method to set right step sound
+func step_sound(value):
+	if sound_walk.stream != Constants.PreloadedSounds.Steps2:
+		sound_walk.stream = Constants.PreloadedSounds.Steps2
+	if !stairs_speed:
+		sound_walk.pitch_scale = value
+	else:
+		sound_walk.pitch_scale = value - 0.1
 
 
 # Method handles key inputs
@@ -206,6 +235,8 @@ func _input(event):
 				
 			# Remove the trade inventory
 			elif Utils.get_trade_inventory() != null:
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI
+				Utils.get_sound_player().play()
 				Utils.get_trade_inventory().queue_free()
 				Utils.get_current_player().set_player_can_interact(true)
 				Utils.get_current_player().set_movement(true)
@@ -221,6 +252,8 @@ func _input(event):
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				sound.stream = Constants.PreloadedSounds.Attack
+				sound.play()
 				is_attacking = true
 				set_movement(false)
 				animation_state.start("Attack")
@@ -266,6 +299,7 @@ func get_player_can_interact():
 
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):
+	stairs_speed = true
 	current_walk_speed *= factor
 
 
@@ -281,6 +315,7 @@ func get_movement() -> bool:
 
 # Method to reset the player walk speed to const
 func reset_speed():
+	stairs_speed = false
 	current_walk_speed = Constants.PLAYER_WALK_SPEED
 
 
@@ -899,6 +934,8 @@ func hurt_player():
 		hurting = true
 	if !collecting:
 		set_movement(false)
+	sound.stream = Constants.PreloadedSounds.Hurt
+	sound.play()
 	animation_state.start("Hurt")
 
 
@@ -1099,7 +1136,12 @@ func rescue_pay():
 		for item in lost_items:
 			lost_string += (item + ", ")
 	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
+	if lost_items.size() > 0:
+		sound.stream = Constants.PreloadedSounds.Collect2
+	else:
+		sound.stream = Constants.PreloadedSounds.Collect
 	if lost_items.size() > 0 or lost_gold > 0:
+		sound.play()
 		set_player_can_interact(false)
 		set_movement(false)
 		pause_player(true)

@@ -155,6 +155,8 @@ func set_transition_data(transition_data):
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if Utils.get_current_player().is_in_change_scene_area():
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Steps_Stairs
+		Utils.get_sound_player().play()
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))

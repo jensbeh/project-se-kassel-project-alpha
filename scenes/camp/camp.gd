@@ -86,6 +86,8 @@ func interaction_detected():
 			for child in doorArea.get_children():
 				if "animationPlayer" in child.name:
 					# Start door animation
+					Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+					Utils.get_sound_player().play()
 					child.play("openDoor")
 					break
 		

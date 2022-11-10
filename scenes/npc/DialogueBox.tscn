@@ -135,5 +135,9 @@ valign = 1
 
 [node name="Timer" type="Timer" parent="."]
 
+[node name="Sound" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0
+bus = "Sounds"
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Trade" to="." method="_on_Trade_pressed"]

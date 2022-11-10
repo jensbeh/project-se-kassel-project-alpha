@@ -70,6 +70,11 @@ func interaction_detected():
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 		Utils.get_scene_manager().transition_to_scene(transition_data)
+		if !"Tavern" in next_scene_path:
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+		else:
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.Steps_Stairs
+		Utils.get_sound_player().play()
 
 
 # Setup all change_scene objectes/Area2D's on start
@@ -90,6 +95,11 @@ func body_entered_change_scene_area(body, changeSceneArea):
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
+			if !"Tavern" in next_scene_path:
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+			else:
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.Steps_Stairs
+			Utils.get_sound_player().play()
 		else:
 			Utils.get_current_player().set_in_change_scene_area(true)
 			current_area = changeSceneArea

@@ -19,9 +19,11 @@ var interacted = false
 onready var animation_tree = $AnimationTree
 onready var animation_player = $AnimationPlayer
 onready var animation_state = animation_tree.get("parameters/playback")
+onready var sounds = get_node("Sounds")
 
 
 func _ready():
+	get_viewport().audio_listener_enable_2d = true
 	# Syncronize time
 	time = DayNightCycle.current_minute
 	# Connect player interaction
@@ -106,7 +108,11 @@ func _physics_process(delta):
 		animation_state.travel("Idle")
 	# NPC walk
 	if !stop and target != null and !stay:
+		if !sounds.is_playing():
+			sounds.play()
 		velocity = move_and_slide(velocity)
+	else:
+		sounds.stop()
 
 
 # When player enter npc zone, npc has to stay
@@ -132,6 +138,8 @@ func interaction_detected():
 				if npc != self and npc.get_interaction():
 					interacted = true
 			if !interacted:
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+				Utils.get_sound_player().play()
 				interacted = true
 				Utils.get_current_player().set_player_can_interact(false)
 				Utils.get_current_player().set_movement(false)

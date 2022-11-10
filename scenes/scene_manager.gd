@@ -120,6 +120,8 @@ func pass_data_to_scene(scene):
 
 # Method must be called from _ready() of the new scene to say that the loading is finished and the transition can be fadeToNormal
 func finish_transition():
+	if Utils.get_sound_player().stream == Constants.PreloadedSounds.Steps_Stairs:
+		Utils.get_sound_player().stop()
 	# Update previouse scene path to return to it if necessary
 	update_previouse_scene_path()
 	

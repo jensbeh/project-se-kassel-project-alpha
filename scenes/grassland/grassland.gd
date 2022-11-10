@@ -190,6 +190,8 @@ func interaction_detected():
 			var doorArea = find_node(current_area.get_meta("door_id"))
 			for child in doorArea.get_children():
 				if "animationPlayer" in child.name:
+					Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
+					Utils.get_sound_player().play()
 					# Start door animation
 					child.play("openDoor")
 					break

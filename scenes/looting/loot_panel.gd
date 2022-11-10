@@ -126,10 +126,14 @@ func _on_Icon_gui_input(event, lootpanelslot):
 				item_idx = keys[lootpanelslot -1]
 			if loot_dict.has(item_idx):
 				loot_item(item_idx)
+				Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
+				Utils.get_sound_player().play()
 
 
 # close the loot panel
 func _on_Close_pressed():
+	Utils.get_current_player().get_node("Sound").stream = Constants.PreloadedSounds.Click
+	Utils.get_current_player().get_node("Sound").play()
 	Utils.get_current_player().player_looted()
 	get_parent().remove_child(self)
 	queue_free()
@@ -142,6 +146,11 @@ func _on_LootAll_pressed():
 	all = true
 	var key = loot_dict.keys()
 	var size = loot_dict.size()
+	if size > 1:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect2
+	else:
+		Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
+	Utils.get_sound_player().play()
 	get_parent().remove_child(self)
 	queue_free()
 	for i in range(1,size + 1):
