@@ -39,9 +39,6 @@ func save_settings():
 
 
 func _on_Musicslieder_value_changed(value):
-	if !Utils.get_sound_player().is_playing():
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-		Utils.get_sound_player().play(0.03)
 	AudioServer.set_bus_volume_db(1, value)
 	Utils.set_music_volume(value)
 	if value == -30:
@@ -52,9 +49,6 @@ func _on_Musicslieder_value_changed(value):
 
 
 func _on_Soundslider_value_changed(value):
-	if !Utils.get_sound_player().is_playing():
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-		Utils.get_sound_player().play(0.03)
 	AudioServer.set_bus_volume_db(2, value)
 	Utils.set_sound_volume(value)
 	if value == -30:
@@ -87,6 +81,7 @@ func _on_Back_pressed():
 	Utils.get_control_notes()._ready()
 	if (Utils.get_game_menu() != null):
 		Utils.get_game_menu()._ready()
+		Utils.setting_screen(false)
 	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
 		# Called Settings from MainMenuScreen
 		# Need to enable gui in viewport of game again

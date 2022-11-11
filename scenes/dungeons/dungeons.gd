@@ -68,6 +68,9 @@ func _ready():
 	
 	# Check if boss room
 	if is_boss_room():
+		Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight2
+		Utils.get_music_player().play()
+		
 		# Spawn boss
 		spawn_boss()
 		
@@ -312,6 +315,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
+		yield(boss_node.sound, "finished")
 		boss_node.call_deferred("queue_free")
 		print("DUNGEON: Boss \"" + boss_node.name + "\" removed")
 	

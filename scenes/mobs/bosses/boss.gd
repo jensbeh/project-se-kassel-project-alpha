@@ -654,8 +654,6 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 		music()
 		update_behaviour(DYING)
 	else:
-		sound.stream = Constants.PreloadedSounds.Mob_hurt
-		sound.play()
 		update_behaviour(HURTING)
 		
 	# Add knockback
@@ -788,17 +786,11 @@ func music():
 		if in_grassland:
 			if Utils.get_music_player().stream != Constants.PreloadedMusic.Boss_Fight1:
 				Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight1
-		else:
-			if Utils.get_music_player().stream != Constants.PreloadedMusic.Boss_Fight2:
-				Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight2
 		if !Utils.get_music_player().is_playing():
 			Utils.get_music_player().play()
 	else:
 		if in_grassland:
 			if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
 				Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
-		else:
-			if Utils.get_music_player().stream != Constants.PreloadedMusic.Dungeon:
-				Utils.get_music_player().stream = Constants.PreloadedMusic.Dungeon
 		if !Utils.get_music_player().is_playing():
 			Utils.get_music_player().play()

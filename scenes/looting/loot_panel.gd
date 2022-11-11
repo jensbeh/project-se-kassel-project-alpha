@@ -126,7 +126,10 @@ func _on_Icon_gui_input(event, lootpanelslot):
 				item_idx = keys[lootpanelslot -1]
 			if loot_dict.has(item_idx):
 				loot_item(item_idx)
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
+				if loot_dict[item_idx][0] == 10064:
+					Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
+				else:
+					Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect2
 				Utils.get_sound_player().play()
 
 
@@ -170,7 +173,7 @@ func loot_item(item_idx):
 			var stored = false
 			for i in range(1,31):
 				var slot = "Inv" + str(i)
-				if PlayerData.inv_data[slot]["Item"] == loot_dict[item_idx][0]:
+				if PlayerData.inv_data[slot]["Item"] == loot_dict[item_idx][0] and PlayerData.inv_data[slot]["Stack"] + loot_dict[item_idx][1] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[slot]["Stack"] += loot_dict[item_idx][1]
 					stored = true
 					looted = true

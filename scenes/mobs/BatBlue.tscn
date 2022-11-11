@@ -708,7 +708,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 5
+frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -762,6 +762,9 @@ position = Vector2( 0, -3 )
 
 [node name="CollisionShape2D" parent="HitboxZone" index="0"]
 shape = SubResource( 67 )
+
+[node name="Sound" parent="HitboxZone" index="1"]
+attenuation = 2.0
 
 [node name="DamageArea" parent="." instance=ExtResource( 9 )]
 visible = false

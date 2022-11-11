@@ -5,6 +5,7 @@ var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
 var sound_volume = 0
 var music_volume = 0
+var in_setting_screen
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 
@@ -131,6 +132,10 @@ func get_hotbar():
 # Method to return LootPanel node
 func get_loot_panel():
 	return get_ui().get_node_or_null("LootPanel")
+
+
+func setting_screen(value):
+	in_setting_screen = value
 
 
 # method to return the swound volume

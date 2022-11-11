@@ -204,7 +204,10 @@ func _physics_process(delta):
 			elif player_stamina < level * 10 + 90:
 				set_stamina(level * 10 + 90)
 		# Breath Sound
-		if player_stamina < level * 2 + 18 and !Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.MENU:
+		if weapon_weight < 0 or weapon_weight == null:
+			weapon_weight = 1
+		if ((player_stamina - delta * Constants.STAMINA_SPRINT < 0 or player_stamina - weapon_weight * Constants.WEAPON_STAMINA_USE < 0) 
+		and !Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.MENU):
 			if !sound_breath.is_playing():
 				sound_breath.play()
 		elif sound_breath.is_playing():

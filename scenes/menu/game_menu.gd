@@ -23,6 +23,7 @@ func _on_Settings_pressed():
 	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
 	Utils.get_sound_player().play(0.03)
 	
+	Utils.setting_screen(true)
 	Utils.get_main().add_settings()
 
 

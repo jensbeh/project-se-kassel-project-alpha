@@ -5780,7 +5780,6 @@ radius = 64
 
 [node name="SoundWalk" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
-volume_db = -5.0
 pitch_scale = 0.7
 bus = "Sounds"
 
@@ -5789,6 +5788,7 @@ bus = "Sounds"
 
 [node name="SoundBreath" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 21 )
+bus = "Sounds"
 
 [connection signal="area_entered" from="AttackSwing/DamageAreaBottom" to="." method="_on_DamageAreaBottom_area_entered"]
 [connection signal="area_entered" from="AttackSwing/DamageAreaLeft" to="." method="_on_DamageAreaLeft_area_entered"]

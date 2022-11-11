@@ -7,7 +7,6 @@ var current_position
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_viewport().audio_listener_enable_2d = true
 	global_position = current_position
 
 
@@ -18,8 +17,9 @@ func init(death_position):
 
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Sucsess
-		Utils.get_sound_player().play()
+		get_node("Sound").stream = Constants.PreloadedSounds.Sucsess
+		get_node("Sound").play()
 		# Collecting key
 		Utils.get_scene_manager().get_current_scene().on_key_collected()
+		yield($Sound, "finished")
 		call_deferred("queue_free")

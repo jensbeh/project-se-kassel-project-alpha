@@ -166,5 +166,5 @@ patch_margin_right = 15
 patch_margin_bottom = 15
 
 [node name="Sound" type="AudioStreamPlayer" parent="."]
-volume_db = 10.0
+volume_db = -10.0
 bus = "Sounds"

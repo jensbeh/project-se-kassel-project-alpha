@@ -41,8 +41,9 @@ func _input(event):
 			Utils.get_current_player().set_player_can_interact(false)
 			Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
 		# Close game menu with "esc" when game menu is open
-		elif event.is_action_pressed("esc") and !Utils.get_current_player().get_movement() and Utils.get_game_menu() != null:
+		elif event.is_action_pressed("esc") and !Utils.get_current_player().get_movement() and Utils.get_game_menu() != null and not Utils.in_setting_screen:
 			# Sound
+			
 			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI
 			Utils.get_sound_player().play(0.03)
 			

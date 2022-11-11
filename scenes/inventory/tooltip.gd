@@ -23,7 +23,7 @@ func _ready():
 	
 	# get data and create tooltip
 	if valid:
-		get_node("Sound").stream = Constants.PreloadedSounds.Choose
+		get_node("Sound").stream = Constants.PreloadedSounds.Hover
 		get_node("Sound").play(0.03)
 		get_node("NinePatchRect/Margin/VBox/ItemName").set_text(tr((GameData.item_data[item_id]["Name"]).to_upper()))
 		var item_stat = 1

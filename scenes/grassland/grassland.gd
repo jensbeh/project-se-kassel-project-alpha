@@ -328,6 +328,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
+		yield(boss_node.sound, "finished")
 		boss_node.call_deferred("queue_free")
 		print("GRASSLAND: Boss \"" + boss_node.name + "\" removed")
 

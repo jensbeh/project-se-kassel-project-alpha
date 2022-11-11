@@ -60,7 +60,7 @@ func interaction():
 			elif !content.empty():
 				interacted = true
 				loot_panel.set_up_content(content)
-			Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
+			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
 			Utils.get_sound_player().play(0.03)
 
 

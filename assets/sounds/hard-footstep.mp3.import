@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/hard-footstep.mp3-555797f8deabfdf73774cba8a45861b1.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/hard-footstep.mp3"
+dest_files=[ "res://.import/hard-footstep.mp3-555797f8deabfdf73774cba8a45861b1.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

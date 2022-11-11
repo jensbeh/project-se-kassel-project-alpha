@@ -249,12 +249,12 @@ const PreloadedMobScenes = {
 # Music
 const PreloadedMusic = {
 	"Menu_Music" : preload("res://assets/sounds/menuLoops_smooth.ogg"),
+	"Menu_Music2" : preload("res://assets/sounds/menuLoops_country.ogg"),
 	"House":  preload("res://assets/sounds/menuLoops_microtonalSynthpop(22EDO).ogg"),
 	"Camp" : preload("res://assets/sounds/little town - orchestral.ogg"),
 	"House_Grassland" : preload("res://assets/sounds/forest.mp3"),
-	"Grassland" : preload("res://assets/sounds/AmbientNatureOutside.wav"),
 	"Night" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.mp3"),
-	"Grassland2" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),#
+	"Grassland" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),
 	"Dungeon" : preload("res://assets/sounds/Ambience_Cave_00.mp3"),
 	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
 	"Hostel" : preload("res://assets/sounds/Ove Melaa - Times.mp3"),
@@ -268,6 +268,7 @@ const PreloadedSounds = {
 	"Switch" : preload("res://assets/sounds/switch6.wav"),
 	"Click" : preload("res://assets/sounds/click3.wav"),
 	"Choose" : preload("res://assets/sounds/rollover2.wav"),
+	"Hover" : preload("res://assets/sounds/rollover.wav"),
 	"Select" : preload("res://assets/sounds/Menu_Select_00.mp3"),
 	"Delete" : preload("res://assets/sounds/UI_027.wav"),
 	"Levelup" : preload("res://assets/sounds/snare.wav"),
@@ -283,21 +284,24 @@ const PreloadedSounds = {
 	"close_door" : preload("res://assets/sounds/doorClose_2.ogg"),#
 	"Potion" : preload("res://assets/sounds/bubble.wav"),
 	"Potion1" : preload("res://assets/sounds/bubble2.wav"),
-	"Dialog" : preload("res://assets/sounds/Fast_Complete_v2_wav.wav"),
+	"Dialog" : preload("res://assets/sounds/Pen_v4_wav.wav"),
 	"Equip" : preload("res://assets/sounds/SetSomething.ogg"),
 	"open_close" : preload("res://assets/sounds/interface2.wav"),
 	"Denied" : preload("res://assets/sounds/Weird.ogg"),
 	"Steps" : preload("res://assets/sounds/stepdirt_7.wav"),
 	"Steps2" : preload("res://assets/sounds/Footstep_Dirt_00.mp3"),
 	"Steps_Stairs" : preload("res://assets/sounds/stepstone_7.wav"),
+	"Steps_Grassland" : preload("res://assets/sounds/grass_footsteps.wav"),
 	"Breath" : preload("res://assets/sounds/breath-male.mp3"),
-	"Hurt" : preload("res://assets/sounds/alt-toasterstep1.wav"),
+	"Hurt" : preload("res://assets/sounds/hit34.mp3.mp3"),
 	"Attack" : preload("res://assets/sounds/swing.wav"),
 	"Drop" : preload("res://assets/sounds/plugpull.wav"),
-	"Mob_hurt" : preload("res://assets/sounds/chop.ogg"),
 	"Mob_die" : preload("res://assets/sounds/HeavyHit.ogg"),
 }
-
+## Save pos - vor dungeon
+# menu sound
+# volume?
+# walk sounds
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

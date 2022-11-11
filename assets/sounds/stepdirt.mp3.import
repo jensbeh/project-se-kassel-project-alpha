@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/stepdirt.mp3-17bd95be9e2092095e7a7b6873bf65c8.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/stepdirt.mp3"
+dest_files=[ "res://.import/stepdirt.mp3-17bd95be9e2092095e7a7b6873bf65c8.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
