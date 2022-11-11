@@ -9,5 +9,5 @@ monitoring = false
 modulate = Color( 1, 0, 0, 1 )
 
 [node name="Sound" type="AudioStreamPlayer2D" parent="."]
+volume_db = 5.0
 max_distance = 200.0
-attenuation = 3.5
