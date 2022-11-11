@@ -65,4 +65,8 @@ autoplay = "idle"
 anims/RESET = SubResource( 1 )
 anims/idle = SubResource( 2 )
 
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+max_distance = 200.0
+bus = "Sounds"
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

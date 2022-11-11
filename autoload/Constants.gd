@@ -259,8 +259,8 @@ const PreloadedMusic = {
 	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
 	"Hostel" : preload("res://assets/sounds/Ove Melaa - Times.mp3"),
 	"Boss_Fight" : preload("res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"),#
-	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),#
-	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),#
+	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),
+	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),
 }
 
 # Sounds
@@ -275,7 +275,7 @@ const PreloadedSounds = {
 	"OpenUI2" : preload("res://assets/sounds/Inventory_Open_01.mp3"),
 	"Sucsess" : preload ("res://assets/sounds/Jingle_Achievement_00.mp3"),
 	"Lose" : preload("res://assets/sounds/Jingle_Lose_00.mp3"),
-	"Win" : preload("res://assets/sounds/Jingle_Win_00.mp3"),#
+	"Win" : preload("res://assets/sounds/Jingle_Win_00.mp3"),
 	"Collect" : preload("res://assets/sounds/Pickup_Gold_00.mp3"),
 	"Collect2" : preload("res://assets/sounds/chainmail1.wav"),
 	"open_door" : preload("res://assets/sounds/doorOpen_2.ogg"),
@@ -291,9 +291,11 @@ const PreloadedSounds = {
 	"Steps2" : preload("res://assets/sounds/Footstep_Dirt_00.mp3"),
 	"Steps_Stairs" : preload("res://assets/sounds/stepstone_7.wav"),
 	"Breath" : preload("res://assets/sounds/breath-male.mp3"),
-	"Hurt" : preload("res://assets/sounds/hit.wav"),
+	"Hurt" : preload("res://assets/sounds/alt-toasterstep1.wav"),
 	"Attack" : preload("res://assets/sounds/swing.wav"),
 	"Drop" : preload("res://assets/sounds/plugpull.wav"),
+	"Mob_hurt" : preload("res://assets/sounds/chop.ogg"),
+	"Mob_die" : preload("res://assets/sounds/HeavyHit.ogg"),
 }
 
 

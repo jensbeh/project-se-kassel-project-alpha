@@ -86,10 +86,12 @@ onready var hitbox = $HitboxZone
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarNode = $NinePatchRect
 onready var raycast = $RayCast2D
+onready var sound = get_node("HitboxZone/Sound")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_viewport().audio_listener_enable_2d = true
 	# Show or hide nodes for debugging
 	collision.visible = Constants.SHOW_BOSS_COLLISION
 	playerDetectionZone.visible = Constants.SHOW_BOSS_DETECTION_RADIUS
@@ -647,8 +649,13 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	
 	# Mob is killed
 	if health <= 0:
+		sound.stream = Constants.PreloadedSounds.Win
+		sound.play(0.03)
+		music()
 		update_behaviour(DYING)
 	else:
+		sound.stream = Constants.PreloadedSounds.Mob_hurt
+		sound.play()
 		update_behaviour(HURTING)
 		
 	# Add knockback
@@ -713,10 +720,11 @@ func should_regenerate_hp(should_regenerate):
 	# Start regenerate hp
 	if should_regenerate and health < max_health:
 		regenerate_hp = true
-	
 	# Stop regenerate hp
 	else:
 		regenerate_hp = false
+		
+	music()
 
 
 # Method to generate hp with delta time
@@ -773,3 +781,24 @@ func can_reach_player(can_reach, reachable_path):
 		
 		check_can_reach_player = false
 		update_behaviour(HUNTING)
+
+
+func music():
+	if behaviour_state == 4 or behaviour_state == 5 or behaviour_state == 7 or behaviour_state == 8:
+		if in_grassland:
+			if Utils.get_music_player().stream != Constants.PreloadedMusic.Boss_Fight1:
+				Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight1
+		else:
+			if Utils.get_music_player().stream != Constants.PreloadedMusic.Boss_Fight2:
+				Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight2
+		if !Utils.get_music_player().is_playing():
+			Utils.get_music_player().play()
+	else:
+		if in_grassland:
+			if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
+				Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
+		else:
+			if Utils.get_music_player().stream != Constants.PreloadedMusic.Dungeon:
+				Utils.get_music_player().stream = Constants.PreloadedMusic.Dungeon
+		if !Utils.get_music_player().is_playing():
+			Utils.get_music_player().play()

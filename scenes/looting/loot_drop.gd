@@ -12,6 +12,7 @@ var timeout = false
 
 # start timer for looting time and connect interaction signal with player
 func _ready():
+	get_viewport().audio_listener_enable_2d = true
 	get_node("Sound").play()
 	position = spawn_position
 	$Timer.wait_time = Constants.LOOTING_TIME
