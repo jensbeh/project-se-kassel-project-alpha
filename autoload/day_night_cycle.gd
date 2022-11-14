@@ -180,3 +180,14 @@ func skip_time(hours_to_skip):
 
 func get_passed_days_since_start():
 	return passed_days_since_start
+
+
+func set_current_time(new_time):
+	current_hour = 0
+	current_minute = 0
+	previouse_current_minute = 0
+	is_daytime = false
+	is_sunset = false
+	is_night = false
+	is_sunrise = false
+	current_time = new_time

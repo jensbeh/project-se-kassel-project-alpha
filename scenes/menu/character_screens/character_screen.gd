@@ -584,7 +584,7 @@ func start_game():
 	Utils.get_current_player().health_cooldown = data.cooldown
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown
 	
-	DayNightCycle.current_time = data.time
+	DayNightCycle.set_current_time(data.time)
 	if data.has("passed_days"):
 		DayNightCycle.passed_days_since_start = data.passed_days
 	

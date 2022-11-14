@@ -46,13 +46,13 @@ func _ready():
 	Utils.set_language(lang)
 	Utils.set_music_volume(save_setting.music)
 	AudioServer.set_bus_volume_db(1, save_setting.music)
-	if float(save_setting.music) == -30:
+	if float(save_setting.music) == -40:
 		AudioServer.set_bus_mute(1, true)
 	else:
 		AudioServer.set_bus_mute(1, false)
 	Utils.set_sound_volume(save_setting.sound)
 	AudioServer.set_bus_volume_db(2, save_setting.sound)
-	if float(save_setting.sound) == -30:
+	if float(save_setting.sound) == -40:
 		AudioServer.set_bus_mute(2, true)
 	else:
 		AudioServer.set_bus_mute(2, false)

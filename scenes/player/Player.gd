@@ -1021,6 +1021,9 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
+	if sound_breath.is_playing():
+		sound_breath.stop()
+	
 	animation_state.start("Idle")
 	
 	# Make player visible again to mobs

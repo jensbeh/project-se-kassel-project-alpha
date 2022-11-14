@@ -41,7 +41,7 @@ func save_settings():
 func _on_Musicslieder_value_changed(value):
 	AudioServer.set_bus_volume_db(1, value)
 	Utils.set_music_volume(value)
-	if value == -30:
+	if value == -40:
 		AudioServer.set_bus_mute(1, true)
 	else:
 		AudioServer.set_bus_mute(1, false)
@@ -51,7 +51,7 @@ func _on_Musicslieder_value_changed(value):
 func _on_Soundslider_value_changed(value):
 	AudioServer.set_bus_volume_db(2, value)
 	Utils.set_sound_volume(value)
-	if value == -30:
+	if value == -40:
 		AudioServer.set_bus_mute(2, true)
 	else:
 		AudioServer.set_bus_mute(2, false)

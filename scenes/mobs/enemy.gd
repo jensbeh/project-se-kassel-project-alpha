@@ -584,8 +584,6 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	
 	# Mob is killed
 	if health <= 0:
-		sound.stream = Constants.PreloadedSounds.Mob_die
-		sound.play(0.03)
 		update_behaviour(DYING)
 	else:
 		update_behaviour(HURTING)
@@ -610,7 +608,6 @@ func mob_killed():
 	if not killed:
 		killed = true
 		Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-		yield(sound, "finished")
 		MobSpawnerService.despawn_mob(self)
 
 

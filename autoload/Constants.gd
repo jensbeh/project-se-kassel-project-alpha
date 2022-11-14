@@ -249,7 +249,6 @@ const PreloadedMobScenes = {
 # Music
 const PreloadedMusic = {
 	"Menu_Music" : preload("res://assets/sounds/menuLoops_smooth.ogg"),
-	"Menu_Music2" : preload("res://assets/sounds/menuLoops_country.ogg"),
 	"House":  preload("res://assets/sounds/menuLoops_microtonalSynthpop(22EDO).ogg"),
 	"Camp" : preload("res://assets/sounds/little town - orchestral.ogg"),
 	"House_Grassland" : preload("res://assets/sounds/forest.mp3"),
@@ -297,7 +296,6 @@ const PreloadedSounds = {
 	"Hurt" : preload("res://assets/sounds/hit34.mp3.mp3"),
 	"Attack" : preload("res://assets/sounds/swing.wav"),
 	"Drop" : preload("res://assets/sounds/plugpull.wav"),
-	"Mob_die" : preload("res://assets/sounds/HeavyHit.ogg"),
 }
 
 
