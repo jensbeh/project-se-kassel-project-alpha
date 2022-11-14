@@ -585,8 +585,17 @@ func save_game(animation):
 	if animation:
 		get_main().play_save_notification()
 	var data = get_current_player().get_data()
-	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
 	data.position = var2str(get_current_player().position)
+	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
+	if "Dungeon1" in data.scene_transition:
+		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
+		data.position = var2str(Vector2(856,682))
+	elif "Dungeon2" in data.scene_transition:
+		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
+		data.position = var2str(Vector2(376,-198))
+	elif "Dungeon3" in data.scene_transition:
+		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
+		data.position = var2str(Vector2(-602,-678))
 	data.view_direction = var2str(get_current_player().view_direction)
 	data.time = DayNightCycle.current_time
 	data.passed_days = DayNightCycle.passed_days_since_start

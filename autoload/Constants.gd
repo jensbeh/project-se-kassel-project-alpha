@@ -299,9 +299,7 @@ const PreloadedSounds = {
 	"Drop" : preload("res://assets/sounds/plugpull.wav"),
 	"Mob_die" : preload("res://assets/sounds/HeavyHit.ogg"),
 }
-## Save pos - vor dungeon
-# menu sound
-# volume?
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

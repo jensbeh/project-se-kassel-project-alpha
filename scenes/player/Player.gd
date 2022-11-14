@@ -219,7 +219,6 @@ func step_sound(value):
 	if "Grassland" in Utils.get_scene_manager().get_current_scene().name:
 		if sound_walk.stream != Constants.PreloadedSounds.Steps_Grassland:
 			sound_walk.stream = Constants.PreloadedSounds.Steps_Grassland
-			print("Here")
 	elif "Dungeon" in Utils.get_scene_manager().get_current_scene().name:
 		if sound_walk.stream != Constants.PreloadedSounds.Steps_Dungeon:
 			sound_walk.stream = Constants.PreloadedSounds.Steps_Dungeon

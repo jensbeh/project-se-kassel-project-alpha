@@ -153,7 +153,8 @@ func _on_LootAll_pressed():
 		Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect2
 	else:
 		Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
-	Utils.get_sound_player().play()
+	if size > 0:
+		Utils.get_sound_player().play()
 	get_parent().remove_child(self)
 	queue_free()
 	for i in range(1,size + 1):
