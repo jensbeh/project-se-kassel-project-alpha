@@ -288,10 +288,11 @@ const PreloadedSounds = {
 	"Equip" : preload("res://assets/sounds/SetSomething.ogg"),
 	"open_close" : preload("res://assets/sounds/interface2.wav"),
 	"Denied" : preload("res://assets/sounds/Weird.ogg"),
-	"Steps" : preload("res://assets/sounds/stepdirt_7.wav"),
-	"Steps2" : preload("res://assets/sounds/Footstep_Dirt_00.mp3"),
 	"Steps_Stairs" : preload("res://assets/sounds/stepstone_7.wav"),
 	"Steps_Grassland" : preload("res://assets/sounds/grass_footsteps.wav"),
+	"Steps_Dungeon" : preload("res://assets/sounds/hard-footstep.mp3"),
+	"Steps_Camp" : preload("res://assets/sounds/stepdirt.mp3"),
+	"Steps_House" : preload("res://assets/sounds/step.mp3"),
 	"Breath" : preload("res://assets/sounds/breath-male.mp3"),
 	"Hurt" : preload("res://assets/sounds/hit34.mp3.mp3"),
 	"Attack" : preload("res://assets/sounds/swing.wav"),
@@ -301,7 +302,6 @@ const PreloadedSounds = {
 ## Save pos - vor dungeon
 # menu sound
 # volume?
-# walk sounds
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

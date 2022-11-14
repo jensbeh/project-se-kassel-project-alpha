@@ -1,4 +1,4 @@
-[gd_scene load_steps=122 format=2]
+[gd_scene load_steps=121 format=2]
 
 [ext_resource path="res://assets/player/shadow.png" type="Texture" id=1]
 [ext_resource path="res://assets/player/clothes/basic.png" type="Texture" id=2]
@@ -19,7 +19,6 @@
 [ext_resource path="res://assets/player/attack_swing.png" type="Texture" id=17]
 [ext_resource path="res://assets/player/weapons/wooden_sword_10001.png" type="Texture" id=18]
 [ext_resource path="res://scenes/player/HitboxZone.tscn" type="PackedScene" id=19]
-[ext_resource path="res://assets/sounds/Footstep_Dirt_00.mp3" type="AudioStream" id=20]
 [ext_resource path="res://assets/sounds/breath-male.mp3" type="AudioStream" id=21]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -5779,8 +5778,7 @@ position = Vector2( -8, 8 )
 radius = 64
 
 [node name="SoundWalk" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 20 )
-pitch_scale = 0.7
+volume_db = 5.0
 bus = "Sounds"
 
 [node name="Sound" type="AudioStreamPlayer" parent="."]

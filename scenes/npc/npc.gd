@@ -23,6 +23,9 @@ onready var sounds = get_node("Sounds")
 
 
 func _ready():
+	if "Grassland" in Utils.get_scene_manager().get_current_scene():
+		sounds.stream = Constants.PreloadedSounds.Steps_Grassland
+		
 	get_viewport().audio_listener_enable_2d = true
 	# Syncronize time
 	time = DayNightCycle.current_minute

@@ -1,7 +1,7 @@
 [gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://scenes/npc/npc.gd" type="Script" id=1]
-[ext_resource path="res://assets/sounds/stepdirt_7.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/sounds/stepdirt.mp3" type="AudioStream" id=2]
 
 [sub_resource type="StreamTexture" id=55]
 flags = 4
@@ -1743,9 +1743,9 @@ parameters/Walk/blend_position = Vector2( -0.852667, 0.595376 )
 
 [node name="Sounds" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 2 )
-pitch_scale = 0.9
+volume_db = 10.0
 max_distance = 200.0
-attenuation = 3.5
+attenuation = 2.0
 bus = "Sounds"
 
 [connection signal="area_entered" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_entered"]

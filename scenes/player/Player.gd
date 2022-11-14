@@ -163,12 +163,12 @@ func _physics_process(delta):
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
-					step_sound(0.7)
+					step_sound(1.2)
 					velocity *= 1.4
 				else:
-					step_sound(0.5)
+					step_sound(1)
 			else:
-				step_sound(0.5)
+				step_sound(1)
 			
 			if velocity != Vector2.ZERO and player_can_interact:
 				view_direction = velocity
@@ -216,8 +216,19 @@ func _physics_process(delta):
 
 # Method to set right step sound
 func step_sound(value):
-	if sound_walk.stream != Constants.PreloadedSounds.Steps2:
-		sound_walk.stream = Constants.PreloadedSounds.Steps2
+	if "Grassland" in Utils.get_scene_manager().get_current_scene().name:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_Grassland:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_Grassland
+			print("Here")
+	elif "Dungeon" in Utils.get_scene_manager().get_current_scene().name:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_Dungeon:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_Dungeon
+	elif "Camp" in Utils.get_scene_manager().get_current_scene().name:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_Camp:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_Camp
+	else:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_House:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_House
 	if !stairs_speed:
 		sound_walk.pitch_scale = value
 	else:

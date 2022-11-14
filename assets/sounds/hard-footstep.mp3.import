@@ -11,5 +11,5 @@ dest_files=[ "res://.import/hard-footstep.mp3-555797f8deabfdf73774cba8a45861b1.m
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
