@@ -2844,19 +2844,19 @@ tracks/12/keys = {
 "values": [ 224, 225 ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("Hair:position")
+tracks/13/path = NodePath("Mask:position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Vector2( -15.778, -20.3329 ) ]
+"values": [ Vector2( -14.8, -19.5 ), Vector2( -15.8, -19.5 ) ]
 }
 tracks/14/type = "value"
-tracks/14/path = NodePath("Mask:position")
+tracks/14/path = NodePath("Glasses:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
@@ -2865,27 +2865,15 @@ tracks/14/keys = {
 "times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ Vector2( -14.8, -19.5 ), Vector2( -15.8, -19.5 ) ]
+"values": [ Vector2( -15.77, -16.778 ), Vector2( -14.8, -16.778 ) ]
 }
-tracks/15/type = "value"
-tracks/15/path = NodePath("Glasses:position")
+tracks/15/type = "method"
+tracks/15/path = NodePath(".")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/imported = false
 tracks/15/enabled = true
 tracks/15/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ Vector2( -15.77, -16.778 ), Vector2( -14.8, -16.778 ) ]
-}
-tracks/16/type = "method"
-tracks/16/path = NodePath(".")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/keys = {
 "times": PoolRealArray( 1.8 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {

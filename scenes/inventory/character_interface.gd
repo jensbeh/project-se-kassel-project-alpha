@@ -61,6 +61,7 @@ func _ready():
 	data = Utils.get_current_player().get_data()
 	find_node("CharacterName").set_text(data.name)
 	find_node("Player").player_stamina = find_node("Player").level * 10 + 90
+	find_node("Player").preview = true
 	for child in find_node("Player").get_children():
 		match child.name:
 			"Body":

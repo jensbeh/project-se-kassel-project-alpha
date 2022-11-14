@@ -72,6 +72,7 @@ var health_cooldown = 0
 var stamina_cooldown = 0
 var weapon_weight = 0
 var stairs_speed = false
+var preview = false
 
 # Variables
 var is_attacking = false
@@ -159,7 +160,7 @@ func _physics_process(delta):
 			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
 				velocity /= 1.45
 				
-			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
@@ -183,15 +184,17 @@ func _physics_process(delta):
 				animation_state.travel("Idle")
 			
 			if movement:
-				if !sound_walk.is_playing() and velocity != Vector2.ZERO:
+				if !sound_walk.is_playing() and velocity != Vector2.ZERO and !preview:
 					sound_walk.play()
-				elif velocity == Vector2.ZERO and sound_walk.is_playing():
+				elif velocity == Vector2.ZERO and sound_walk.is_playing() or preview:
 					sound_walk.stop()
 				velocity = move_and_slide(velocity)
 				for i in get_slide_count():
 					var collision = get_slide_collision(i)
 					if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 						emit_signal("player_collided", collision.get_collider())
+			else:
+				sound_walk.stop()
 		
 		elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
 			# handle knockback when hurting or dying
