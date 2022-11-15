@@ -337,9 +337,9 @@ func drop_data(_pos, data):
 				verify_origin_texture(data)
 			else:
 				data["origin_node"].get_child(0).texture = data["target_texture"]
+				verify_origin_texture(data)
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
-				verify_origin_texture(data)
 				if data["origin_panel"] == "Delete":
 					if data["target_stack"] != null:
 						data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
@@ -561,6 +561,7 @@ func check_slots():
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+			check_slots()
 
 
 # Use Item

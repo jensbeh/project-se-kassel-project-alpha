@@ -215,6 +215,8 @@ func _physics_process(delta):
 				sound_breath.play()
 		elif sound_breath.is_playing():
 			sound_breath.stop()
+	if is_player_paused and sound_breath.is_playing():
+		sound_breath.stop()
 
 
 # Method to set right step sound

@@ -96,6 +96,7 @@ func check_slots():
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+			check_slots()
 
 
 func get_trade_gridcontainer():

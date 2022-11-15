@@ -5775,7 +5775,6 @@ bus = "Sounds"
 
 [node name="SoundBreath" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 21 )
-volume_db = 10.0
 bus = "Sounds"
 
 [connection signal="area_entered" from="AttackSwing/DamageAreaBottom" to="." method="_on_DamageAreaBottom_area_entered"]
