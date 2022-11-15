@@ -137,7 +137,10 @@ func use_item():
 				Utils.get_current_player().set_health_cooldown(cooldown)
 				set_cooldown_health(cooldown, type)
 				# Sound
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion1
+				if GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Category"] == "Potion":
+					Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion1
+				else:
+					Utils.get_sound_player().stream = Constants.PreloadedSounds.Eat
 				Utils.get_sound_player().play(0.03)
 			if PlayerData.equipment_data["Hotbar"]["Stack"] <= 0:
 				PlayerData.equipment_data["Hotbar"]["Stack"] = null

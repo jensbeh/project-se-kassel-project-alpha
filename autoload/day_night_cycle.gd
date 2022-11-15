@@ -191,3 +191,7 @@ func set_current_time(new_time):
 	is_night = false
 	is_sunrise = false
 	current_time = new_time
+	
+	
+func set_passed_days(new_value):
+	passed_days_since_start = new_value

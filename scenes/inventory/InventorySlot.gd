@@ -587,7 +587,10 @@ func _on_Icon_gui_input(event):
 							type = "Health"
 							cooldown = Constants.HEALTH_COOLDOWN
 							Utils.get_current_player().set_health_cooldown(cooldown)
-							Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion1
+							if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] == "Potion":
+								Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion1
+							else:
+								Utils.get_sound_player().stream = Constants.PreloadedSounds.Eat
 							Utils.get_sound_player().play(0.03)
 						if PlayerData.inv_data[slot]["Stack"] > 0:
 							set_cooldown(cooldown, type)

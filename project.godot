@@ -78,6 +78,10 @@ window/size/test_height=720
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
+[editor]
+
+main_run_args="--verbose"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/vnen.tiled_importer/plugin.cfg" )

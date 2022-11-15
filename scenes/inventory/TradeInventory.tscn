@@ -76,7 +76,7 @@ script = ExtResource( 2 )
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_left = 460.0
 margin_top = 200.0
-margin_right = 1460.0
+margin_right = 1484.0
 margin_bottom = 728.0
 mouse_filter = 1
 color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
@@ -84,6 +84,8 @@ color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 2.0
+margin_right = 4.0
 margin_bottom = 2.0
 mouse_filter = 1
 custom_constants/margin_right = 10
@@ -94,9 +96,10 @@ custom_constants/margin_bottom = 10
 [node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer"]
 margin_left = 10.0
 margin_top = 10.0
-margin_right = 990.0
+margin_right = 1026.0
 margin_bottom = 520.0
-custom_constants/separation = 20
+rect_min_size = Vector2( 1016, 0 )
+custom_constants/separation = 18
 
 [node name="Inventory" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
 margin_top = 0.0
@@ -135,13 +138,13 @@ margin_bottom = 510.0
 
 [node name="Background" type="NinePatchRect" parent="ColorRect/MarginContainer/HBoxContainer"]
 self_modulate = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
-margin_left = 500.0
-margin_right = 980.0
+margin_left = 498.0
+margin_right = 1002.0
 margin_bottom = 510.0
-rect_min_size = Vector2( 480, 500 )
+rect_min_size = Vector2( 504, 500 )
 texture = ExtResource( 3 )
 region_rect = Rect2( 3, 5, 95, 96 )
-patch_margin_left = 9
+patch_margin_left = 12
 patch_margin_top = 9
 patch_margin_right = 8
 patch_margin_bottom = 9
@@ -152,29 +155,29 @@ anchor_bottom = 1.0
 mouse_filter = 1
 custom_constants/margin_right = 15
 custom_constants/margin_top = 10
-custom_constants/margin_left = 15
+custom_constants/margin_left = 20
 custom_constants/margin_bottom = 10
 
 [node name="VBox" type="VBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer"]
-margin_left = 15.0
+margin_left = 20.0
 margin_top = 10.0
-margin_right = 465.0
+margin_right = 489.0
 margin_bottom = 500.0
 custom_constants/separation = 20
 
 [node name="TitleBox" type="HBoxContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox"]
-margin_right = 450.0
+margin_right = 469.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 0, 80 )
 
 [node name="Control" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_right = 58.0
+margin_right = 68.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
 [node name="Title" type="TextureRect" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_left = 62.0
-margin_right = 387.0
+margin_left = 72.0
+margin_right = 397.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 325, 0 )
 
@@ -189,8 +192,8 @@ align = 1
 valign = 1
 
 [node name="Exit" type="Control" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox"]
-margin_left = 391.0
-margin_right = 450.0
+margin_left = 401.0
+margin_right = 469.0
 margin_bottom = 80.0
 size_flags_horizontal = 3
 
@@ -207,14 +210,14 @@ expand = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox"]
 margin_top = 100.0
-margin_right = 450.0
+margin_right = 469.0
 margin_bottom = 490.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TradeGridContainer" type="GridContainer" parent="ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer"]
-margin_right = 450.0
+margin_right = 469.0
 margin_bottom = 390.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -223,15 +226,15 @@ custom_constants/hseparation = 12
 columns = 6
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
-margin_left = 970.0
+margin_left = 972.0
 margin_top = 209.0
-margin_right = 1450.0
+margin_right = 1474.0
 margin_bottom = 719.0
 rect_min_size = Vector2( 480, 500 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 6 )
-patch_margin_left = 23
+patch_margin_left = 22
 patch_margin_top = 29
 patch_margin_right = 21
 patch_margin_bottom = 31

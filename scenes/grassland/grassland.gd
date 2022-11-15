@@ -31,14 +31,9 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Music
-	if DayNightCycle.is_night:
-		Utils.get_music_player().stream = Constants.PreloadedMusic.Night
-		Utils.get_music_player().play(0.03)
-	else:
-		Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
-		Utils.get_music_player().play(0.03)
-	
 	var _day = DayNightCycle.connect("change_to_sunrise", self, "day_sound")
+	var _day1 = DayNightCycle.connect("change_to_daytime", self, "day_sound")
+	var _day2 = DayNightCycle.connect("change_to_sunset", self, "day_sound")
 	var _night = DayNightCycle.connect("change_to_night", self, "night_sound")
 	
 	
@@ -271,6 +266,8 @@ func body_exited_stair_area(body, _stairArea):
 func clear_signals():
 	DayNightCycle.disconnect("change_to_night", self, "night_sound")
 	DayNightCycle.disconnect("change_to_sunrise", self, "day_sound")
+	DayNightCycle.disconnect("change_to_daytime", self, "day_sound")
+	DayNightCycle.disconnect("change_to_sunset", self, "day_sound")
 	
 	# Player
 	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")

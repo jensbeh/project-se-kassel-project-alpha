@@ -78,7 +78,6 @@ onready var hitbox = $HitboxZone
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
 onready var raycast = $RayCast2D
-onready var sound = $HitboxZone/Sound
 
 
 # Called when the node enters the scene tree for the first time.

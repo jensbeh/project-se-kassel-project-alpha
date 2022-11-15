@@ -125,19 +125,20 @@ func _on_Icon_gui_input(event, lootpanelslot):
 			else:
 				item_idx = keys[lootpanelslot -1]
 			if loot_dict.has(item_idx):
-				loot_item(item_idx)
 				if loot_dict[item_idx][0] == 10064:
 					Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
 				else:
 					Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect2
 				Utils.get_sound_player().play()
+				loot_item(item_idx)
 
 
 # close the loot panel
 func _on_Close_pressed():
-	Utils.get_current_player().get_node("Sound").stream = Constants.PreloadedSounds.Click
+	Utils.get_current_player().get_node("Sound").stream = Constants.PreloadedSounds.OpenUI
 	Utils.get_current_player().get_node("Sound").play()
 	Utils.get_current_player().player_looted()
+	Utils.save_game(true)
 	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
@@ -157,6 +158,7 @@ func _on_LootAll_pressed():
 		Utils.get_sound_player().play()
 	get_parent().remove_child(self)
 	queue_free()
+	Utils.save_game(true)
 	for i in range(1,size + 1):
 		loot_item(key[i -1])
 	emit_signal("looted", loot_dict)

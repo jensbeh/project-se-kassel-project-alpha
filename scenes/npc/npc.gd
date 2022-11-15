@@ -23,7 +23,7 @@ onready var sounds = get_node("Sounds")
 
 
 func _ready():
-	if "Grassland" in Utils.get_scene_manager().get_current_scene():
+	if "Grassland" in get_parent().get_parent().get_parent().get_parent().name:
 		sounds.stream = Constants.PreloadedSounds.Steps_Grassland
 		
 	get_viewport().audio_listener_enable_2d = true

@@ -586,7 +586,7 @@ func start_game():
 	
 	DayNightCycle.set_current_time(data.time)
 	if data.has("passed_days"):
-		DayNightCycle.passed_days_since_start = data.passed_days
+		DayNightCycle.set_passed_days(data.passed_days)
 	
 	Utils.get_hotbar().load_hotbar()
 	if (PlayerData.equipment_data["Hotbar"]["Item"] != null and

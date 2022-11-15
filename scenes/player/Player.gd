@@ -160,7 +160,7 @@ func _physics_process(delta):
 			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
 				velocity /= 1.45
 				
-			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview:
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview and movement:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)

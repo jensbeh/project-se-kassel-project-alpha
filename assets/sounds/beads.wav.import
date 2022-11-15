@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/beads.wav-8772839b19f5f2434e6bdc1b0776198b.sample"
+
+[deps]
+
+source_file="res://assets/sounds/beads.wav"
+dest_files=[ "res://.import/beads.wav-8772839b19f5f2434e6bdc1b0776198b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
