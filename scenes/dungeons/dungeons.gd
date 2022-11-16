@@ -30,8 +30,7 @@ onready var lootLayer = find_node("lootLayer")
 func _ready():
 	# Music
 	if Utils.get_music_player().stream != Constants.PreloadedMusic.Dungeon:
-		Utils.get_music_player().stream = Constants.PreloadedMusic.Dungeon
-		Utils.get_music_player().play(0.03)
+		Utils.set_and_play_music(Constants.PreloadedMusic.Dungeon)
 	
 	# Setup player
 	setup_player()
@@ -68,8 +67,7 @@ func _ready():
 	
 	# Check if boss room
 	if is_boss_room():
-		Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight2
-		Utils.get_music_player().play()
+		Utils.set_and_play_music(Constants.PreloadedMusic.Boss_Fight2)
 		
 		# Spawn boss
 		spawn_boss()
@@ -158,8 +156,7 @@ func set_transition_data(transition_data):
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if Utils.get_current_player().is_in_change_scene_area():
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Steps_Stairs
-		Utils.get_sound_player().play()
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Steps_Stairs)
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
@@ -468,8 +465,7 @@ func open_loot_panel(treasure):
 	loot_panel.connect("looted", self, "save_loot")
 	if !treasure_dict[treasure][1]:
 		treasure_dict[treasure][1] = true
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 		for child in treasure.get_children():
 			if "animationPlayer" in child.name:
 				# Start treasure animation

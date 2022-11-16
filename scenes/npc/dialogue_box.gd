@@ -54,8 +54,7 @@ func start(origin_obj, looted_value, treasure_type):
 func _process(_delta):
 	$Skip.visible = finished
 	if Input.is_action_just_pressed("e") and $Text.visible_characters > 2:
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 		if finished:
 			nextPhrase()
 		else:
@@ -108,8 +107,7 @@ func nextPhrase():
 
 func _on_Button_pressed():
 	# Sound
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	if finished:
 		nextPhrase()
 		trade = false
@@ -145,8 +143,7 @@ func close_dialog():
 func _on_Trade_pressed():
 	if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
 		# Sound
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		Utils.get_control_notes().show()
 		MerchantData.set_path(obj_name)
 		MerchantData._ready()
@@ -159,15 +156,12 @@ func _on_Trade_pressed():
 		Utils.get_control_notes().show()
 		if type != "3":
 			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
-				Utils.get_sound_player().play(0.03)
+				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
 			else:
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.locked
-				Utils.get_sound_player().play(0.03)
+				Utils.set_and_play_sound(Constants.PreloadedSounds.locked)
 				trade = false
 		else:
-			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
-			Utils.get_sound_player().play(0.03)
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			origin.open_loot_panel()
 		close_dialog()

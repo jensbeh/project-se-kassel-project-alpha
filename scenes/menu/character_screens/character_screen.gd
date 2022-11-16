@@ -125,8 +125,7 @@ func load_data():
 
 # click for delete this character
 func on_delete_click(id, container):
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	find_node("ConfirmationDialog").set_text(" " + tr("DELETECHARAC") + " " + "\n" + " \"" + data_list[selected_character].name + "\" ? ")
 	var styleup1 = StyleBoxFlat.new()
 	styleup1.set_bg_color(Color(1, 0, 0))
@@ -188,8 +187,7 @@ func delete_character():
 
 # click on play button to enter camp
 func on_play_click():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Select
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 	start_game()
 
 
@@ -270,23 +268,20 @@ func change_menu_color():
 
 
 func _on_Back_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	var transition_data = TransitionData.Menu.new(Constants.CREATE_CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _input(_event):
 	if Input.is_action_just_pressed("ui_down"):
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 		unchange_menu_color()
 		if selected_character < list.get_child_count()-1:
 			selected_character = selected_character + 1
@@ -299,8 +294,7 @@ func _input(_event):
 			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 		change_menu_color()
 	elif Input.is_action_just_pressed("ui_up"):
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 		unchange_menu_color()
 		if selected_character > 0:
 			selected_character = selected_character - 1
@@ -313,14 +307,12 @@ func _input(_event):
 			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Select
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 		start_game()
 
 
 func on_click(id):
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Choose
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	for item in list.get_children():
 		if item.get_child(1).get_instance_id() == id:
 			unchange_menu_color()
@@ -334,8 +326,7 @@ func on_click(id):
 
 
 func on_double_click():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Select
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 	start_game()
 
 
@@ -636,12 +627,10 @@ func start_game():
 
 
 func _on_ConfirmationDialog_confirmed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Delete
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Delete)
 	delete_character()
 
 
 
 func _on_ConfirmationDialog_hide():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)

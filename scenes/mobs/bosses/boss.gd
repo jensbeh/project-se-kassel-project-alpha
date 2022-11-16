@@ -782,15 +782,15 @@ func can_reach_player(can_reach, reachable_path):
 
 
 func music():
-	if behaviour_state == 4 or behaviour_state == 5 or behaviour_state == 7 or behaviour_state == 8:
+	if behaviour_state == HUNTING or behaviour_state == HURTING or behaviour_state == PRE_ATTACKING or behaviour_state == ATTACKING:
 		if in_grassland:
 			if Utils.get_music_player().stream != Constants.PreloadedMusic.Boss_Fight1:
-				Utils.get_music_player().stream = Constants.PreloadedMusic.Boss_Fight1
+				Utils.set_and_play_music(Constants.PreloadedMusic.Boss_Fight1)
 		if !Utils.get_music_player().is_playing():
 			Utils.get_music_player().play()
 	else:
 		if in_grassland:
 			if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
-				Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
+				Utils.set_and_play_music(Constants.PreloadedMusic.Grassland)
 		if !Utils.get_music_player().is_playing():
 			Utils.get_music_player().play()

@@ -141,8 +141,7 @@ func interaction_detected():
 				if npc != self and npc.get_interaction():
 					interacted = true
 			if !interacted:
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-				Utils.get_sound_player().play()
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				interacted = true
 				Utils.get_current_player().set_player_can_interact(false)
 				Utils.get_current_player().set_movement(false)

@@ -40,8 +40,7 @@ func _on_Timer_timeout():
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.equipment_data[slot]["Item"] != null:
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Select
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -165,8 +164,7 @@ func drop_data(_pos, data):
 			# Update the texture, label and data of the target
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-				Utils.get_sound_player().play(0.03)
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				var new_stack = 0
 				new_stack = data["target_stack"] + data["origin_stack"]
 				if new_stack > Constants.MAX_STACK_SIZE:
@@ -174,8 +172,7 @@ func drop_data(_pos, data):
 				PlayerData.inv_data[target_slot]["Stack"] = new_stack
 				get_node("TextureRect/Stack").set_text(str(new_stack))
 			else:
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.Equip
-				Utils.get_sound_player().play(0.03)
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Equip)
 				PlayerData.equipment_data[target_slot]["Item"] = data["origin_item_id"]
 				verify_target_texture(data)
 				get_child(0).texture = data["origin_texture"]
@@ -325,8 +322,7 @@ func _on_Icon_gui_input(event):
 						type = "Stamina"
 						cooldown = Constants.STAMINA_POTION_COOLDOWN
 						Utils.get_current_player().set_stamina_cooldown(cooldown)
-						Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion
-						Utils.get_sound_player().play(0.03)
+						Utils.set_and_play_sound(Constants.PreloadedSounds.Potion)
 					else:
 						Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 						int(GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Health"]))
@@ -334,10 +330,9 @@ func _on_Icon_gui_input(event):
 						cooldown = Constants.HEALTH_COOLDOWN
 						Utils.get_current_player().set_health_cooldown(cooldown)
 						if GameData.item_data[str(PlayerData.equipment_data[slot]["Item"])]["Category"] == "Potion":
-							Utils.get_sound_player().stream = Constants.PreloadedSounds.Potion1
+							Utils.set_and_play_sound(Constants.PreloadedSounds.Potion1)
 						else:
-							Utils.get_sound_player().stream = Constants.PreloadedSounds.Eat
-						Utils.get_sound_player().play(0.03)
+							Utils.set_and_play_sound(Constants.PreloadedSounds.Eat)
 					if PlayerData.equipment_data["Hotbar"]["Stack"] > 0:
 						set_cooldown(cooldown, type)
 					if PlayerData.equipment_data[slot]["Stack"] <= 0:

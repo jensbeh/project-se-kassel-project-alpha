@@ -253,8 +253,7 @@ func _input(event):
 				
 			# Remove the trade inventory
 			elif Utils.get_trade_inventory() != null:
-				Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI
-				Utils.get_sound_player().play()
+				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
 				Utils.get_trade_inventory().queue_free()
 				Utils.get_current_player().set_player_can_interact(true)
 				Utils.get_current_player().set_movement(true)

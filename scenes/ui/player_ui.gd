@@ -49,8 +49,7 @@ func set_exp(new_value: int):
 		# increase by level up
 		if player_level < Constants.MAX_LEVEL:
 			# Sound
-			Utils.get_sound_player().stream = Constants.PreloadedSounds.Levelup
-			Utils.get_sound_player().play(0.03)
+			Utils.set_and_play_sound(Constants.PreloadedSounds.Levelup)
 			# reset exp bar
 			Utils.get_current_player().set_exp(new_value - player_level * 100)
 			# increase by level up

@@ -57,8 +57,7 @@ func _ready():
 	else:
 		AudioServer.set_bus_mute(2, false)
 	TranslationServer.set_locale(lang)
-	Utils.get_music_player().stream = Constants.PreloadedMusic.Menu_Music
-	Utils.get_music_player().play()
+	Utils.set_and_play_music(Constants.PreloadedMusic.Menu_Music)
 	
 	# init variables
 	main_menu_screen = MAIN_MENU_SCREEN.instance()

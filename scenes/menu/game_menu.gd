@@ -11,8 +11,7 @@ func _ready():
 
 # Close game menu and set playermovemnt true
 func _on_Back_to_Game_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	Utils.get_game_menu().queue_free()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
@@ -20,8 +19,7 @@ func _on_Back_to_Game_pressed():
 
 
 func _on_Settings_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	
 	Utils.setting_screen(true)
 	Utils.get_main().add_settings()
@@ -29,8 +27,7 @@ func _on_Settings_pressed():
 
 # Close game and go to main menu
 func _on_Back_to_Main_Menu_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
 	
@@ -47,8 +44,7 @@ func _on_Back_to_Main_Menu_pressed():
 
 
 func _on_Exit_Game_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	
 	# Remove game menu
 	Utils.get_game_menu().queue_free()

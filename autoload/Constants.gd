@@ -38,8 +38,13 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 #################
 ## LOADED MAPS
 #################
-const LOAD_GRASSLAND_MAP = true # Default: true
-const LOAD_DUNGEONS_MAPS = true # Default: true
+const LOAD_GRASSLAND_MAP = false # Default: true
+const LOAD_DUNGEONS_MAPS = false # Default: true
+
+#################
+## TIME
+#################
+const MODIFY_TIME = true # Default: false
 
 # --------------------------------------------------
 
@@ -267,7 +272,6 @@ const PreloadedSounds = {
 	"Switch" : preload("res://assets/sounds/switch6.wav"),
 	"Click" : preload("res://assets/sounds/click3.wav"),
 	"Choose" : preload("res://assets/sounds/rollover2.wav"),
-	"Hover" : preload("res://assets/sounds/rollover.wav"),
 	"Select" : preload("res://assets/sounds/Menu_Select_00.mp3"),
 	"Delete" : preload("res://assets/sounds/UI_027.wav"),
 	"Levelup" : preload("res://assets/sounds/snare.wav"),
@@ -286,7 +290,6 @@ const PreloadedSounds = {
 	"Dialog" : preload("res://assets/sounds/Pen_v4_wav.wav"),
 	"Equip" : preload("res://assets/sounds/SetSomething.ogg"),
 	"open_close" : preload("res://assets/sounds/interface2.wav"),
-	"Denied" : preload("res://assets/sounds/Weird.ogg"),
 	"Steps_Stairs" : preload("res://assets/sounds/stepstone_7.wav"),
 	"Steps_Grassland" : preload("res://assets/sounds/grass_footsteps.wav"),
 	"Steps_Dungeon" : preload("res://assets/sounds/hard-footstep.mp3"),

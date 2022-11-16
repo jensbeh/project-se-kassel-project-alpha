@@ -59,8 +59,7 @@ func _on_Soundslider_value_changed(value):
 
 
 func _on_OptionButton_item_selected(index):
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Switch
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 	if index == 0:
 		TranslationServer.set_locale('en')
 		Utils.set_language("en")
@@ -75,8 +74,7 @@ func _on_OptionButton_item_selected(index):
 
 # Close settings and resetup the scene
 func _on_Back_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	Utils.get_main().get_node("SettingScreen").queue_free()
 	Utils.get_control_notes()._ready()
 	if (Utils.get_game_menu() != null):

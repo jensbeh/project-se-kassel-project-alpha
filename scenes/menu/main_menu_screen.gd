@@ -5,8 +5,7 @@ onready var mainMenuAnimationPlayer = $MainMenuAnimationPlayer
 
 func _ready():
 	if 	Utils.get_music_player().stream != Constants.PreloadedMusic.Menu_Music:
-		Utils.get_music_player().stream = Constants.PreloadedMusic.Menu_Music
-		Utils.get_music_player().play(0.03)
+		Utils.set_and_play_music(Constants.PreloadedMusic.Menu_Music)
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -28,18 +27,15 @@ func destroy_scene():
 
 
 func _on_Start_Game_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func _on_Settings_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	Utils.get_main().add_settings()
 
 func _on_Exit_to_Desktop_pressed():
-	Utils.get_sound_player().stream = Constants.PreloadedSounds.Click
-	Utils.get_sound_player().play(0.03)
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	# Stop game
 	Utils.stop_game()

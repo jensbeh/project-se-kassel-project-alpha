@@ -597,8 +597,8 @@ func save_game(animation):
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(-602,-678))
 	data.view_direction = var2str(get_current_player().view_direction)
-	data.time = DayNightCycle.current_time
-	data.passed_days = DayNightCycle.passed_days_since_start
+	data.time = DayNightCycle.get_current_time()
+	data.passed_days = DayNightCycle.get_passed_days_since_start()
 	# map informations
 	data.show_map = get_ui().show_map
 	data.has_map = get_ui().has_map
@@ -611,3 +611,13 @@ func save_player_data(player_data):
 	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + "/" + player_data.name + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
+
+
+func set_and_play_sound(new_sound):
+	get_sound_player().stream = new_sound
+	get_sound_player().play(0.03)
+
+
+func set_and_play_music(new_music):
+	get_music_player().stream = new_music
+	get_music_player().play(0.03)

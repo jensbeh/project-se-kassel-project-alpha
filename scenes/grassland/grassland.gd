@@ -82,12 +82,11 @@ func _ready():
 
 
 func day_sound():
-	Utils.get_music_player().stream = Constants.PreloadedMusic.Grassland
-	Utils.get_music_player().play(0.03)
+	if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
+		Utils.gset_and_play_music(Constants.PreloadedMusic.Grassland)
 	
 func night_sound():
-	Utils.get_music_player().stream = Constants.PreloadedMusic.Night
-	Utils.get_music_player().play(0.03)
+	Utils.set_and_play_music(Constants.PreloadedMusic.Night)
 
 
 # Method to spawn bosses in grassland
@@ -185,8 +184,7 @@ func interaction_detected():
 			var doorArea = find_node(current_area.get_meta("door_id"))
 			for child in doorArea.get_children():
 				if "animationPlayer" in child.name:
-					Utils.get_sound_player().stream = Constants.PreloadedSounds.open_door
-					Utils.get_sound_player().play()
+					Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 					# Start door animation
 					child.play("openDoor")
 					break

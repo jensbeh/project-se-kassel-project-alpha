@@ -126,10 +126,9 @@ func _on_Icon_gui_input(event, lootpanelslot):
 				item_idx = keys[lootpanelslot -1]
 			if loot_dict.has(item_idx):
 				if loot_dict[item_idx][0] == 10064:
-					Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Collect)
 				else:
-					Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect2
-				Utils.get_sound_player().play()
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Collect2)
 				loot_item(item_idx)
 
 
@@ -151,11 +150,9 @@ func _on_LootAll_pressed():
 	var key = loot_dict.keys()
 	var size = loot_dict.size()
 	if size > 1:
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect2
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect2)
 	else:
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.Collect
-	if size > 0:
-		Utils.get_sound_player().play()
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect)
 	get_parent().remove_child(self)
 	queue_free()
 	Utils.save_game(true)

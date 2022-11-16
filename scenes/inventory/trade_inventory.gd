@@ -11,7 +11,7 @@ func _ready():
 		if MerchantData.inv_data[slot]["Item"] != null:
 			if (MerchantData.inv_data[slot]["Time"] == null or 
 			(MerchantData.inv_data[slot]["Time"] + (3* DayNightCycle.COMPLETE_DAY_TIME)) > 
-			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time)):
+			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time())):
 				var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
 				var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
 				var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
@@ -44,8 +44,7 @@ func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			# Sound
-			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI
-			Utils.get_sound_player().play(0.03)
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
 			Utils.get_trade_inventory().queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
@@ -78,8 +77,7 @@ func check_slots():
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
 	if !free:
-		Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
-		Utils.get_sound_player().play(0.03)
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
 			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
@@ -90,8 +88,7 @@ func check_slots():
 			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
 				free2 = true
 		if !free2:
-			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI2
-			Utils.get_sound_player().play(0.03)
+			Utils.get_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))

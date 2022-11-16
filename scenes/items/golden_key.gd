@@ -12,16 +12,10 @@ func _ready():
 
 # Method to init variables, typically called after instancing
 func init(death_position):
-	show()
 	current_position = death_position
 
 
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
-		get_node("Sound").stream = Constants.PreloadedSounds.Sucsess
-		get_node("Sound").play()
 		# Collecting key
-		Utils.get_scene_manager().get_current_scene().on_key_collected()
-		hide()
-		yield($Sound, "finished")
 		call_deferred("queue_free")

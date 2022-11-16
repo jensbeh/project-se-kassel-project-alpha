@@ -157,8 +157,7 @@ func set_animation_data():
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			Utils.get_sound_player().stream = Constants.PreloadedSounds.OpenUI
-			Utils.get_sound_player().play(0.03)
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
 			Utils.get_character_interface().queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
