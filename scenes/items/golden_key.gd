@@ -18,4 +18,5 @@ func init(death_position):
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
 		# Collecting key
+		Utils.get_scene_manager().get_current_scene().on_key_collected()
 		call_deferred("queue_free")

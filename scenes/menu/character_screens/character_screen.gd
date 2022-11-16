@@ -602,8 +602,8 @@ func start_game():
 #	var player_position = Vector2(-416,-928) # Grassland - Mountain
 #	var player_position = Vector2(-730,-1700) # Grassland - Top
 #	var player_position = Vector2(-2080,150) # Grassland - House1
-	var player_position = Vector2(336,-62) # Dungeon1-1
-#	var player_position = Vector2(432,-120) # Dungeon1-3
+#	var player_position = Vector2(336,-62) # Dungeon1-1
+	var player_position = Vector2(432,-120) # Dungeon1-3
 #	var player_position = Vector2(240,480) # Dungeon2-4
 #	var player_position = Vector2(-300,64) # Dungeon3-2
 #	var player_position = Vector2(-384,176) # Dungeon3-4

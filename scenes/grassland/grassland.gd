@@ -83,7 +83,7 @@ func _ready():
 
 func day_sound():
 	if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
-		Utils.gset_and_play_music(Constants.PreloadedMusic.Grassland)
+		Utils.set_and_play_music(Constants.PreloadedMusic.Grassland)
 	
 func night_sound():
 	Utils.set_and_play_music(Constants.PreloadedMusic.Night)

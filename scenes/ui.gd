@@ -114,6 +114,3 @@ func _input(event):
 		if event.is_action_pressed("plus"):
 			DayNightCycle.current_time += DayNightCycle.ONE_HOUR
 			print("GAME: Added one hour")
-		if event.is_action_pressed("minus"):
-			DayNightCycle.current_time -= DayNightCycle.ONE_HOUR
-			print("GAME: Removed one hour")
