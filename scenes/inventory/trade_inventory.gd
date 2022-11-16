@@ -64,6 +64,8 @@ func set_name(npc_name):
 		npc_name = "Lea"
 	elif npc_name == "heinz":
 		npc_name = "Heinz"
+	elif npc_name == "haley":
+		npc_name = "Haley"
 	else:
 		npc_name = "Bella"
 	$ColorRect/MarginContainer/HBoxContainer/Background.find_node("Titlename").text = npc_name + "´s " + tr("INVENTORY")
