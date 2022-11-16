@@ -1,6 +1,6 @@
 extends TextureRect
 
-var tool_tip = load(Constants.TOOLTIP)
+var tool_tip = Constants.PreloadedScenes.TooltipScene
 
 
 # Get information about drag item

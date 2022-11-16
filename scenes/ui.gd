@@ -38,7 +38,7 @@ func _input(event):
 			Utils.get_current_player().set_movement(false)
 			Utils.get_current_player().set_movment_animation(false)
 			Utils.get_current_player().set_player_can_interact(false)
-			Utils.get_ui().add_child(load(Constants.GAME_MENU_PATH).instance())
+			Utils.get_ui().add_child(Constants.PreloadedScenes.GameMenuScene.instance())
 		# Close game menu with "esc" when game menu is open
 		elif event.is_action_pressed("esc") and !Utils.get_current_player().get_movement() and Utils.get_game_menu() != null and not Utils.in_setting_screen:
 			# Sound
@@ -60,7 +60,7 @@ func _input(event):
 			Utils.get_current_player().set_movement(false)
 			Utils.get_current_player().set_movment_animation(false)
 			Utils.get_current_player().set_player_can_interact(false)
-			Utils.get_ui().add_child(load(Constants.CHARACTER_INTERFACE_PATH).instance())
+			Utils.get_ui().add_child(Constants.PreloadedScenes.CharacterInterfaceScene.instance())
 		# Close character inventory with "i"
 		elif (event.is_action_pressed("character_inventory") and not Utils.get_current_player().get_movement() 
 		and Utils.get_character_interface() != null):

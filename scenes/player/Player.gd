@@ -1146,15 +1146,17 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
 	Utils.save_game(true)
-	var lost_string = tr("LOST_ITEMS") + ": "
-	if lost_gold > 0:
-		lost_string += str(lost_gold) + " Gold" + "\n"
-	if lost_items.size() <= 5:
+	var lost_string = tr("LOST_ITEMS") + ": \n"
+	if lost_gold > 0 and lost_items.size() < 4:
+		lost_string += " • " + str(lost_gold) + " Gold" + "\n"
+	elif lost_gold > 0:
+		lost_string += str(lost_gold) + " Gold"
+	if lost_items.size() <= 4:
 		for item in lost_items:
-			lost_string += (item + "\n")
+			lost_string += (" • " + item + "\n")
 	else:
 		for item in lost_items:
-			lost_string += (item + ", ")
+			lost_string += (", " + item)
 	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
 	if lost_items.size() > 0:
 		sound.stream = Constants.PreloadedSounds.Collect2
@@ -1165,7 +1167,7 @@ func rescue_pay():
 		set_player_can_interact(false)
 		set_movement(false)
 		pause_player(true)
-		var dialog = load(Constants.DIALOG_PATH).instance()
+		var dialog = Constants.PreloadedScenes.DialogScene.instance()
 		Utils.get_ui().add_child(dialog)
 		dialog.start(self, "Death", lost_dialog)
 

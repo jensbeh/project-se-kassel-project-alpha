@@ -245,7 +245,7 @@ func create_item(charac_name, charac_level, charac_gold, character_id):
 	hboxbutton.add_child(delete_button)
 	hboxc.add_child(hboxbutton)
 	mcontainer.add_child(hboxc)
-	mcontainer.set_script(load(Constants.CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH))
+	mcontainer.set_script(Constants.PreloadedScenes.CharacterScreenContainer)
 	mcontainer.connect("gui_input", mcontainer, "_on_MarginContainer_gui_input")
 	mcontainer.connect("click", self, "on_click", [mcontainer.get_instance_id()])
 	mcontainer.connect("double_click", self, "on_double_click")

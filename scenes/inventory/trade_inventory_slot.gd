@@ -1,8 +1,8 @@
 extends TextureRect
 
-var tool_tip = load(Constants.TOOLTIP)
-var split_popup = load(Constants.SPLIT_POPUP)
-var inv_slot = load(Constants.TRADE_INV_SLOT)
+var tool_tip = Constants.PreloadedScenes.TooltipScene
+var split_popup = Constants.PreloadedScenes.SplitPopupScene
+var inv_slot = Constants.PreloadedScenes.TradeInvSlotScene
 
 # Get information about drag item
 func get_drag_data(_pos):

@@ -100,8 +100,7 @@ func is_boss_room() -> bool:
 # Method to spawn boss in dungeon
 func spawn_boss():
 	# Take random boss
-	var boss_path = Utils.get_random_boss_instance_path()
-	var boss_instance = load(boss_path).instance()
+	var boss_instance = Utils.get_random_boss_preload().instance()
 	# Generate spawn position and spawn boss
 	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type, is_boss_room(), lootLayer)
 	mobsLayer.call_deferred("add_child", boss_instance)
@@ -322,7 +321,7 @@ func despawn_boss(boss_node):
 
 # Method is called from boss on death when key to open the door should be spawned
 func spawn_key_at_death(death_position):
-	var key_instance = load("res://scenes/items/golden_key.tscn").instance()
+	var key_instance = Constants.PreloadedScenes.GoldenKeyScene.instance()
 	key_instance.init(death_position)
 	find_node("keylayer").call_deferred("add_child", key_instance)
 
@@ -338,7 +337,7 @@ func on_key_collected():
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
-		var loot = load(Constants.LOOT_DROP_PATH).instance()
+		var loot = Constants.PreloadedScenes.LootDropScene.instance()
 		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, true)
 		lootLayer.call_deferred("add_child", loot)
@@ -346,7 +345,7 @@ func spawn_loot(position, mob_name):
 		randomize()
 		var random_float = randf()
 		if random_float <= Constants.LOOT_CHANCE:
-			var loot = load(Constants.LOOT_DROP_PATH).instance()
+			var loot = Constants.PreloadedScenes.LootDropScene.instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, true)
 			lootLayer.call_deferred("add_child", loot)
@@ -437,7 +436,7 @@ func interaction():
 			interacted = true
 			Utils.get_current_player().set_movement(false)
 			Utils.get_current_player().set_player_can_interact(false)
-			var dialog = load(Constants.DIALOG_PATH).instance()
+			var dialog = Constants.PreloadedScenes.DialogScene.instance()
 			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
 				if treasure_dict[treasure][3] == 3:
@@ -460,7 +459,7 @@ func reset_interaction():
 # called to open the loot panel
 func open_loot_panel(treasure):
 	interacted = true
-	loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+	loot_panel = Constants.PreloadedScenes.LootPanelScene.instance()
 	Utils.get_ui().add_child(loot_panel)
 	loot_panel.connect("looted", self, "save_loot")
 	if !treasure_dict[treasure][1]:

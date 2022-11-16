@@ -1,7 +1,7 @@
 extends TextureRect
 
-var tool_tip = load(Constants.TOOLTIP)
-var split_popup = load(Constants.SPLIT_POPUP)
+var tool_tip = Constants.PreloadedScenes.TooltipScene
+var split_popup = Constants.PreloadedScenes.SplitPopupScene
 
 onready var time_label = get_node("TextureProgress/Time")
 onready var cooldown_texture = get_node("TextureProgress")

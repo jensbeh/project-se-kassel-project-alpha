@@ -208,5 +208,5 @@ func loot_item(item_idx):
 	
 	else:
 		# Msg can not loot - inventory full
-		var msg = load(Constants.FULL_INV_MSG).instance()
+		var msg = Constants.PreloadedScenes.FullInvMsgScene.instance()
 		Utils.get_ui().add_child(msg)

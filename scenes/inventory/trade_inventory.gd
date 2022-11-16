@@ -1,6 +1,6 @@
 extends Control
 
-var inv_slot = load(Constants.TRADE_INV_SLOT)
+var inv_slot = Constants.PreloadedScenes.TradeInvSlotScene
 
 onready var gridcontainer = find_node("TradeGridContainer")
 

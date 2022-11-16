@@ -512,8 +512,8 @@ func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
 
 
 # Method to choose random boss instance path
-func get_random_boss_instance_path():
-	return Constants.BossPathes[randi() % Constants.BossPathes.size()]
+func get_random_boss_preload():
+	return Constants.PreloadBossScene[randi() % Constants.PreloadBossScene.size()]
 
 
 # Method to preload game -> called ONLY! from start screen

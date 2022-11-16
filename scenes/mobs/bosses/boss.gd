@@ -651,7 +651,6 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	if health <= 0:
 		sound.stream = Constants.PreloadedSounds.Win
 		sound.play(0.03)
-		music()
 		update_behaviour(DYING)
 	else:
 		update_behaviour(HURTING)
@@ -721,8 +720,6 @@ func should_regenerate_hp(should_regenerate):
 	# Stop regenerate hp
 	else:
 		regenerate_hp = false
-		
-	music()
 
 
 # Method to generate hp with delta time
@@ -780,17 +777,3 @@ func can_reach_player(can_reach, reachable_path):
 		check_can_reach_player = false
 		update_behaviour(HUNTING)
 
-
-func music():
-	if behaviour_state == HUNTING or behaviour_state == HURTING or behaviour_state == PRE_ATTACKING or behaviour_state == ATTACKING:
-		if in_grassland:
-			if Utils.get_music_player().stream != Constants.PreloadedMusic.Boss_Fight1:
-				Utils.set_and_play_music(Constants.PreloadedMusic.Boss_Fight1)
-		if !Utils.get_music_player().is_playing():
-			Utils.get_music_player().play()
-	else:
-		if in_grassland:
-			if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
-				Utils.set_and_play_music(Constants.PreloadedMusic.Grassland)
-		if !Utils.get_music_player().is_playing():
-			Utils.get_music_player().play()

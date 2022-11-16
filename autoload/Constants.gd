@@ -154,6 +154,7 @@ const LOOT_DROP_PATH = "res://scenes/looting/LootDrop.tscn"
 const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
 const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
+const GOLDEN_KEY_PATH = "res://scenes/items/golden_key.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 5
@@ -177,34 +178,54 @@ const POINTS_VERTICAL_PER_TILE = 3
 const POINT_SIZE_IN_PIXEL_PER_TILE = ceil(float(TILE_SIZE) / (POINTS_HORIZONTAL_PER_TILE - 1))
 
 # Boss enemies pathes
-const BossPathes = [
-	"res://scenes/mobs/bosses/Boss_FungusBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_FungusBrown.tscn",
-	"res://scenes/mobs/bosses/Boss_FungusPurple.tscn",
-	"res://scenes/mobs/bosses/Boss_FungusRed.tscn",
+const PreloadBossScene = [
+	preload("res://scenes/mobs/bosses/Boss_FungusBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_FungusBrown.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_FungusPurple.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_FungusRed.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_GhostGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_GhostPurple.tscn",
-	"res://scenes/mobs/bosses/Boss_GhostWhite.tscn",
+	preload("res://scenes/mobs/bosses/Boss_GhostGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_GhostPurple.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_GhostWhite.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn",
-	"res://scenes/mobs/bosses/Boss_OrbinautRed.tscn",
+	preload("res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_OrbinautRed.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_SkeletonRed.tscn",
-	"res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn",
+	preload("res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SkeletonRed.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn",
-	"res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn",
-	"res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn",
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_ZombieBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_ZombieGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_ZombieGrey.tscn"
+	preload("res://scenes/mobs/bosses/Boss_ZombieBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_ZombieGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_ZombieGrey.tscn")
 ]
+
+# Objects
+const PreloadedScenes = {
+	"GoldenKeyScene": preload(GOLDEN_KEY_PATH),
+	"CharacterScreenContainer": preload(CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH),
+	"GameMenuScene" : preload(GAME_MENU_PATH),
+	"SettingScene" : preload(SETTINGS_PATH),
+	"TradeInventoryScene" : preload(TRADE_INVENTORY_PATH),
+	"DeathScreenScene" : preload(DEATH_SCREEN_PATH),
+	"LootPanelScene" : preload(LOOT_PANEL_PATH),
+	"LootDropScene" : preload(LOOT_DROP_PATH),
+	"TreasureScene" : preload(TREASURE_PATH),
+	"DialogScene" : preload(DIALOG_PATH),
+	"FullInvMsgScene" : preload(FULL_INV_MSG),
+	"TradeInvSlotScene" : preload(TRADE_INV_SLOT),
+	"InvSlotScene" : preload(INV_SLOT),
+	"TooltipScene" : preload(TOOLTIP),
+	"SplitPopupScene" : preload(SPLIT_POPUP),
+	"CharacterInterfaceScene" : preload(CHARACTER_INTERFACE_PATH),
+}
 
 # Mobs
 const PreloadedMobScenes = {

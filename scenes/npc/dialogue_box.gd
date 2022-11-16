@@ -150,7 +150,7 @@ func _on_Trade_pressed():
 		PlayerData._ready()
 		close_dialog()
 		# Show trade inventory
-		Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
+		Utils.get_ui().add_child(Constants.PreloadedScenes.TradeInventoryScene.instance())
 		Utils.get_trade_inventory().set_name(obj_name)
 	else:
 		Utils.get_control_notes().show()

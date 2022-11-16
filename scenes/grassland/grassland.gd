@@ -98,13 +98,12 @@ func spawn_bosses():
 		if biome_name == "mountain":
 			for _i in range(2):
 				# Take random boss
-				var boss_path = Utils.get_random_boss_instance_path()
-				var boss_instance = load(boss_path).instance()
+				var boss_instance = Utils.get_random_boss_preload().instance()
 				# Generate spawn position and spawn boss
 				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false, lootLayer)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
-				print("GRASSLAND: Spawned boss \""+ str(boss_path) +"\" in " + str(biome_name))
+				print("GRASSLAND: Spawned boss \""+ str(boss_instance.name) +"\" in " + str(biome_name))
 
 
 # Method to destroy the scene
@@ -331,7 +330,7 @@ func despawn_boss(boss_node):
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
-		var loot = load(Constants.LOOT_DROP_PATH).instance()
+		var loot = Constants.PreloadedScenes.LootDropScene.instance()
 		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, false)
 		lootLayer.call_deferred("add_child", loot)
@@ -339,7 +338,7 @@ func spawn_loot(position, mob_name):
 		randomize()
 		var random_float = randf()
 		if random_float <= Constants.LOOT_CHANCE:
-			var loot = load(Constants.LOOT_DROP_PATH).instance()
+			var loot = Constants.PreloadedScenes.LootDropScene.instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, false)
 			lootLayer.call_deferred("add_child", loot)
@@ -355,7 +354,7 @@ func spawn_treasures():
 			var random_float = randf()
 			if random_float <= 0.4:
 				# load treasure
-				var treasure = load(Constants.TREASURE_PATH).instance()
+				var treasure = Constants.PreloadedScenes.TreasureScene.instance()
 				# Generate spawn position and spawn treasure
 				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 				lootLayer.call_deferred("add_child", treasure)
