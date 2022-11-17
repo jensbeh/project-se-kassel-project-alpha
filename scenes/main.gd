@@ -42,7 +42,7 @@ func is_day_night_cycle():
 func show_death_screen():
 	# Load death screen to ui
 	if Utils.get_ui() != null:
-		ui.add_child(load(Constants.DEATH_SCREEN_PATH).instance())
+		ui.add_child(Constants.PreloadedScenes.DeathScreenScene.instance())
 
 
 # Method to add settings screen to view
@@ -53,7 +53,7 @@ func add_settings():
 		disable_game_gui(true)
 		
 	# Add settings screen
-	add_child(load(Constants.SETTINGS_PATH).instance())
+	add_child(Constants.PreloadedScenes.SettingScene.instance())
 
 
 # Method to disable gui in viewport

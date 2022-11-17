@@ -30,6 +30,13 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	var _day = DayNightCycle.connect("change_to_sunrise", self, "day_sound")
+	var _day1 = DayNightCycle.connect("change_to_daytime", self, "day_sound")
+	var _day2 = DayNightCycle.connect("change_to_sunset", self, "day_sound")
+	var _night = DayNightCycle.connect("change_to_night", self, "night_sound")
+	
+	
 	# Setup player
 	setup_player()
 	
@@ -74,6 +81,14 @@ func _ready():
 	Utils.get_scene_manager().finish_transition()
 
 
+func day_sound():
+	if Utils.get_music_player().stream != Constants.PreloadedMusic.Grassland:
+		Utils.set_and_play_music(Constants.PreloadedMusic.Grassland)
+	
+func night_sound():
+	Utils.set_and_play_music(Constants.PreloadedMusic.Night)
+
+
 # Method to spawn bosses in grassland
 func spawn_bosses():
 	for current_spawn_area in spawning_areas.keys():
@@ -83,13 +98,12 @@ func spawn_bosses():
 		if biome_name == "mountain":
 			for _i in range(2):
 				# Take random boss
-				var boss_path = Utils.get_random_boss_instance_path()
-				var boss_instance = load(boss_path).instance()
+				var boss_instance = Utils.get_random_boss_preload().instance()
 				# Generate spawn position and spawn boss
 				boss_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, false, lootLayer)
 				boss_instance.is_boss_in_grassland(true)
 				mobsLayer.call_deferred("add_child", boss_instance)
-				print("GRASSLAND: Spawned boss \""+ str(boss_path) +"\" in " + str(biome_name))
+				print("GRASSLAND: Spawned boss \""+ str(boss_instance.name) +"\" in " + str(biome_name))
 
 
 # Method to destroy the scene
@@ -169,6 +183,7 @@ func interaction_detected():
 			var doorArea = find_node(current_area.get_meta("door_id"))
 			for child in doorArea.get_children():
 				if "animationPlayer" in child.name:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 					# Start door animation
 					child.play("openDoor")
 					break
@@ -246,6 +261,11 @@ func body_exited_stair_area(body, _stairArea):
 
 # Method to disconnect all signals
 func clear_signals():
+	DayNightCycle.disconnect("change_to_night", self, "night_sound")
+	DayNightCycle.disconnect("change_to_sunrise", self, "day_sound")
+	DayNightCycle.disconnect("change_to_daytime", self, "day_sound")
+	DayNightCycle.disconnect("change_to_sunset", self, "day_sound")
+	
 	# Player
 	Utils.get_current_player().disconnect("player_collided", self, "collision_detected")
 	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
@@ -302,6 +322,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
+		yield(boss_node.sound, "finished")
 		boss_node.call_deferred("queue_free")
 		print("GRASSLAND: Boss \"" + boss_node.name + "\" removed")
 
@@ -309,7 +330,7 @@ func despawn_boss(boss_node):
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
-		var loot = load(Constants.LOOT_DROP_PATH).instance()
+		var loot = Constants.PreloadedScenes.LootDropScene.instance()
 		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, false)
 		lootLayer.call_deferred("add_child", loot)
@@ -317,7 +338,7 @@ func spawn_loot(position, mob_name):
 		randomize()
 		var random_float = randf()
 		if random_float <= Constants.LOOT_CHANCE:
-			var loot = load(Constants.LOOT_DROP_PATH).instance()
+			var loot = Constants.PreloadedScenes.LootDropScene.instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, false)
 			lootLayer.call_deferred("add_child", loot)
@@ -333,7 +354,7 @@ func spawn_treasures():
 			var random_float = randf()
 			if random_float <= 0.4:
 				# load treasure
-				var treasure = load(Constants.TREASURE_PATH).instance()
+				var treasure = Constants.PreloadedScenes.TreasureScene.instance()
 				# Generate spawn position and spawn treasure
 				treasure.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 				lootLayer.call_deferred("add_child", treasure)

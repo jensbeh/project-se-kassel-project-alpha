@@ -1,13 +1,14 @@
 extends TextureRect
 
-var tool_tip = load(Constants.TOOLTIP)
-var split_popup = load(Constants.SPLIT_POPUP)
-var inv_slot = load(Constants.TRADE_INV_SLOT)
+var tool_tip = Constants.PreloadedScenes.TooltipScene
+var split_popup = Constants.PreloadedScenes.SplitPopupScene
+var inv_slot = Constants.PreloadedScenes.TradeInvSlotScene
 
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if MerchantData.inv_data[slot]["Item"] != null:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "TradeInventory"
@@ -98,11 +99,15 @@ func drop_data(_pos, data):
 					pass
 				# swap
 				elif data["target_item_id"] != null and (!data["origin_stackable"] or data["target_item_id"] != data["origin_item_id"]):
+					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
+					Utils.get_trade_inventory().get_sound_player().play(0.03)
 					Utils.get_current_player().set_gold(player_gold + ((int(GameData.item_data[str(
 						data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) - 
 						(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
 				# sell
 				else:
+					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
+					Utils.get_trade_inventory().get_sound_player().play(0.03)
 					Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
 				Utils.get_trade_inventory().find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
@@ -110,6 +115,7 @@ func drop_data(_pos, data):
 			# stacking 
 			if (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
 			data["origin_panel"] == "TradeInventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					MerchantData.inv_data[origin_slot]["Item"] = null
 					MerchantData.inv_data[origin_slot]["Stack"] = null
@@ -117,9 +123,10 @@ func drop_data(_pos, data):
 				else:
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 			elif (data["target_item_id"] == data["origin_item_id"] and (data["origin_stackable"] or data["target_stack"] == 0) and 
 			data["origin_panel"] == "Inventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[origin_slot]["Item"] = null
 					PlayerData.inv_data[origin_slot]["Stack"] = null
@@ -128,13 +135,15 @@ func drop_data(_pos, data):
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 			# swap with item or empty
 			elif data["origin_panel"] == "TradeInventory":
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 				MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 				if data["target_item_id"] != null:
-					MerchantData.inv_data[origin_slot]["Time"] =DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+					MerchantData.inv_data[origin_slot]["Time"] =DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 				else:
 					MerchantData.inv_data[origin_slot]["Time"] = null
 			else:
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 				
@@ -153,9 +162,9 @@ func drop_data(_pos, data):
 				data["origin_node"].get_node("../TextureRect/Stack").set_text("")
 			else:
 				data["origin_node"].get_child(0).texture = data["target_texture"]
+				verify_origin_texture(data)
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
-				verify_origin_texture(data)
 				if data["target_stack"] != null and data["target_stack"] > 1:
 					data["origin_node"].get_node("../TextureRect/Stack").set_text(str(data["target_stack"]))
 				else:
@@ -169,7 +178,7 @@ func drop_data(_pos, data):
 					if new_stack > Constants.MAX_STACK_SIZE:
 						new_stack = Constants.MAX_STACK_SIZE
 					MerchantData.inv_data[target_slot]["Stack"] = new_stack
-					MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+					MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 					get_node("../TextureRect/Stack").set_text(str(new_stack))
 			else:
 				# swaping
@@ -179,7 +188,7 @@ func drop_data(_pos, data):
 				get_child(0).frame = data["origin_frame"]
 				MerchantData.inv_data[target_slot]["Stack"] = data["origin_stack"]
 				if MerchantData.inv_data[target_slot]["Item"] != null:
-					MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+					MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 				else:
 					MerchantData.inv_data[target_slot]["Time"] = null
 				if data["origin_stack"] != null and data["origin_stack"] > 1:
@@ -202,6 +211,8 @@ func SplitStack(split_amount, data):
 		split_amount = Constants.MAX_STACK_SIZE - data["target_stack"]
 	# paying in case of buying and selling
 	if data["origin_panel"] == "Inventory":
+		Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
+		Utils.get_trade_inventory().get_sound_player().play(0.03)
 		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))
 		Utils.get_trade_inventory().find_node("Inventory").get_child(0).find_node("Gold").set_text(
 			"Gold: " + str(Utils.get_current_player().get_gold()))
@@ -211,7 +222,7 @@ func SplitStack(split_amount, data):
 	elif PlayerData.inv_data[origin_slot]["Stack"] != 0 and data["origin_panel"] == "Inventory":
 		PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
 	MerchantData.inv_data[target_slot]["Item"] = data["origin_item_id"]
-	MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+	MerchantData.inv_data[target_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 	if data["target_stack"] != null:
 		new_stack_size = data["target_stack"] + split_amount
 	else:
@@ -300,6 +311,7 @@ func check_slots():
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
 	if !free:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
 			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
@@ -310,8 +322,9 @@ func check_slots():
 			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
 				free2 = true
 		if !free2:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
-			
+			check_slots()

@@ -27,6 +27,9 @@ onready var glassesSprite = $Glasses
 onready var hatSprite = $Hat
 onready var weaponSprite = $Weapon
 onready var attackSwingSprite = $AttackSwing
+onready var sound_walk = $SoundWalk
+onready var sound = $Sound
+onready var sound_breath = $SoundBreath
 
 const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
@@ -68,6 +71,8 @@ var player_light_radius: int
 var health_cooldown = 0
 var stamina_cooldown = 0
 var weapon_weight = 0
+var stairs_speed = false
+var preview = false
 
 # Variables
 var is_attacking = false
@@ -155,11 +160,16 @@ func _physics_process(delta):
 			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
 				velocity /= 1.45
 				
-			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO:
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview and movement:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+					step_sound(1.2)
 					velocity *= 1.4
+				else:
+					step_sound(1)
+			else:
+				step_sound(1)
 			
 			if velocity != Vector2.ZERO and player_can_interact:
 				view_direction = velocity
@@ -174,11 +184,17 @@ func _physics_process(delta):
 				animation_state.travel("Idle")
 			
 			if movement:
+				if !sound_walk.is_playing() and velocity != Vector2.ZERO and !preview:
+					sound_walk.play()
+				elif velocity == Vector2.ZERO and sound_walk.is_playing() or preview:
+					sound_walk.stop()
 				velocity = move_and_slide(velocity)
 				for i in get_slide_count():
 					var collision = get_slide_collision(i)
 					if collision != null and !collision.get_collider().get_parent().get_meta_list().empty():
 						emit_signal("player_collided", collision.get_collider())
+			else:
+				sound_walk.stop()
 		
 		elif (hurting or dying) and velocity != Vector2.ZERO and not collecting:
 			# handle knockback when hurting or dying
@@ -190,6 +206,37 @@ func _physics_process(delta):
 				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
 			elif player_stamina < level * 10 + 90:
 				set_stamina(level * 10 + 90)
+		# Breath Sound
+		if weapon_weight < 0 or weapon_weight == null:
+			weapon_weight = 1
+		if ((player_stamina - delta * Constants.STAMINA_SPRINT < 0 or player_stamina - weapon_weight * Constants.WEAPON_STAMINA_USE < 0) 
+		and !Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.MENU):
+			if !sound_breath.is_playing():
+				sound_breath.play()
+		elif sound_breath.is_playing():
+			sound_breath.stop()
+	if is_player_paused and sound_breath.is_playing():
+		sound_breath.stop()
+
+
+# Method to set right step sound
+func step_sound(value):
+	if "Grassland" in Utils.get_scene_manager().get_current_scene().name:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_Grassland:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_Grassland
+	elif "Dungeon" in Utils.get_scene_manager().get_current_scene().name:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_Dungeon:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_Dungeon
+	elif "Camp" in Utils.get_scene_manager().get_current_scene().name:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_Camp:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_Camp
+	else:
+		if sound_walk.stream != Constants.PreloadedSounds.Steps_House:
+			sound_walk.stream = Constants.PreloadedSounds.Steps_House
+	if !stairs_speed:
+		sound_walk.pitch_scale = value
+	else:
+		sound_walk.pitch_scale = value - 0.1
 
 
 # Method handles key inputs
@@ -206,6 +253,7 @@ func _input(event):
 				
 			# Remove the trade inventory
 			elif Utils.get_trade_inventory() != null:
+				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
 				Utils.get_trade_inventory().queue_free()
 				Utils.get_current_player().set_player_can_interact(true)
 				Utils.get_current_player().set_movement(true)
@@ -221,6 +269,8 @@ func _input(event):
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				sound.stream = Constants.PreloadedSounds.Attack
+				sound.play()
 				is_attacking = true
 				set_movement(false)
 				animation_state.start("Attack")
@@ -266,6 +316,7 @@ func get_player_can_interact():
 
 # Method to set a new player walk speed with a factor
 func set_speed(factor: float):
+	stairs_speed = true
 	current_walk_speed *= factor
 
 
@@ -281,6 +332,7 @@ func get_movement() -> bool:
 
 # Method to reset the player walk speed to const
 func reset_speed():
+	stairs_speed = false
 	current_walk_speed = Constants.PLAYER_WALK_SPEED
 
 
@@ -899,6 +951,8 @@ func hurt_player():
 		hurting = true
 	if !collecting:
 		set_movement(false)
+	sound.stream = Constants.PreloadedSounds.Hurt
+	sound.play()
 	animation_state.start("Hurt")
 
 
@@ -968,6 +1022,9 @@ func is_player_dying():
 
 # Method to reset the players behaviour after dying -> called from scene_manager
 func reset_player_after_dying():
+	if sound_breath.is_playing():
+		sound_breath.stop()
+	
 	animation_state.start("Idle")
 	
 	# Make player visible again to mobs
@@ -1089,21 +1146,28 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Item"] = null
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
 	Utils.save_game(true)
-	var lost_string = tr("LOST_ITEMS") + ": "
-	if lost_gold > 0:
-		lost_string += str(lost_gold) + " Gold" + "\n"
-	if lost_items.size() <= 5:
+	var lost_string = tr("LOST_ITEMS") + ": \n"
+	if lost_gold > 0 and lost_items.size() < 4:
+		lost_string += " • " + str(lost_gold) + " Gold" + "\n"
+	elif lost_gold > 0:
+		lost_string += str(lost_gold) + " Gold"
+	if lost_items.size() <= 4:
 		for item in lost_items:
-			lost_string += (item + "\n")
+			lost_string += (" • " + item + "\n")
 	else:
 		for item in lost_items:
-			lost_string += (item + ", ")
+			lost_string += (", " + item)
 	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
+	if lost_items.size() > 0:
+		sound.stream = Constants.PreloadedSounds.Collect2
+	else:
+		sound.stream = Constants.PreloadedSounds.Collect
 	if lost_items.size() > 0 or lost_gold > 0:
+		sound.play()
 		set_player_can_interact(false)
 		set_movement(false)
 		pause_player(true)
-		var dialog = load(Constants.DIALOG_PATH).instance()
+		var dialog = Constants.PreloadedScenes.DialogScene.instance()
 		Utils.get_ui().add_child(dialog)
 		dialog.start(self, "Death", lost_dialog)
 

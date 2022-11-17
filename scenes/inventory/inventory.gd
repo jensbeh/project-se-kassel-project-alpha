@@ -1,6 +1,6 @@
 extends Control
 
-var inv_slot = load(Constants.INV_SLOT)
+var inv_slot = Constants.PreloadedScenes.InvSlotScene
 
 onready var gridcontainer = get_node("Background/MarginContainer/VBox/ScrollContainer/GridContainer")
 

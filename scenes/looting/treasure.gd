@@ -55,7 +55,7 @@ func interaction():
 		interacted = true
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_player_can_interact(false)
-		var dialog = load(Constants.DIALOG_PATH).instance()
+		var dialog = Constants.PreloadedScenes.DialogScene.instance()
 		Utils.get_ui().add_child(dialog)
 		if !looted:
 			dialog.start(self, false, str(3))
@@ -72,11 +72,12 @@ func reset_interaction():
 # called to open the loot panel
 func open_loot_panel():
 	interacted = true
-	loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+	loot_panel = Constants.PreloadedScenes.LootPanelScene.instance()
 	Utils.get_ui().add_child(loot_panel)
 	get_node("AnimationPlayer").play("OpenTreasure")
 	loot_panel.connect("looted", self, "save_loot")
 	if !looted:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 		looted = true
 		loot_panel.set_loot_type("Treasure3", true)
 		loot_panel.loot()

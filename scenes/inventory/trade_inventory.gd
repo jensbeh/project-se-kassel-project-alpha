@@ -1,6 +1,6 @@
 extends Control
 
-var inv_slot = load(Constants.TRADE_INV_SLOT)
+var inv_slot = Constants.PreloadedScenes.TradeInvSlotScene
 
 onready var gridcontainer = find_node("TradeGridContainer")
 
@@ -11,7 +11,7 @@ func _ready():
 		if MerchantData.inv_data[slot]["Item"] != null:
 			if (MerchantData.inv_data[slot]["Time"] == null or 
 			(MerchantData.inv_data[slot]["Time"] + (3* DayNightCycle.COMPLETE_DAY_TIME)) > 
-			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time)):
+			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time())):
 				var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
 				var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
 				var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
@@ -43,6 +43,8 @@ func _ready():
 func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
+			# Sound
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
 			Utils.get_trade_inventory().queue_free()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
@@ -62,6 +64,8 @@ func set_name(npc_name):
 		npc_name = "Lea"
 	elif npc_name == "heinz":
 		npc_name = "Heinz"
+	elif npc_name == "haley":
+		npc_name = "Haley"
 	else:
 		npc_name = "Bella"
 	$ColorRect/MarginContainer/HBoxContainer/Background.find_node("Titlename").text = npc_name + "´s " + tr("INVENTORY")
@@ -75,6 +79,7 @@ func check_slots():
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
 	if !free:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
 			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
@@ -85,11 +90,17 @@ func check_slots():
 			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
 				free2 = true
 		if !free2:
+			Utils.get_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+			check_slots()
 
 
 func get_trade_gridcontainer():
 	return gridcontainer
+
+
+func get_sound_player():
+	return get_node("Sound")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scenes/SceneManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/main.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scenes/ui.gd" type="Script" id=9]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=10]
 [ext_resource path="res://assets/ui/loading.png" type="Texture" id=11]
+[ext_resource path="res://assets/sounds/awesomeness.wav" type="AudioStream" id=12]
 
 [sub_resource type="ShaderMaterial" id=25]
 shader = ExtResource( 7 )
@@ -513,7 +514,7 @@ self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 19 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
@@ -547,3 +548,12 @@ valign = 1
 [node name="SaveScreen" type="AnimationPlayer" parent="LoadingScreen"]
 anims/RESET = SubResource( 28 )
 anims/Saved = SubResource( 29 )
+
+[node name="Musicplayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = -5.0
+bus = "Music"
+
+[node name="Soundplayer" type="AudioStreamPlayer" parent="."]
+volume_db = 5.0
+bus = "Sounds"

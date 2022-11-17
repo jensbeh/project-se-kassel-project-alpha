@@ -16,6 +16,10 @@ onready var changeScenesObject = find_node("changeScenes")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	if Utils.get_music_player().stream != Constants.PreloadedMusic.House_Grassland:
+		Utils.set_and_play_music(Constants.PreloadedMusic.House_Grassland)
+	
 	# Setup player
 	setup_player()
 	
@@ -65,6 +69,10 @@ func interaction_detected():
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
 		var transition_data = TransitionData.GameArea.new(next_scene_path, current_area.get_meta("to_spawn_area_id"), next_view_direction)
 		Utils.get_scene_manager().transition_to_scene(transition_data)
+		if !"House" in next_scene_path:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
+		else:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.Steps_Stairs)
 
 
 # Setup all change_scene objectes/Area2D's on start
@@ -85,6 +93,10 @@ func body_entered_change_scene_area(body, changeSceneArea):
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))
 			var transition_data = TransitionData.GameArea.new(next_scene_path, changeSceneArea.get_meta("to_spawn_area_id"), next_view_direction)
 			Utils.get_scene_manager().transition_to_scene(transition_data)
+			if !"House" in next_scene_path:
+				Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
+			else:
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Steps_Stairs)
 		else:
 			Utils.get_current_player().set_in_change_scene_area(true)
 			current_area = changeSceneArea

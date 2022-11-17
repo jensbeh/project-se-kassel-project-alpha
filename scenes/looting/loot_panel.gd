@@ -125,12 +125,19 @@ func _on_Icon_gui_input(event, lootpanelslot):
 			else:
 				item_idx = keys[lootpanelslot -1]
 			if loot_dict.has(item_idx):
+				if loot_dict[item_idx][0] == 10064:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Collect)
+				else:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Collect2)
 				loot_item(item_idx)
 
 
 # close the loot panel
 func _on_Close_pressed():
+	Utils.get_current_player().get_node("Sound").stream = Constants.PreloadedSounds.OpenUI
+	Utils.get_current_player().get_node("Sound").play()
 	Utils.get_current_player().player_looted()
+	Utils.save_game(true)
 	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
@@ -142,8 +149,13 @@ func _on_LootAll_pressed():
 	all = true
 	var key = loot_dict.keys()
 	var size = loot_dict.size()
+	if size > 1:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect2)
+	else:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect)
 	get_parent().remove_child(self)
 	queue_free()
+	Utils.save_game(true)
 	for i in range(1,size + 1):
 		loot_item(key[i -1])
 	emit_signal("looted", loot_dict)
@@ -161,7 +173,7 @@ func loot_item(item_idx):
 			var stored = false
 			for i in range(1,31):
 				var slot = "Inv" + str(i)
-				if PlayerData.inv_data[slot]["Item"] == loot_dict[item_idx][0]:
+				if PlayerData.inv_data[slot]["Item"] == loot_dict[item_idx][0] and PlayerData.inv_data[slot]["Stack"] + loot_dict[item_idx][1] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[slot]["Stack"] += loot_dict[item_idx][1]
 					stored = true
 					looted = true
@@ -196,5 +208,5 @@ func loot_item(item_idx):
 	
 	else:
 		# Msg can not loot - inventory full
-		var msg = load(Constants.FULL_INV_MSG).instance()
+		var msg = Constants.PreloadedScenes.FullInvMsgScene.instance()
 		Utils.get_ui().add_child(msg)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://scenes/npc/npc.gd" type="Script" id=1]
+[ext_resource path="res://assets/sounds/stepdirt.mp3" type="AudioStream" id=2]
 
 [sub_resource type="StreamTexture" id=55]
 flags = 4
@@ -1616,7 +1617,7 @@ vframes = 49
 region_rect = Rect2( -55.906, 16.542, 1300, 1300 )
 
 [node name="Shoes" type="Sprite" parent="."]
-position = Vector2( -16, -24 )
+position = Vector2( -16, -25 )
 texture = SubResource( 57 )
 centered = false
 hframes = 80
@@ -1739,6 +1740,13 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 81 )
 parameters/Idle/blend_position = Vector2( -0.00158477, 1 )
 parameters/Walk/blend_position = Vector2( -0.852667, 0.595376 )
+
+[node name="Sounds" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = 10.0
+max_distance = 200.0
+attenuation = 2.0
+bus = "Sounds"
 
 [connection signal="area_entered" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_entered"]
 [connection signal="area_exited" from="interactionZone NPC" to="." method="_on_interactionZone_NPC_area_exited"]

@@ -1,36 +1,18 @@
 extends Node2D
 
-var lang
-var save_setting = {
-		language = "en"
-	}
-
 # Nodes
 onready var mainMenuAnimationPlayer = $MainMenuAnimationPlayer
 
 func _ready():
+	if 	Utils.get_music_player().stream != Constants.PreloadedMusic.Menu_Music:
+		Utils.set_and_play_music(Constants.PreloadedMusic.Menu_Music)
+	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 	
 	# Start animation
 	mainMenuAnimationPlayer.play("FadeIn")
 	
-	# Sets the Langauge
-	var save_settings = File.new()
-	if save_settings.file_exists(Constants.SAVE_SETTINGS_PATH):
-		save_settings.open(Constants.SAVE_SETTINGS_PATH, File.READ)
-		var settings = {}
-		settings = parse_json(save_settings.get_line())
-		save_settings.close()
-		lang = settings.language
-	else:
-		var save_game = File.new()
-		save_game.open(Constants.SAVE_SETTINGS_PATH, File.WRITE)
-		save_game.store_line(to_json(save_setting))
-		save_game.close()
-		lang = "en"
-	Utils.set_language(lang)
-	TranslationServer.set_locale(lang)
 	# Sets the text
 	get_node("Start Game").set_text(tr("START_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))
@@ -45,12 +27,15 @@ func destroy_scene():
 
 
 func _on_Start_Game_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func _on_Settings_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	Utils.get_main().add_settings()
 
 func _on_Exit_to_Desktop_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	# Stop game
 	Utils.stop_game()

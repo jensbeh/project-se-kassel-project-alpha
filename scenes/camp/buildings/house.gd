@@ -16,6 +16,9 @@ onready var changeScenesObject = find_node("changeScenes")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	Utils.set_and_play_music(Constants.PreloadedMusic.House)
+	
 	# Setup player
 	setup_player()
 	
@@ -67,6 +70,7 @@ func setup_change_scene_areas():
 func body_entered_change_scene_area(body, changeSceneArea):
 	if body.name == "Player":
 		if changeSceneArea.get_meta("need_to_press_button_for_change") == false:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 			var next_scene_path = changeSceneArea.get_meta("next_scene_path")
 			print("HOUSE: Change scene to \""  + str(next_scene_path) + "\"")
 			var next_view_direction = Vector2(changeSceneArea.get_meta("view_direction_x"), changeSceneArea.get_meta("view_direction_y"))

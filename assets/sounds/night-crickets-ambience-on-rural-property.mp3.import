@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/night-crickets-ambience-on-rural-property.mp3-494a9be37b35cde26ee4d4f642e6295a.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/night-crickets-ambience-on-rural-property.mp3"
+dest_files=[ "res://.import/night-crickets-ambience-on-rural-property.mp3-494a9be37b35cde26ee4d4f642e6295a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

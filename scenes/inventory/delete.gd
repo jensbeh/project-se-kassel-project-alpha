@@ -49,6 +49,7 @@ func delete_item():
 
 func get_drag_data(_pos):
 	if item != null:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Delete"
@@ -84,6 +85,9 @@ func get_drag_data(_pos):
 
 
 func drop_data(_pos, data):
+	# Sound
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Delete)
+	
 	node = data["origin_node"]
 	panel = data["origin_panel"]
 	item = data["origin_item_id"]

@@ -10,10 +10,10 @@ var charac_name = ""
 # Count Textures, Count Colors
 var curr_body: int = 0
 var curr_shoes: int = 0
-var curr_shoe_color: int = 0
-var curr_pants: int = 0
-var curr_pants_color: int = 0
-var curr_clothes: int = 0
+var curr_shoe_color: int = 1
+var curr_pants: int = 1
+var curr_pants_color: int = 1
+var curr_clothes: int = 8
 var curr_clothes_color: int = 0
 var curr_blush: int = 0
 var curr_blush_color: int = 0
@@ -24,7 +24,7 @@ var curr_beard_color: int = 0
 var curr_eyes: int = 0
 var curr_eyes_color: int = 0
 var curr_earring: int = 0
-var curr_hair: int = 0
+var curr_hair: int = 8
 var curr_hair_color: int = 0
 var curr_mask: int = 0
 var curr_glasses: int = 0
@@ -41,6 +41,22 @@ var beard
 var eyes
 var hair
 var shadow
+
+# Nodes
+onready var HairCountNode = find_node("HairCount");
+onready var HairColorCountNode = find_node("HairColorCount");
+onready var SkinCountNode = find_node("SkinCount");
+onready var TorsoCountNode = find_node("TorsoCount");
+onready var TorsoColorCountNode = find_node("TorsoColorCount");
+onready var LegsCountNode = find_node("LegsCount");
+onready var LegsColorCountNode = find_node("LegsColorCount");
+onready var ShoesCountNode = find_node("ShoesCount");
+onready var EyesCountNode = find_node("EyesCount");
+onready var BeardCountNode = find_node("BeardCount");
+onready var MakeupCountNode = find_node("MakeupCount");
+onready var HairColorLeftNode = find_node("HairColorLeft");
+onready var HairColorRightNode = find_node("HairColorRight");
+onready var LineEditNode = find_node("LineEdit");
 
 func _ready():
 	find_node("Name").set_text(tr("CHARACTER_NAME"))
@@ -59,21 +75,6 @@ func _ready():
 	find_node("Back").set_text(tr("BACK_TO_CHARACTER_CHOICE"))
 	find_node("LineEdit").set_placeholder("ENTER_NAME_HERE")
 	
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer/BeardCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(0))
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(0))
-
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = true
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = true
-
 	get_sprites()
 	
 	Utils.get_player().set_movement(false)
@@ -81,10 +82,61 @@ func _ready():
 	beard.visible = false
 	blush.visible = false
 	lipstick.visible = false
-	hair.visible = false
 	shadow.visible = true
 	
 	uuid = uuid_util.v4()
+	
+	# Set preset to character
+	# UI
+	HairCountNode.set_text(str(curr_hair))
+	HairColorCountNode.set_text(str(curr_hair_color))
+	SkinCountNode.set_text(str(curr_body))
+	TorsoCountNode.set_text(str(curr_clothes))
+	TorsoColorCountNode.set_text(str(curr_clothes_color))
+	LegsCountNode.set_text(str(curr_pants))
+	LegsColorCountNode.set_text(str(curr_pants_color))
+	ShoesCountNode.set_text(str(curr_shoes))
+	EyesCountNode.set_text(str(curr_eyes))
+	BeardCountNode.set_text(str(curr_beard))
+	MakeupCountNode.set_text(str(curr_blush))
+	# PLAYER (Color & Sprite)
+	# Body
+	player.set_texture("curr_body", curr_body)
+	# Shoes
+	player.reset_key(1)
+	player._set_key(1, curr_shoe_color*8)
+	player.set_texture("curr_shoes", curr_shoes)
+	# Pants
+	player.reset_key(2)
+	player._set_key(2, curr_pants_color*8)
+	player.set_texture("curr_pants", curr_pants)
+	# Clothes
+	player.reset_key(3)
+	player._set_key(3, curr_clothes_color*8)
+	player.set_texture("curr_clothes", curr_clothes)
+	# Hairs
+	player.reset_key(9)
+	player._set_key(9, curr_hair_color*8)
+	player.set_texture("curr_hair", curr_hair-1)
+	# Eyes
+	player.reset_key(7)
+	player._set_key(7, curr_eyes_color*8)
+	player.set_texture("curr_eyes", curr_eyes)
+	# Beard
+	if curr_beard_color > 0:
+		player.reset_key(6)
+		player._set_key(6, (curr_beard_color-1)*8)
+	player.set_texture("curr_beard", curr_beard)
+	# Blush
+	if curr_lipstick_color > 0:
+		player.reset_key(5)
+		player._set_key(5, (curr_lipstick_color-1)*8)
+	player.set_texture("curr_blush", curr_blush)
+	# Set frames
+	reset_frame()
+	
+	HairColorLeftNode.disabled = false
+	HairColorRightNode.disabled = false
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -214,11 +266,13 @@ func save_data():
 
 
 func _on_Back_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 	if charac_name != "":
 		save_game_data.skincolor = curr_body
 		save_game_data.shoes = curr_shoes
@@ -246,202 +300,222 @@ func _on_Create_Character_pressed():
 		save_data()
 
 		start_game()
-		
+
+
 func _on_HairLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_hair -= 1
 	if curr_hair < 0:
 		curr_hair = 13
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
+	HairCountNode.set_text(str(curr_hair))
 	if curr_hair == 0:
 		hair.visible = false
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = true
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = true
+		HairColorLeftNode.disabled = true
+		HairColorRightNode.disabled = true
 	else:
 		hair.visible = true
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = false
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = false
+		HairColorLeftNode.disabled = false
+		HairColorRightNode.disabled = false
 		player.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_hair += 1
 	if curr_hair > 13:
 		curr_hair = 0
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer/HairCount.set_text(str(curr_hair))
+	HairCountNode.set_text(str(curr_hair))
 	if curr_hair == 0:
 		hair.visible = false
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = true
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = true
+		HairColorLeftNode.disabled = true
+		HairColorRightNode.disabled = true
 	else:
 		hair.visible = true
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorLeft.disabled = false
-		$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorRight.disabled = false
+		HairColorLeftNode.disabled = false
+		HairColorRightNode.disabled = false
 		player.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairColorLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_hair_color = (curr_hair_color -1)
 	if curr_hair_color < 0:
 		curr_hair_color = 13
+	reset_frame()
 	player.reset_key(9)
 	player._set_key(9, curr_hair_color*8)
-	reset_frame()
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorCount.set_text(str(curr_hair_color))
+	HairColorCountNode.set_text(str(curr_hair_color))
 
 
 func _on_HairColorRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_hair_color = (curr_hair_color +1)
 	if curr_hair_color > 13:
 		curr_hair_color = 0
+	reset_frame()
 	player.reset_key(9)
 	player._set_key(9, curr_hair_color*8)
-	reset_frame()
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer2/MarginContainer/VBoxContainer/HBoxContainer2/HairColorCount.set_text(str(curr_hair_color))
+	HairColorCountNode.set_text(str(curr_hair_color))
 
 
 func _on_SkinLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	if curr_body > 0:
 		curr_body = (curr_body -1)%8
 	else:
 		curr_body = 7
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinCount.set_text(str(curr_body))
+	SkinCountNode.set_text(str(curr_body))
 	player.set_texture("curr_body", curr_body)
 	reset_frame()
 
 
 func _on_SkinRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_body = (curr_body +1)%8
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer1/MarginContainer/VBoxContainer/HBoxContainer/SkinCount.set_text(str(curr_body))
+	SkinCountNode.set_text(str(curr_body))
 	player.set_texture("curr_body", curr_body)
 	reset_frame()
 
 
 func _on_TorsoLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_clothes -= 1
 	if curr_clothes < 0:
 		curr_clothes = 10
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(curr_clothes))
+	TorsoCountNode.set_text(str(curr_clothes))
 	player.set_texture("curr_clothes", curr_clothes)
 
 
 func _on_TorsoRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_clothes += 1
 	if curr_clothes > 10:
 		curr_clothes = 0
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer/TorsoCount.set_text(str(curr_clothes))
+	TorsoCountNode.set_text(str(curr_clothes))
 	player.set_texture("curr_clothes", curr_clothes)
 
 
 func _on_TorsoColorLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_clothes_color = (curr_clothes_color -1)
 	if curr_clothes_color < 0:
 		curr_clothes_color = 9
+	reset_frame()
 	player.reset_key(3)
 	player._set_key(3, curr_clothes_color*8)
-	reset_frame()
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(curr_clothes_color))
+	TorsoColorCountNode.set_text(str(curr_clothes_color))
 
 
 func _on_TorsoColorRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_clothes_color = (curr_clothes_color +1)
 	if curr_clothes_color > 9:
 		curr_clothes_color = 0
+	reset_frame()
 	player.reset_key(3)
 	player._set_key(3, curr_clothes_color*8)
-	reset_frame()
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer3/MarginContainer/VBoxContainer/HBoxContainer2/TorsoColorCount.set_text(str(curr_clothes_color))
+	TorsoColorCountNode.set_text(str(curr_clothes_color))
 
 
 func _on_LegsLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_pants -= 1
 	if curr_pants < 0:
 		curr_pants = 2
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(curr_pants))
+	LegsCountNode.set_text(str(curr_pants))
 	player.set_texture("curr_pants", curr_pants)
 
 
 func _on_LegsRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_pants += 1
 	if curr_pants > 2:
 		curr_pants = 0
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer/LegsCount.set_text(str(curr_pants))
+	LegsCountNode.set_text(str(curr_pants))
 	player.set_texture("curr_pants", curr_pants)
 
 
 func _on_LegsColorLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_pants_color = (curr_pants_color -1)
 	if curr_pants_color < 0:
 		curr_pants_color = 9
+	reset_frame()
 	player.reset_key(2)
 	player._set_key(2, curr_pants_color*8)
-	reset_frame()
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(curr_pants_color))
+	LegsColorCountNode.set_text(str(curr_pants_color))
 
 
 func _on_LegsColorRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_pants_color = (curr_pants_color +1)
 	if curr_pants_color > 9:
 		curr_pants_color = 0
+	reset_frame()
 	player.reset_key(2)
 	player._set_key(2, curr_pants_color*8)
-	reset_frame()
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer4/MarginContainer/VBoxContainer/HBoxContainer2/LegsColorCount.set_text(str(curr_pants_color))
+	LegsColorCountNode.set_text(str(curr_pants_color))
 
 
 func _on_ShoesLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_shoe_color = (curr_shoe_color -1)
 	if curr_shoe_color < 0:
 		curr_shoe_color = 9
 	reset_frame()
 	player.reset_key(1)
 	player._set_key(1, curr_shoe_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(curr_shoe_color))
+	ShoesCountNode.set_text(str(curr_shoe_color))
 	player.set_texture("curr_shoes", curr_shoes)
 
 
 func _on_ShoesRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_shoe_color = (curr_shoe_color +1)
 	if curr_shoe_color > 9:
 		curr_shoe_color = 0
 	reset_frame()
 	player.reset_key(1)
 	player._set_key(1, curr_shoe_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer/VBoxContainer/HBoxContainer/ShoesCount.set_text(str(curr_shoe_color))
+	ShoesCountNode.set_text(str(curr_shoe_color))
 	player.set_texture("curr_shoes", curr_shoes)
 
 
 func _on_EyesLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_eyes_color = (curr_eyes_color -1)
 	if curr_eyes_color < 0:
 		curr_eyes_color = 13
 	reset_frame()
 	player.reset_key(7)
 	player._set_key(7, curr_eyes_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(curr_eyes_color))
+	EyesCountNode.set_text(str(curr_eyes_color))
 	player.set_texture("curr_eyes", curr_eyes)
 
 
 func _on_EyesRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_eyes_color = (curr_eyes_color +1)
 	if curr_eyes_color > 13:
 		curr_eyes_color = 0
 	reset_frame()
 	player.reset_key(7)
 	player._set_key(7, curr_eyes_color*8)
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer6/MarginContainer/VBoxContainer/HBoxContainer/EyesCount.set_text(str(curr_eyes_color))
+	EyesCountNode.set_text(str(curr_eyes_color))
 	player.set_texture("curr_eyes", curr_eyes)
 
 
 func _on_MakeupLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_lipstick_color = (curr_lipstick_color -1)
 	if curr_lipstick_color < 0:
 		curr_lipstick_color = 5
 	if curr_lipstick_color == 0:
 		lipstick.visible = false
 	else:
+		reset_frame()
 		player.reset_key(5)
 		player._set_key(5, (curr_lipstick_color-1)*8)
-		reset_frame()
 		lipstick.visible = true
 	player.set_texture("curr_lipstick", curr_lipstick)
 	
@@ -451,24 +525,25 @@ func _on_MakeupLeft_pressed():
 	if curr_blush_color == 0:
 		blush.visible = false
 	else:
+		reset_frame()
 		player.reset_key(4)
 		player._set_key(4, (curr_blush_color-1)*8)
-		reset_frame()
 		blush.visible = true
 	player.set_texture("curr_blush", curr_blush)
-	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
+	MakeupCountNode.set_text(str(curr_lipstick_color))
 
 
 func _on_MakeupRight_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_lipstick_color = (curr_lipstick_color +1)
 	if curr_lipstick_color > 5:
 		curr_lipstick_color = 0
 	if curr_lipstick_color == 0:
 		lipstick.visible = false
 	else:
+		reset_frame()
 		player.reset_key(5)
 		player._set_key(5, (curr_lipstick_color-1)*8)
-		reset_frame()
 		lipstick.visible = true
 	player.set_texture("curr_lipstick", curr_lipstick)
 	
@@ -478,47 +553,49 @@ func _on_MakeupRight_pressed():
 	if curr_blush_color == 0:
 		blush.visible = false
 	else:
+		reset_frame()
 		player.reset_key(4)
 		player._set_key(4, (curr_blush_color-1)*8)
 		blush.visible = true
-		reset_frame()
 	player.set_texture("curr_blush", curr_blush)
-	$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/MakeupCount.set_text(str(curr_lipstick_color))
+	MakeupCountNode.set_text(str(curr_lipstick_color))
 
 
 func _on_BeardLeft_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_beard_color = (curr_beard_color -1)
 	if curr_beard_color < 0:
 		curr_beard_color = 14
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer/BeardCount.set_text(str(curr_beard_color))
+	BeardCountNode.set_text(str(curr_beard_color))
 	if curr_beard_color == 0:
 		beard.visible = false
 	else:
 		beard.visible = true
+		reset_frame()
 		player.reset_key(6)
 		player._set_key(6, (curr_beard_color-1)*8)
-		reset_frame()
 	player.set_texture("curr_beard", curr_beard)
 
 
 func _on_BeardRight_pressed(): 
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_beard_color = (curr_beard_color +1)
 	if curr_beard_color > 14:
 		curr_beard_color = 0
-	$ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/MarginContainer8/MarginContainer/VBoxContainer/HBoxContainer/BeardCount.set_text(str(curr_beard_color))
+	BeardCountNode.set_text(str(curr_beard_color))
 	if curr_beard_color == 0:
 		beard.visible = false
 	else:
 		beard.visible = true
+		reset_frame()
 		player.reset_key(6)
 		player._set_key(6, (curr_beard_color-1)*8)
-		reset_frame()
 	player.set_texture("curr_beard", curr_beard)
 
 
 func _on_LineEdit_text_changed(new_text):
 	if new_text.length() > Constants.NAME_LENGTH:
-		$ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/LineEdit.delete_char_at_cursor()
+		LineEditNode.delete_char_at_cursor()
 	else:
 		charac_name = new_text
 
@@ -573,8 +650,8 @@ func start_game():
 	var player_position = Vector2(1128,616)
 	var view_direction = Vector2(0,1)
 	
-	DayNightCycle.current_time = 0.0
-	DayNightCycle.passed_days_since_start = 0
+	DayNightCycle.set_current_time(0.0)
+	DayNightCycle.set_passed_days(0)
 	
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Ove Melaa - DrumLoop 1 64BPM.mp3-28301b8d92ee0f0e4b5693391d3c7235.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"
+dest_files=[ "res://.import/Ove Melaa - DrumLoop 1 64BPM.mp3-28301b8d92ee0f0e4b5693391d3c7235.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

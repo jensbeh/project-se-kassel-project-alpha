@@ -28,6 +28,10 @@ onready var lootLayer = find_node("lootLayer")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	if Utils.get_music_player().stream != Constants.PreloadedMusic.Dungeon:
+		Utils.set_and_play_music(Constants.PreloadedMusic.Dungeon)
+	
 	# Setup player
 	setup_player()
 	
@@ -63,6 +67,8 @@ func _ready():
 	
 	# Check if boss room
 	if is_boss_room():
+		Utils.set_and_play_music(Constants.PreloadedMusic.Boss_Fight2)
+		
 		# Spawn boss
 		spawn_boss()
 		
@@ -94,8 +100,7 @@ func is_boss_room() -> bool:
 # Method to spawn boss in dungeon
 func spawn_boss():
 	# Take random boss
-	var boss_path = Utils.get_random_boss_instance_path()
-	var boss_instance = load(boss_path).instance()
+	var boss_instance = Utils.get_random_boss_preload().instance()
 	# Generate spawn position and spawn boss
 	boss_instance.init(boss_spawn_area, mobsNavigationTileMap, scene_type, is_boss_room(), lootLayer)
 	mobsLayer.call_deferred("add_child", boss_instance)
@@ -150,6 +155,7 @@ func set_transition_data(transition_data):
 # Method to handle collision detetcion dependent of the collision object type
 func interaction_detected():
 	if Utils.get_current_player().is_in_change_scene_area():
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Steps_Stairs)
 		var next_scene_path = current_area.get_meta("next_scene_path")
 		print("DUNGEONS: Change scene to \""  + str(next_scene_path) + "\"")
 		var next_view_direction = Vector2(current_area.get_meta("view_direction_x"), current_area.get_meta("view_direction_y"))
@@ -305,6 +311,7 @@ func despawn_boss(boss_node):
 	# Remove from nodes
 	if mobsLayer.get_node_or_null(boss_node.name) != null:
 		spawn_loot(boss_node.position, boss_node.get_name())
+		yield(boss_node.sound, "finished")
 		boss_node.call_deferred("queue_free")
 		print("DUNGEON: Boss \"" + boss_node.name + "\" removed")
 	
@@ -314,7 +321,7 @@ func despawn_boss(boss_node):
 
 # Method is called from boss on death when key to open the door should be spawned
 func spawn_key_at_death(death_position):
-	var key_instance = load("res://scenes/items/golden_key.tscn").instance()
+	var key_instance = Constants.PreloadedScenes.GoldenKeyScene.instance()
 	key_instance.init(death_position)
 	find_node("keylayer").call_deferred("add_child", key_instance)
 
@@ -330,7 +337,7 @@ func on_key_collected():
 # Method to spawn loot after monster died
 func spawn_loot(position, mob_name):
 	if "Boss" in mob_name:
-		var loot = load(Constants.LOOT_DROP_PATH).instance()
+		var loot = Constants.PreloadedScenes.LootDropScene.instance()
 		loot.get_child(0).frame = 187
 		loot.init(position, mob_name, true)
 		lootLayer.call_deferred("add_child", loot)
@@ -338,7 +345,7 @@ func spawn_loot(position, mob_name):
 		randomize()
 		var random_float = randf()
 		if random_float <= Constants.LOOT_CHANCE:
-			var loot = load(Constants.LOOT_DROP_PATH).instance()
+			var loot = Constants.PreloadedScenes.LootDropScene.instance()
 			loot.get_child(0).frame = 198
 			loot.init(position, mob_name, true)
 			lootLayer.call_deferred("add_child", loot)
@@ -429,7 +436,7 @@ func interaction():
 			interacted = true
 			Utils.get_current_player().set_movement(false)
 			Utils.get_current_player().set_player_can_interact(false)
-			var dialog = load(Constants.DIALOG_PATH).instance()
+			var dialog = Constants.PreloadedScenes.DialogScene.instance()
 			Utils.get_ui().add_child(dialog)
 			if !treasure_dict[treasure][1]:
 				if treasure_dict[treasure][3] == 3:
@@ -452,11 +459,12 @@ func reset_interaction():
 # called to open the loot panel
 func open_loot_panel(treasure):
 	interacted = true
-	loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+	loot_panel = Constants.PreloadedScenes.LootPanelScene.instance()
 	Utils.get_ui().add_child(loot_panel)
 	loot_panel.connect("looted", self, "save_loot")
 	if !treasure_dict[treasure][1]:
 		treasure_dict[treasure][1] = true
+		Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 		for child in treasure.get_children():
 			if "animationPlayer" in child.name:
 				# Start treasure animation

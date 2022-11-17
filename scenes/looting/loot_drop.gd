@@ -12,6 +12,8 @@ var timeout = false
 
 # start timer for looting time and connect interaction signal with player
 func _ready():
+	get_viewport().audio_listener_enable_2d = true
+	get_node("Sound").play()
 	position = spawn_position
 	$Timer.wait_time = Constants.LOOTING_TIME
 	Utils.get_current_player().connect("player_looting", self, "interaction")
@@ -47,7 +49,7 @@ func interaction():
 	if player_in_looting_zone and !interacted and Utils.get_ui().get_node_or_null("DialogueBox") == null:
 		Utils.get_current_player().set_movement(false)
 		if Utils.get_loot_panel() == null:
-			loot_panel = (load(Constants.LOOT_PANEL_PATH).instance())
+			loot_panel = Constants.PreloadedScenes.LootPanelScene.instance()
 			Utils.get_ui().add_child(loot_panel)
 			loot_panel.connect("looted", self, "save_loot")
 			if !looted:
@@ -58,6 +60,7 @@ func interaction():
 			elif !content.empty():
 				interacted = true
 				loot_panel.set_up_content(content)
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 
 
 func save_loot(loot):

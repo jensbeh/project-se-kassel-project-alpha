@@ -82,6 +82,7 @@ onready var raycast = $RayCast2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_viewport().audio_listener_enable_2d = true
 	# Show or hide nodes for debugging
 	collision.visible = Constants.SHOW_MOB_COLLISION
 	playerDetectionZone.visible = Constants.SHOW_MOB_DETECTION_RADIUS

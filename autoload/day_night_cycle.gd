@@ -14,7 +14,6 @@ signal change_to_sunrise
 
 # Variables
 var current_time = 0.0
-var lights_visible = false # when night; day == false
 var screen_color : Color
 var game_time_active = false
 
@@ -181,3 +180,22 @@ func skip_time(hours_to_skip):
 
 func get_passed_days_since_start():
 	return passed_days_since_start
+
+
+func set_current_time(new_time):
+	current_hour = 0
+	current_minute = 0
+	previouse_current_minute = 0
+	is_daytime = false
+	is_sunset = false
+	is_night = false
+	is_sunrise = false
+	current_time = new_time
+	
+	
+func set_passed_days(new_value):
+	passed_days_since_start = new_value
+
+
+func get_current_time():
+	return current_time

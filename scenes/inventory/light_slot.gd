@@ -1,12 +1,13 @@
 extends TextureRect
 
-var tool_tip = load(Constants.TOOLTIP)
+var tool_tip = Constants.PreloadedScenes.TooltipScene
 
 
 # Get information about drag item
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.equipment_data[slot]["Item"] != null:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "CharacterInterface"
@@ -69,6 +70,7 @@ func drop_data(_pos, data):
 	if data["origin_node"] == self:
 		pass
 	else:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Equip)
 		# Update the data of the origin
 		if data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]

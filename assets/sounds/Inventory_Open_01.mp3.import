@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Inventory_Open_01.mp3-1425704ad2d63e4dee3de8248aedd872.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Inventory_Open_01.mp3"
+dest_files=[ "res://.import/Inventory_Open_01.mp3-1425704ad2d63e4dee3de8248aedd872.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

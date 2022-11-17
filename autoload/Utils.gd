@@ -3,6 +3,9 @@ extends Node
 # Variables
 var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
+var sound_volume = 0
+var music_volume = 0
+var in_setting_screen
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 
 
@@ -39,6 +42,16 @@ func get_scene_manager():
 # Sets the current language
 func set_language(lang):
 	language = lang
+
+
+# Sets the current music volume
+func set_music_volume(value):
+	music_volume = value
+
+
+# Sets the current sound volume
+func set_sound_volume(value):
+	sound_volume = value
 
 
 # Returns the current language
@@ -119,6 +132,30 @@ func get_hotbar():
 # Method to return LootPanel node
 func get_loot_panel():
 	return get_ui().get_node_or_null("LootPanel")
+
+
+func setting_screen(value):
+	in_setting_screen = value
+
+
+# method to return the swound volume
+func get_sound_volume():
+	return sound_volume
+
+
+# Method to return the music volume
+func get_music_volume():
+	return music_volume
+
+
+# Method to return the music player
+func get_music_player():
+	return get_main().get_node("Musicplayer")
+
+
+# Method to return the sound player
+func get_sound_player():
+	return get_main().get_node("Soundplayer")
 
 
 # Method to calculate the new player_position and view_direction with the transition_data and sets the spawn of the current player
@@ -475,8 +512,8 @@ func get_random_position_in_rectangle_area(rectangle_area: Area2D) -> Vector2:
 
 
 # Method to choose random boss instance path
-func get_random_boss_instance_path():
-	return Constants.BossPathes[randi() % Constants.BossPathes.size()]
+func get_random_boss_preload():
+	return Constants.PreloadBossScene[randi() % Constants.PreloadBossScene.size()]
 
 
 # Method to preload game -> called ONLY! from start screen
@@ -548,11 +585,20 @@ func save_game(animation):
 	if animation:
 		get_main().play_save_notification()
 	var data = get_current_player().get_data()
-	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
 	data.position = var2str(get_current_player().position)
+	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
+	if "Dungeon1" in data.scene_transition:
+		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
+		data.position = var2str(Vector2(856,682))
+	elif "Dungeon2" in data.scene_transition:
+		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
+		data.position = var2str(Vector2(376,-198))
+	elif "Dungeon3" in data.scene_transition:
+		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
+		data.position = var2str(Vector2(-602,-678))
 	data.view_direction = var2str(get_current_player().view_direction)
-	data.time = DayNightCycle.current_time
-	data.passed_days = DayNightCycle.passed_days_since_start
+	data.time = DayNightCycle.get_current_time()
+	data.passed_days = DayNightCycle.get_passed_days_since_start()
 	# map informations
 	data.show_map = get_ui().show_map
 	data.has_map = get_ui().has_map
@@ -565,3 +611,13 @@ func save_player_data(player_data):
 	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + "/" + player_data.name + ".json", File.WRITE)
 	save_game.store_line(to_json(player_data))
 	save_game.close()
+
+
+func set_and_play_sound(new_sound):
+	get_sound_player().stream = new_sound
+	get_sound_player().play(0.03)
+
+
+func set_and_play_music(new_music):
+	get_music_player().stream = new_music
+	get_music_player().play(0.03)

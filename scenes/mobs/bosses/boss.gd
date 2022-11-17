@@ -86,10 +86,12 @@ onready var hitbox = $HitboxZone
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarNode = $NinePatchRect
 onready var raycast = $RayCast2D
+onready var sound = get_node("HitboxZone/Sound")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	get_viewport().audio_listener_enable_2d = true
 	# Show or hide nodes for debugging
 	collision.visible = Constants.SHOW_BOSS_COLLISION
 	playerDetectionZone.visible = Constants.SHOW_BOSS_DETECTION_RADIUS
@@ -647,6 +649,8 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 	
 	# Mob is killed
 	if health <= 0:
+		sound.stream = Constants.PreloadedSounds.Win
+		sound.play(0.03)
 		update_behaviour(DYING)
 	else:
 		update_behaviour(HURTING)
@@ -713,7 +717,6 @@ func should_regenerate_hp(should_regenerate):
 	# Start regenerate hp
 	if should_regenerate and health < max_health:
 		regenerate_hp = true
-	
 	# Stop regenerate hp
 	else:
 		regenerate_hp = false
@@ -773,3 +776,4 @@ func can_reach_player(can_reach, reachable_path):
 		
 		check_can_reach_player = false
 		update_behaviour(HUNTING)
+

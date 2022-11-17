@@ -1609,6 +1609,7 @@ window_title = ""
 [connection signal="pressed" from="Create Character" to="." method="_on_Create_Character_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
 [connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
+[connection signal="hide" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_hide"]
 
 [editable path="Node2D/Player"]
 [editable path="Node2D/Player/HitboxZone"]

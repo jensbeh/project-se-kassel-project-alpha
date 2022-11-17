@@ -41,6 +41,11 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 const LOAD_GRASSLAND_MAP = true # Default: true
 const LOAD_DUNGEONS_MAPS = true # Default: true
 
+#################
+## TIME
+#################
+const MODIFY_TIME = false # Default: false
+
 # --------------------------------------------------
 
 # Variables
@@ -149,6 +154,7 @@ const LOOT_DROP_PATH = "res://scenes/looting/LootDrop.tscn"
 const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
 const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
+const GOLDEN_KEY_PATH = "res://scenes/items/golden_key.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 5
@@ -172,34 +178,54 @@ const POINTS_VERTICAL_PER_TILE = 3
 const POINT_SIZE_IN_PIXEL_PER_TILE = ceil(float(TILE_SIZE) / (POINTS_HORIZONTAL_PER_TILE - 1))
 
 # Boss enemies pathes
-const BossPathes = [
-	"res://scenes/mobs/bosses/Boss_FungusBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_FungusBrown.tscn",
-	"res://scenes/mobs/bosses/Boss_FungusPurple.tscn",
-	"res://scenes/mobs/bosses/Boss_FungusRed.tscn",
+const PreloadBossScene = [
+	preload("res://scenes/mobs/bosses/Boss_FungusBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_FungusBrown.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_FungusPurple.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_FungusRed.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_GhostGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_GhostPurple.tscn",
-	"res://scenes/mobs/bosses/Boss_GhostWhite.tscn",
+	preload("res://scenes/mobs/bosses/Boss_GhostGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_GhostPurple.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_GhostWhite.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn",
-	"res://scenes/mobs/bosses/Boss_OrbinautRed.tscn",
+	preload("res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_OrbinautRed.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_SkeletonRed.tscn",
-	"res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn",
+	preload("res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SkeletonRed.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn",
-	"res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn",
-	"res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn",
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn"),
 
-	"res://scenes/mobs/bosses/Boss_ZombieBlue.tscn",
-	"res://scenes/mobs/bosses/Boss_ZombieGreen.tscn",
-	"res://scenes/mobs/bosses/Boss_ZombieGrey.tscn"
+	preload("res://scenes/mobs/bosses/Boss_ZombieBlue.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_ZombieGreen.tscn"),
+	preload("res://scenes/mobs/bosses/Boss_ZombieGrey.tscn")
 ]
+
+# Objects
+const PreloadedScenes = {
+	"GoldenKeyScene": preload(GOLDEN_KEY_PATH),
+	"CharacterScreenContainer": preload(CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH),
+	"GameMenuScene" : preload(GAME_MENU_PATH),
+	"SettingScene" : preload(SETTINGS_PATH),
+	"TradeInventoryScene" : preload(TRADE_INVENTORY_PATH),
+	"DeathScreenScene" : preload(DEATH_SCREEN_PATH),
+	"LootPanelScene" : preload(LOOT_PANEL_PATH),
+	"LootDropScene" : preload(LOOT_DROP_PATH),
+	"TreasureScene" : preload(TREASURE_PATH),
+	"DialogScene" : preload(DIALOG_PATH),
+	"FullInvMsgScene" : preload(FULL_INV_MSG),
+	"TradeInvSlotScene" : preload(TRADE_INV_SLOT),
+	"InvSlotScene" : preload(INV_SLOT),
+	"TooltipScene" : preload(TOOLTIP),
+	"SplitPopupScene" : preload(SPLIT_POPUP),
+	"CharacterInterfaceScene" : preload(CHARACTER_INTERFACE_PATH),
+}
 
 # Mobs
 const PreloadedMobScenes = {
@@ -244,6 +270,57 @@ const PreloadedMobScenes = {
 	"ZombieBlue" : preload("res://scenes/mobs/ZombieBlue.tscn"),
 	"ZombieGreen" : preload("res://scenes/mobs/ZombieGreen.tscn"),
 	"ZombieGrey" : preload("res://scenes/mobs/ZombieGrey.tscn"),
+}
+
+# Music
+const PreloadedMusic = {
+	"Menu_Music" : preload("res://assets/sounds/awesomeness.wav"),
+	"House":  preload("res://assets/sounds/menuLoops_microtonalSynthpop(22EDO).ogg"),
+	"Camp" : preload("res://assets/sounds/little town - orchestral.ogg"),
+	"House_Grassland" : preload("res://assets/sounds/forest.mp3"),
+	"Night" : preload("res://assets/sounds/night-crickets-ambience-on-rural-property.mp3"),
+	"Grassland" : preload("res://assets/sounds/Outdoor_Ambiance.mp3"),
+	"Dungeon" : preload("res://assets/sounds/Ambience_Cave_00.mp3"),
+	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
+	"Hostel" : preload("res://assets/sounds/Ove Melaa - Times.mp3"),
+	"Boss_Fight" : preload("res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"),#
+	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),
+	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),
+}
+
+# Sounds
+const PreloadedSounds = {
+	"Switch" : preload("res://assets/sounds/switch6.wav"),
+	"Click" : preload("res://assets/sounds/click3.wav"),
+	"Choose" : preload("res://assets/sounds/rollover2.wav"),
+	"Select" : preload("res://assets/sounds/Menu_Select_00.mp3"),
+	"Delete" : preload("res://assets/sounds/UI_027.wav"),
+	"Levelup" : preload("res://assets/sounds/snare.wav"),
+	"OpenUI" : preload("res://assets/sounds/Inventory_Open_00.mp3"),
+	"OpenUI2" : preload("res://assets/sounds/Inventory_Open_01.mp3"),
+	"Sucsess" : preload ("res://assets/sounds/Jingle_Achievement_00.mp3"),
+	"Lose" : preload("res://assets/sounds/Jingle_Lose_00.mp3"),
+	"Win" : preload("res://assets/sounds/Jingle_Win_00.mp3"),
+	"Collect" : preload("res://assets/sounds/Pickup_Gold_00.mp3"),
+	"Collect2" : preload("res://assets/sounds/chainmail1.wav"),
+	"open_door" : preload("res://assets/sounds/doorOpen_2.ogg"),
+	"locked" : preload("res://assets/sounds/lockeddoor.wav"),
+	"close_door" : preload("res://assets/sounds/doorClose_2.ogg"),#
+	"Potion" : preload("res://assets/sounds/bubble.wav"),
+	"Potion1" : preload("res://assets/sounds/bubble2.wav"),
+	"Dialog" : preload("res://assets/sounds/Pen_v4_wav.wav"),
+	"Equip" : preload("res://assets/sounds/SetSomething.ogg"),
+	"open_close" : preload("res://assets/sounds/interface2.wav"),
+	"Steps_Stairs" : preload("res://assets/sounds/stepstone_7.wav"),
+	"Steps_Grassland" : preload("res://assets/sounds/grass_footsteps.wav"),
+	"Steps_Dungeon" : preload("res://assets/sounds/hard-footstep.mp3"),
+	"Steps_Camp" : preload("res://assets/sounds/stepdirt.mp3"),
+	"Steps_House" : preload("res://assets/sounds/step.mp3"),
+	"Breath" : preload("res://assets/sounds/breath-male.mp3"),
+	"Hurt" : preload("res://assets/sounds/hit34.mp3.mp3"),
+	"Attack" : preload("res://assets/sounds/swing.wav"),
+	"Drop" : preload("res://assets/sounds/plugpull.wav"),
+	"Eat" : preload("res://assets/sounds/beads.wav"),
 }
 
 

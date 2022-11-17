@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/npc/dialogue_box.gd" type="Script" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://assets/ui/panel_grey.png" type="Texture" id=3]
 [ext_resource path="res://assets/ui/#1 - Transparent Icons.png" type="Texture" id=4]
+[ext_resource path="res://assets/sounds/Pen_v4_wav.wav" type="AudioStream" id=5]
 
 [sub_resource type="DynamicFont" id=3]
 size = 32
@@ -134,6 +135,10 @@ align = 1
 valign = 1
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Sounds"
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Trade" to="." method="_on_Trade_pressed"]

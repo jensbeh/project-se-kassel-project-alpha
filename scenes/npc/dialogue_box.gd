@@ -54,6 +54,7 @@ func start(origin_obj, looted_value, treasure_type):
 func _process(_delta):
 	$Skip.visible = finished
 	if Input.is_action_just_pressed("e") and $Text.visible_characters > 2:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 		if finished:
 			nextPhrase()
 		else:
@@ -83,10 +84,14 @@ func nextPhrase():
 		$Name.bbcode_text = dialog[phraseNum].name + ":"
 		$Text.bbcode_text = dialog[phraseNum].text
 		$Text.visible_characters = 0
+		# Sound
+		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
+		get_node("Sound").play()
 		while $Text.visible_characters < len($Text.text):
 			$Text.visible_characters += 1
 			$Timer.start()
 			yield($Timer, "timeout")
+		get_node("Sound").stop()
 		finished = true
 		phraseNum += 1
 	
@@ -101,6 +106,8 @@ func nextPhrase():
 
 
 func _on_Button_pressed():
+	# Sound
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	if finished:
 		nextPhrase()
 		trade = false
@@ -135,21 +142,26 @@ func close_dialog():
 
 func _on_Trade_pressed():
 	if !"treasure" in obj_name and !"empty" in obj_name and !"open" in obj_name:
+		# Sound
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		Utils.get_control_notes().show()
 		MerchantData.set_path(obj_name)
 		MerchantData._ready()
 		PlayerData._ready()
 		close_dialog()
 		# Show trade inventory
-		Utils.get_ui().add_child(load(Constants.TRADE_INVENTORY_PATH).instance())
+		Utils.get_ui().add_child(Constants.PreloadedScenes.TradeInventoryScene.instance())
 		Utils.get_trade_inventory().set_name(obj_name)
 	else:
 		Utils.get_control_notes().show()
 		if type != "3":
 			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
+				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
 			else:
+				Utils.set_and_play_sound(Constants.PreloadedSounds.locked)
 				trade = false
 		else:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			origin.open_loot_panel()
 		close_dialog()

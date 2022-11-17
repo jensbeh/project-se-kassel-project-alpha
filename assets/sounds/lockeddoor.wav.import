@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/lockeddoor.wav-4ef87da106b9c819718bb1a857dd3c18.sample"
+
+[deps]
+
+source_file="res://assets/sounds/lockeddoor.wav"
+dest_files=[ "res://.import/lockeddoor.wav-4ef87da106b9c819718bb1a857dd3c18.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

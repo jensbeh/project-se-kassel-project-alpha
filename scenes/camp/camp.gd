@@ -18,6 +18,9 @@ onready var higherChunks = $map_camp/higher/Chunks
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
+	Utils.set_and_play_music(Constants.PreloadedMusic.Camp)
+	
 	# Setup player
 	setup_player()
 	
@@ -82,6 +85,7 @@ func interaction_detected():
 			for child in doorArea.get_children():
 				if "animationPlayer" in child.name:
 					# Start door animation
+					Utils.set_and_play_sound(Constants.PreloadedSounds.open_door)
 					child.play("openDoor")
 					break
 		

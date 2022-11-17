@@ -126,6 +126,9 @@ margin_right = 1357.0
 margin_bottom = 537.0
 custom_icons/grabber_highlight = ExtResource( 5 )
 custom_icons/grabber = ExtResource( 4 )
+min_value = -40.0
+max_value = 10.0
+value = -15.0
 
 [node name="Soundslider" type="HSlider" parent="."]
 margin_left = 909.0
@@ -134,6 +137,9 @@ margin_right = 1357.0
 margin_bottom = 632.0
 custom_icons/grabber_highlight = ExtResource( 5 )
 custom_icons/grabber = ExtResource( 4 )
+min_value = -40.0
+max_value = 10.0
+value = -15.0
 
 [node name="OptionButton" type="OptionButton" parent="."]
 margin_left = 912.0

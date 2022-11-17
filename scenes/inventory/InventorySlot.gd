@@ -1,8 +1,8 @@
 extends TextureRect
 
-var tool_tip = load(Constants.TOOLTIP)
-var split_popup = load(Constants.SPLIT_POPUP)
-var inv_slot = load(Constants.TRADE_INV_SLOT)
+var tool_tip = Constants.PreloadedScenes.TooltipScene
+var split_popup = Constants.PreloadedScenes.SplitPopupScene
+var inv_slot = Constants.PreloadedScenes.TradeInvSlotScene
 
 onready var time_label = get_node("TextureProgress/Time")
 onready var cooldown_texture = get_node("TextureProgress")
@@ -42,6 +42,7 @@ func _on_Timer_timeout():
 func get_drag_data(_pos):
 	var slot = get_parent().get_name()
 	if PlayerData.inv_data[slot]["Item"] != null:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 		var data = {}
 		data["origin_node"] = self
 		data["origin_panel"] = "Inventory"
@@ -170,11 +171,15 @@ func drop_data(_pos, data):
 					pass
 				# swap
 				elif data["target_item_id"] != null and (!data["origin_stackable"] or data["target_item_id"] != data["origin_item_id"]):
+					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
+					Utils.get_trade_inventory().get_sound_player().play(0.03)
 					Utils.get_current_player().set_gold(player_gold - ((int(GameData.item_data[
 						str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) + 
 						(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
 				# buy
 				else:
+					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
+					Utils.get_trade_inventory().get_sound_player().play(0.03)
 					if (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(data["origin_stack"]) > player_gold):
 						split = int(player_gold/(int(GameData.item_data[str(data["origin_item_id"])]["Worth"])))
 						Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * split)
@@ -186,6 +191,7 @@ func drop_data(_pos, data):
 			# stacking
 			if (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
 			data["origin_panel"] == "Inventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.inv_data[origin_slot]["Item"] = null
 					PlayerData.inv_data[origin_slot]["Stack"] = null
@@ -194,6 +200,7 @@ func drop_data(_pos, data):
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
 			data["origin_panel"] == "TradeInventory" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				if split != 0:
 					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
 				elif data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
@@ -203,11 +210,12 @@ func drop_data(_pos, data):
 				else:
 					MerchantData.inv_data[origin_slot]["Stack"] = (MerchantData.inv_data[origin_slot]["Stack"] - 
 					(Constants.MAX_STACK_SIZE - data["target_stack"]))
-					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 				check_slots()
 			# stacking for hotbar
 			elif (data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and 
 			data["origin_panel"] == "CharacterInterface" and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE):
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 				if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 					PlayerData.equipment_data[origin_slot]["Item"] = null
 					PlayerData.equipment_data[origin_slot]["Stack"] = null
@@ -218,25 +226,35 @@ func drop_data(_pos, data):
 			# swaping
 			# swap with item or null
 			elif data["origin_panel"] == "Inventory":
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 				PlayerData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 			elif data["origin_panel"] == "TradeInventory":
+				Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 				if split != 0:
 					MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split
-					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+					MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 				else:
 					MerchantData.inv_data[origin_slot]["Item"] = data["target_item_id"]
 					MerchantData.inv_data[origin_slot]["Stack"] = data["target_stack"]
 					if data["target_item_id"] != null:
-						MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+						MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 					else:
 						MerchantData.inv_data[origin_slot]["Time"] = null
 				check_slots()
 			elif data["origin_panel"] == "Delete":
+				if PlayerData.inv_data[target_slot]["Item"] != null:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Delete)
+				else:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 				data["origin_node"].item = PlayerData.inv_data[target_slot]["Item"]
 				data["origin_node"].stack = PlayerData.inv_data[target_slot]["Stack"]
 			else:
 				# change equipment
+				if data["target_item_id"] != null:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Equip)
+				else:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Switch)
 				PlayerData.equipment_data[origin_slot]["Item"] = data["target_item_id"]
 				PlayerData.equipment_data[origin_slot]["Stack"] = data["target_stack"]
 				# Weapon
@@ -283,7 +301,7 @@ func drop_data(_pos, data):
 			# Update the texture and label of the origin
 			# stacking
 			if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"] and split == 0 and data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
-				if data["origin_panel"] == "CharacterInterface":
+				if data["origin_panel"] == "CharacterInterface" or data["origin_panel"] == "Delete":
 					if data["target_stack"] + data["origin_stack"] <= Constants.MAX_STACK_SIZE:
 						data["origin_node"].get_child(0).texture = null
 						data["origin_node"].get_node("TextureRect/Stack").set_text("")
@@ -309,9 +327,9 @@ func drop_data(_pos, data):
 				verify_origin_texture(data)
 			else:
 				data["origin_node"].get_child(0).texture = data["target_texture"]
+				verify_origin_texture(data)
 				if data["target_frame"] != null:
 					data["origin_node"].get_child(0).frame = data["target_frame"]
-				verify_origin_texture(data)
 				if data["origin_panel"] == "Delete":
 					if data["target_stack"] != null:
 						data["origin_node"].get_node("TextureRect/Stack").set_text(str(data["target_stack"]))
@@ -373,6 +391,8 @@ func SplitStack(split_amount, data):
 	# paying in case of buying and selling
 	if data["origin_panel"] == "TradeInventory":
 		if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount <= player_gold:
+			Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
+			Utils.get_trade_inventory().get_sound_player().play(0.03)
 			Utils.get_current_player().set_gold(player_gold - (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))
 			valid = true
 		else:
@@ -384,7 +404,7 @@ func SplitStack(split_amount, data):
 		if data["origin_panel"] == "TradeInventory":
 			if MerchantData.inv_data[origin_slot]["Stack"] != 0:
 				MerchantData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
-				MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.current_time
+				MerchantData.inv_data[origin_slot]["Time"] = DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time()
 				check_slots()
 		elif data["origin_panel"] == "Inventory":
 			PlayerData.inv_data[origin_slot]["Stack"] = data["origin_stack"] - split_amount
@@ -513,6 +533,7 @@ func check_slots():
 		if MerchantData.inv_data[i]["Item"] == null:
 			free = true
 	if !free:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
 			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
@@ -523,10 +544,12 @@ func check_slots():
 			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
 				free2 = true
 		if !free2:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
 				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+			check_slots()
 
 
 # Use Item
@@ -545,12 +568,17 @@ func _on_Icon_gui_input(event):
 							type = "Stamina"
 							cooldown = Constants.STAMINA_POTION_COOLDOWN
 							Utils.get_current_player().set_stamina_cooldown(cooldown)
+							Utils.set_and_play_sound(Constants.PreloadedSounds.Potion)
 						else:
 							Utils.get_current_player().set_current_health(int(Utils.get_current_player().get_current_health()) + 
 							int(GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Health"]))
 							type = "Health"
 							cooldown = Constants.HEALTH_COOLDOWN
 							Utils.get_current_player().set_health_cooldown(cooldown)
+							if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] == "Potion":
+								Utils.set_and_play_sound(Constants.PreloadedSounds.Potion1)
+							else:
+								Utils.set_and_play_sound(Constants.PreloadedSounds.Eat)
 						if PlayerData.inv_data[slot]["Stack"] > 0:
 							set_cooldown(cooldown, type)
 						if PlayerData.inv_data[slot]["Stack"] <= 0:
@@ -585,6 +613,7 @@ func _on_Icon_gui_input(event):
 						hide_tooltip()
 						show_tooltip()
 				elif GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] == "Map" and !Utils.get_ui().has_map:
+					Utils.set_and_play_sound(Constants.PreloadedSounds.Equip)
 					Utils.get_ui().has_map = true
 					Utils.get_ui().show_map = true
 					Utils.get_minimap().update_minimap()
