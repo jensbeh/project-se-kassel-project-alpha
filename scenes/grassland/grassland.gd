@@ -30,6 +30,11 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if DayNightCycle.is_night:
+		night_sound()
+	else:
+		day_sound()
+	
 	# Music
 	var _day = DayNightCycle.connect("change_to_sunrise", self, "day_sound")
 	var _day1 = DayNightCycle.connect("change_to_daytime", self, "day_sound")
@@ -86,7 +91,8 @@ func day_sound():
 		Utils.set_and_play_music(Constants.PreloadedMusic.Grassland)
 	
 func night_sound():
-	Utils.set_and_play_music(Constants.PreloadedMusic.Night)
+	if Utils.get_music_player().stream != Constants.PreloadedMusic.Night:
+		Utils.set_and_play_music(Constants.PreloadedMusic.Night)
 
 
 # Method to spawn bosses in grassland
