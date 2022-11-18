@@ -137,10 +137,14 @@ func _ready():
 		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
 	else:
 		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
+	if Constants.CAN_TOGGLE_PLAYER_INVINCIBLE:
+		printerr("PLAYER: Can toggle invincible")
 	
 	# Infinit stamina
 	if Constants.HAS_PLAYER_INFINIT_STAMINA:
 		printerr("PLAYER: Has infinit stamina")
+	if Constants.CAN_TOGGLE_PLAYER_INFINIT_STAMINA:
+		printerr("PLAYER: Can toggle infinit stamina")
 
 
 func _physics_process(delta):
@@ -775,7 +779,7 @@ func get_attack_damage():
 	var random_float = randf()
 	
 	# Calculate damage
-	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
+	if random_float <= Constants.AttackDamageStatesProbabilityWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
 		# Return CRITICAL_ATTACK damage
 		var damage = attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
 		return damage
@@ -1119,8 +1123,8 @@ func is_in_change_scene_area():
 
 func rescue_pay():
 	# Pay amount of gold
-	var lost_gold = int(gold * Constants.RESCUE_PAY)
-	set_gold(int(gold * (1 - Constants.RESCUE_PAY)))
+	var lost_gold = int(gold * Constants.RESCUE_PAY_GOLD_FACTOR)
+	set_gold(int(gold * (1 - Constants.RESCUE_PAY_GOLD_FACTOR)))
 	# Pay an item
 	var item_list = []
 	for i in range(1,31):

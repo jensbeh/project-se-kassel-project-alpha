@@ -47,6 +47,11 @@ func _ready():
 	# Calculate real init hours and minutes from current_time
 	current_hour = (int(floor(current_time / ONE_HOUR)) + DAY_TIME_START_OFFSET) % 24
 	current_minute = int((fmod(current_time, ONE_HOUR) / ONE_HOUR) * 60)
+	
+	# For debugging
+	# Can modify time
+	if Constants.CAN_MODIFY_TIME:
+		printerr("DAY_NIGHT_CYCLE: Time can be manipulated")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
