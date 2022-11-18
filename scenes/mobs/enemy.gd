@@ -680,29 +680,30 @@ func set_mob_activity(is_active):
 
 # Method to simulate damage and behaviour to mob
 func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
-	# Add damage
-	health -= damage_to_mob
-	
-	# Healthbar
-	var healthbar_value_in_percent = (100.0 / max_health) * health
-	healthBar.value = healthbar_value_in_percent
-	if not healthBar.visible:
-		healthBar.visible = true
-		healthBarBackground.visible = true
-	
-	# Mob is killed
-	if health <= 0:
-		update_behaviour(DYING)
-	else:
-		update_behaviour(HURTING)
+	if behaviour_state != DYING:
+		# Add damage
+		health -= damage_to_mob
 		
-	# Add knockback
-	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-	var min_knockback_velocity_factor = 50
-	var max_knockback_velocity_factor = 200
-	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
-	var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
-	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
+		# Healthbar
+		var healthbar_value_in_percent = (100.0 / max_health) * health
+		healthBar.value = healthbar_value_in_percent
+		if not healthBar.visible:
+			healthBar.visible = true
+			healthBarBackground.visible = true
+		
+		# Mob is killed
+		if health <= 0:
+			update_behaviour(DYING)
+		else:
+			update_behaviour(HURTING)
+			
+		# Add knockback
+		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
+		var min_knockback_velocity_factor = 50
+		var max_knockback_velocity_factor = 200
+		var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
+		var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
+		velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
 
 
 # Method is called when HURT animation is done
