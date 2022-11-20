@@ -155,6 +155,7 @@ const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
 const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 const GOLDEN_KEY_PATH = "res://scenes/items/golden_key.tscn"
+const CREDIT_SCREEN_PATH = "res://scenes/menu/Credits/CreditScreen.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 5
@@ -283,9 +284,9 @@ const PreloadedMusic = {
 	"Dungeon" : preload("res://assets/sounds/Ambience_Cave_00.mp3"),
 	"Tavern" : preload("res://assets/sounds/Rezoner-Pirates-Theme.mp3"),
 	"Hostel" : preload("res://assets/sounds/Ove Melaa - Times.mp3"),
-	"Boss_Fight" : preload("res://assets/sounds/Ove Melaa - DrumLoop 1 64BPM.mp3"),#
 	"Boss_Fight1" : preload("res://assets/sounds/battleThemeA.mp3"),
 	"Boss_Fight2" : preload("res://assets/sounds/battleThemeB.mp3"),
+	"Credits" : preload("res://assets/sounds/Farewell.mp3"),
 }
 
 # Sounds
@@ -305,7 +306,6 @@ const PreloadedSounds = {
 	"Collect2" : preload("res://assets/sounds/chainmail1.wav"),
 	"open_door" : preload("res://assets/sounds/doorOpen_2.ogg"),
 	"locked" : preload("res://assets/sounds/lockeddoor.wav"),
-	"close_door" : preload("res://assets/sounds/doorClose_2.ogg"),#
 	"Potion" : preload("res://assets/sounds/bubble.wav"),
 	"Potion1" : preload("res://assets/sounds/bubble2.wav"),
 	"Dialog" : preload("res://assets/sounds/Pen_v4_wav.wav"),

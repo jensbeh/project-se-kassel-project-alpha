@@ -45,6 +45,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Credits:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 length = 0.001
@@ -84,6 +96,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Credits:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
 
 [node name="MainMenuScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -105,9 +129,9 @@ texture = ExtResource( 2 )
 [node name="Start Game" type="Button" parent="."]
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 824.0
-margin_top = 445.0
+margin_top = 415.0
 margin_right = 934.0
-margin_bottom = 470.0
+margin_bottom = 440.0
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -118,15 +142,28 @@ text = "Start Game"
 [node name="Settings" type="Button" parent="."]
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 823.0
-margin_top = 576.0
+margin_top = 546.0
 margin_right = 933.0
-margin_bottom = 601.0
+margin_bottom = 571.0
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
 custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 text = "Settings"
+
+[node name="Credits" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 823.0
+margin_top = 670.0
+margin_right = 933.0
+margin_bottom = 695.0
+rect_scale = Vector2( 2.5, 2.5 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0, 1, 0.298039, 1 )
+custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
+text = "Credits"
 
 [node name="Exit to Desktop" type="Button" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -147,4 +184,5 @@ anims/RESET = SubResource( 3 )
 
 [connection signal="pressed" from="Start Game" to="." method="_on_Start_Game_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_Settings_pressed"]
+[connection signal="pressed" from="Credits" to="." method="_on_Credits_pressed"]
 [connection signal="pressed" from="Exit to Desktop" to="." method="_on_Exit_to_Desktop_pressed"]

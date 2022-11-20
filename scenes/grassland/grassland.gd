@@ -30,12 +30,12 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Music
 	if DayNightCycle.is_night:
 		night_sound()
 	else:
 		day_sound()
 	
-	# Music
 	var _day = DayNightCycle.connect("change_to_sunrise", self, "day_sound")
 	var _day1 = DayNightCycle.connect("change_to_daytime", self, "day_sound")
 	var _day2 = DayNightCycle.connect("change_to_sunset", self, "day_sound")
