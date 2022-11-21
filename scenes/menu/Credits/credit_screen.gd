@@ -2,7 +2,7 @@ extends Node2D
 
 onready var line = get_node("CreditsContainer/Line")
 
-const section_time = 5
+const section_time = 4.5
 const line_time = 2
 const title_color = Color(0.3,0.14,0,1)
 
@@ -34,7 +34,6 @@ var credits_en = [
 		"Items",
 		"@JoeCreates OpenGameArt.org Joe Williamson - roguelikeitems",
 		"\"Matt Firth (cheekyinkling)\" and \"game-icons.net\" cheekyinkling.itch.io \n - shikashis-fantasy-icons-pack",
-		"",
 	],[
 		"Character",
 		"https://shubibubi.itch.io/ - cozy people",
@@ -60,9 +59,8 @@ var credits_en = [
 		"Overworld",
 		"OpenGameArt.org bart - little town -orchestral",
 		"OpenGameArt.org vi1e8 - Outdoor_Ambiance",
-		"Additional samples by Ove Melaa (Omsofware@hotmail.com) -2013 Ove Melaa \n - EssentialGameAudiopack",
-		"",
 		"OpenGameArt.org OwlishMedia - Owlish Media Sound Effects",
+		"Additional samples by Ove Melaa (Omsofware@hotmail.com) -2013 Ove Melaa \n - EssentialGameAudiopack",
 	],[
 		"Credits",
 		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman - End_Credits_Theme",
@@ -72,12 +70,10 @@ var credits_en = [
 		"Battle and UI",
 		"www.kenney.nl OpenGameArt.org Kenney - UI_SFX_Set",
 		"OpenGameArt.org artistcdude - rpg_sound_pack",
-		"OpenGameArt.org Little Robot Sound Factory www.littlerobotsoundfactory.com \n - Fantasy Sound Library",
-		"",
 		"OpenGameArt.org Timopy - SFX",
-		"\"Level up sound effects\" by Bart Kelsey. Commissioned by Will Corwin \n for OpenGameArt.org (http://opengameart.org)",
-		"",
 		"OpenGameArt.org Indepentent.nu - independent_nu_ljudbank-hits_and_punches",
+		"OpenGameArt.org Little Robot Sound Factory www.littlerobotsoundfactory.com \n - Fantasy Sound Library",
+		"\"Level up sound effects\" by Bart Kelsey. Commissioned by Will Corwin \n for OpenGameArt.org (http://opengameart.org)",
 	],[
 		"Treasures and Doors",
 		"Sound package from Heroes of Hawks Haven By Tuomo Untinen - soundpack",
@@ -90,9 +86,6 @@ var credits_en = [
 		"Dialogue",
 		"alan-dalcastagne.itch.io - DialogTextSoundEffects",
 	],[
-		"Lighting System",
-		"https://www.patreon.com/posts/42040761"
-	],[
 		"Tools used"
 	],[
 		"Developed with Godot Engine",
@@ -104,6 +97,9 @@ var credits_en = [
 		"Used Addons",
 		"https://github.com/binogure-studio/godot-uuid",
 		"https://github.com/vnen/godot-tiled-importer"
+	],[
+		"Lighting System",
+		"https://www.patreon.com/posts/42040761"
 	],[
 		"Programming",
 		"Jens Behmenburg",
@@ -128,7 +124,6 @@ var credits_de = [
 		"Gegenstände",
 		"@JoeCreates OpenGameArt.org Joe Williamson - roguelikeitems",
 		"\"Matt Firth (cheekyinkling)\" and \"game-icons.net\" cheekyinkling.itch.io \n - shikashis-fantasy-icons-pack",
-		"",
 	],[
 		"Charakter",
 		"https://shubibubi.itch.io/ - cozy people",
@@ -154,9 +149,8 @@ var credits_de = [
 		"Welt",
 		"OpenGameArt.org bart - little town -orchestral",
 		"OpenGameArt.org vi1e8 - Outdoor_Ambiance",
-		"Additional samples by Ove Melaa (Omsofware@hotmail.com) -2013 Ove Melaa \n - EssentialGameAudiopack",
-		"",
 		"OpenGameArt.org OwlishMedia - Owlish Media Sound Effects",
+		"Additional samples by Ove Melaa (Omsofware@hotmail.com) -2013 Ove Melaa \n - EssentialGameAudiopack",
 	],[
 		"Credits",
 		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman - End_Credits_Theme",
@@ -166,12 +160,10 @@ var credits_de = [
 		"Kampf und UI",
 		"www.kenney.nl OpenGameArt.org Kenney - UI_SFX_Set",
 		"OpenGameArt.org artistcdude - rpg_sound_pack",
-		"OpenGameArt.org Little Robot Sound Factory www.littlerobotsoundfactory.com \n - Fantasy Sound Library",
-		"",
 		"OpenGameArt.org Timopy - SFX",
-		"\"Level up sound effects\" by Bart Kelsey. Commissioned by Will Corwin \n for OpenGameArt.org (http://opengameart.org)",
-		"",
 		"OpenGameArt.org Indepentent.nu - independent_nu_ljudbank-hits_and_punches",
+		"OpenGameArt.org Little Robot Sound Factory www.littlerobotsoundfactory.com \n - Fantasy Sound Library",
+		"\"Level up sound effects\" by Bart Kelsey. Commissioned by Will Corwin \n for OpenGameArt.org (http://opengameart.org)",
 	],[
 		"Schatztruhen und Türen",
 		"Sound package from Heroes of Hawks Haven By Tuomo Untinen - soundpack",
@@ -184,9 +176,6 @@ var credits_de = [
 		"Dialog",
 		"alan-dalcastagne.itch.io - DialogTextSoundEffects",
 	],[
-		"Licht System",
-		"https://www.patreon.com/posts/42040761"
-	],[
 		"Benutzte Werkzeuge"
 	],[
 		"Entwickelt mit Godot Engine",
@@ -198,6 +187,9 @@ var credits_de = [
 		"Benutzte Addons",
 		"https://github.com/binogure-studio/godot-uuid",
 		"https://github.com/vnen/godot-tiled-importer"
+	],[
+		"Licht System",
+		"https://www.patreon.com/posts/42040761"
 	],[
 		"Programmierung",
 		"Jens Behmenburg",
@@ -225,7 +217,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if section_next:
-		section_timer += delta * 2
+		section_timer += delta * 1.5
 		if section_timer >= section_time:
 			section_timer -= section_time
 			
@@ -234,7 +226,7 @@ func _process(delta):
 				phraseNum = 0
 				add_line()
 	else:
-		line_timer += delta * 2
+		line_timer += delta * 1.5
 		if line_timer >= line_time:
 			line_timer -= line_time
 			add_line()
