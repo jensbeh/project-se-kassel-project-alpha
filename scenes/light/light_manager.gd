@@ -12,8 +12,10 @@ func _ready():
 	# Update shader color depending on scene type
 	Utils.get_scene_manager().connect("scene_type_updated", self, "update_shader_color")
 	
-	var _error1 = DayNightCycle.connect("change_to_daytime", self, "change_to_daytime")
-	var _error2 = DayNightCycle.connect("change_to_sunset", self, "change_to_sunset")
+	var _error1 = DayNightCycle.connect("change_to_daytime", self, "disable_lights")
+	var _error2 = DayNightCycle.connect("change_to_sunset", self, "enable_lights")
+	var _error3 = DayNightCycle.connect("change_to_night", self, "enable_lights")
+	var _error4 = DayNightCycle.connect("change_to_sunrise", self, "enable_lights")
 	
 	# Create image to store light informations in pixels
 	# First pixel row for light stuff like positions, strength, radius
@@ -146,7 +148,7 @@ func update_lights(show_lights):
 
 
 # Method to update all lights to be NOT visible -> signal from day_night_cycle_script
-func change_to_daytime():
+func disable_lights():
 	var lights = get_tree().get_nodes_in_group("lights")
 	for light in lights:
 		if is_day_night_cycle:
@@ -154,7 +156,7 @@ func change_to_daytime():
 
 
 # Method to update all lights to be visible -> signal from day_night_cycle_script
-func change_to_sunset():
+func enable_lights():
 	var lights = get_tree().get_nodes_in_group("lights")
 	for light in lights:
 		if is_day_night_cycle:

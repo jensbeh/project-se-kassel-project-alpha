@@ -79,6 +79,9 @@ func on_skip_time_start():
 	# Wait till time changed
 	yield(DayNightCycle, "on_skip_time_updated")
 	
+	# Save game
+	Utils.save_game(true)
+	
 	# Fade back to normal
 	loading_screen_animation_player.play("SkipTimeFadeToNormal")
 

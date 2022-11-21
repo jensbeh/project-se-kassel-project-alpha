@@ -108,8 +108,6 @@ func _on_load_scene_done(scene):
 	# Add scene to current_scene
 	get_current_scene().queue_free()
 	current_scene.call_deferred("add_child", scene)
-	# Update current_scene_type from the new scene like MENU, CAMP, ...
-	update_scene_type(current_transition_data)
 
 
 # Method to pass the transition_data to the new scene 
@@ -126,6 +124,9 @@ func finish_transition():
 	update_previouse_scene_path()
 	
 	if current_transition_data != null: # In menu it is null
+		# Update current_scene_type from the new scene like MENU, CAMP, ...
+		update_scene_type(current_transition_data)
+		
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
