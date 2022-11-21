@@ -19,4 +19,4 @@ func on_death_screen_end():
 	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_SCENE_PATH, player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 	
-	DayNightCycle.skip_time(8)
+	DayNightCycle.skip_time(8, false)

@@ -6,7 +6,7 @@
   <object id="3" type="area" x="288" y="-496">
    <properties>
     <property name="biome" value="dungeon"/>
-    <property name="max_mobs" type="int" value="8"/>
+    <property name="max_mobs" type="int" value="6"/>
    </properties>
    <polygon points="0,0 64,-112 -192,-112 -304,-112 -304,-80 -384,-80 -544,48 -464,80 -320,-16 -160,-32"/>
   </object>

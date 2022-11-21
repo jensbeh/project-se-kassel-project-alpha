@@ -19566,14 +19566,14 @@
   <object id="5651" type="area" x="912" y="112">
    <properties>
     <property name="biome" value="forest"/>
-    <property name="max_mobs" type="int" value="15"/>
+    <property name="max_mobs" type="int" value="10"/>
    </properties>
    <polygon points="0,0 -144,48 -272,160 -368,288 -384,400 -416,544 -352,592 -224,576 -176,480 -96,448 48,432 112,304 160,192 144,80 48,16"/>
   </object>
   <object id="5660" type="area" x="1184" y="-80">
    <properties>
     <property name="biome" value="beach"/>
-    <property name="max_mobs" type="int" value="15"/>
+    <property name="max_mobs" type="int" value="10"/>
    </properties>
    <polygon points="0,0 32,80 64,32 80,-48 144,-80 160,-192 144,-272 80,-352 48,-416 48,-512 32,-528 32,-560 0,-576 0,-672 64,-768 64,-832 48,-864 32,-912 0,-960 0,-1008 64,-1040 80,-1072 -16,-1056 -96,-960 -96,-848 -96,-704 -128,-608 -128,-544 -96,-464 -16,-288 32,-208 32,-160 0,-128"/>
   </object>
@@ -19622,7 +19622,7 @@
   <object id="5667" type="area" x="-704" y="-1184">
    <properties>
     <property name="biome" value="mountain"/>
-    <property name="max_mobs" type="int" value="20"/>
+    <property name="max_mobs" type="int" value="25"/>
    </properties>
    <polygon points="0,0 -224,16 -512,32 -608,192 -672,304 -624,352 -544,224 -464,208 -432,256 -512,416 -224,608 -64,560 -48,432 80,352 384,464 528,368 656,368 784,416 896,512 960,512 992,400 928,304 896,176 768,160 608,64 448,64 320,80 144,80"/>
   </object>

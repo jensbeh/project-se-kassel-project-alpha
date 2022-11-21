@@ -4,7 +4,7 @@ extends Node
 var mobspawner_thread = Thread.new()
 var can_spawn_mobs = false
 var mob_spawner_timer = Timer.new()
-var mob_spawn_interval = 20.0 # in sec
+var mob_spawn_interval = Constants.MOB_RESPAWN_TIMER
 var should_spawn_mobs = false
 var spawning_areas = null
 var mobsNavigationTileMap : TileMap = null
@@ -191,7 +191,7 @@ func spawn_area_mobs():
 				# Check if mob should be spawned
 				if mob in mobs_to_spawn:
 					# Load and spawn mobs
-					var mobScene : PackedScene = Constants.PreloadedMobScenes[biome_mobs[mob]]
+					var mobScene : PackedScene = Constants.PreloadedMobScenes[biome_mobs[mob]] #"BatBlue" biome_mobs[mob]
 					
 					if mobScene != null:
 						# Spawn the mob as often as it is in the list

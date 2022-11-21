@@ -563,7 +563,7 @@ func _on_Icon_gui_input(event):
 						PlayerData.inv_data[slot]["Stack"] -= 1
 						var cooldown
 						if GameData.item_data[str(PlayerData.inv_data[slot]["Item"])].has("Stamina"):
-							Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
+							Utils.get_current_player().set_current_stamina(Utils.get_current_player().player_stamina + 
 							GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Stamina"])
 							type = "Stamina"
 							cooldown = Constants.STAMINA_POTION_COOLDOWN

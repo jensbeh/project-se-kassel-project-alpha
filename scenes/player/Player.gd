@@ -66,6 +66,7 @@ var current_health: int
 var data
 var level: int = 1
 var player_exp: int = 0
+var max_stamina: float
 var player_stamina: float
 var player_light_radius: int
 var health_cooldown = 0
@@ -167,7 +168,7 @@ func _physics_process(delta):
 			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview and movement:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
-						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+						set_current_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
 					step_sound(1.2)
 					velocity *= 1.4
 				else:
@@ -206,10 +207,10 @@ func _physics_process(delta):
 			velocity = move_and_slide(velocity)
 			
 		if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
-			if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
-				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
-			elif player_stamina < level * 10 + 90:
-				set_stamina(level * 10 + 90)
+			if player_stamina + delta * Constants.STAMINA_RECOVER < get_max_stamina():
+				set_current_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
+			elif player_stamina < get_max_stamina():
+				set_current_stamina(get_max_stamina())
 		# Breath Sound
 		if weapon_weight < 0 or weapon_weight == null:
 			weapon_weight = 1
@@ -272,7 +273,7 @@ func _input(event):
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
-					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+					set_current_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
 				sound.stream = Constants.PreloadedSounds.Attack
 				sound.play()
 				is_attacking = true
@@ -861,10 +862,21 @@ func set_exp(new_exp: int):
 	data.exp = player_exp
 
 
-# set a new stamina value for the player
-func set_stamina(new_stamina: float):
-	if new_stamina > level * 10 + 90:
-		new_stamina = level * 10 + 90
+# Method to set new max stamina
+func set_max_stamina(new_max_stamina: int):
+	max_stamina = new_max_stamina
+	data.maxStamina = new_max_stamina
+
+
+# Method to return max stamina
+func get_max_stamina():
+	return max_stamina
+
+
+# Set a new current stamina value for the player
+func set_current_stamina(new_stamina: float):
+	if new_stamina > get_max_stamina():
+		new_stamina = get_max_stamina()
 	player_stamina = new_stamina
 	# for ui update
 	Utils.get_player_ui().set_stamina(new_stamina)
@@ -872,9 +884,9 @@ func set_stamina(new_stamina: float):
 	data.stamina = player_stamina
 
 
-# Return maximum Stamina Value
+# Return current stamina value
 func get_stamina():
-	return (level * 10 + 90)
+	return player_stamina
 
 
 func _on_DamageAreaBottom_area_entered(area):
@@ -1045,7 +1057,7 @@ func reset_player_after_dying():
 	is_attacking = false
 	collecting = false
 	set_current_health(max_health)
-	set_stamina(level * 10 + 90)
+	set_current_stamina(get_max_stamina())
 	set_movment_animation(true)
 	set_movement(true)
 	

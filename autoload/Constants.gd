@@ -43,7 +43,7 @@ const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 const IS_PLAYER_INVISIBLE = false # Default: false
 
 const CAN_TOGGLE_PLAYER_INVINCIBLE = true # Default: false
-var IS_PLAYER_INVINCIBLE = false # Default: false
+var IS_PLAYER_INVINCIBLE = true # Default: false
 
 const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = true # Default: false
 var HAS_PLAYER_INFINIT_STAMINA = true # Default: false
@@ -195,6 +195,7 @@ const NPC_STAIRS_SPEED = NPC_NORMAL_SPEED*0.6
 ## MOBS
 #################
 """
+const MOB_RESPAWN_TIMER = 60.0 # in sec
 # Spawn times
 enum SpawnTime {
 	ONLY_DAY,
@@ -216,11 +217,11 @@ const MobsSettings = {
 	
 	# Bat settings
 	"BAT": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 75 * MOB_DIFFICULTY,
 		"AttackDamage" : 20 * MOB_DIFFICULTY,
 		"Knockback" : 1,
 		"Weight" : 10,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 8 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ONLY_NIGHT,
 		"HuntingSpeed" : 50 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 25 * MOB_SPEED_FACTOR,
@@ -231,11 +232,11 @@ const MobsSettings = {
 	
 	# Fungus settings
 	"FUNGUS": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 140 * MOB_DIFFICULTY,
 		"AttackDamage" : 25 * MOB_DIFFICULTY,
 		"Knockback" : 2,
 		"Weight" : 40,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 14 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,
@@ -246,11 +247,11 @@ const MobsSettings = {
 	
 	# Ghost settings
 	"GHOST": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 90 * MOB_DIFFICULTY,
 		"AttackDamage" : 20 * MOB_DIFFICULTY,
 		"Knockback" : 1,
 		"Weight" : 5,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 9 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,
@@ -261,11 +262,11 @@ const MobsSettings = {
 	
 	# Orbinaut settings
 	"ORBINAUT": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 120 * MOB_DIFFICULTY,
 		"AttackDamage" : 35 * MOB_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 35,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 12 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ONLY_NIGHT,
 		"HuntingSpeed" : 45 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 8 * MOB_SPEED_FACTOR,
@@ -276,11 +277,11 @@ const MobsSettings = {
 	
 	# Rat settings
 	"RAT": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 80 * MOB_DIFFICULTY,
 		"AttackDamage" : 15 * MOB_DIFFICULTY,
 		"Knockback" : 1,
 		"Weight" : 10,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 8 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ONLY_NIGHT,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
@@ -291,11 +292,11 @@ const MobsSettings = {
 	
 	# Skeleton settings
 	"SKELETON": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 150 * MOB_DIFFICULTY,
 		"AttackDamage" : 40 * MOB_DIFFICULTY,
 		"Knockback" : 3,
 		"Weight" : 40,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 15 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
@@ -321,11 +322,11 @@ const MobsSettings = {
 	
 	# Snake settings
 	"SNAKE": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 80 * MOB_DIFFICULTY,
 		"AttackDamage" : 25 * MOB_DIFFICULTY,
 		"Knockback" : 1,
 		"Weight" : 10,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 8 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
@@ -336,11 +337,11 @@ const MobsSettings = {
 	
 	# Zombie settings
 	"ZOMBIE": {
-		"Health" : 100 * MOB_DIFFICULTY,
+		"Health" : 160 * MOB_DIFFICULTY,
 		"AttackDamage" : 35 * MOB_DIFFICULTY,
 		"Knockback" : 3,
 		"Weight" : 50,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 16 * MOB_DIFFICULTY,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 20 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 10 * MOB_SPEED_FACTOR,
@@ -373,7 +374,7 @@ const BossesSettings = {
 	
 	# Boss_Fungus settings
 	"BOSS_FUNGUS": {
-		"Health" : 300 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_DIFFICULTY,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 100,
@@ -388,7 +389,7 @@ const BossesSettings = {
 	
 	# Boss_Ghost settings
 	"BOSS_GHOST": {
-		"Health" : 300 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_DIFFICULTY,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 50,
@@ -403,7 +404,7 @@ const BossesSettings = {
 	
 	# Boss_Orbinaut settings
 	"BOSS_ORBINAUT": {
-		"Health" : 300 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_DIFFICULTY,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 70,
@@ -418,7 +419,7 @@ const BossesSettings = {
 	
 	# Boss_Skeleton settings
 	"BOSS_SKELETON": {
-		"Health" : 300 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_DIFFICULTY,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 100,
@@ -433,7 +434,7 @@ const BossesSettings = {
 	
 	# Boss_Small_Slime settings
 	"BOSS_SMALL_SLIME": {
-		"Health" : 300 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_DIFFICULTY,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 50,
@@ -448,7 +449,7 @@ const BossesSettings = {
 	
 	# Boss_Zombie settings
 	"BOSS_ZOMBIE": {
-		"Health" : 300 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_DIFFICULTY,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY,
 		"Knockback" : 4,
 		"Weight" : 80,
@@ -502,6 +503,7 @@ const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
 const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
 
 # Save file pathes
+const DEFAULT_PLAYER_INV_PATH = "res://assets/data/inv_data_file.json"
 const SAVE_SETTINGS_PATH = "user://game/settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"
 const SAVE_GAME_PATH = "user://game/"

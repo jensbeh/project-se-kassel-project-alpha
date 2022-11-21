@@ -24,7 +24,7 @@ func _ready():
 func setup_ui():
 	var player_level = Utils.get_current_player().get_level()
 	exp_bar.max_value = player_level * 100
-	stamina_bar.max_value = player_level * 10 + 90
+	stamina_bar.max_value = Utils.get_current_player().get_max_stamina()
 	stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / (Constants.MAX_LEVEL -1)) * player_level -1)
 	if player_level >= 10:
 			change_heart_number(5)
@@ -57,10 +57,11 @@ func set_exp(new_value: int):
 			exp_bar.max_value = (player_level + 1) * 100
 			stamina_bar.max_value = 100 + player_level * 10
 			Utils.get_current_player().set_max_health(100 + player_level*10)
+			Utils.get_current_player().set_max_stamina(100 + player_level * 10)
 			player_level += 1
 			# reset life and stamina
 			if !Utils.get_current_player().is_player_dying():
-				Utils.get_current_player().set_stamina(90 + player_level * 10)
+				Utils.get_current_player().set_current_stamina(90 + player_level * 10)
 				life_bar.value = 100
 				Utils.get_current_player().set_current_health(90 + player_level * 10)
 			# save player

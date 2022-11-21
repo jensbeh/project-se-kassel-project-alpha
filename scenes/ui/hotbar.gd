@@ -120,7 +120,7 @@ func use_item():
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
 			var cooldown
 			if GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina"):
-				Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
+				Utils.get_current_player().set_current_stamina(Utils.get_current_player().player_stamina + 
 				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Stamina"])
 				type = "Stamina"
 				cooldown = Constants.STAMINA_POTION_COOLDOWN

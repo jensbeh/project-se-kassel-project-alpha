@@ -452,7 +452,7 @@
   <object id="4" type="area" x="-144" y="-48">
    <properties>
     <property name="biome" value="dungeon"/>
-    <property name="max_mobs" type="int" value="20"/>
+    <property name="max_mobs" type="int" value="25"/>
    </properties>
    <polygon points="0,0 0,208 48,208 176,288 256,320 368,352 672,352 912,288 944,160 944,48 800,-96 656,-96 560,-64 368,-64 304,-96 256,-96 160,-32 128,-16"/>
   </object>

@@ -61,6 +61,33 @@ func disable_game_gui(disable_gui):
 	game_viewport.gui_disable_input = disable_gui
 
 
+
+# Method to start skip time animation
+func start_skip_time_transition():
+	Utils.get_current_player().pause_player(true)
+	loading_screen_animation_player.play("SkipTimeFadeToBlack")
+
+
+# Method to skip time - called from animtaion "SkipTimeFadeToBlack" when it ends
+func on_skip_time_start():
+	DayNightCycle.skip_time(8,true)
+	
+	# Reset player stats
+	Utils.get_current_player().set_current_health(Utils.get_current_player().get_max_health())
+	Utils.get_current_player().set_current_stamina(Utils.get_current_player().get_max_stamina())
+	
+	# Wait till time changed
+	yield(DayNightCycle, "on_skip_time_updated")
+	
+	# Fade back to normal
+	loading_screen_animation_player.play("SkipTimeFadeToNormal")
+
+
+# Method is called from animtaion "SkipTimeFadeToNormal" when it ends
+func on_skip_time_end():
+	Utils.get_current_player().pause_player(false)
+
+
 # Method to start close game animation - calls ONLY from UTILS
 func start_close_game_transition():
 	loading_screen_animation_player.play("CloseGameFadeToBlack")
