@@ -206,6 +206,8 @@ func _ready():
 	title_font.font_data = load("res://assets/Hack_Regular.ttf")
 	title_font.set_size(56)
 	
+	get_node("Back").set_text(tr("BACK"))
+	
 	Utils.set_and_play_music(Constants.PreloadedMusic.Credits)
 	
 	# Say SceneManager that new_scene is ready
@@ -284,3 +286,8 @@ func add_line():
 
 func destroy_scene():
 	pass
+
+
+func _on_Back_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
+	finish()

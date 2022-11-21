@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/menu/Credits/credit_screen.gd" type="Script" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
@@ -8,6 +8,10 @@
 
 [sub_resource type="DynamicFont" id=3]
 size = 36
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 20
 font_data = ExtResource( 2 )
 
 [node name="GodotCredits" type="Node2D"]
@@ -35,3 +39,13 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_fonts/font = SubResource( 3 )
 align = 1
 valign = 1
+
+[node name="Back" type="Button" parent="."]
+margin_left = 59.0
+margin_top = 64.0
+margin_right = 163.0
+margin_bottom = 120.0
+custom_fonts/font = SubResource( 4 )
+text = "Back"
+
+[connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
