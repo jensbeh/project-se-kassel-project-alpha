@@ -38,8 +38,8 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 #################
 ## LOADED MAPS
 #################
-const LOAD_GRASSLAND_MAP = false # Default: true
-const LOAD_DUNGEONS_MAPS = false # Default: true
+const LOAD_GRASSLAND_MAP = true # Default: true
+const LOAD_DUNGEONS_MAPS = true # Default: true
 
 #################
 ## TIME
