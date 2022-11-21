@@ -6,7 +6,7 @@
 
 [sub_resource type="Theme" id=2]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=3]
 size = 36
 font_data = ExtResource( 2 )
 
@@ -32,6 +32,6 @@ margin_top = 1080.0
 margin_bottom = 1094.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_fonts/font = SubResource( 1 )
-text = "Credits line"
+custom_fonts/font = SubResource( 3 )
 align = 1
+valign = 1

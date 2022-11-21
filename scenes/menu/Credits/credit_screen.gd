@@ -6,6 +6,8 @@ const section_time = 4.5
 const line_time = 2
 const title_color = Color(0.3,0.14,0,1)
 
+var title_font = DynamicFont.new()
+
 var phraseNum = 0
 var section
 var section_next = false
@@ -63,7 +65,7 @@ var credits_en = [
 		"Additional samples by Ove Melaa (Omsofware@hotmail.com) -2013 Ove Melaa \n - EssentialGameAudiopack",
 	],[
 		"Credits",
-		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman - End_Credits_Theme",
+		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman \n - End_Credits_Theme",
 	],[
 		"Sound Effects",
 	],[
@@ -103,6 +105,7 @@ var credits_en = [
 	],[
 		"Programming",
 		"Jens Behmenburg",
+		"&",
 		"Tim Kolitsch"
 	]
 ]
@@ -153,7 +156,7 @@ var credits_de = [
 		"Additional samples by Ove Melaa (Omsofware@hotmail.com) -2013 Ove Melaa \n - EssentialGameAudiopack",
 	],[
 		"Credits",
-		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman - End_Credits_Theme",
+		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman \n - End_Credits_Theme",
 	],[
 		"Sound Effekte",
 	],[
@@ -193,12 +196,16 @@ var credits_de = [
 	],[
 		"Programmierung",
 		"Jens Behmenburg",
+		"&",
 		"Tim Kolitsch"
 	]
 ]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	title_font.font_data = load("res://assets/Hack_Regular.ttf")
+	title_font.set_size(56)
+	
 	Utils.set_and_play_music(Constants.PreloadedMusic.Credits)
 	
 	# Say SceneManager that new_scene is ready
@@ -259,11 +266,18 @@ func add_line():
 	lines.append(new_line)
 	if phraseNum == 0:
 		new_line.add_color_override("font_color", title_color)
+		if new_line.text in ["Music", "Tilesets", "Project Alpha", "Sound Effects", "Tools used", "Musik", "Sound Effekte", "Benutzte Werkzeuge"]:
+			new_line.add_font_override("font", title_font)
+			section_timer += 2
+		if new_line.text == "Programming":
+			new_line.add_font_override("font", title_font)
 	get_node("CreditsContainer").add_child(new_line)
 	
 	if section.size() > 0:
 		phraseNum += 1
 		section_next = false
+		if new_line.text in ["Jens Behmenburg", "&",]:
+			line_timer += 1
 	else:
 		section_next = true
 
