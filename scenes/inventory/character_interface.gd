@@ -59,8 +59,12 @@ func _ready():
 	find_node("Stamina").set_text(tr("STAMINA") + ": " + str(Utils.get_current_player().get_max_stamina()))
 	
 	data = Utils.get_current_player().get_data()
+	# Set name
 	find_node("CharacterName").set_text(data.name)
-	find_node("Player").player_stamina = find_node("Player").get_max_stamina()
+	# Set stamina
+	find_node("Player").max_stamina = data.maxStamina
+	find_node("Player").player_stamina = data.maxStamina
+	# Set preview state
 	find_node("Player").preview = true
 	for child in find_node("Player").get_children():
 		match child.name:
