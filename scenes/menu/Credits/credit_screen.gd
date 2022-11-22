@@ -2,7 +2,7 @@ extends Node2D
 
 onready var line = get_node("CreditsContainer/Line")
 
-const section_time = 4.5
+const section_time = 2.5
 const line_time = 2
 const title_color = Color(0.3,0.14,0,1)
 
@@ -11,9 +11,10 @@ var title_font = DynamicFont.new()
 var phraseNum = 0
 var section
 var section_next = false
+var finished = false
 
 var line_timer = 0
-var section_timer = 0
+var section_timer = -2
 
 var lines = []
 
@@ -22,9 +23,9 @@ var credits_en = [
 	[
 		"Project Alpha"
 	],[
-		"Tilesets"
+		"Tilesets and sprites"
 	],[
-		"Overworld and Buildings",
+		"Overworld and buildings",
 		"jamiebrownhill.itch.io - solaria-quiet-cabin",
 		"jamiebrownhill.itch.io - solaria-rural-village",
 		"secrethideout.itch.io - rogue-dungeon-tileset-16x16",
@@ -67,7 +68,7 @@ var credits_en = [
 		"Credits",
 		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman \n - End_Credits_Theme",
 	],[
-		"Sound Effects",
+		"Sound effects",
 	],[
 		"Battle and UI",
 		"www.kenney.nl OpenGameArt.org Kenney - UI_SFX_Set",
@@ -77,18 +78,18 @@ var credits_en = [
 		"OpenGameArt.org Little Robot Sound Factory www.littlerobotsoundfactory.com \n - Fantasy Sound Library",
 		"\"Level up sound effects\" by Bart Kelsey. Commissioned by Will Corwin \n for OpenGameArt.org (http://opengameart.org)",
 	],[
-		"Treasures and Doors",
+		"Treasures and doors",
 		"Sound package from Heroes of Hawks Haven By Tuomo Untinen - soundpack",
 		"www.kenney.nl OpenGameArt.org Kenney - RPGsounds_Kenney",
 	],[
-		"Walk",
+		"Player",
 		"OpenGameArt.org Jute - jute-dh-steps",
 		"OpenGameArt.org OwlishMedia - Owlish Media Sound Effects",
 	],[
 		"Dialogue",
 		"alan-dalcastagne.itch.io - DialogTextSoundEffects",
 	],[
-		"Tools used"
+		"Tools"
 	],[
 		"Developed with Godot Engine",
 		"https://godotengine.org/license",
@@ -96,11 +97,11 @@ var credits_en = [
 		"Maps created with Tiled",
 		"https://www.mapeditor.org",
 	],[
-		"Used Addons",
+		"Used addons",
 		"https://github.com/binogure-studio/godot-uuid",
 		"https://github.com/vnen/godot-tiled-importer"
 	],[
-		"Lighting System",
+		"Lighting system",
 		"https://www.patreon.com/posts/42040761"
 	],[
 		"Programming",
@@ -113,7 +114,7 @@ var credits_de = [
 	[
 		"Project Alpha"
 	],[
-		"Tilesets"
+		"Tilesets und Sprites"
 	],[
 		"Welt und Gebäude",
 		"jamiebrownhill.itch.io - solaria-quiet-cabin",
@@ -172,14 +173,14 @@ var credits_de = [
 		"Sound package from Heroes of Hawks Haven By Tuomo Untinen - soundpack",
 		"www.kenney.nl OpenGameArt.org Kenney - RPGsounds_Kenney",
 	],[
-		"Laufen",
+		"Spieler",
 		"OpenGameArt.org Jute - jute-dh-steps",
 		"OpenGameArt.org OwlishMedia - Owlish Media Sound Effects",
 	],[
 		"Dialog",
 		"alan-dalcastagne.itch.io - DialogTextSoundEffects",
 	],[
-		"Benutzte Werkzeuge"
+		"Werkzeuge"
 	],[
 		"Entwickelt mit Godot Engine",
 		"https://godotengine.org/license",
@@ -246,14 +247,16 @@ func _process(delta):
 			if l.rect_position.y < -l.get_line_height():
 				lines.erase(l)
 				l.queue_free()
-	else:
+	elif !finished:
 		finish()
 
 
 # End Credit Screen
 func finish():
-	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
-	Utils.get_scene_manager().transition_to_scene(transition_data)
+	if not finished:
+		finished = true
+		var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
 	
 
 # Method to end Credit Screen
@@ -268,9 +271,8 @@ func add_line():
 	lines.append(new_line)
 	if phraseNum == 0:
 		new_line.add_color_override("font_color", title_color)
-		if new_line.text in ["Music", "Tilesets", "Project Alpha", "Sound Effects", "Tools used", "Musik", "Sound Effekte", "Benutzte Werkzeuge"]:
+		if new_line.text in ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Sound Effekte", "Werkzeuge"]:
 			new_line.add_font_override("font", title_font)
-			section_timer += 2
 		if new_line.text == "Programming":
 			new_line.add_font_override("font", title_font)
 	get_node("CreditsContainer").add_child(new_line)
@@ -281,6 +283,10 @@ func add_line():
 		if new_line.text in ["Jens Behmenburg", "&",]:
 			line_timer += 1
 	else:
+		if credits != null:
+			if credits.front() != null:
+				if credits.front().front() in  ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Sound Effekte", "Werkzeuge"]:
+					section_timer -= 2
 		section_next = true
 
 

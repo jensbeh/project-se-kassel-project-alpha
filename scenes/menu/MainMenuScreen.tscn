@@ -155,9 +155,9 @@ text = "Settings"
 [node name="Credits" type="Button" parent="."]
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 823.0
-margin_top = 670.0
+margin_top = 677.0
 margin_right = 933.0
-margin_bottom = 695.0
+margin_bottom = 702.0
 rect_scale = Vector2( 2.5, 2.5 )
 custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
