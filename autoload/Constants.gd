@@ -155,7 +155,7 @@ const TREASURE_PATH = "res://scenes/looting/Treasure.tscn"
 const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 const GOLDEN_KEY_PATH = "res://scenes/items/golden_key.tscn"
-const CREDIT_SCREEN_PATH = "res://scenes/menu/Credits/CreditScreen.tscn"
+const CREDIT_SCREEN_PATH = "res://scenes/credits/CreditScreen.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 5
