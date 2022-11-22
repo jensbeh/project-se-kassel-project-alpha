@@ -9,6 +9,7 @@ var thread
 var previouse_scene_path = ""
 var current_transition_data = null
 var previouse_transition_data = null
+var show_rescue_pay = false
 
 # Nodes CurrentScreen
 onready var current_scene = $CurrentScene
@@ -142,6 +143,7 @@ func finish_transition():
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
 			if Utils.get_current_player().is_player_dying() == true:
+				show_rescue_pay = true
 				Utils.get_current_player().reset_player_after_dying()
 			if Utils.get_current_player().is_player_invisible() == true:
 				Utils.get_current_player().make_player_invisible(false)
@@ -181,6 +183,10 @@ func finish_transition():
 func on_game_fade_to_normal_finished():
 	# Resume player
 	Utils.get_current_player().pause_player(false)
+	
+	if show_rescue_pay:
+		Utils.get_current_player().rescue_pay()
+		show_rescue_pay = false
 
 
 # Method to update the current_scene_type and emits a signal

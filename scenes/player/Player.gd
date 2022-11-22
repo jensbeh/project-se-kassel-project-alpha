@@ -1060,8 +1060,6 @@ func reset_player_after_dying():
 	set_current_stamina(get_max_stamina())
 	set_movment_animation(true)
 	set_movement(true)
-	
-	rescue_pay()
 
 
 func get_light_radius():
