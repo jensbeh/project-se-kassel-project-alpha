@@ -183,12 +183,19 @@ func pause_time(should_pause):
 		game_time_active = true
 
 
-func skip_time(hours_to_skip, emit_signal_after_time_updated):
+# Method to skip time
+# If emit_signal_after_time_updated == true then need to wait after calling skip time function:
+#	# Wait till time changed
+#	yield(DayNightCycle, "on_skip_time_updated")
+func skip_time(hours_to_skip, emit_signal_after_time_updated = false):
+	var new_time
 	if (current_time + ONE_HOUR * hours_to_skip) > COMPLETE_DAY_TIME:
-		current_time = (current_time + ONE_HOUR * hours_to_skip) - COMPLETE_DAY_TIME
+		new_time = (current_time + ONE_HOUR * hours_to_skip) - COMPLETE_DAY_TIME
 		passed_days_since_start += 1
 	else:
-		current_time = (current_time + ONE_HOUR * hours_to_skip)
+		new_time = (current_time + ONE_HOUR * hours_to_skip)
+	
+	set_current_time(new_time)
 	
 	if emit_signal_after_time_updated:
 		emit_signal_skip_time = true

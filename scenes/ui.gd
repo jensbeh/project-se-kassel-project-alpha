@@ -113,7 +113,7 @@ func _input(event):
 	# Time
 	if Constants.CAN_MODIFY_TIME:
 		if event.is_action_pressed("numpad plus"):
-			DayNightCycle.current_time += DayNightCycle.ONE_HOUR
+			DayNightCycle.skip_time(1)
 			print("GAME: Added one hour")
 	# Player invincible
 	if Constants.CAN_TOGGLE_PLAYER_INVINCIBLE:
