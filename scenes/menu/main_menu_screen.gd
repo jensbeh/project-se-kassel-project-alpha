@@ -16,8 +16,8 @@ func _ready():
 	# Sets the text
 	get_node("Start Game").set_text(tr("START_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))
+	get_node("Credits").set_text(tr("CREDITS"))
 	get_node("Exit to Desktop").set_text(tr("EXIT_TO_DESKTOP"))
-	Utils.get_scene_manager().finish_transition()
 
 
 # Method to destroy the scene
@@ -39,3 +39,8 @@ func _on_Exit_to_Desktop_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	# Stop game
 	Utils.stop_game()
+
+func _on_Credits_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
+	var transition_data = TransitionData.Menu.new(Constants.CREDIT_SCREEN_PATH)
+	Utils.get_scene_manager().transition_to_scene(transition_data)

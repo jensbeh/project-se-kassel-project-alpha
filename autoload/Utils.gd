@@ -434,6 +434,8 @@ func generate_position_in_polygon(area_info, is_first_spawn):
 		var C = area_info[selected_triangle][2]
 		var r1 = randf()
 		var r2 = randf()
+		
+		# https://stackoverflow.com/questions/19654251/random-point-inside-triangle-inside-java/19654424#19654424 - Vaibhav Raj 
 		var randX = (1 - sqrt(r1)) * A.x + (sqrt(r1) * (1 - r2)) * B.x + (sqrt(r1) * r2) * C.x
 		var randY = (1 - sqrt(r1)) * A.y + (sqrt(r1) * (1 - r2)) * B.y + (sqrt(r1) * r2) * C.y
 		

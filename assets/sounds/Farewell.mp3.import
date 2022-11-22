@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Farewell.mp3-b8b353b83c21b5b1db46965c0b00980a.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Farewell.mp3"
+dest_files=[ "res://.import/Farewell.mp3-b8b353b83c21b5b1db46965c0b00980a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
