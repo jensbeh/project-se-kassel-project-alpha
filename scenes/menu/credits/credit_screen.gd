@@ -30,7 +30,7 @@ var credits_en = [
 		"jamiebrownhill.itch.io - solaria-rural-village",
 		"secrethideout.itch.io - rogue-dungeon-tileset-16x16",
 	],[
-		"Enemies",
+		"Mobs",
 		"henrysoftware.itch.io - pixel-mob",
 		"jamiebrownhill.itch.io - solaria-enemy-pack",
 	],[
@@ -121,7 +121,7 @@ var credits_de = [
 		"jamiebrownhill.itch.io - solaria-rural-village",
 		"secrethideout.itch.io - rogue-dungeon-tileset-16x16",
 	],[
-		"Gegner",
+		"Mobs",
 		"henrysoftware.itch.io - pixel-mob",
 		"jamiebrownhill.itch.io - solaria-enemy-pack",
 	],[
@@ -159,7 +159,7 @@ var credits_de = [
 		"Credits",
 		"Music by Cleyton Kauffman - https://soundcloud.com/cleytonkauffman \n - End_Credits_Theme",
 	],[
-		"Sound Effekte",
+		"Soundeffekte",
 	],[
 		"Kampf und UI",
 		"www.kenney.nl OpenGameArt.org Kenney - UI_SFX_Set",
@@ -192,7 +192,7 @@ var credits_de = [
 		"https://github.com/binogure-studio/godot-uuid",
 		"https://github.com/vnen/godot-tiled-importer"
 	],[
-		"Licht System",
+		"Lichtsystem",
 		"https://www.patreon.com/posts/42040761"
 	],[
 		"Programmierung",
@@ -271,7 +271,7 @@ func add_line():
 	lines.append(new_line)
 	if phraseNum == 0:
 		new_line.add_color_override("font_color", title_color)
-		if new_line.text in ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Sound Effekte", "Werkzeuge"]:
+		if new_line.text in ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Soundeffekte", "Werkzeuge"]:
 			new_line.add_font_override("font", title_font)
 		if new_line.text == "Programming":
 			new_line.add_font_override("font", title_font)
@@ -285,7 +285,7 @@ func add_line():
 	else:
 		if credits != null:
 			if credits.front() != null:
-				if credits.front().front() in  ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Sound Effekte", "Werkzeuge"]:
+				if credits.front().front() in  ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Soundeffekte", "Werkzeuge"]:
 					section_timer -= 2
 		section_next = true
 
