@@ -42,18 +42,18 @@ const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 """
 const IS_PLAYER_INVISIBLE = false # Default: false
 
-const CAN_TOGGLE_PLAYER_INVINCIBLE = true # Default: false
-var IS_PLAYER_INVINCIBLE = true # Default: false
+const CAN_TOGGLE_PLAYER_INVINCIBLE = false # Default: false
+var IS_PLAYER_INVINCIBLE = false # Default: false
 
-const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = true # Default: false
-var HAS_PLAYER_INFINIT_STAMINA = true # Default: false
+const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = false # Default: false
+var HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 
 """
 #################
 ## LOADED MAPS
 #################
 """
-const LOAD_GRASSLAND_MAP = false # Default: true
+const LOAD_GRASSLAND_MAP = true # Default: true
 const LOAD_DUNGEONS_MAPS = true # Default: true
 
 """
@@ -61,7 +61,7 @@ const LOAD_DUNGEONS_MAPS = true # Default: true
 ## TIME
 #################
 """
-const CAN_MODIFY_TIME = true # Default: false
+const CAN_MODIFY_TIME = false # Default: false
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------
