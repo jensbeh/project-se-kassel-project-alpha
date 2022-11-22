@@ -97,7 +97,7 @@ var credits_en = [
 		"Maps created with Tiled",
 		"https://www.mapeditor.org",
 	],[
-		"Used addons",
+		"Addons",
 		"https://github.com/binogure-studio/godot-uuid",
 		"https://github.com/vnen/godot-tiled-importer"
 	],[
@@ -188,7 +188,7 @@ var credits_de = [
 		"Maps erstellt mit Tiled",
 		"https://www.mapeditor.org",
 	],[
-		"Benutzte Addons",
+		"Addons",
 		"https://github.com/binogure-studio/godot-uuid",
 		"https://github.com/vnen/godot-tiled-importer"
 	],[
