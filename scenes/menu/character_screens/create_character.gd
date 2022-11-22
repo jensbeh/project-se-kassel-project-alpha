@@ -612,7 +612,7 @@ func start_game():
 	
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	var player_position = Vector2(1128,616)
+	var player_position = Constants.FIRST_SPAWN_POSITION
 	var view_direction = Vector2(0,1)
 	
 	DayNightCycle.set_current_time(0.0)
@@ -624,7 +624,7 @@ func start_game():
 	# Save game
 	Utils.save_game(true)
 	
-	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+	var transition_data = TransitionData.GamePosition.new(Constants.FIRST_SPAWN_SCENE, player_position, view_direction)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

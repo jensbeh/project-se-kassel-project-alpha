@@ -74,6 +74,8 @@ const CAN_MODIFY_TIME = false # Default: false
 """
 const NAME_LENGTH = 15
 const MAX_LEVEL = 30
+const FIRST_SPAWN_POSITION = Vector2(-60, 0)
+const FIRST_SPAWN_SCENE = "res://scenes/camp/buildings/House1.tscn"
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
 const PLAYER_MAX_LIGHT_ENERGY = 0.8
