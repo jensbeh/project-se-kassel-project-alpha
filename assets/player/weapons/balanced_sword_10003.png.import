@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/epic_sword_10005.png-d19ec1ce0004296f061fbe4a41e5a83f.stex"
+path="res://.import/balanced_sword_10003.png-70323112e015550974b4b0c0d40fc829.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/weapons/epic_sword_10005.png"
-dest_files=[ "res://.import/epic_sword_10005.png-d19ec1ce0004296f061fbe4a41e5a83f.stex" ]
+source_file="res://assets/player/weapons/balanced_sword_10003.png"
+dest_files=[ "res://.import/balanced_sword_10003.png-70323112e015550974b4b0c0d40fc829.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/great_sword_10003.png-0df47791e965b2e466276fe79901ed65.stex"
+path="res://.import/greate_sword_10005.png-5d2ad562a860dec2e3cc2b38b82f7782.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/weapons/great_sword_10003.png"
-dest_files=[ "res://.import/great_sword_10003.png-0df47791e965b2e466276fe79901ed65.stex" ]
+source_file="res://assets/player/weapons/greate_sword_10005.png"
+dest_files=[ "res://.import/greate_sword_10005.png-5d2ad562a860dec2e3cc2b38b82f7782.stex" ]
 
 [params]
 

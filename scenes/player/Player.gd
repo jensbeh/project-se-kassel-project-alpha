@@ -954,8 +954,8 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		
 		# Add knockback
 		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-		var min_knockback_velocity_factor = 25
-		var max_knockback_velocity_factor = 100
+		var min_knockback_velocity_factor = Constants.MIN_KNOCKBACK_VELOCITY_FACTOR_TO_PLAYER
+		var max_knockback_velocity_factor = Constants.MAX_KNOCKBACK_VELOCITY_FACTOR_TO_PLAYER
 		var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
 		var knockback_velocity_factor = m * knockback_to_player + min_knockback_velocity_factor
 		velocity = enemy_global_position.direction_to(global_position) * knockback_velocity_factor

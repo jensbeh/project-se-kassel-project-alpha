@@ -765,8 +765,8 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 			
 		# Add knockback
 		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-		var min_knockback_velocity_factor = 50
-		var max_knockback_velocity_factor = 200
+		var min_knockback_velocity_factor = Constants.BossesSettings.GENERAL.MinKnockbackVelocityFactorToBoss
+		var max_knockback_velocity_factor = Constants.BossesSettings.GENERAL.MaxKnockbackVelocityFactorToBoss
 		var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
 		var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
 		velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor

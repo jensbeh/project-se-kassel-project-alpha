@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/great_axe_10009.png-15fd47a3922026badc44869bdbfba24d.stex"
+path="res://.import/large_dagger_10004.png-9776a6000afd53fa31d60ebe50e176bd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/weapons/great_axe_10009.png"
-dest_files=[ "res://.import/great_axe_10009.png-15fd47a3922026badc44869bdbfba24d.stex" ]
+source_file="res://assets/player/weapons/large_dagger_10004.png"
+dest_files=[ "res://.import/large_dagger_10004.png-9776a6000afd53fa31d60ebe50e176bd.stex" ]
 
 [params]
 

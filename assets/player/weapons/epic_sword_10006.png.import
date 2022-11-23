@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/large_dagger_10007.png-97b8e7f1c66abceece26936a68d42cff.stex"
+path="res://.import/epic_sword_10006.png-3f9fbfec272d6317998c403193c02014.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/weapons/large_dagger_10007.png"
-dest_files=[ "res://.import/large_dagger_10007.png-97b8e7f1c66abceece26936a68d42cff.stex" ]
+source_file="res://assets/player/weapons/epic_sword_10006.png"
+dest_files=[ "res://.import/epic_sword_10006.png-3f9fbfec272d6317998c403193c02014.stex" ]
 
 [params]
 

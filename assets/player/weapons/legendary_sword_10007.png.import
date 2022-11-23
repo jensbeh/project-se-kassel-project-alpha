@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/legendary_sword_10006.png-7d61f59f552f3e538e920caa34da7250.stex"
+path="res://.import/legendary_sword_10007.png-559b330cc843df7954be4955e586c0d8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/weapons/legendary_sword_10006.png"
-dest_files=[ "res://.import/legendary_sword_10006.png-7d61f59f552f3e538e920caa34da7250.stex" ]
+source_file="res://assets/player/weapons/legendary_sword_10007.png"
+dest_files=[ "res://.import/legendary_sword_10007.png-559b330cc843df7954be4955e586c0d8.stex" ]
 
 [params]
 

@@ -42,10 +42,10 @@ const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 """
 const IS_PLAYER_INVISIBLE = false # Default: false
 
-const CAN_TOGGLE_PLAYER_INVINCIBLE = false # Default: false
+const CAN_TOGGLE_PLAYER_INVINCIBLE = true # Default: false
 var IS_PLAYER_INVINCIBLE = false # Default: false
 
-const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = false # Default: false
+const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = true # Default: false
 var HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 
 """
@@ -61,7 +61,7 @@ const LOAD_DUNGEONS_MAPS = true # Default: true
 ## TIME
 #################
 """
-const CAN_MODIFY_TIME = false # Default: false
+const CAN_MODIFY_TIME = true # Default: false
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------
@@ -83,10 +83,12 @@ const PLAYER_STAIR_SPEED_FACTOR = 0.6
 const CRITICAL_ATTACK_DAMAGE_FACTOR = 1.5
 const NORMAL_ATTACK_MIN_DAMAGE_FACTOR = 0.8
 const NORMAL_ATTACK_MAX_DAMAGE_FACTOR = 1.2
+const MIN_KNOCKBACK_VELOCITY_FACTOR_TO_PLAYER = 25
+const MAX_KNOCKBACK_VELOCITY_FACTOR_TO_PLAYER = 100
 const MAX_KNOCKBACK = 4
-const WEAPON_STAMINA_USE = 8 # * Weapon weight per hit
+const WEAPON_STAMINA_USE = 5 # * Weapon weight per hit
 const STAMINA_SPRINT = 15 # Points per second
-const STAMINA_RECOVER = 10 # Points per second
+const STAMINA_RECOVER = 12 # Points per second
 const RESCUE_PAY_GOLD_FACTOR = 0.1 # 10%
 const MIN_LEVEL_ITEM_LOSE = 3
 const MIN_LOST_FACTOR = 10
@@ -208,22 +210,25 @@ enum SpawnTime {
 # Mobs settings
 const MOB_SPEED_FACTOR = 2.2
 const MOB_PRE_ATTACK_SPEED_FACTOR = 1.2
-const MOB_DIFFICULTY = 1.0 # Normal = 1.0
+const MOB_DIFFICULTY_FACTOR = 0.5 # Normal = 0.5
+const MOB_HEALTH_FACTOR = 0.75 # Normal = 0.75
 const MobsSettings = {
 	# General mob settings
 	"GENERAL": {
 		"AttackRadius" : 32,
 		"MobSpeedFactor" : 2.2,
-		"DirectAttackStyleProbability" : 0.5,
+		"DirectAttackStyleProbability" : 0.25, # 25% chance to attack directly
+		"MinKnockbackVelocityFactorToMob" : 50,
+		"MaxKnockbackVelocityFactorToMob" : 150
 	},
 	
 	# Bat settings
 	"BAT": {
-		"Health" : 75 * MOB_DIFFICULTY,
-		"AttackDamage" : 20 * MOB_DIFFICULTY,
+		"Health" : 75 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 20 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 1,
 		"Weight" : 10,
-		"Experience" : 8 * MOB_DIFFICULTY,
+		"Experience" : 8 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ONLY_NIGHT,
 		"HuntingSpeed" : 50 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 25 * MOB_SPEED_FACTOR,
@@ -234,11 +239,11 @@ const MobsSettings = {
 	
 	# Fungus settings
 	"FUNGUS": {
-		"Health" : 140 * MOB_DIFFICULTY,
-		"AttackDamage" : 25 * MOB_DIFFICULTY,
+		"Health" : 140 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 25 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 2,
 		"Weight" : 40,
-		"Experience" : 14 * MOB_DIFFICULTY,
+		"Experience" : 14 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,
@@ -249,11 +254,11 @@ const MobsSettings = {
 	
 	# Ghost settings
 	"GHOST": {
-		"Health" : 90 * MOB_DIFFICULTY,
-		"AttackDamage" : 20 * MOB_DIFFICULTY,
+		"Health" : 90 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 20 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 1,
 		"Weight" : 5,
-		"Experience" : 9 * MOB_DIFFICULTY,
+		"Experience" : 9 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,
@@ -264,11 +269,11 @@ const MobsSettings = {
 	
 	# Orbinaut settings
 	"ORBINAUT": {
-		"Health" : 120 * MOB_DIFFICULTY,
-		"AttackDamage" : 35 * MOB_DIFFICULTY,
+		"Health" : 120 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 35 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 35,
-		"Experience" : 12 * MOB_DIFFICULTY,
+		"Experience" : 12 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ONLY_NIGHT,
 		"HuntingSpeed" : 45 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 8 * MOB_SPEED_FACTOR,
@@ -279,11 +284,11 @@ const MobsSettings = {
 	
 	# Rat settings
 	"RAT": {
-		"Health" : 80 * MOB_DIFFICULTY,
-		"AttackDamage" : 15 * MOB_DIFFICULTY,
+		"Health" : 80 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 15 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 1,
 		"Weight" : 10,
-		"Experience" : 8 * MOB_DIFFICULTY,
+		"Experience" : 8 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ONLY_NIGHT,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
@@ -294,11 +299,11 @@ const MobsSettings = {
 	
 	# Skeleton settings
 	"SKELETON": {
-		"Health" : 150 * MOB_DIFFICULTY,
-		"AttackDamage" : 40 * MOB_DIFFICULTY,
+		"Health" : 150 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 30 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 3,
 		"Weight" : 40,
-		"Experience" : 15 * MOB_DIFFICULTY,
+		"Experience" : 15 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
@@ -309,11 +314,11 @@ const MobsSettings = {
 	
 	# Small_Slime settings
 	"SMALL_SLIME": {
-		"Health" : 100 * MOB_DIFFICULTY,
-		"AttackDamage" : 20 * MOB_DIFFICULTY,
+		"Health" : 100 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 20 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 2,
 		"Weight" : 30,
-		"Experience" : 10 * MOB_DIFFICULTY,
+		"Experience" : 50 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,
@@ -324,11 +329,11 @@ const MobsSettings = {
 	
 	# Snake settings
 	"SNAKE": {
-		"Health" : 80 * MOB_DIFFICULTY,
-		"AttackDamage" : 25 * MOB_DIFFICULTY,
+		"Health" : 80 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 25 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 1,
 		"Weight" : 10,
-		"Experience" : 8 * MOB_DIFFICULTY,
+		"Experience" : 8 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
@@ -339,11 +344,11 @@ const MobsSettings = {
 	
 	# Zombie settings
 	"ZOMBIE": {
-		"Health" : 160 * MOB_DIFFICULTY,
-		"AttackDamage" : 35 * MOB_DIFFICULTY,
+		"Health" : 160 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 35 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 3,
 		"Weight" : 50,
-		"Experience" : 16 * MOB_DIFFICULTY,
+		"Experience" : 16 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 20 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 10 * MOB_SPEED_FACTOR,
@@ -363,7 +368,8 @@ const MobsSettings = {
 # Boss settings
 const BOSS_SPEED_FACTOR = 3.5
 const BOSS_PRE_ATTACK_SPEED_FACTOR = 1.5
-const BOSS_DIFFICULTY = 1.0 # Normal = 1.0
+const BOSS_DIFFICULTY_FACTOR = 1.0 # Normal = 1.0
+const BOSS_HEALTH_FACTOR = 1.0 * BOSS_DIFFICULTY_FACTOR # Normal = 1.0
 const BossesSettings = {
 	# General boss settings
 	"GENERAL": {
@@ -371,16 +377,18 @@ const BossesSettings = {
 		"DetectionRadiusInDungeon" : 100,
 		"AttackRadiusInGrassland" : 50.0,
 		"AttackRadiusInDungeon" : 50.0,
-		"DirectAttackStyleProbability" : 0.5,
+		"DirectAttackStyleProbability" : 0.25, # 25% chance to attack directly
+		"MinKnockbackVelocityFactorToBoss" : 50,
+		"MaxKnockbackVelocityFactorToBoss" : 100
 	},
 	
 	# Boss_Fungus settings
 	"BOSS_FUNGUS": {
-		"Health" : 1000 * BOSS_DIFFICULTY,
-		"AttackDamage" : 40 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 100,
-		"Experience" : 10 * BOSS_DIFFICULTY,
+		"Experience" : 50 * BOSS_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * BOSS_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * BOSS_SPEED_FACTOR,
@@ -391,11 +399,11 @@ const BossesSettings = {
 	
 	# Boss_Ghost settings
 	"BOSS_GHOST": {
-		"Health" : 1000 * BOSS_DIFFICULTY,
-		"AttackDamage" : 40 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 50,
-		"Experience" : 10 * BOSS_DIFFICULTY,
+		"Experience" : 50 * BOSS_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 35 * BOSS_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * BOSS_SPEED_FACTOR,
@@ -406,11 +414,11 @@ const BossesSettings = {
 	
 	# Boss_Orbinaut settings
 	"BOSS_ORBINAUT": {
-		"Health" : 1000 * BOSS_DIFFICULTY,
-		"AttackDamage" : 40 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 70,
-		"Experience" : 10 * BOSS_DIFFICULTY,
+		"Experience" : 50 * BOSS_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 45 * BOSS_SPEED_FACTOR,
 		"WanderingSpeed" : 8 * BOSS_SPEED_FACTOR,
@@ -421,11 +429,11 @@ const BossesSettings = {
 	
 	# Boss_Skeleton settings
 	"BOSS_SKELETON": {
-		"Health" : 1000 * BOSS_DIFFICULTY,
-		"AttackDamage" : 40 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 100,
-		"Experience" : 10 * BOSS_DIFFICULTY,
+		"Experience" : 50 * BOSS_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * BOSS_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * BOSS_SPEED_FACTOR,
@@ -436,11 +444,11 @@ const BossesSettings = {
 	
 	# Boss_Small_Slime settings
 	"BOSS_SMALL_SLIME": {
-		"Health" : 1000 * BOSS_DIFFICULTY,
-		"AttackDamage" : 40 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 50,
-		"Experience" : 10 * BOSS_DIFFICULTY,
+		"Experience" : 50 * BOSS_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * BOSS_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * BOSS_SPEED_FACTOR,
@@ -451,11 +459,11 @@ const BossesSettings = {
 	
 	# Boss_Zombie settings
 	"BOSS_ZOMBIE": {
-		"Health" : 1000 * BOSS_DIFFICULTY,
-		"AttackDamage" : 40 * BOSS_DIFFICULTY,
+		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 80,
-		"Experience" : 10 * BOSS_DIFFICULTY,
+		"Experience" : 50 * BOSS_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 20 * BOSS_SPEED_FACTOR,
 		"WanderingSpeed" : 10 * BOSS_SPEED_FACTOR,

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/balanced_sword_10004.png-d1830539164ba5db6046cd1b116a5f15.stex"
+path="res://.import/greate_axe_10009.png-1041e649596bb9f4342ccb51435bc08b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player/weapons/balanced_sword_10004.png"
-dest_files=[ "res://.import/balanced_sword_10004.png-d1830539164ba5db6046cd1b116a5f15.stex" ]
+source_file="res://assets/player/weapons/greate_axe_10009.png"
+dest_files=[ "res://.import/greate_axe_10009.png-1041e649596bb9f4342ccb51435bc08b.stex" ]
 
 [params]
 

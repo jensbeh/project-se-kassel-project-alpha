@@ -3,7 +3,7 @@
         "Name": "Wooden Sword",
         "Category": "Weapon",
         "EquipmentSlot": "Weapon",
-        "Attack": 15,
+        "Attack": 10,
         "Knockback": 0,
         "Attack-Speed": 4,
         "Weight": 1,
@@ -17,7 +17,7 @@
         "Name": "Iron Sword",
         "Category": "Weapon",
         "EquipmentSlot": "Weapon",
-        "Attack": 30,
+        "Attack": 15,
         "Knockback": 1,
         "Attack-Speed": 3,
         "Weight": 2,
@@ -25,27 +25,13 @@
         "Stackable": false,
         "Frame": 81,
         "Texture": "item_icons_1",
-        "Worth": 110
+        "Worth": 200
     },
     "10003": {
-        "Name": "Great Sword",
-        "Category": "Weapon",
-        "EquipmentSlot": "Weapon",
-        "Attack": 90,
-        "Knockback": 2,
-        "Attack-Speed": 2,
-        "Weight": 3,
-        "Health": null,
-        "Stackable": false,
-        "Frame": 82,
-        "Texture": "item_icons_1",
-        "Worth": 360
-    },
-    "10004": {
         "Name": "Balanced Sword",
         "Category": "Weapon",
         "EquipmentSlot": "Weapon",
-        "Attack": 50,
+        "Attack": 18,
         "Knockback": 1,
         "Attack-Speed": 3,
         "Weight": 2,
@@ -53,41 +39,13 @@
         "Stackable": false,
         "Frame": 83,
         "Texture": "item_icons_1",
-        "Worth": 200
+        "Worth": 300
     },
-    "10005": {
-        "Name": "Epic Sword",
-        "Category": "Weapon",
-        "EquipmentSlot": "Weapon",
-        "Attack": 100,
-        "Knockback": 2,
-        "Attack-Speed": 3,
-        "Weight": 2,
-        "Health": null,
-        "Stackable": false,
-        "Frame": 84,
-        "Texture": "item_icons_1",
-        "Worth": 450
-    },
-    "10006": {
-        "Name": "Legendary Sword",
-        "Category": "Weapon",
-        "EquipmentSlot": "Weapon",
-        "Attack": 150,
-        "Knockback": 4,
-        "Attack-Speed": 3,
-        "Weight": 2,
-        "Health": null,
-        "Stackable": false,
-        "Frame": 86,
-        "Texture": "item_icons_1",
-        "Worth": 750
-    },
-    "10007": {
+    "10004": {
         "Name": "Large Dagger",
         "Category": "Weapon",
         "EquipmentSlot": "Weapon",
-        "Attack": 75,
+        "Attack": 20,
         "Knockback": 1,
         "Attack-Speed": 4,
         "Weight": 1,
@@ -95,13 +53,55 @@
         "Stackable": false,
         "Frame": 87,
         "Texture": "item_icons_1",
-        "Worth": 320
+        "Worth": 350
+    },
+    "10005": {
+        "Name": "Great Sword",
+        "Category": "Weapon",
+        "EquipmentSlot": "Weapon",
+        "Attack": 22,
+        "Knockback": 2,
+        "Attack-Speed": 2,
+        "Weight": 3,
+        "Health": null,
+        "Stackable": false,
+        "Frame": 82,
+        "Texture": "item_icons_1",
+        "Worth": 400
+    },
+    "10006": {
+        "Name": "Epic Sword",
+        "Category": "Weapon",
+        "EquipmentSlot": "Weapon",
+        "Attack": 25,
+        "Knockback": 2,
+        "Attack-Speed": 3,
+        "Weight": 2,
+        "Health": null,
+        "Stackable": false,
+        "Frame": 84,
+        "Texture": "item_icons_1",
+        "Worth": 500
+    },
+    "10007": {
+        "Name": "Legendary Sword",
+        "Category": "Weapon",
+        "EquipmentSlot": "Weapon",
+        "Attack": 30,
+        "Knockback": 4,
+        "Attack-Speed": 3,
+        "Weight": 2,
+        "Health": null,
+        "Stackable": false,
+        "Frame": 86,
+        "Texture": "item_icons_1",
+        "Worth": 600
     },
     "10008": {
         "Name": "Normal Axe",
         "Category": "Weapon",
         "EquipmentSlot": "Weapon",
-        "Attack": 45,
+        "Attack": 22,
         "Knockback": 2,
         "Attack-Speed": 2,
         "Weight": 3,
@@ -109,13 +109,13 @@
         "Stackable": false,
         "Frame": 90,
         "Texture": "item_icons_1",
-        "Worth": 190
+        "Worth": 400
     },
     "10009": {
         "Name": "Greate Axe",
         "Category": "Weapon",
         "EquipmentSlot": "Weapon",
-        "Attack": 175,
+        "Attack": 30,
         "Knockback": 4,
         "Attack-Speed": 1,
         "Weight": 4,
@@ -123,7 +123,7 @@
         "Stackable": false,
         "Frame": 91,
         "Texture": "item_icons_1",
-        "Worth": 725
+        "Worth": 500
     },
     "10011": {
         "Name": "Health Potion",
