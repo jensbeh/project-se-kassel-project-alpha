@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+# Variables
 var input
 var show_map = false
 var has_map = false
@@ -105,25 +106,3 @@ func _input(event):
 				show_map = false
 				Utils.get_current_player().get_data().show_map = show_map
 				Utils.get_minimap().update_minimap()
-	
-	
-	######################
-	## Only for debugging
-	######################
-	# Time
-	if Constants.CAN_MODIFY_TIME:
-		if event.is_action_pressed("numpad plus"):
-			DayNightCycle.skip_time(1)
-			print("GAME: Added one hour")
-	# Player invincible
-	if Constants.CAN_TOGGLE_PLAYER_INVINCIBLE:
-		if event.is_action_pressed("numpad division"):
-			if Utils.get_current_player() != null:
-				Constants.IS_PLAYER_INVINCIBLE = !Constants.IS_PLAYER_INVINCIBLE
-				Utils.get_current_player().make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
-				print("GAME: Player invincible: " + str(Constants.IS_PLAYER_INVINCIBLE))
-	# Player infinit stamina
-	if Constants.CAN_TOGGLE_PLAYER_INFINIT_STAMINA:
-		if event.is_action_pressed("numpad multiply"):
-			Constants.HAS_PLAYER_INFINIT_STAMINA = !Constants.HAS_PLAYER_INFINIT_STAMINA
-			print("GAME: Player infinit stamina: " + str(Constants.HAS_PLAYER_INFINIT_STAMINA))

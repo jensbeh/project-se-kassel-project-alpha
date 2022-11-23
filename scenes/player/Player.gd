@@ -127,25 +127,15 @@ func _ready():
 	# For debugging
 	# Invisibility
 	if Constants.IS_PLAYER_INVISIBLE:
-		printerr("PLAYER: Is invisible")
 		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
 	else:
 		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
 	
 	# Invincibility
 	if Constants.IS_PLAYER_INVINCIBLE:
-		printerr("PLAYER: Is invincible")
 		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
 	else:
 		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
-	if Constants.CAN_TOGGLE_PLAYER_INVINCIBLE:
-		printerr("PLAYER: Can toggle invincible")
-	
-	# Infinit stamina
-	if Constants.HAS_PLAYER_INFINIT_STAMINA:
-		printerr("PLAYER: Has infinit stamina")
-	if Constants.CAN_TOGGLE_PLAYER_INFINIT_STAMINA:
-		printerr("PLAYER: Can toggle infinit stamina")
 
 
 func _physics_process(delta):

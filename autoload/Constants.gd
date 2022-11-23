@@ -7,6 +7,14 @@ extends Node
 # DEBUG
 """
 #################
+## GENERAL
+#################
+"""
+const CAN_DEBUG = true # Default: false
+const CAN_TOGGLE_DEBUGGING_WINDOW = true # Default: false
+
+"""
+#################
 ## AMBIENT MOBS
 #################
 """
@@ -683,4 +691,70 @@ const PreloadedSounds = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	#-------------------------------------------------------------
+	
+	# Section only for debugging
+	# Check flags
+	
+	# GAME
+	# Can modify game
+	if Constants.CAN_DEBUG:
+		printerr("DEBUGGING: Game can be manipulated")
+	if Constants.CAN_TOGGLE_DEBUGGING_WINDOW:
+		printerr("DEBUGGING: Debugging window can be toggled")
+	
+	# MOBS
+	if Constants.SHOW_AMBIENT_MOB_COLLISION:
+		printerr("DEBUGGING: Collisions shown of ambient mobs")
+	if Constants.SHOW_AMBIENT_MOB_PATHES:
+		printerr("DEBUGGING: Pathes shown of ambient mobs")
+	if Constants.SHOW_MOB_COLLISION:
+		printerr("DEBUGGING: Collisions shown of mobs")
+	if Constants.SHOW_MOB_DETECTION_RADIUS:
+		printerr("DEBUGGING: Detection radius shown of mobs")
+	if Constants.SHOW_MOB_PATHES:
+		printerr("DEBUGGING: Pathes shown of mobs")
+	if Constants.SHOW_MOB_HITBOX:
+		printerr("DEBUGGING: Hitbox shown of mobs")
+	if Constants.SHOW_MOB_DAMAGE_AREA:
+		printerr("DEBUGGING: Damage area shown of mobs")
+	
+	# BOSSES
+	if Constants.SHOW_BOSS_COLLISION:
+		printerr("DEBUGGING: Collisions shown of bosses")
+	if Constants.SHOW_BOSS_DETECTION_RADIUS:
+		printerr("DEBUGGING: Detection radius shown of bosses")
+	if Constants.SHOW_BOSS_PATHES:
+		printerr("DEBUGGING: Pathes shown of bosses")
+	if Constants.SHOW_BOSS_HITBOX:
+		printerr("DEBUGGING: Hitbox shown of bosses")
+	if Constants.SHOW_BOSS_DAMAGE_AREA:
+		printerr("DEBUGGING: Damage area shown of bosses")
+	
+	# PLAYER
+	# Invisibility
+	if Constants.IS_PLAYER_INVISIBLE:
+		printerr("DEBUGGING: Player is invisible")
+	# Invincibility
+	if Constants.IS_PLAYER_INVINCIBLE:
+		printerr("DEBUGGING: Player is invincible")
+	if Constants.CAN_TOGGLE_PLAYER_INVINCIBLE:
+		printerr("DEBUGGING: Can toggle player invincible")
+	# Infinit stamina
+	if Constants.HAS_PLAYER_INFINIT_STAMINA:
+		printerr("DEBUGGING: Player has infinit stamina")
+	if Constants.CAN_TOGGLE_PLAYER_INFINIT_STAMINA:
+		printerr("DEBUGGING: Can toggle player infinit stamina")
+	
+	# MAPS
+	if not Constants.LOAD_GRASSLAND_MAP:
+		printerr("DEBUGGING: Pathfinding of grassland not loading")
+	if not Constants.LOAD_DUNGEONS_MAPS:
+		printerr("DEBUGGING: Pathfinding of dungeons not loading")
+	
+	# TIME
+	# Can modify time
+	if Constants.CAN_MODIFY_TIME:
+		printerr("DEBUGGING: Time can be manipulated")
+	
+	#-------------------------------------------------------------
