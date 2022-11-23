@@ -26,7 +26,9 @@ func get_player():
 
 # Sets a new current_player instance (firstly done when enter the game - not available in the menu)
 func set_current_player(new_current_player: KinematicBody2D):
+#	var player = load("res://scenes/player/Player.tscn").instance()
 	current_player = new_current_player
+	
 
 
 # Returns the current_player instance

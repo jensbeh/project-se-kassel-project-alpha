@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/story/intro_story.gd" type="Script" id=2]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=3]
+size = 36
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+font_data = ExtResource( 3 )
+
+[node name="IntroStory" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+theme = SubResource( 1 )
+color = Color( 0, 0, 0, 1 )
+
+[node name="StoryContainer" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+
+[node name="Line" type="Label" parent="StoryContainer"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -84.0
+margin_bottom = 5.0
+rect_min_size = Vector2( 1920, 89 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+align = 1
+valign = 1
+
+[node name="Skip" type="Button" parent="."]
+margin_left = 59.0
+margin_top = 64.0
+margin_right = 163.0
+margin_bottom = 120.0
+custom_fonts/font = SubResource( 2 )
+text = "Skip"
+
+[connection signal="pressed" from="Skip" to="." method="_on_Skip_pressed"]

@@ -139,7 +139,6 @@ func setup_player():
 	
 	# Replace template player in scene with current_player
 	scene_player.get_parent().remove_child(scene_player)
-	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals

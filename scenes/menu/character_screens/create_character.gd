@@ -145,7 +145,9 @@ func _ready():
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
-	pass
+	# Save player node before deleting the scene when player created new one
+	if Utils.get_current_player() != null and Utils.get_current_player().get_parent() != null:
+		Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 
 
 func get_sprites():
@@ -647,8 +649,6 @@ func start_game():
 	
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	var player_position = Vector2(1128,616)
-	var view_direction = Vector2(0,1)
 	
 	DayNightCycle.set_current_time(0.0)
 	DayNightCycle.set_passed_days(0)
@@ -656,7 +656,7 @@ func start_game():
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()
 	
-	var transition_data = TransitionData.GamePosition.new(Constants.CAMP_FOLDER + "/Camp.tscn", player_position, view_direction)
+	var transition_data = TransitionData.Menu.new(Constants.STORY_SCENE_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

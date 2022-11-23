@@ -103,7 +103,9 @@ func _on_load_scene_done(scene):
 	
 	# Cleanup player if coming from game_scene to menu
 	if current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE and Utils.get_current_player() != null:
-		Utils.set_current_player(null)
+		if current_transition_data.get_scene_path() != Constants.STORY_SCENE_PATH:
+			print("here")
+			Utils.set_current_player(null)
 	
 	# Add scene to current_scene
 	get_current_scene().queue_free()

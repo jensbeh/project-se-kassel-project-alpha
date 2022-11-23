@@ -38,8 +38,8 @@ const HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 #################
 ## LOADED MAPS
 #################
-const LOAD_GRASSLAND_MAP = true # Default: true
-const LOAD_DUNGEONS_MAPS = true # Default: true
+const LOAD_GRASSLAND_MAP = false # Default: true
+const LOAD_DUNGEONS_MAPS = false # Default: true
 
 #################
 ## TIME
@@ -74,6 +74,8 @@ const chunk_size_pixel = CHUNK_SIZE_TILES * TILE_SIZE # In pixel
 const RENDER_DISTANCE = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
 
 # Player
+const FIRST_SPAWN_POSITION = Vector2(-60, 0)
+const FIRST_SPAWN_SCENE = "res://scenes/camp/buildings/House1.tscn"
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
 const PLAYER_MAX_LIGHT_ENERGY = 0.8
@@ -156,6 +158,7 @@ const DIALOG_PATH = "res://scenes/npc/DialogueBox.tscn"
 const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 const GOLDEN_KEY_PATH = "res://scenes/items/golden_key.tscn"
 const CREDIT_SCREEN_PATH = "res://scenes/credits/CreditScreen.tscn"
+const STORY_SCENE_PATH = "res://scenes/story/IntroStory.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 5
