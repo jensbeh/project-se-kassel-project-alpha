@@ -101,7 +101,10 @@ func drop_data(_pos, data):
 		var light_value = GameData.item_data[str(PlayerData.equipment_data[target_slot]["Item"])]["Radius"]
 		get_parent().get_parent().get_parent().get_parent().get_parent().find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(light_value))
 		Utils.get_current_player().set_light(light_value)
-	
+		
+		# Refresh tooltip
+		hide_tooltip()
+		show_tooltip()
 
 
 func verify_origin_texture(data):
