@@ -159,8 +159,6 @@ const FULL_INV_MSG = "res://scenes/inventory/Msg_Inv.tscn"
 const GOLDEN_KEY_PATH = "res://scenes/items/golden_key.tscn"
 const CREDIT_SCREEN_PATH = "res://scenes/credits/CreditScreen.tscn"
 const STORY_SCENE_PATH = "res://scenes/story/IntroStory.tscn"
-const QUEST_SCENE_PATH = "res://scenes/story/quest/QuestList.tscn"
-const QUEST_SLOT_PATH = "res://scenes/story/quest/QuestSlot.tscn"
 
 # inventory
 const MAX_STACK_SIZE = 5
@@ -231,8 +229,6 @@ const PreloadedScenes = {
 	"TooltipScene" : preload(TOOLTIP),
 	"SplitPopupScene" : preload(SPLIT_POPUP),
 	"CharacterInterfaceScene" : preload(CHARACTER_INTERFACE_PATH),
-	"QuestScene" : preload(QUEST_SCENE_PATH),
-	"QuestSlot" : preload(QUEST_SLOT_PATH),
 }
 
 # Mobs
