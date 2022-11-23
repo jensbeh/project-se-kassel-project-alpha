@@ -23,7 +23,7 @@ func load_hotbar():
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
 		var texture = GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Texture"]
 		var frame = GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Frame"]
-		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+		var icon_texture = load("res://assets/icon_items/" + texture + ".png")
 		if texture == "item_icons_1":
 			item_slot.get_node("Icon/Sprite").set_scale(Vector2(2,2))
 			item_slot.get_node("Icon/Sprite").set_hframes(16)

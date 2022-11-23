@@ -94,7 +94,7 @@ func setup():
 			get_node(str(i.get_path()) + "/Name").set_text(tr(str(GameData.item_data[str(loot_dict[counter][0])]["Name"])))
 			var texture = GameData.item_data[str(loot_dict[counter][0])]["Texture"]
 			var frame = int(GameData.item_data[str(loot_dict[counter][0])]["Frame"])
-			var icon = load("res://Assets/Icon_Items/" + texture + ".png")
+			var icon = load("res://assets/icon_items/" + texture + ".png")
 			var slot = get_node(str(i.get_path()) + "/LootIcon/Icon/Sprite")
 			if texture == "item_icons_1":
 				slot.set_scale(Vector2(2.5,2.5))

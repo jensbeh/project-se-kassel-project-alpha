@@ -12,7 +12,7 @@ func _ready():
 		if PlayerData.inv_data[slot]["Item"] != null:
 			var texture = GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Texture"]
 			var frame = GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Frame"]
-			var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+			var icon_texture = load("res://assets/icon_items/" + texture + ".png")
 			if texture == "item_icons_1":
 				inv_slot_new.get_node("Icon/Sprite").set_scale(Vector2(1.5,1.5))
 				inv_slot_new.get_node("Icon/Sprite").set_hframes(16)
