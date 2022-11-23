@@ -214,7 +214,9 @@ var save_game_data = {
 	"glasses": curr_glasses,
 	"id" : uuid,
 	"view_direction": var2str(Vector2(0,1)),
-	"passed_days": 0
+	"passed_days": 0,
+	"quest": "",
+	"quest_finished": false
 }
 
 var save_inventory = {

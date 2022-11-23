@@ -38,6 +38,9 @@ func transition_to_scene(transition_data):
 		Utils.get_current_player().set_player_can_interact(false)
 		Utils.get_current_player().make_player_invisible(true)
 	
+	if Utils.get_current_player() != null and Utils.get_current_player().get_parent() != null:
+		Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
+	
 	# Cleanup UI
 	# Remove "ESC" Game Menu
 	if Utils.get_game_menu() != null:
@@ -104,7 +107,6 @@ func _on_load_scene_done(scene):
 	# Cleanup player if coming from game_scene to menu
 	if current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE and Utils.get_current_player() != null:
 		if current_transition_data.get_scene_path() != Constants.STORY_SCENE_PATH:
-			print("here")
 			Utils.set_current_player(null)
 	
 	# Add scene to current_scene

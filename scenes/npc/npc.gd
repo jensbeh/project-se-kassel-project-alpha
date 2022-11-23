@@ -147,7 +147,10 @@ func interaction_detected():
 				Utils.get_current_player().set_movement(false)
 				var dialog = Constants.PreloadedScenes.DialogScene.instance()
 				Utils.get_ui().add_child(dialog)
-				dialog.start(self, false, "")
+				if get_name() == "Hugo" and Utils.get_player_ui().is_quest_finished():
+					dialog.start(self, true, "")
+				else:
+					dialog.start(self, false, "")
 
 
 # When npc enters stairs to slow down
