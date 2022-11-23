@@ -611,7 +611,6 @@ self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 19 )
-frame = 3
 playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
@@ -652,6 +651,7 @@ anims/Saved = SubResource( 29 )
 script = ExtResource( 13 )
 
 [node name="DebuggingNode" type="ColorRect" parent="Debugging"]
+visible = false
 modulate = Color( 1, 1, 1, 0.619608 )
 margin_left = 16.0
 margin_top = 136.0

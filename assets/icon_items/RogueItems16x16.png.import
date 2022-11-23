@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/RogueItems16x16.png-a058b3dfaaefe28872da81af1b391852.stex"
+path="res://.import/RogueItems16x16.png-6aa89fb79a936ad5ab5cc0778e24d693.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Icon_Items/RogueItems16x16.png"
-dest_files=[ "res://.import/RogueItems16x16.png-a058b3dfaaefe28872da81af1b391852.stex" ]
+source_file="res://assets/icon_items/RogueItems16x16.png"
+dest_files=[ "res://.import/RogueItems16x16.png-6aa89fb79a936ad5ab5cc0778e24d693.stex" ]
 
 [params]
 
