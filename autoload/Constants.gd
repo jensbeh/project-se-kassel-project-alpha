@@ -632,7 +632,7 @@ const PreloadedScenes = {
 
 """
 #################
-## MUSIC
+## PRELOADED MUSIC
 #################
 """
 const PreloadedMusic = {
@@ -652,7 +652,7 @@ const PreloadedMusic = {
 
 """
 #################
-## SOUNDS
+## PRELOADED SOUNDS
 #################
 """
 const PreloadedSounds = {
@@ -686,6 +686,25 @@ const PreloadedSounds = {
 	"Attack" : preload("res://assets/sounds/swing.wav"),
 	"Drop" : preload("res://assets/sounds/plugpull.wav"),
 	"Eat" : preload("res://assets/sounds/beads.wav"),
+}
+
+
+"""
+#################
+## PRELOADED TEXTURES
+#################
+"""
+const PreloadedTextures = {
+	# Weapons
+	"10001" : preload("res://assets/player/weapons/wooden_sword_10001.png"),
+	"10002" : preload("res://assets/player/weapons/iron_sword_10002.png"),
+	"10003" : preload("res://assets/player/weapons/balanced_sword_10003.png"),
+	"10004" : preload("res://assets/player/weapons/large_dagger_10004.png"),
+	"10005" : preload("res://assets/player/weapons/greate_sword_10005.png"),
+	"10006" : preload("res://assets/player/weapons/epic_sword_10006.png"),
+	"10007" : preload("res://assets/player/weapons/legendary_sword_10007.png"),
+	"10008" : preload("res://assets/player/weapons/normal_axe_10008.png"),
+	"10009" : preload("res://assets/player/weapons/greate_axe_10009.png"),
 }
 
 

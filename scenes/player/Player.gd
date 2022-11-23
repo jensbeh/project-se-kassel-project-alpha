@@ -725,33 +725,18 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 
 # Method to set/save weapon and stats to player
 func set_weapon(new_weapon_id, new_attack_value: int, new_attack_speed: int, new_knockback: int):
+	# Set weapon
 	if new_weapon_id != null:
 		weapon_weight = GameData.item_data[str(new_weapon_id)]["Weight"]
 		var weapon_id_str = str(new_weapon_id)
 		can_attack = true
-		var weapons_dir = Directory.new()
-		var weapon_path = ""
-		if weapons_dir.open("res://assets/player/weapons/") == OK:
-			weapons_dir.list_dir_begin()
-			var weapon_name : String = weapons_dir.get_next()
-			while weapon_name != "":
-				if weapon_name.ends_with(".png"):
-					var file_weapon_id = weapon_name.substr(weapon_name.find_last("_") + 1, 5)
-					if file_weapon_id == weapon_id_str:
-						weapon_path = "res://assets/player/weapons/" + weapon_name
-						break
-					
-				weapon_name = weapons_dir.get_next()
-		
-		
-		var weapon_texture = load(weapon_path)
-		weaponSprite.texture = weapon_texture
-	
+		weaponSprite.texture = Constants.PreloadedTextures[weapon_id_str]
+	# Remove weapon
 	else:
 		weapon_weight = 0
 		can_attack = false
-		
-		
+	
+	# Set new values
 	attack_damage = new_attack_value
 	data.attack = new_attack_value
 	
