@@ -31,7 +31,6 @@ onready var sound_walk = $SoundWalk
 onready var sound = $Sound
 onready var sound_breath = $SoundBreath
 
-const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
 var curr_body: int = 0 #0-7, 1
 var curr_shoes: int = 0 #0, 10
@@ -90,19 +89,19 @@ var is_player_paused = false
 
 func _ready():
 	# Style
-	bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
-	shoesSprite.texture = CompositeSprites.SHOES_SPRITESHEET[curr_shoes]
-	pantsSprite.texture = CompositeSprites.PANTS_SPRITESHEET[curr_pants]
-	clothesSprite.texture = CompositeSprites.CLOTHES_SPRITESHEET[curr_clothes]
-	blushSprite.texture = CompositeSprites.BLUSH_SPRITESHEET[curr_blush]
-	lipstickSprite.texture = CompositeSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
-	beardSprite.texture = CompositeSprites.BEARD_SPRITESHEET[curr_beard]
-	eyesSprite.texture = CompositeSprites.EYES_SPRITESHEET[curr_eyes]
-	earringSprite.texture = CompositeSprites.EARRING_SPRITESHEET[curr_earring]
-	hairSprite.texture = CompositeSprites.HAIR_SPRITESHEET[curr_hair]
-	maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
-	glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
-	hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
+	bodySprite.texture = Constants.PreloadedPlayerSprites.BODY_SPRITESHEET[curr_body]
+	shoesSprite.texture = Constants.PreloadedPlayerSprites.SHOES_SPRITESHEET[curr_shoes]
+	pantsSprite.texture = Constants.PreloadedPlayerSprites.PANTS_SPRITESHEET[curr_pants]
+	clothesSprite.texture = Constants.PreloadedPlayerSprites.CLOTHES_SPRITESHEET[curr_clothes]
+	blushSprite.texture = Constants.PreloadedPlayerSprites.BLUSH_SPRITESHEET[curr_blush]
+	lipstickSprite.texture = Constants.PreloadedPlayerSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
+	beardSprite.texture = Constants.PreloadedPlayerSprites.BEARD_SPRITESHEET[curr_beard]
+	eyesSprite.texture = Constants.PreloadedPlayerSprites.EYES_SPRITESHEET[curr_eyes]
+	earringSprite.texture = Constants.PreloadedPlayerSprites.EARRING_SPRITESHEET[curr_earring]
+	hairSprite.texture = Constants.PreloadedPlayerSprites.HAIR_SPRITESHEET[curr_hair]
+	maskSprite.texture = Constants.PreloadedPlayerSprites.MASK_SPRITESHEET[curr_mask]
+	glassesSprite.texture = Constants.PreloadedPlayerSprites.GLASSES_SPRITESHEET[curr_glasses]
+	hatSprite.texture = Constants.PreloadedPlayerSprites.HAT_SPRITESHEET[curr_hat]
 	
 	shadow.visible = false
 	
@@ -406,43 +405,43 @@ func set_texture(name, value):
 	match name:
 		"curr_body":
 			curr_body = value
-			bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
+			bodySprite.texture = Constants.PreloadedPlayerSprites.BODY_SPRITESHEET[curr_body]
 		"curr_shoes":
 			curr_shoes = value
-			shoesSprite.texture = CompositeSprites.SHOES_SPRITESHEET[curr_shoes]
+			shoesSprite.texture = Constants.PreloadedPlayerSprites.SHOES_SPRITESHEET[curr_shoes]
 		"curr_pants":
 			curr_pants = value
-			pantsSprite.texture = CompositeSprites.PANTS_SPRITESHEET[curr_pants]
+			pantsSprite.texture = Constants.PreloadedPlayerSprites.PANTS_SPRITESHEET[curr_pants]
 		"curr_clothes":
 			curr_clothes = value
-			clothesSprite.texture = CompositeSprites.CLOTHES_SPRITESHEET[curr_clothes]
+			clothesSprite.texture = Constants.PreloadedPlayerSprites.CLOTHES_SPRITESHEET[curr_clothes]
 		"curr_blush":
 			curr_blush = value
-			blushSprite.texture = CompositeSprites.BLUSH_SPRITESHEET[curr_blush]
+			blushSprite.texture = Constants.PreloadedPlayerSprites.BLUSH_SPRITESHEET[curr_blush]
 		"curr_lipstick":
 			curr_lipstick = value
-			lipstickSprite.texture = CompositeSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
+			lipstickSprite.texture = Constants.PreloadedPlayerSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
 		"curr_beard":
 			curr_beard = value
-			beardSprite.texture = CompositeSprites.BEARD_SPRITESHEET[curr_beard]
+			beardSprite.texture = Constants.PreloadedPlayerSprites.BEARD_SPRITESHEET[curr_beard]
 		"curr_eyes":
 			curr_eyes = value
-			eyesSprite.texture = CompositeSprites.EYES_SPRITESHEET[curr_eyes]
+			eyesSprite.texture = Constants.PreloadedPlayerSprites.EYES_SPRITESHEET[curr_eyes]
 		"curr_earring":
 			curr_earring = value
-			earringSprite.texture = CompositeSprites.EARRING_SPRITESHEET[curr_earring]
+			earringSprite.texture = Constants.PreloadedPlayerSprites.EARRING_SPRITESHEET[curr_earring]
 		"curr_hair":
 			curr_hair = value
-			hairSprite.texture = CompositeSprites.HAIR_SPRITESHEET[curr_hair]
+			hairSprite.texture = Constants.PreloadedPlayerSprites.HAIR_SPRITESHEET[curr_hair]
 		"curr_mask":
 			curr_mask = value
-			maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
+			maskSprite.texture = Constants.PreloadedPlayerSprites.MASK_SPRITESHEET[curr_mask]
 		"curr_glasses":
 			curr_glasses = value
-			glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
+			glassesSprite.texture = Constants.PreloadedPlayerSprites.GLASSES_SPRITESHEET[curr_glasses]
 		"curr_hat":
 			curr_hat = value
-			hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
+			hatSprite.texture = Constants.PreloadedPlayerSprites.HAT_SPRITESHEET[curr_hat]
 
 
 func reset_key(track_idx):
@@ -1171,3 +1170,7 @@ func set_stamina_cooldown(new_cooldown):
 	stamina_cooldown = new_cooldown
 	# for save
 	data.stamina_cooldown = new_cooldown
+
+
+func destroy_scene():
+	print("destroy_scene")

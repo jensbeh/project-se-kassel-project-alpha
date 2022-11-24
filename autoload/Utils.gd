@@ -526,6 +526,8 @@ func preload_game():
 	var time_now = 0
 	
 	# Load here everything which needs to be preloaded
+	# Preload all scenes, music, ...
+	Constants.preload_variables()
 	# Load AStars
 	PathfindingService.preload_astars()
 	

@@ -16,6 +16,7 @@ onready var changeScenesObject = $map_camp/changeScenes
 onready var groundChunks = $map_camp/ground/Chunks
 onready var higherChunks = $map_camp/higher/Chunks
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Music
@@ -59,8 +60,10 @@ func setup_player():
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
 	
-	# Replace template player in scene with current_player
+	# Remove scene_player
 	scene_player.get_parent().remove_child(scene_player)
+	scene_player.queue_free()
+	# Replace template player in scene with current_player
 	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
