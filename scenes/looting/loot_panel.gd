@@ -138,7 +138,6 @@ func _on_Close_pressed():
 	Utils.get_current_player().get_node("Sound").play()
 	Utils.get_current_player().player_looted()
 	Utils.save_game(true)
-	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
 
@@ -153,7 +152,6 @@ func _on_LootAll_pressed():
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect2)
 	else:
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect)
-	get_parent().remove_child(self)
 	queue_free()
 	Utils.save_game(true)
 	for i in range(1,size + 1):

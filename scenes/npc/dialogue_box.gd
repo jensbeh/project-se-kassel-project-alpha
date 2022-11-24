@@ -136,7 +136,6 @@ func close_dialog():
 				else:
 					origin.reset_interaction()
 	Utils.get_control_notes().show()
-	get_parent().remove_child(self)
 	queue_free()
 
 

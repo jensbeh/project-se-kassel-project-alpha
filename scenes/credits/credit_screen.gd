@@ -240,7 +240,7 @@ func _process(delta):
 		if line_timer >= line_time:
 			line_timer -= line_time
 			add_line()
-
+	
 	if lines.size() > 0:
 		for l in lines:
 			l.rect_position.y -= 100 * delta

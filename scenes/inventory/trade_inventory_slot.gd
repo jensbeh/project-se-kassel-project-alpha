@@ -326,5 +326,5 @@ func check_slots():
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
-				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+				trade.get_node("Inv" + str(slots - i)).queue_free()
 			check_slots()

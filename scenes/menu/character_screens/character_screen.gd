@@ -166,7 +166,7 @@ func delete_character():
 		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/merchant/")
 		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + "_inv_data" + SAVE_FILE_EXTENSION)
 		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/")
-	list.remove_child(delete_container)
+	delete_container.queue_free()
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
 		if selected_character != 0: 
@@ -630,7 +630,6 @@ func start_game():
 func _on_ConfirmationDialog_confirmed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Delete)
 	delete_character()
-
 
 
 func _on_ConfirmationDialog_hide():
