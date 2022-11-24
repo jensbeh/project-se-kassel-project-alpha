@@ -2,7 +2,9 @@ extends Control
 
 var inv_slot = Constants.PreloadedScenes.InvSlotScene
 
-onready var gridcontainer = get_node("Background/MarginContainer/VBox/ScrollContainer/GridContainer")
+onready var gridcontainer = $Background/MarginContainer/VBox/ScrollContainer/GridContainer
+onready var playerNameNode = $Background/MarginContainer/VBox/TitleBox/Title/Titlename
+onready var playerGoldNode = $Background/MarginContainer/VBox/TitleBox/Control/Gold
 
 # Load player inventory
 func _ready():
@@ -30,8 +32,8 @@ func _ready():
 				inv_slot_new.get_node("TextureRect").visible = true
 		gridcontainer.add_child(inv_slot_new, true)
 	# Sets the name and the gold from the player
-	$Background/MarginContainer/VBox/TitleBox/Title/Titlename.text = tr("INVENTORY")
-	$Background/MarginContainer/VBox/TitleBox/Control/Gold.text = "Gold: " + str(Utils.get_current_player().get_gold())
+	playerNameNode.text = tr("INVENTORY")
+	playerGoldNode.text = "Gold: " + str(Utils.get_current_player().get_gold())
 	if Utils.get_trade_inventory() == null:
 		# check if needed to set cooldown
 		var health_cooldown = Utils.get_current_player().health_cooldown

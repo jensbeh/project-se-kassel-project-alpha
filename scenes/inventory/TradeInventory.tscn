@@ -48,7 +48,6 @@ custom_constants/separation = 18
 margin_top = 0.0
 margin_bottom = 510.0
 rect_min_size = Vector2( 480, 500 )
-script = ExtResource( 2 )
 
 [node name="Background" parent="ColorRect/MarginContainer/HBoxContainer/Inventory" index="0"]
 rect_min_size = Vector2( 480, 500 )
