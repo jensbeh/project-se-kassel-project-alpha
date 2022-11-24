@@ -152,14 +152,18 @@ func close_dialog():
 func _on_Quest_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
 	Utils.get_control_notes().show()
-	close_dialog()
 	var quest = Constants.PreloadedScenes.QuestScene.instance()
 	Utils.get_ui().add_child(quest)
+	var success
 	if obj_name == "hugo" or !Utils.get_player_ui().is_quest_finished():
-		quest.show_quests()
+		success = quest.show_quests()
 	else:
-		quest.reward_quest()
-	
+		success = quest.reward_quest()
+	if success:
+		close_dialog()
+	else:
+		$Text.bbcode_text = tr("REWARD_FULL")
+		$Text.visible_characters = len(tr("REWARD_FULL"))
 
 
 func _on_Trade_pressed():

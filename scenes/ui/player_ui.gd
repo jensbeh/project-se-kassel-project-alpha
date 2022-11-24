@@ -48,8 +48,8 @@ func setup_ui():
 		set_quest(current_quest)
 	else:
 		current_quest = ""
-	set_quest_finished(quest_finished)
 	set_quest_progress(0)
+	set_quest_finished(quest_finished)
 
 
 # Set stamina value 
@@ -191,12 +191,8 @@ func get_current_quest():
 # Called when quest task is done
 func set_quest_finished(new_value):
 	quest_finished = new_value
-	get_node("Quest/finished").show()
 	if new_value:
-		get_node("Quest/finished").texture = checkbox
-	else:
 		progress.value = progress.max_value
-		get_node("Quest/finished").texture = checkbox_progress
 	save_quest()
 
 
@@ -206,8 +202,7 @@ func set_quest(new_quest):
 	get_node("Quest").show()
 	get_node("Quest/Title").set_text(tr(current_quest))
 	get_node("Quest/Quest").set_text(tr(current_quest + "_TASK"))
-	if current_quest == "QUEST3":
-		set_quest_progress(0)
+	set_quest_progress(0)
 	save_quest()
 
 

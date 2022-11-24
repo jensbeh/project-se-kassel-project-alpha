@@ -141,6 +141,7 @@ stream = ExtResource( 5 )
 bus = "Sounds"
 
 [node name="Quest" type="TextureButton" parent="."]
+visible = false
 self_modulate = Color( 0.717647, 0.67451, 0.67451, 0.870588 )
 margin_left = 1528.0
 margin_top = 944.0

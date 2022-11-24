@@ -74,6 +74,7 @@ func show_quests():
 	if Utils.get_player_ui().get_current_quest() != "" and Utils.get_player_ui().get_current_quest() != null:
 		for quest in grid.get_children():
 			quest.get_node("locked").show()
+	return true
 
 
 # Get quest reward
@@ -111,15 +112,16 @@ func reward_quest():
 							PlayerData.inv_data[slot]["Item"] = quest_rewards[quest][reward]
 							PlayerData.inv_data[slot]["Stack"] = quest_rewards[quest][reward + "_Stack"]
 							break
+		# Close dialog
+		Utils.get_current_player().set_player_can_interact(true)
+		Utils.get_current_player().set_movement(true)
+		Utils.get_current_player().set_movment_animation(true)
+		Utils.get_current_player().pause_player(false)
+		Utils.save_game(true)
+		return true
 	else:
-		# Msg can not loot - inventory full
-		var msg = Constants.PreloadedScenes.FullInvMsgScene.instance()
-		Utils.get_ui().add_child(msg)
-	Utils.get_current_player().set_player_can_interact(true)
-	Utils.get_current_player().set_movement(true)
-	Utils.get_current_player().set_movment_animation(true)
-	Utils.get_current_player().pause_player(false)
-	Utils.save_game(true)
+		# Full Msg in Dialog
+		return false
 
 
 func _on_Close_pressed():

@@ -90,7 +90,7 @@ func check_slots():
 			if MerchantData.inv_data["Inv" + str(MerchantData.inv_data.size() - i)]["Item"] != null:
 				free2 = true
 		if !free2:
-			Utils.get_and_play_sound(Constants.PreloadedSounds.OpenUI2)
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))

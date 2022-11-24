@@ -144,3 +144,4 @@ QUEST1_TASK,Slay a terrible boss in any dungeon,Erlege einen schrecklichen Boss 
 QUEST2_TASK,Slay a terrible boss,Erlege einen schrecklichen Boss
 QUEST3_TASK,Slay 20 Mobs,Erlege 20 Monster
 ABORT,Cancel current quest,Aktuelle Quest abbrechen
+REWARD_FULL,There is not enough space in your inventory for the reward. Please come back with more free inventory spaces,In deinem Inventar ist nicht genug Platz für die Belohnung. Bitte kommen Sie mit mehr freien Inventarplätzen zurück

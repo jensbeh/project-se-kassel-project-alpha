@@ -394,7 +394,6 @@ valign = 1
 [node name="Timer2" type="Timer" parent="Hotbar/Hotbar"]
 
 [node name="Quest" type="NinePatchRect" parent="."]
-visible = false
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -431,7 +430,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -336.0
+margin_left = -386.0
 margin_top = -97.0
 margin_right = -17.0
 margin_bottom = -9.0
@@ -445,6 +444,7 @@ valign = 1
 autowrap = true
 
 [node name="finished" type="TextureRect" parent="Quest"]
+visible = false
 margin_left = 10.0
 margin_top = 97.0
 margin_right = 50.0
