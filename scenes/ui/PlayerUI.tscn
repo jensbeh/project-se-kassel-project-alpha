@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://assets/ui/expbar.png" type="Texture" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
@@ -90,6 +90,14 @@ font_data = ExtResource( 2 )
 [sub_resource type="DynamicFont" id=19]
 size = 18
 font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxTexture" id=20]
+texture = ExtResource( 1 )
+region_rect = Rect2( 13.734, 10.4538, 374.675, 20.3419 )
+margin_left = 1.52836
+margin_right = 6.54096
+margin_top = 3.02798
+margin_bottom = 3.73132
 
 [node name="PlayerUI" type="Control"]
 anchor_right = 1.0
@@ -386,14 +394,15 @@ valign = 1
 [node name="Timer2" type="Timer" parent="Hotbar/Hotbar"]
 
 [node name="Quest" type="NinePatchRect" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 539.0
-margin_top = -217.0
-margin_right = 919.0
-margin_bottom = -67.0
+margin_left = 525.011
+margin_top = -460.0
+margin_right = 925.011
+margin_bottom = -292.0
 texture = ExtResource( 4 )
 region_rect = Rect2( 4.45999, 5.85, 94.7625, 92.9575 )
 patch_margin_left = 15
@@ -405,6 +414,7 @@ patch_margin_bottom = 15
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -179.544
+margin_top = 10.0
 margin_right = 180.456
 margin_bottom = 45.0
 grow_horizontal = 0
@@ -413,6 +423,7 @@ rect_scale = Vector2( 1.00154, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 18 )
 text = "Rumbling from the depths"
+align = 1
 valign = 1
 
 [node name="Quest" type="Label" parent="Quest"]
@@ -420,9 +431,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -311.965
-margin_top = -109.0
-margin_right = -11.9653
+margin_left = -336.0
+margin_top = -97.0
+margin_right = -17.0
 margin_bottom = -9.0
 rect_scale = Vector2( 1.00154, 1 )
 size_flags_horizontal = 3
@@ -434,12 +445,21 @@ valign = 1
 autowrap = true
 
 [node name="finished" type="TextureRect" parent="Quest"]
-margin_left = 9.99231
-margin_top = 69.0
-margin_right = 49.9923
-margin_bottom = 109.0
+margin_left = 10.0
+margin_top = 97.0
+margin_right = 50.0
+margin_bottom = 137.0
 texture = ExtResource( 13 )
 expand = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Quest"]
+margin_left = 15.8673
+margin_top = 48.0
+margin_right = 382.867
+margin_bottom = 72.0
+custom_styles/fg = SubResource( 20 )
+max_value = 20.0
+step = 1.0
 
 [connection signal="gui_input" from="Hotbar" to="Hotbar" method="_on_Hotbar_gui_input"]
 [connection signal="timeout" from="Hotbar/Hotbar/Timer" to="Hotbar" method="_on_Timer_timeout"]

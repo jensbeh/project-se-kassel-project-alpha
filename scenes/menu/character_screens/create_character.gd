@@ -216,7 +216,8 @@ var save_game_data = {
 	"view_direction": var2str(Vector2(0,1)),
 	"passed_days": 0,
 	"quest": "",
-	"quest_finished": false
+	"quest_finished": false,
+	"quest_progress": 0,
 }
 
 var save_inventory = {

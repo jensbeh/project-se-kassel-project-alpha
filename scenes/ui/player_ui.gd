@@ -8,6 +8,7 @@ onready var bossHpNode = get_node("BossHpBar")
 onready var bossHpBar = get_node("BossHpBar/ProgressBar")
 onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
 onready var stamina_bar = get_node("MarginContainer/MarginContainer/ProgressBar")
+onready var progress = get_node("Quest/ProgressBar")
 
 var checkbox = preload("res://assets/ui/checkbox.png")
 var checkbox_progress = preload("res://assets/ui/checkbox_example.png")
@@ -18,6 +19,7 @@ var minimum_progress_size = 210
 var min_max_dif = 154
 var quest_finished
 var current_quest
+var quest_progress
 
 
 func _ready():
@@ -39,9 +41,15 @@ func setup_ui():
 	else:
 		change_heart_number(3)
 	var data = Utils.get_current_player().get_data()
+	current_quest = data.quest
+	quest_finished = data.quest_finished
+	quest_progress = data.quest_progress
 	if data.quest != "" and data.quest != null:
-		set_quest(data.quest)
-	set_quest_finished(data.quest_finished)
+		set_quest(current_quest)
+	else:
+		current_quest = ""
+	set_quest_finished(quest_finished)
+	set_quest_progress(0)
 
 
 # Set stamina value 
@@ -183,9 +191,11 @@ func get_current_quest():
 # Called when quest task is done
 func set_quest_finished(new_value):
 	quest_finished = new_value
+	get_node("Quest/finished").show()
 	if new_value:
 		get_node("Quest/finished").texture = checkbox
 	else:
+		progress.value = progress.max_value
 		get_node("Quest/finished").texture = checkbox_progress
 	save_quest()
 
@@ -196,12 +206,15 @@ func set_quest(new_quest):
 	get_node("Quest").show()
 	get_node("Quest/Title").set_text(tr(current_quest))
 	get_node("Quest/Quest").set_text(tr(current_quest + "_TASK"))
-	set_quest_finished(false)
+	if current_quest == "QUEST3":
+		set_quest_progress(0)
 	save_quest()
 
 
-# Called when player gets quest reward 
+# Called when player gets quest reward or canceled
 func quest_completed():
+	quest_progress = 0
+	progress.value = quest_progress
 	current_quest = ""
 	get_node("Quest/Title").set_text("")
 	get_node("Quest/Quest").set_text("")
@@ -215,5 +228,15 @@ func save_quest():
 	var data = Utils.get_current_player().get_data()
 	data.quest_finished = quest_finished
 	data.quest = current_quest
+	data.quest_progress = quest_progress
 	Utils.get_current_player().set_data(data)
-	Utils.save_game(true)
+
+
+func set_quest_progress(new_value):
+	quest_progress += new_value
+	progress.value = quest_progress
+	if quest_progress >= 20: # 20 Mobs for Quest3
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Sucsess)
+		set_quest_finished(true)
+		quest_progress = 0
+	save_quest()

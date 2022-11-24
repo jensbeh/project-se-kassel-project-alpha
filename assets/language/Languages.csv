@@ -138,4 +138,9 @@ SAVED,Saved,Gespeichert
 CREDITS,Credits,Credits
 SKIP,Skip,Skip
 QUEST1,Rumbling from the depths,Grollen aus der Tiefe
+QUEST2,Rumbling boss,Grollender Boss
+QUEST3,Rumbling Mobs,Grollende Monster
 QUEST1_TASK,Slay a terrible boss in any dungeon,Erlege einen schrecklichen Boss in einem beliebigen Dungeon
+QUEST2_TASK,Slay a terrible boss,Erlege einen schrecklichen Boss
+QUEST3_TASK,Slay 20 Mobs,Erlege 20 Monster
+ABORT,Cancel current quest,Aktuelle Quest abbrechen

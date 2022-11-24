@@ -141,7 +141,6 @@ stream = ExtResource( 5 )
 bus = "Sounds"
 
 [node name="Quest" type="TextureButton" parent="."]
-visible = false
 self_modulate = Color( 0.717647, 0.67451, 0.67451, 0.870588 )
 margin_left = 1528.0
 margin_top = 944.0
@@ -152,12 +151,12 @@ texture_normal = ExtResource( 3 )
 expand = true
 
 [node name="Icon" type="Sprite" parent="Quest"]
-position = Vector2( 103, 107.999 )
+position = Vector2( 104.667, 107.999 )
 scale = Vector2( 5.22918, 4.9167 )
 texture = ExtResource( 4 )
 hframes = 16
 vframes = 27
-frame = 64
+frame = 203
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="Trade" to="." method="_on_Trade_pressed"]

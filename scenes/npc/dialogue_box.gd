@@ -37,7 +37,9 @@ func start(origin_obj, looted_value, treasure_type):
 		else:
 			if looted_value:
 				obj_name = "quest"
+				get_node("Quest/Icon").frame = 203
 			else:
+				get_node("Quest/Icon").frame = 64
 				get_node("Trade/Icon").frame = 203
 	else:
 		obj_name = "open"
@@ -100,7 +102,7 @@ func nextPhrase():
 	
 	# Show trade symbol
 	if phraseNum >= len(dialog):
-		if obj_name == "hugo":
+		if obj_name == "hugo" or obj_name == "quest":
 			$Quest.visible = true
 			trade = true
 		if obj_name in ["bella", "sam", "lea", "heinz", "haley"]: # names of npc which can trade
