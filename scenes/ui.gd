@@ -88,7 +88,8 @@ func _input(event):
 			Utils.get_control_notes().show_hide_control_notes()
 			
 		# open map
-		elif (Utils.get_scene_manager().get_current_scene_type() != Constants.SceneType.DUNGEON and not is_dialog):
+		elif (Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.CAMP or 
+		Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND and not is_dialog):
 			if event.is_action_pressed("map") and has_map and !show_map:
 				# Sound
 				Utils.set_and_play_sound(Constants.PreloadedSounds.open_close)

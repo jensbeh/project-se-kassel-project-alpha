@@ -394,6 +394,7 @@ valign = 1
 [node name="Timer2" type="Timer" parent="Hotbar/Hotbar"]
 
 [node name="Quest" type="NinePatchRect" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -412,9 +413,9 @@ patch_margin_bottom = 15
 [node name="Title" type="Label" parent="Quest"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -179.544
+margin_left = -184.004
 margin_top = 10.0
-margin_right = 180.456
+margin_right = 182.996
 margin_bottom = 45.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -430,10 +431,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -386.0
-margin_top = -97.0
+margin_left = -384.0
+margin_top = -91.0
 margin_right = -17.0
-margin_bottom = -9.0
+margin_bottom = -11.0
 rect_scale = Vector2( 1.00154, 1 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -453,9 +454,9 @@ texture = ExtResource( 13 )
 expand = true
 
 [node name="ProgressBar" type="ProgressBar" parent="Quest"]
-margin_left = 15.8673
+margin_left = 15.9961
 margin_top = 48.0
-margin_right = 382.867
+margin_right = 382.996
 margin_bottom = 72.0
 custom_styles/fg = SubResource( 20 )
 max_value = 20.0

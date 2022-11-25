@@ -16,3 +16,4 @@ func _on_QuestSlot_gui_input(event):
 			for quest in get_parent().get_children():
 				quest.get_node("locked").show()
 			Utils.get_ui().get_node("QuestList").show_abort_button()
+			Utils.save_game(true)

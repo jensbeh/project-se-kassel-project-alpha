@@ -142,3 +142,4 @@ func _on_Abort_pressed():
 	for quest in grid.get_children():
 		quest.get_node("locked").hide()
 	abort_btn.hide()
+	Utils.save_game(true)
