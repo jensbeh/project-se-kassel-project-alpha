@@ -164,6 +164,8 @@ func _on_Quest_pressed():
 	else:
 		$Text.bbcode_text = tr("REWARD_FULL")
 		$Text.visible_characters = len(tr("REWARD_FULL"))
+		$Quest.visible = false
+		trade = false
 
 
 func _on_Trade_pressed():
