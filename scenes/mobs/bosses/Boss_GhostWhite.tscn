@@ -533,6 +533,7 @@ animation = "Die_Up"
 animation = "Die_Left"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=77]
+auto_triangles = false
 blend_point_0/node = SubResource( 105 )
 blend_point_0/pos = Vector2( 0, 1 )
 blend_point_1/node = SubResource( 106 )
@@ -541,6 +542,7 @@ blend_point_2/node = SubResource( 107 )
 blend_point_2/pos = Vector2( 0, -1 )
 blend_point_3/node = SubResource( 108 )
 blend_point_3/pos = Vector2( -1, 0 )
+triangles = PoolIntArray( 0, 1, 3, 1, 2, 3 )
 
 [sub_resource type="AnimationNodeAnimation" id=109]
 animation = "Hurt_Down"
@@ -555,6 +557,7 @@ animation = "Hurt_Left"
 animation = "Hurt_Up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=76]
+auto_triangles = false
 blend_point_0/node = SubResource( 109 )
 blend_point_0/pos = Vector2( 0, 1 )
 blend_point_1/node = SubResource( 110 )
@@ -563,6 +566,7 @@ blend_point_2/node = SubResource( 111 )
 blend_point_2/pos = Vector2( -1, 0 )
 blend_point_3/node = SubResource( 112 )
 blend_point_3/pos = Vector2( 0, -1 )
+triangles = PoolIntArray( 0, 1, 3, 0, 2, 3 )
 
 [sub_resource type="AnimationNodeAnimation" id=113]
 animation = "Idle_Left"
@@ -589,6 +593,7 @@ animation = "Idle_Right"
 animation = "Idle_Down"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=51]
+auto_triangles = false
 blend_point_0/node = SubResource( 113 )
 blend_point_0/pos = Vector2( -0.95, 0.95 )
 blend_point_1/node = SubResource( 114 )
@@ -605,6 +610,7 @@ blend_point_6/node = SubResource( 119 )
 blend_point_6/pos = Vector2( 0.95, 0.95 )
 blend_point_7/node = SubResource( 120 )
 blend_point_7/pos = Vector2( 0, 1 )
+triangles = PoolIntArray( 1, 2, 3, 3, 4, 5, 1, 3, 7, 3, 5, 7, 0, 1, 7, 5, 6, 7 )
 
 [sub_resource type="AnimationNodeAnimation" id=121]
 animation = "Walk_Left"
@@ -631,6 +637,7 @@ animation = "Walk_Right"
 animation = "Walk_Right"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=56]
+auto_triangles = false
 blend_point_0/node = SubResource( 121 )
 blend_point_0/pos = Vector2( -0.95, 0.95 )
 blend_point_1/node = SubResource( 122 )
@@ -647,6 +654,7 @@ blend_point_6/node = SubResource( 127 )
 blend_point_6/pos = Vector2( 1, 0 )
 blend_point_7/node = SubResource( 128 )
 blend_point_7/pos = Vector2( 0.95, -0.95 )
+triangles = PoolIntArray( 1, 2, 3, 0, 1, 4, 1, 3, 6, 1, 4, 6, 4, 5, 6, 3, 6, 7 )
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=57]
 
