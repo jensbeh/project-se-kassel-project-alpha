@@ -10,9 +10,6 @@ onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
 onready var stamina_bar = get_node("MarginContainer/MarginContainer/ProgressBar")
 onready var progress = get_node("Quest/ProgressBar")
 
-var checkbox = preload("res://assets/ui/checkbox.png")
-var checkbox_progress = preload("res://assets/ui/checkbox_example.png")
-
 var hearts = 3
 var boss
 var minimum_progress_size = 210

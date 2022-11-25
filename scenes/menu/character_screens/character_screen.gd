@@ -86,9 +86,7 @@ func _ready():
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene
 func destroy_scene():
-	# Save player node before deleting the scene when player choosed one
-	if Utils.get_current_player() != null and Utils.get_current_player().get_parent() != null:
-		Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
+	pass
 
 
 # loaded the player data

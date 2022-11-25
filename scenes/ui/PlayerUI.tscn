@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://assets/ui/expbar.png" type="Texture" id=1]
 [ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://assets/ui/panel_brown.png" type="Texture" id=10]
 [ext_resource path="res://assets/ui/hp_bar.png" type="Texture" id=11]
 [ext_resource path="res://assets/ui/staminabar.png" type="Texture" id=12]
-[ext_resource path="res://assets/ui/checkbox_example.png" type="Texture" id=13]
+[ext_resource path="res://assets/ui/border_grey.png" type="Texture" id=14]
 
 [sub_resource type="DynamicFont" id=3]
 size = 24
@@ -93,11 +93,20 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxTexture" id=20]
 texture = ExtResource( 1 )
-region_rect = Rect2( 13.734, 10.4538, 374.675, 20.3419 )
+region_rect = Rect2( 11.1234, 12.3002, 379, 18.1585 )
 margin_left = 1.52836
 margin_right = 6.54096
 margin_top = 3.02798
-margin_bottom = 3.73132
+margin_bottom = 1.1592
+
+[sub_resource type="StyleBoxTexture" id=21]
+texture = ExtResource( 8 )
+region_rect = Rect2( 19, 16, 66, 69 )
+margin_left = 7.0
+margin_right = 6.0
+margin_top = 6.0
+margin_bottom = 6.0
+modulate_color = Color( 0.611765, 0.611765, 0.611765, 1 )
 
 [node name="PlayerUI" type="Control"]
 anchor_right = 1.0
@@ -441,26 +450,32 @@ size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_fonts/font = SubResource( 19 )
 text = "Erlege einen schrecklichen Boss in einem beliebigen Dungeon"
+align = 1
 valign = 1
 autowrap = true
 
-[node name="finished" type="TextureRect" parent="Quest"]
-visible = false
-margin_left = 10.0
-margin_top = 97.0
-margin_right = 50.0
-margin_bottom = 137.0
-texture = ExtResource( 13 )
-expand = true
-
 [node name="ProgressBar" type="ProgressBar" parent="Quest"]
-margin_left = 15.9961
-margin_top = 48.0
-margin_right = 382.996
-margin_bottom = 72.0
+margin_left = 17.0
+margin_top = 47.0
+margin_right = 380.0
+margin_bottom = 78.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_styles/fg = SubResource( 20 )
+custom_styles/bg = SubResource( 21 )
 max_value = 20.0
 step = 1.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Quest"]
+margin_left = 14.0
+margin_top = 46.0
+margin_right = 53.0
+margin_bottom = 61.0
+rect_scale = Vector2( 9.45619, 2.23677 )
+texture = ExtResource( 14 )
+region_rect = Rect2( 10, 5, 83, 94 )
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 15
 
 [connection signal="gui_input" from="Hotbar" to="Hotbar" method="_on_Hotbar_gui_input"]
 [connection signal="timeout" from="Hotbar/Hotbar/Timer" to="Hotbar" method="_on_Timer_timeout"]

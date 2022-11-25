@@ -39,8 +39,8 @@ func start(origin_obj, looted_value, treasure_type):
 				obj_name = "quest"
 				get_node("Quest/Icon").frame = 203
 			else:
-				get_node("Quest/Icon").frame = 64
-				get_node("Trade/Icon").frame = 203
+				get_node("Quest/Icon").frame = 218
+				get_node("Trade/Icon").frame = 320
 	else:
 		obj_name = "open"
 		get_node("Trade/Icon").frame = 271
@@ -162,10 +162,17 @@ func _on_Quest_pressed():
 	if success:
 		close_dialog()
 	else:
+		$Text.visible_characters = 0
+		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
+		get_node("Sound").play()
 		$Text.bbcode_text = tr("REWARD_FULL")
-		$Text.visible_characters = len(tr("REWARD_FULL"))
 		$Quest.visible = false
 		trade = false
+		while $Text.visible_characters < len(tr("REWARD_FULL")):
+			$Text.visible_characters += 1
+			$Timer.start()
+			yield($Timer, "timeout")
+		get_node("Sound").stop()
 
 
 func _on_Trade_pressed():
