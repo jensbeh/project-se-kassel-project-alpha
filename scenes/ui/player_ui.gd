@@ -44,7 +44,7 @@ func setup_ui():
 	if data.quest != "" and data.quest != null:
 		set_quest(current_quest)
 	else:
-		current_quest = ""
+		quest_completed()
 	set_quest_progress(0)
 	set_quest_finished(quest_finished)
 

@@ -162,6 +162,7 @@ func _on_Quest_pressed():
 	if success:
 		close_dialog()
 	else:
+		finished = false
 		$Text.visible_characters = 0
 		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
 		get_node("Sound").play()
@@ -172,6 +173,7 @@ func _on_Quest_pressed():
 			$Text.visible_characters += 1
 			$Timer.start()
 			yield($Timer, "timeout")
+		finished = true
 		get_node("Sound").stop()
 
 
