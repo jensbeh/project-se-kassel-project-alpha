@@ -591,16 +591,32 @@ func save_game(animation):
 	var data = get_current_player().get_data()
 	data.position = var2str(get_current_player().position)
 	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
+	
+	data.view_direction = var2str(get_current_player().view_direction)
+	# When saving inside the dungeon
 	if "Dungeon1" in data.scene_transition:
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(856,682))
+		print("GAME: Saved game in dungeon1!")
 	elif "Dungeon2" in data.scene_transition:
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(376,-198))
+		print("GAME: Saved game in dungeon2!")
 	elif "Dungeon3" in data.scene_transition:
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(-602,-678))
-	data.view_direction = var2str(get_current_player().view_direction)
+		print("GAME: Saved game in dungeon3!")
+	
+	# When intro story is played the game will be saved
+	elif Constants.STORY_SCENE_PATH in data.scene_transition:
+		data.scene_transition = Constants.FIRST_SPAWN_SCENE
+		data.position = var2str(Constants.FIRST_SPAWN_POSITION)
+		data.view_direction = var2str(Constants.FIRST_VIEW_DIRECTION)
+		print("GAME: Saved game in intro_story!")
+	
+	else:
+		print("GAME: Saved game in \"" + str(data.scene_transition) + "\"!")
+	
 	data.time = DayNightCycle.get_current_time()
 	data.passed_days = DayNightCycle.get_passed_days_since_start()
 	# map informations

@@ -759,14 +759,10 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 		if health <= 0:
 			sound.stream = Constants.PreloadedSounds.Win
 			sound.play(0.03)
-            if Utils.get_player_ui().get_current_quest() == "QUEST2" and !Utils.get_player_ui().is_quest_finished():
-			    Utils.get_player_ui().set_quest_finished(true)
-		    elif (Utils.get_player_ui().get_current_quest() == "QUEST1" and !Utils.get_player_ui().is_quest_finished() 
-			    and "Dungeon" in  Utils.get_scene_manager().current_transition_data.get_scene_path()):
-			    Utils.get_player_ui().set_quest_finished(true)
-		    elif Utils.get_player_ui().get_current_quest() == "QUEST3" and !Utils.get_player_ui().is_quest_finished():
-                Utils.get_player_ui().set_quest_progress(1)
 			update_behaviour(DYING)
+			
+			# Update quest if necessary
+			Utils.get_player_ui().on_boss_killed()
 		else:
 			update_behaviour(HURTING)
 			

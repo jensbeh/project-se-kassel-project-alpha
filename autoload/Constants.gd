@@ -83,6 +83,7 @@ const CAN_MODIFY_TIME = true # Default: false
 const NAME_LENGTH = 15
 const MAX_LEVEL = 30
 const FIRST_SPAWN_POSITION = Vector2(-60, 0)
+const FIRST_VIEW_DIRECTION = Vector2(0, 1)
 const FIRST_SPAWN_SCENE = "res://scenes/camp/buildings/House1.tscn"
 const PLAYER_WALK_SPEED = 70
 const PLAYER_TRANSFORM_SCALE = 0.9
@@ -771,8 +772,8 @@ func preload_variables():
 		"TooltipScene" : load(TOOLTIP),
 		"SplitPopupScene" : load(SPLIT_POPUP),
 		"CharacterInterfaceScene" : load(CHARACTER_INTERFACE_PATH),
-	    "QuestScene" : preload(QUEST_SCENE_PATH),
-	    "QuestSlot" : preload(QUEST_SLOT_PATH),
+		"QuestScene" : preload(QUEST_SCENE_PATH),
+		"QuestSlot" : preload(QUEST_SLOT_PATH),
 	}
 	
 	

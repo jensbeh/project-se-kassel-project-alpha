@@ -233,3 +233,20 @@ func set_quest_progress(new_value):
 		set_quest_finished(true)
 		quest_progress = 0
 	save_quest()
+
+
+# Method is called if enemy is killed
+func on_enemy_killed():
+	if get_current_quest() == "QUEST3" and !is_quest_finished():
+		set_quest_progress(1)
+
+
+# Method is called if boss is killed
+func on_boss_killed():
+	if get_current_quest() == "QUEST2" and !is_quest_finished():
+		set_quest_finished(true)
+	elif (get_current_quest() == "QUEST1" and !is_quest_finished() 
+		and "Dungeon" in  Utils.get_scene_manager().current_transition_data.get_scene_path()):
+		set_quest_finished(true)
+	elif get_current_quest() == "QUEST3" and !is_quest_finished():
+		set_quest_progress(1)

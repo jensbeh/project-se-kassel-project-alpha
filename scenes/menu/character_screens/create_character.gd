@@ -622,11 +622,11 @@ func start_game():
 	Utils.get_current_player().set_data(save_game_data)
 	create_player_inventory()
 	
-	# Save game
-	Utils.save_game(true)
-	
 	var transition_data = TransitionData.Menu.new(Constants.STORY_SCENE_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
+	
+	# Save game -> AT THE END OF THIS METHOD!
+	Utils.save_game(true)
 
 
 func create_player_inventory():
