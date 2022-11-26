@@ -62,7 +62,7 @@ func PopulatePanel():
 			if str(loot_dict[counter][0]) in ["Jewel", "Potion", "Weapon"]:
 				randomize()
 				if loot_dict[counter][0] == "Jewel":
-					var jewel = GameData.jewel_IDs[randi() % 4]
+					var jewel = GameData.jewel_IDs[randi() % GameData.jewel_IDs.size()]
 					var found = false
 					for idx in loot_dict:
 						var item = loot_dict[idx]
@@ -75,11 +75,11 @@ func PopulatePanel():
 					if !found:
 						loot_dict[counter][0] = jewel
 				elif loot_dict[counter][0] == "Potion":
-					loot_dict[counter][0] = GameData.potion_IDs[randi() % 5]
+					loot_dict[counter][0] = GameData.food_IDs[randi() % GameData.food_IDs.size()]
 					if loot_type == "Treasure":
-						loot_dict[counter][0] = GameData.potion_IDs[(randi() % 3) + 5]
+						loot_dict[counter][0] = GameData.treasure_potion_IDs[randi() % GameData.treasure_potion_IDs.size()]
 				elif loot_dict[counter][0] == "Weapon":
-					loot_dict[counter][0] = GameData.weapon_IDs[randi() % 4]
+					loot_dict[counter][0] = GameData.weapon_IDs[randi() % GameData.weapon_IDs.size()]
 			num += 1
 		else:
 			i.hide()

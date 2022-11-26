@@ -60,8 +60,11 @@ func _ready():
 	setup_treasure_areas()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
-
+	if is_boss_room():
+		MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer, Constants.MOB_RESPAWN_TIMER_BOSS_ROOM)
+	else:
+		MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
+	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
 	

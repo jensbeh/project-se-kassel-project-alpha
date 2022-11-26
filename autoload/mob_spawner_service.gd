@@ -4,7 +4,7 @@ extends Node
 var mobspawner_thread = Thread.new()
 var can_spawn_mobs = false
 var mob_spawner_timer = Timer.new()
-var mob_spawn_interval = Constants.MOB_RESPAWN_TIMER
+var mob_spawn_interval = null # float
 var should_spawn_mobs = false
 var spawning_areas = null
 var mobsNavigationTileMap : TileMap = null
@@ -33,7 +33,7 @@ func _ready():
 
 
 # Method to init all important variables
-func init(init_world, new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv, new_lootLayer):
+func init(init_world, new_scene_type, new_spawning_areas, new_mobsNavigationTileMap, new_mobsLayer, new_with_ambient_mobs, new_ambientMobsSpawnArea, new_ambientMobsNavigationTileMap, new_ambientMobsLayer, new_max_ambient_mobs, new_is_time_sensitiv, new_lootLayer, new_mob_respawn_timer : float = Constants.MOB_RESPAWN_TIMER):
 	print("MOB_SPAWNER_SERVICE: Init")
 	# Check if thread is active wait to stop
 	if mobspawner_thread.is_active():
@@ -52,6 +52,7 @@ func init(init_world, new_scene_type, new_spawning_areas, new_mobsNavigationTile
 	max_ambient_mobs = new_max_ambient_mobs
 	is_time_sensitiv = new_is_time_sensitiv
 	lootLayer = new_lootLayer
+	mob_spawn_interval = new_mob_respawn_timer
 	# Activate time specific mobs depending on scene_tpye
 	if is_time_sensitiv:
 		# Connect signals

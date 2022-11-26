@@ -25,7 +25,7 @@
         "Stackable": false,
         "Frame": 81,
         "Texture": "item_icons_1",
-        "Worth": 200
+        "Worth": 300
     },
     "10003": {
         "Name": "Balanced Sword",
@@ -39,7 +39,7 @@
         "Stackable": false,
         "Frame": 83,
         "Texture": "item_icons_1",
-        "Worth": 300
+        "Worth": 400
     },
     "10004": {
         "Name": "Large Dagger",
@@ -53,7 +53,7 @@
         "Stackable": false,
         "Frame": 87,
         "Texture": "item_icons_1",
-        "Worth": 350
+        "Worth": 450
     },
     "10005": {
         "Name": "Great Sword",
@@ -67,7 +67,7 @@
         "Stackable": false,
         "Frame": 82,
         "Texture": "item_icons_1",
-        "Worth": 400
+        "Worth": 500
     },
     "10006": {
         "Name": "Epic Sword",
@@ -81,7 +81,7 @@
         "Stackable": false,
         "Frame": 84,
         "Texture": "item_icons_1",
-        "Worth": 500
+        "Worth": 600
     },
     "10007": {
         "Name": "Legendary Sword",
@@ -95,7 +95,7 @@
         "Stackable": false,
         "Frame": 86,
         "Texture": "item_icons_1",
-        "Worth": 600
+        "Worth": 700
     },
     "10008": {
         "Name": "Normal Axe",
@@ -109,7 +109,7 @@
         "Stackable": false,
         "Frame": 90,
         "Texture": "item_icons_1",
-        "Worth": 400
+        "Worth": 500
     },
     "10009": {
         "Name": "Greate Axe",
@@ -123,7 +123,7 @@
         "Stackable": false,
         "Frame": 91,
         "Texture": "item_icons_1",
-        "Worth": 500
+        "Worth": 600
     },
     "10011": {
         "Name": "Health Potion",
@@ -244,7 +244,7 @@
         "Radius": 75,
         "Frame": 169,
         "Texture": "item_icons_1",
-        "Worth": 300
+        "Worth": 500
     },
     "10020": {
         "Name": "Torch",
@@ -258,7 +258,7 @@
         "Radius": 60,
         "Frame": 170,
         "Texture": "item_icons_1",
-        "Worth": 225
+        "Worth": 350
     },
     "10021": {
         "Name": "Candle",
@@ -272,7 +272,7 @@
         "Radius": 45,
         "Frame": 171,
         "Texture": "item_icons_1",
-        "Worth": 150
+        "Worth": 200
     },
     "10022": {
         "Name": "Treasure Key",
@@ -597,7 +597,7 @@
         "Stackable": true,
         "Frame": 44,
         "Texture": "item_icons_2",
-        "Worth": 60
+        "Worth": 40
     },
     "10047": {
         "Name": "Rubin",
@@ -610,7 +610,7 @@
         "Stackable": true,
         "Frame": 42,
         "Texture": "item_icons_2",
-        "Worth": 70
+        "Worth": 40
     },
     "10048": {
         "Name": "Smaragd",
@@ -623,7 +623,7 @@
         "Stackable": true,
         "Frame": 41,
         "Texture": "item_icons_2",
-        "Worth": 60
+        "Worth": 40
     },
     "10049": {
         "Name": "Saphir",
@@ -636,7 +636,7 @@
         "Stackable": true,
         "Frame": 40,
         "Texture": "item_icons_2",
-        "Worth": 50
+        "Worth": 40
     },
     "10050": {
         "Name": "Type A Leaf",
@@ -753,7 +753,7 @@
         "Stackable": true,
         "Frame": 280,
         "Texture": "item_icons_1",
-        "Worth": 20
+        "Worth": 10
     },
     "10060": {
         "Name": "Monster Tooth",
@@ -766,7 +766,7 @@
         "Stackable": true,
         "Frame": 281,
         "Texture": "item_icons_1",
-        "Worth": 20
+        "Worth": 10
     },
     "10061": {
         "Name": "Feather",
@@ -779,7 +779,7 @@
         "Stackable": true,
         "Frame": 282,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 5
     },
     "10062": {
         "Name": "Great Empty Flask",

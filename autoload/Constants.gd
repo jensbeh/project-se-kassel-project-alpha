@@ -81,7 +81,7 @@ const CAN_MODIFY_TIME = true # Default: false
 #################
 """
 const NAME_LENGTH = 15
-const MAX_LEVEL = 30
+const MAX_LEVEL = 20
 const FIRST_SPAWN_POSITION = Vector2(-60, 0)
 const FIRST_VIEW_DIRECTION = Vector2(0, 1)
 const FIRST_SPAWN_SCENE = "res://scenes/camp/buildings/House1.tscn"
@@ -208,7 +208,8 @@ const NPC_STAIRS_SPEED = NPC_NORMAL_SPEED*0.6
 ## MOBS
 #################
 """
-const MOB_RESPAWN_TIMER = 60.0 # in sec
+const MOB_RESPAWN_TIMER = 120.0 # in sec
+const MOB_RESPAWN_TIMER_BOSS_ROOM = 30.0 # in sec
 # Spawn times
 enum SpawnTime {
 	ONLY_DAY,
@@ -226,7 +227,7 @@ const MobsSettings = {
 	"GENERAL": {
 		"AttackRadius" : 32,
 		"MobSpeedFactor" : 2.2,
-		"DirectAttackStyleProbability" : 0.25, # 25% chance to attack directly
+		"DirectAttackStyleProbability" : 0.35, # 35% chance to attack directly
 		"MinKnockbackVelocityFactorToMob" : 50,
 		"MaxKnockbackVelocityFactorToMob" : 150
 	},
@@ -248,7 +249,7 @@ const MobsSettings = {
 	
 	# Fungus settings
 	"FUNGUS": {
-		"Health" : 140 * MOB_HEALTH_FACTOR,
+		"Health" : 110 * MOB_HEALTH_FACTOR,
 		"AttackDamage" : 25 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 2,
 		"Weight" : 40,
@@ -278,7 +279,7 @@ const MobsSettings = {
 	
 	# Orbinaut settings
 	"ORBINAUT": {
-		"Health" : 120 * MOB_HEALTH_FACTOR,
+		"Health" : 100 * MOB_HEALTH_FACTOR,
 		"AttackDamage" : 35 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 35,
@@ -308,7 +309,7 @@ const MobsSettings = {
 	
 	# Skeleton settings
 	"SKELETON": {
-		"Health" : 150 * MOB_HEALTH_FACTOR,
+		"Health" : 120 * MOB_HEALTH_FACTOR,
 		"AttackDamage" : 30 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 3,
 		"Weight" : 40,
@@ -353,7 +354,7 @@ const MobsSettings = {
 	
 	# Zombie settings
 	"ZOMBIE": {
-		"Health" : 160 * MOB_HEALTH_FACTOR,
+		"Health" : 130 * MOB_HEALTH_FACTOR,
 		"AttackDamage" : 35 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 3,
 		"Weight" : 50,
@@ -386,14 +387,14 @@ const BossesSettings = {
 		"DetectionRadiusInDungeon" : 100,
 		"AttackRadiusInGrassland" : 50.0,
 		"AttackRadiusInDungeon" : 50.0,
-		"DirectAttackStyleProbability" : 0.25, # 25% chance to attack directly
+		"DirectAttackStyleProbability" : 0.35, # 35% chance to attack directly
 		"MinKnockbackVelocityFactorToBoss" : 50,
 		"MaxKnockbackVelocityFactorToBoss" : 100
 	},
 	
 	# Boss_Fungus settings
 	"BOSS_FUNGUS": {
-		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"Health" : 750 * BOSS_HEALTH_FACTOR,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 100,
@@ -408,7 +409,7 @@ const BossesSettings = {
 	
 	# Boss_Ghost settings
 	"BOSS_GHOST": {
-		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"Health" : 750 * BOSS_HEALTH_FACTOR,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 50,
@@ -423,7 +424,7 @@ const BossesSettings = {
 	
 	# Boss_Orbinaut settings
 	"BOSS_ORBINAUT": {
-		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"Health" : 750 * BOSS_HEALTH_FACTOR,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 70,
@@ -438,7 +439,7 @@ const BossesSettings = {
 	
 	# Boss_Skeleton settings
 	"BOSS_SKELETON": {
-		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"Health" : 750 * BOSS_HEALTH_FACTOR,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 100,
@@ -453,7 +454,7 @@ const BossesSettings = {
 	
 	# Boss_Small_Slime settings
 	"BOSS_SMALL_SLIME": {
-		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"Health" : 750 * BOSS_HEALTH_FACTOR,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 50,
@@ -468,7 +469,7 @@ const BossesSettings = {
 	
 	# Boss_Zombie settings
 	"BOSS_ZOMBIE": {
-		"Health" : 1000 * BOSS_HEALTH_FACTOR,
+		"Health" : 750 * BOSS_HEALTH_FACTOR,
 		"AttackDamage" : 40 * BOSS_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 80,
