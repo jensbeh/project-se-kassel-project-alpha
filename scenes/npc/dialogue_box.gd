@@ -35,7 +35,12 @@ func start(origin_obj, looted_value, treasure_type):
 		elif "treasure" in obj_name and looted_value:
 			obj_name = "empty"
 		else:
-			get_node("Trade/Icon").frame = 203
+			if looted_value:
+				obj_name = "quest"
+				get_node("Quest/Icon").frame = 203
+			else:
+				get_node("Quest/Icon").frame = 218
+				get_node("Trade/Icon").frame = 320
 	else:
 		obj_name = "open"
 		get_node("Trade/Icon").frame = 271
@@ -97,6 +102,9 @@ func nextPhrase():
 	
 	# Show trade symbol
 	if phraseNum >= len(dialog):
+		if obj_name == "hugo" or obj_name == "quest":
+			$Quest.visible = true
+			trade = true
 		if obj_name in ["bella", "sam", "lea", "heinz", "haley"]: # names of npc which can trade
 			$Trade.visible = true
 			trade = true
@@ -138,6 +146,35 @@ func close_dialog():
 	Utils.get_control_notes().show()
 	get_parent().remove_child(self)
 	queue_free()
+
+
+# Open Quest list
+func _on_Quest_pressed():
+	Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
+	Utils.get_control_notes().show()
+	var quest = Constants.PreloadedScenes.QuestScene.instance()
+	Utils.get_ui().add_child(quest)
+	var success
+	if obj_name == "hugo" or !Utils.get_player_ui().is_quest_finished():
+		success = quest.show_quests()
+	else:
+		success = quest.reward_quest()
+	if success:
+		close_dialog()
+	else:
+		finished = false
+		$Text.visible_characters = 0
+		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
+		get_node("Sound").play()
+		$Text.bbcode_text = tr("REWARD_FULL")
+		$Quest.visible = false
+		trade = false
+		while $Text.visible_characters < len(tr("REWARD_FULL")):
+			$Text.visible_characters += 1
+			$Timer.start()
+			yield($Timer, "timeout")
+		finished = true
+		get_node("Sound").stop()
 
 
 func _on_Trade_pressed():
