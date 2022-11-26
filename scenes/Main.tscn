@@ -396,7 +396,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ true ]
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=31]
@@ -611,7 +611,6 @@ self_modulate = Color( 1, 1, 1, 0 )
 position = Vector2( 1762, 928 )
 scale = Vector2( 10, 10 )
 frames = SubResource( 19 )
-playing = true
 
 [node name="AnimationPlayerBlackScreen" type="AnimationPlayer" parent="LoadingScreen"]
 root_node = NodePath("../BlackScreen")

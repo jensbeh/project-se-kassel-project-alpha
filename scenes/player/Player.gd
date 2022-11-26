@@ -112,7 +112,7 @@ func _ready():
 	set_visibility("Hat", false)
 	set_visibility("Weapon", false)
 	set_visibility("AttackSwing", false)
-
+	
 	# Animation
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
