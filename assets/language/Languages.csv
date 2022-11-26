@@ -136,3 +136,12 @@ DEATH,You lost,Du hast verloren
 MAP,Map,Karte
 SAVED,Saved,Gespeichert
 CREDITS,Credits,Credits
+SKIP,Skip,Überspringen
+QUEST1,Rumbling from the depths,Grollen aus der Tiefe
+QUEST2,Angry boss,Wütender Boss
+QUEST3,Plague of monsters,Monsterplage
+QUEST1_TASK,Slay a terrible boss in any dungeon,Erlege einen schrecklichen Boss in einem beliebigen Dungeon
+QUEST2_TASK,Slay a boss,Erledige einen Boss
+QUEST3_TASK,Slay 20 mobs,Erledige 20 Monster
+ABORT,Cancel current quest,Aktuelle Quest abbrechen
+REWARD_FULL,There is not enough space in your inventory for the reward. Please come back with more free inventory spaces.,In deinem Inventar ist nicht genug Platz für die Belohnung. Bitte komm mit mehr freien Inventarplätzen zurück.

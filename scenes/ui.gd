@@ -89,7 +89,8 @@ func _input(event):
 			Utils.get_control_notes().show_hide_control_notes()
 			
 		# open map
-		elif (Utils.get_scene_manager().get_current_scene_type() != Constants.SceneType.DUNGEON and not is_dialog):
+		elif ((Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.CAMP or 
+		Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND) and not is_dialog):
 			if event.is_action_pressed("map") and has_map and !show_map:
 				# Sound
 				Utils.set_and_play_sound(Constants.PreloadedSounds.open_close)
@@ -106,3 +107,13 @@ func _input(event):
 				show_map = false
 				Utils.get_current_player().get_data().show_map = show_map
 				Utils.get_minimap().update_minimap()
+	
+	# Close Quest List
+	if event.is_action_pressed("esc") and get_node_or_null("QuestList") != null:
+		get_node_or_null("QuestList").queue_free()
+		Utils.get_current_player().set_player_can_interact(true)
+		Utils.get_current_player().set_movement(true)
+		Utils.get_current_player().set_movment_animation(true)
+		Utils.get_current_player().pause_player(false)
+		for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
+			npc.set_interacted(false)

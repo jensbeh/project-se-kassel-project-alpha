@@ -8,10 +8,15 @@ onready var bossHpNode = get_node("BossHpBar")
 onready var bossHpBar = get_node("BossHpBar/ProgressBar")
 onready var bossName = get_node("BossHpBar/ProgressBar/BossName")
 onready var stamina_bar = get_node("MarginContainer/MarginContainer/ProgressBar")
+onready var progress = get_node("Quest/ProgressBar")
+
 var hearts = 3
 var boss
 var minimum_progress_size = 210
 var min_max_dif = 154
+var quest_finished
+var current_quest
+var quest_progress
 
 
 func _ready():
@@ -32,6 +37,16 @@ func setup_ui():
 			change_heart_number(4)
 	else:
 		change_heart_number(3)
+	var data = Utils.get_current_player().get_data()
+	current_quest = data.quest
+	quest_finished = data.quest_finished
+	quest_progress = data.quest_progress
+	if data.quest != "" and data.quest != null:
+		set_quest(current_quest)
+	else:
+		quest_completed()
+	set_quest_progress(0)
+	set_quest_finished(quest_finished)
 
 
 # Set stamina value 
@@ -158,4 +173,63 @@ func update_language():
 	# Bossname
 	if boss != null: # Boss is existing and name can be updated
 		bossName.set_text(boss.get_boss_name())
+	if current_quest != "" and current_quest != null:
+		get_node("Quest/Title").set_text(tr(current_quest))
+		get_node("Quest/Quest").set_text(tr(current_quest + "_TASK"))
 
+
+func is_quest_finished():
+	return quest_finished
+
+
+func get_current_quest():
+	return current_quest
+
+
+# Called when quest task is done
+func set_quest_finished(new_value):
+	quest_finished = new_value
+	if new_value:
+		progress.value = progress.max_value
+	save_quest()
+
+
+# Called when player starts a quest by hugo or has a quest when enter the game
+func set_quest(new_quest):
+	current_quest = new_quest
+	get_node("Quest").show()
+	get_node("Quest/Title").set_text(tr(current_quest))
+	get_node("Quest/Quest").set_text(tr(current_quest + "_TASK"))
+	set_quest_progress(0)
+	save_quest()
+
+
+# Called when player gets quest reward or canceled
+func quest_completed():
+	quest_progress = 0
+	progress.value = quest_progress
+	current_quest = ""
+	get_node("Quest/Title").set_text("")
+	get_node("Quest/Quest").set_text("")
+	quest_finished = false
+	get_node("Quest").hide()
+	save_quest()
+
+
+# Save the quest when player has a quest or finished a quest
+func save_quest():
+	var data = Utils.get_current_player().get_data()
+	data.quest_finished = quest_finished
+	data.quest = current_quest
+	data.quest_progress = quest_progress
+	Utils.get_current_player().set_data(data)
+
+
+func set_quest_progress(new_value):
+	quest_progress += new_value
+	progress.value = quest_progress
+	if quest_progress >= 20: # 20 Mobs for Quest3
+		Utils.set_and_play_sound(Constants.PreloadedSounds.Sucsess)
+		set_quest_finished(true)
+		quest_progress = 0
+	save_quest()

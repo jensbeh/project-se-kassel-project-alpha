@@ -520,6 +520,9 @@ const TOOLTIP = "res://scenes/inventory/ToolTip.tscn"
 const SPLIT_POPUP = "res://scenes/inventory/ItemSplitPopup.tscn"
 const CHARACTER_INTERFACE_PATH = "res://scenes/inventory/CharacterInterface.tscn"
 const CREDIT_SCREEN_PATH = "res://scenes/credits/CreditScreen.tscn"
+const STORY_SCENE_PATH = "res://scenes/story/IntroStory.tscn"
+const QUEST_SCENE_PATH = "res://scenes/story/quest/QuestList.tscn"
+const QUEST_SLOT_PATH = "res://scenes/story/quest/QuestSlot.tscn"
 
 # Save file pathes
 const DEFAULT_PLAYER_INV_PATH = "res://assets/data/inv_data_file.json"
@@ -768,6 +771,8 @@ func preload_variables():
 		"TooltipScene" : load(TOOLTIP),
 		"SplitPopupScene" : load(SPLIT_POPUP),
 		"CharacterInterfaceScene" : load(CHARACTER_INTERFACE_PATH),
+	    "QuestScene" : preload(QUEST_SCENE_PATH),
+	    "QuestSlot" : preload(QUEST_SLOT_PATH),
 	}
 	
 	

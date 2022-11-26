@@ -213,7 +213,10 @@ var save_game_data = {
 	"glasses": curr_glasses,
 	"id" : uuid,
 	"view_direction": var2str(Vector2(0,1)),
-	"passed_days": 0
+	"passed_days": 0,
+	"quest": "",
+	"quest_finished": false,
+	"quest_progress": 0,
 }
 
 # save the player data
@@ -612,8 +615,6 @@ func start_game():
 	
 	# Set current player to use for other scenes
 	Utils.set_current_player(Utils.get_player())
-	var player_position = Constants.FIRST_SPAWN_POSITION
-	var view_direction = Vector2(0,1)
 	
 	DayNightCycle.set_current_time(0.0)
 	DayNightCycle.set_passed_days(0)
@@ -624,7 +625,7 @@ func start_game():
 	# Save game
 	Utils.save_game(true)
 	
-	var transition_data = TransitionData.GamePosition.new(Constants.FIRST_SPAWN_SCENE, player_position, view_direction)
+	var transition_data = TransitionData.Menu.new(Constants.STORY_SCENE_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
 
 

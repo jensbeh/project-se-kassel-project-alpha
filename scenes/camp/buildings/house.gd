@@ -58,7 +58,6 @@ func setup_player():
 	scene_player.queue_free()
 	
 	# Replace template player in scene with current_player
-	Utils.get_current_player().get_parent().remove_child(Utils.get_current_player())
 	find_node("playerlayer").add_child(Utils.get_current_player())
 
 
