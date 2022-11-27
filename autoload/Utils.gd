@@ -26,6 +26,10 @@ func get_player():
 
 # Sets a new current_player instance (firstly done when enter the game - not available in the menu)
 func set_current_player(new_current_player: KinematicBody2D):
+	if new_current_player == null:
+		# Free current player if reset
+		current_player.queue_free()
+	
 	current_player = new_current_player
 
 
