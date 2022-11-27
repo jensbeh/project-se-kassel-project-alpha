@@ -208,7 +208,7 @@ const NPC_STAIRS_SPEED = NPC_NORMAL_SPEED*0.6
 ## MOBS
 #################
 """
-const MOB_RESPAWN_TIMER = 120.0 # in sec
+const MOB_RESPAWN_TIMER = 180.0 # in sec
 const MOB_RESPAWN_TIMER_BOSS_ROOM = 30.0 # in sec
 # Spawn times
 enum SpawnTime {
@@ -279,8 +279,8 @@ const MobsSettings = {
 	
 	# Orbinaut settings
 	"ORBINAUT": {
-		"Health" : 100 * MOB_HEALTH_FACTOR,
-		"AttackDamage" : 35 * MOB_DIFFICULTY_FACTOR,
+		"Health" : 85 * MOB_HEALTH_FACTOR,
+		"AttackDamage" : 25 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 4,
 		"Weight" : 35,
 		"Experience" : 12 * MOB_DIFFICULTY_FACTOR,
@@ -328,7 +328,7 @@ const MobsSettings = {
 		"AttackDamage" : 20 * MOB_DIFFICULTY_FACTOR,
 		"Knockback" : 2,
 		"Weight" : 30,
-		"Experience" : 50 * MOB_DIFFICULTY_FACTOR,
+		"Experience" : 10 * MOB_DIFFICULTY_FACTOR,
 		"SpawnTime" : SpawnTime.ALWAYS,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,

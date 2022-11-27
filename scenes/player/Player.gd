@@ -4,6 +4,8 @@ extends KinematicBody2D
 signal player_collided(collision)
 signal player_looting
 signal player_interact
+signal current_health_updated
+signal current_stamina_updated
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -804,6 +806,9 @@ func set_current_health(new_current_health: int):
 		current_health = int(max_health)
 	Utils.get_player_ui().set_life(new_current_health*100 / float(max_health))
 	data.currentHP = new_current_health
+	
+	# Emit signal that current health changed
+	emit_signal("current_health_updated")
 
 
 func set_data(new_data):
@@ -856,10 +861,13 @@ func set_current_stamina(new_stamina: float):
 	Utils.get_player_ui().set_stamina(new_stamina)
 	# for save
 	data.stamina = player_stamina
+	
+	# Emit signal that current stamina changed
+	emit_signal("current_stamina_updated")
 
 
 # Return current stamina value
-func get_stamina():
+func get_current_stamina():
 	return player_stamina
 
 

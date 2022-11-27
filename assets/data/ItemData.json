@@ -241,7 +241,7 @@
         "Attack-Speed": null,
         "Health": null,
         "Stackable": false,
-        "Radius": 75,
+        "Radius": 85,
         "Frame": 169,
         "Texture": "item_icons_1",
         "Worth": 500
@@ -255,7 +255,7 @@
         "Attack-Speed": null,
         "Health": null,
         "Stackable": false,
-        "Radius": 60,
+        "Radius": 70,
         "Frame": 170,
         "Texture": "item_icons_1",
         "Worth": 350
@@ -269,7 +269,7 @@
         "Attack-Speed": null,
         "Health": null,
         "Stackable": false,
-        "Radius": 45,
+        "Radius": 55,
         "Frame": 171,
         "Texture": "item_icons_1",
         "Worth": 200
@@ -285,7 +285,7 @@
         "Stackable": true,
         "Frame": 185,
         "Texture": "item_icons_1",
-        "Worth": 20
+        "Worth": 10
     },
     "10023": {
         "Name": "Keys",

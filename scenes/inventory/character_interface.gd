@@ -47,7 +47,7 @@ func _ready():
 					
 					
 	# stat values
-	find_node("Health").set_text(tr("HEALTH") + ": " + str(Utils.get_current_player().get_max_health()))
+	find_node("Health").set_text(tr("HEALTH") + ": " + str(int(round(Utils.get_current_player().get_current_health()))) + "/" + str(Utils.get_current_player().get_max_health()))
 	if PlayerData.equipment_data["Weapon"]["Item"] != null:
 		find_node("Damage").set_text(tr("ATTACK") + ": " + str(GameData.item_data[str(PlayerData.equipment_data["Weapon"]["Item"])]["Attack"]))
 	else:
@@ -56,7 +56,7 @@ func _ready():
 	find_node("Knockback").set_text(tr("KNOCKBACK") + ": " + str(Utils.get_current_player().get_knockback()))
 	find_node("CharacterLevel").set_text(tr("LEVEL") + ".: " + str(Utils.get_current_player().get_level()))
 	find_node("LightRadius").set_text(tr("LIGHT") + ": " + str(Utils.get_current_player().get_light_radius()))
-	find_node("Stamina").set_text(tr("STAMINA") + ": " + str(Utils.get_current_player().get_max_stamina()))
+	find_node("Stamina").set_text(tr("STAMINA") + ": " + str(int(round(Utils.get_current_player().get_current_stamina()))) + "/" + str(Utils.get_current_player().get_max_stamina()))
 	
 	data = Utils.get_current_player().get_data()
 	# Set name
@@ -87,6 +87,17 @@ func _ready():
 			"Hair":
 				hair = child
 	load_character()
+	
+	# Connect signals
+	Utils.get_current_player().connect("current_health_updated", self, "update_ui")
+	Utils.get_current_player().connect("current_stamina_updated", self, "update_ui")
+
+
+# Method to destroy the scene
+func destroy_scene():
+	# Disconnect signals
+	Utils.get_current_player().disconnect("current_health_updated", self, "update_ui")
+	Utils.get_current_player().disconnect("current_stamina_updated", self, "update_ui")
 
 
 func load_character():
@@ -162,7 +173,7 @@ func _on_Button_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
-			Utils.get_character_interface().queue_free()
+			exit_scene()
 			Utils.get_current_player().set_player_can_interact(true)
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
@@ -170,3 +181,16 @@ func _on_Button_gui_input(event):
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			Utils.save_game(true)
+
+
+# Method to close the scene -> should be called to exit
+func exit_scene():
+	destroy_scene()
+	queue_free()
+
+
+# Method to update ui -> called from signal
+func update_ui():
+	# stat values
+	find_node("Health").set_text(tr("HEALTH") + ": " + str(int(round(Utils.get_current_player().get_current_health()))) + "/" + str(Utils.get_current_player().get_max_health()))
+	find_node("Stamina").set_text(tr("STAMINA") + ": " + str(int(round(Utils.get_current_player().get_current_stamina()))) + "/" + str(Utils.get_current_player().get_max_stamina()))

@@ -75,7 +75,7 @@ func _input(event):
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			Utils.save_game(true)
-			Utils.get_character_interface().queue_free()
+			Utils.get_character_interface().exit_scene()
 		
 		# Use Item from Hotbar
 		elif event.is_action_pressed("hotbar") and not Utils.get_current_player().is_player_dying():
