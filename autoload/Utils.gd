@@ -85,7 +85,7 @@ func get_game_menu():
 
 # Method to remove the game menu node
 func remove_game_menu():
-	return get_ui().remove_child(get_game_menu())
+	get_game_menu().queue_free()
 
 
 # Method to return the character interface node
@@ -93,9 +93,11 @@ func get_character_interface():
 	return get_ui().get_node_or_null("CharacterInterface")
 
 
-# Method to remove the character interface node
-func remove_character_interface():
-	return get_ui().remove_child(get_character_interface())
+# Method to show death screen
+func show_death_screen():
+	# Load death screen to ui
+	if get_ui() != null:
+		get_ui().add_child(Constants.PreloadedScenes.DeathScreenScene.instance())
 
 
 # Method to return the death screen node
@@ -105,7 +107,9 @@ func get_death_screen():
 
 # Method to remove the death screen node
 func remove_death_screen():
-	return get_ui().remove_child(get_death_screen())
+	get_ui().remove_child(get_death_screen())
+	get_death_screen().queue_free()
+	
 
 
 # Method to return the control notes node

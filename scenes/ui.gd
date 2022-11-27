@@ -49,7 +49,7 @@ func _input(event):
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
 			Utils.get_current_player().set_player_can_interact(true)
-			Utils.get_game_menu().queue_free()
+			Utils.remove_game_menu()
 		
 		# Open character inventory with "i"
 		elif (event.is_action_pressed("character_inventory") and Utils.get_current_player().get_movement() and 

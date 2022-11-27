@@ -45,7 +45,7 @@ func transition_to_scene(transition_data):
 		Utils.remove_game_menu()
 	# Remove "I" Inventory
 	if Utils.get_character_interface() != null:
-		Utils.remove_character_interface()
+		Utils.get_character_interface().exit_scene()
 	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:

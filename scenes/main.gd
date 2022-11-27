@@ -38,13 +38,6 @@ func is_day_night_cycle():
 	return darkness_lights_screen.get_is_day_night_cycle()
 
 
-# Method to show death screen
-func show_death_screen():
-	# Load death screen to ui
-	if Utils.get_ui() != null:
-		ui.add_child(Constants.PreloadedScenes.DeathScreenScene.instance())
-
-
 # Method to add settings screen to view
 func add_settings():
 	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:

@@ -1008,7 +1008,7 @@ func finished_looting():
 
 # Method is called when DIE animation is done
 func player_killed():
-	Utils.get_main().show_death_screen()
+	Utils.show_death_screen()
 	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
 		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
 
