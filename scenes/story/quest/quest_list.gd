@@ -10,25 +10,25 @@ var reward_list = ["Gold", "Potion", "Weapon", "Jewel"]
 
 var quest_rewards = {
 	"QUEST1": {
-		"Gold": 1000,
+		"Gold": 80,
 		"Potion": null,
 		"Potion_Stack": null,
 		"Weapon": null,
 		"Weapon_Stack": null,
 		"Jewel": "Jewel",
-		"Jewel_Stack": 3,
+		"Jewel_Stack": 1,
 	},
 	"QUEST2": {
-		"Gold": 500,
-		"Potion": 10013,
-		"Potion_Stack": 5,
+		"Gold": 50,
+		"Potion": 10011,
+		"Potion_Stack": 2,
 		"Weapon": null,
 		"Weapon_Stack": null,
 		"Jewel": null,
 		"Jewel_Stack": null,
 	},
 	"QUEST3": {
-		"Gold": 100,
+		"Gold": 50,
 		"Potion": null,
 		"Potion_Stack": null,
 		"Weapon": null,
