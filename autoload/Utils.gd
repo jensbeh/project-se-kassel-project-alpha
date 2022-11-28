@@ -107,9 +107,7 @@ func get_death_screen():
 
 # Method to remove the death screen node
 func remove_death_screen():
-	get_ui().remove_child(get_death_screen())
 	get_death_screen().queue_free()
-	
 
 
 # Method to return the control notes node

@@ -86,6 +86,7 @@ func _on_Timer_timeout():
 		cooldown_texture.value = 0
 		disabled = false
 		time_label.hide()
+	type = ""
 	timer1 = false
 	Utils.get_current_player().set_health_cooldown(0)
 
@@ -206,6 +207,7 @@ func _on_Timer2_timeout():
 		cooldown_texture.value = 0
 		disabled = false
 		time_label.hide()
+	type = ""
 	timer2 = false
 	Utils.get_current_player().set_stamina_cooldown(0)
 

@@ -70,6 +70,7 @@ func PopulatePanel():
 							item[1] += 1
 							found = true
 							loot_dict.erase(counter)
+							keys.remove(num-1)
 							counter = idx
 							break
 					if !found:

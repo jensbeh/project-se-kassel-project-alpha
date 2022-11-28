@@ -471,6 +471,7 @@ func open_loot_panel(treasure):
 		for child in treasure.get_children():
 			if "animationPlayer" in child.name:
 				# Start treasure animation
+				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 				child.play("openTreasure")
 		loot_panel.set_loot_type("Treasure" + str(treasure_dict[treasure][3]), true)
 		loot_panel.loot()
