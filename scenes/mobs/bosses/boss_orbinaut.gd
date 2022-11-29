@@ -13,18 +13,21 @@ var is_attacking = false
 func _ready():
 	# Setup mob
 	# Mob specific
-	max_health = 300
-	health = 300
-	attack_damage = 40
-	knockback = 4
-	mob_weight = 70
-	spawn_time = Constants.SpawnTime.ALWAYS
-	max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
+	boss_type = BossType.BOSS_ORBINAUT
+	max_health = Constants.BossesSettings.BOSS_ORBINAUT.Health
+	health = max_health
+	attack_damage = Constants.BossesSettings.BOSS_ORBINAUT.AttackDamage
+	knockback = Constants.BossesSettings.BOSS_ORBINAUT.Knockback
+	mob_weight = Constants.BossesSettings.BOSS_ORBINAUT.Weight
+	experience = Constants.BossesSettings.BOSS_ORBINAUT.Experience
+	spawn_time = Constants.BossesSettings.BOSS_ORBINAUT.SpawnTime
+	min_searching_time = Constants.BossesSettings.BOSS_ORBINAUT.MinSearchingTime
+	max_searching_time = Constants.BossesSettings.BOSS_ORBINAUT.MaxSearchingTime
 	
 	# Constants
-	HUNTING_SPEED = 45 * BOSS_SPEED_FACTOR
-	WANDERING_SPEED = 8 * BOSS_SPEED_FACTOR
-	PRE_ATTACKING_SPEED = 1.5 * HUNTING_SPEED
+	HUNTING_SPEED = Constants.BossesSettings.BOSS_ORBINAUT.HuntingSpeed
+	WANDERING_SPEED = Constants.BossesSettings.BOSS_ORBINAUT.WanderingSpeed
+	PRE_ATTACKING_SPEED = Constants.BossesSettings.BOSS_ORBINAUT.PreAttackingSpeed
 	
 	# Animations
 	setup_animations()
@@ -81,12 +84,6 @@ func change_animations(animation_behaviour_state):
 func _physics_process(delta):
 	# Handle behaviour
 	match behaviour_state:
-		PRE_ATTACKING:
-			# Follow path
-			if path.size() > 0:
-				move_to_position(delta)
-		
-		
 		ATTACKING:
 			# Move mob
 			velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
@@ -100,68 +97,18 @@ func _physics_process(delta):
 					update_behaviour(HUNTING)
 
 
-func _process(delta):
-	# Handle behaviour
-	match behaviour_state:
-		PRE_ATTACKING:
-			# Update pre-attack timer so that the mob will wait a specific time before attacking / cooldown
-			pre_attack_time += delta
-			
-			if not mob_need_path:
-				if path.size() == 0 and pre_attack_time > max_pre_attack_time:
-					pre_attack_time = 0.0
-					max_pre_attack_time = get_new_pre_attack_time(0.0, 2.5)
-					update_behaviour(ATTACKING)
-
-
 # Method to update the behaviour of the mob
 func update_behaviour(new_behaviour):
-	# Update parent method
-	.update_behaviour(new_behaviour)
+	# Update firstly parent method
+	var updated = .update_behaviour(new_behaviour)
 	
-	if behaviour_state != new_behaviour:
-		# Set previous behaviour state
-		previous_behaviour_state = behaviour_state
-		
+	if updated:
 		# Handle new bahaviour
 		match new_behaviour:
-			PRE_ATTACKING:
-				speed = PRE_ATTACKING_SPEED
-				if behaviour_state != PRE_ATTACKING:
-					# Reset path in case player is seen but e.g. state is wandering
-					path.resize(0)
-					
-					if Constants.SHOW_BOSS_PATHES:
-						# Update line path
-						line2D.points = []
-#				print("PRE_ATTACKING")
-				behaviour_state = PRE_ATTACKING
-				mob_need_path = true
-				change_animations(PRE_ATTACKING)
-				
-				# Disable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
-				damageAreaShape.set_deferred("disabled", true)
-			
-			
 			ATTACKING:
-				if behaviour_state != ATTACKING:
-					# Reset path in case player is seen but e.g. state is wandering
-					path.resize(0)
-					
-					if Constants.SHOW_BOSS_PATHES:
-						# Update line path
-						line2D.points = []
-				
+#				print("ATTACKING")
 				# Move Mob to player and further more
 				velocity = global_position.direction_to(Utils.get_current_player().global_position) * 150
-				change_animations(ATTACKING)
-#				print("ATTACKING")
-				behaviour_state = ATTACKING
-				mob_need_path = false
-				change_animations(ATTACKING)
-				
-				# Enable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
-				damageAreaShape.set_deferred("disabled", false)
 
 
 func _on_DamageArea_area_entered(area):

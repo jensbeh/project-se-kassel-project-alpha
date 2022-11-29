@@ -511,11 +511,11 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="11" name="mobSpawns" visible="0">
+ <objectgroup id="11" name="mobSpawns">
   <object id="5" type="area" x="256" y="-176">
    <properties>
     <property name="biome" value="dungeon"/>
-    <property name="max_mobs" type="int" value="20"/>
+    <property name="max_mobs" type="int" value="18"/>
    </properties>
    <polygon points="0,0 -96,0 -144,48 -224,80 -256,128 -256,288 -256,320 -272,336 -272,368 -224,432 112,432 496,432 528,368 528,320 560,256 560,192 496,32 448,0"/>
   </object>

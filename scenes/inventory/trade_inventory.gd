@@ -2,7 +2,9 @@ extends Control
 
 var inv_slot = Constants.PreloadedScenes.TradeInvSlotScene
 
-onready var gridcontainer = find_node("TradeGridContainer")
+onready var gridcontainer = $ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/ScrollContainer/TradeGridContainer
+onready var npcNameNode = $ColorRect/MarginContainer/HBoxContainer/Background/MarginContainer/VBox/TitleBox/Title/Titlename
+onready var inventoryNode = $ColorRect/MarginContainer/HBoxContainer/Inventory
 
 func _ready():
 	for i in range(1,MerchantData.inv_data.size()+1):
@@ -14,7 +16,7 @@ func _ready():
 			(DayNightCycle.get_passed_days_since_start() * DayNightCycle.COMPLETE_DAY_TIME + DayNightCycle.get_current_time())):
 				var texture = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Texture"]
 				var frame = GameData.item_data[str(MerchantData.inv_data[slot]["Item"])]["Frame"]
-				var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+				var icon_texture = load("res://assets/icon_items/" + texture + ".png")
 				if texture == "item_icons_1":
 					inv_slot_new.get_node("Icon/Sprite").set_scale(Vector2(1.5,1.5))
 					inv_slot_new.get_node("Icon/Sprite").set_hframes(16)
@@ -36,7 +38,7 @@ func _ready():
 				MerchantData.inv_data[slot]["Time"] = null
 		gridcontainer.add_child(inv_slot_new, true)
 	check_slots()
-	find_node("Inventory").get_child(0).find_node("Deletebox").visible = false
+	inventoryNode.get_child(0).find_node("Deletebox").visible = false
 
 
 # Close trade inventory
@@ -68,7 +70,7 @@ func set_name(npc_name):
 		npc_name = "Haley"
 	else:
 		npc_name = "Bella"
-	$ColorRect/MarginContainer/HBoxContainer/Background.find_node("Titlename").text = npc_name + "´s " + tr("INVENTORY")
+	npcNameNode.text = npc_name + "´s " + tr("INVENTORY")
 	
 func check_slots():
 	var free = false
@@ -95,7 +97,7 @@ func check_slots():
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
-				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+				trade.get_node("Inv" + str(slots - i)).queue_free()
 			MerchantData.save_merchant_inventory()
 			Utils.save_game(true)
 			check_slots()

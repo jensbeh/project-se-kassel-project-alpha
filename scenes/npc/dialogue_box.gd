@@ -90,6 +90,7 @@ func nextPhrase():
 		$Text.bbcode_text = dialog[phraseNum].text
 		$Text.visible_characters = 0
 		# Sound
+		get_node("Sound").stop()
 		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
 		get_node("Sound").play()
 		while $Text.visible_characters < len($Text.text):
@@ -144,7 +145,6 @@ func close_dialog():
 				else:
 					origin.reset_interaction()
 	Utils.get_control_notes().show()
-	get_parent().remove_child(self)
 	queue_free()
 
 
@@ -164,6 +164,7 @@ func _on_Quest_pressed():
 	else:
 		finished = false
 		$Text.visible_characters = 0
+		get_node("Sound").stop()
 		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
 		get_node("Sound").play()
 		$Text.bbcode_text = tr("REWARD_FULL")
@@ -193,12 +194,10 @@ func _on_Trade_pressed():
 		Utils.get_control_notes().show()
 		if type != "3":
 			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
-				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
 			else:
 				Utils.set_and_play_sound(Constants.PreloadedSounds.locked)
 				trade = false
 		else:
-			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 			origin.open_loot_panel()
 		close_dialog()

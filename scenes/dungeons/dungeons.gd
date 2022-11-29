@@ -5,7 +5,6 @@ extends Node
 var scene_type = Constants.SceneType.DUNGEON
 
 # Variables
-var thread
 var current_area : Area2D = null
 var spawning_areas = {}
 var groundChunks
@@ -60,8 +59,11 @@ func _ready():
 	setup_treasure_areas()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
-
+	if is_boss_room():
+		MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer, Constants.MOB_RESPAWN_TIMER_BOSS_ROOM)
+	else:
+		MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
+	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
 	
@@ -137,8 +139,9 @@ func setup_player():
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
 	
-	# Replace template player in scene with current_player
+	# Remove scene_player with current_player
 	scene_player.get_parent().remove_child(scene_player)
+	scene_player.queue_free()
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals
@@ -471,6 +474,7 @@ func open_loot_panel(treasure):
 		loot_panel.set_loot_type("Treasure" + str(treasure_dict[treasure][3]), true)
 		loot_panel.loot()
 	else:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		loot_panel.set_up_content(treasure_dict[treasure][2])
 
 

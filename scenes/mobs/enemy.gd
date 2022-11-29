@@ -1,21 +1,34 @@
 extends KinematicBody2D
 
 # Constants
-var ATTACK_RADIUS = 32.0
-var HUNTING_SPEED = 100
-var WANDERING_SPEED = 50
+var ATTACK_RADIUS = Constants.MobsSettings.GENERAL.AttackRadius
+var HUNTING_SPEED
+var WANDERING_SPEED
 var PRE_ATTACKING_SPEED
-var MOB_SPEED_FACTOR = 2.2
 var CANT_REACH_DISTANCE = ATTACK_RADIUS
+var DIRECT_ATTACK_STYLE_PROBABILITY = Constants.MobsSettings.GENERAL.DirectAttackStyleProbability # var = direct pre attack probability //// 1 - var = area pre attack probability
+
+enum EnemyType {
+	BAT,
+	FUNGUS,
+	GHOST,
+	ORBINAUT,
+	RAT,
+	SKELETON,
+	SMALL_SLIME,
+	SNAKE,
+	ZOMBIE
+}
 
 # Mob specific
-var max_health = 100
-var health = 100
-var attack_damage = 15
-var knockback = 0
+var max_health
+var health
+var attack_damage
+var knockback
 var spawn_time = Constants.SpawnTime.ALWAYS
 var mob_weight
-var experience = 10
+var experience
+var enemy_type
 
 # Variables
 enum {
@@ -52,6 +65,7 @@ var killed = false
 var update_get_target_position = false
 var new_position_dic : Dictionary = {}
 var check_can_reach_player = false
+var is_directly_attacking = false
 
 # Mob movment
 var acceleration = 350
@@ -64,8 +78,8 @@ var ideling_time = 0.0
 var max_ideling_time
 var searching_time = 0.0
 var current_max_searching_time = 0.0
-var min_searching_time = 6
-var max_searching_time = 12
+var min_searching_time
+var max_searching_time
 
 # Nodes
 onready var collision = $Collision
@@ -172,7 +186,7 @@ func _physics_process(delta):
 #				print("CANT_REACH_PLAYER")
 				var new_position = Vector2.ZERO
 				new_position = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, false, lootLayer)
-				PathfindingService.call_deferred("got_boss_position", self, new_position)
+				PathfindingService.call_deferred("got_mob_position", self, new_position)
 				update_get_target_position = false
 			
 			
@@ -257,6 +271,11 @@ func _physics_process(delta):
 		PRE_ATTACKING:
 			if not can_attack():
 				update_behaviour(HUNTING)
+			
+			else:
+				# Follow path
+				if path.size() > 0:
+					move_to_position(delta)
 		
 		
 		HURTING:
@@ -284,8 +303,24 @@ func _process(delta):
 			PRE_ATTACKING:
 #				print("PRE_ATTACKING")
 				if new_position_dic.empty() or new_position_dic["generate_again"]:
-					new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+					# Choose position
+					if is_directly_attacking:
+						# DIRECT: Position between player and mob
+						var player_pos : Vector2 = Utils.get_current_player().global_position
+						var direction : Vector2 = player_pos.direction_to(global_position).normalized()
+						var end_pos : Vector2 = player_pos + ATTACK_RADIUS * direction
+						
+						new_position_dic = {
+											"generate_again": false,
+											"position": end_pos
+											}
+					
+					else:
+						# AREA: Take position around player
+						new_position_dic = Utils.generate_position_near_mob(scene_type, Utils.get_current_player().global_position, min_attacking_radius_around_player, max_attacking_radius_around_player, navigation_tile_map, collision_radius)
+					
 #					print("GENERATE NEW POSITION for PRE_ATTACKING")
+	
 	
 	# Handle behaviour
 	match behaviour_state:
@@ -332,6 +367,20 @@ func _process(delta):
 				else:
 					# Case if pathend is reached, need new path for searching
 					mob_need_path = true
+		
+		
+		PRE_ATTACKING:
+			# Update pre-attack timer so that the mob will wait a specific time before attacking / cooldown
+			pre_attack_time += delta
+			
+			if not mob_need_path:
+				if path.size() == 0:
+					# Set view direction to player
+					var view_direction = global_position.direction_to(Utils.get_current_player().global_position)
+					set_view_direction(view_direction)
+				
+				if path.size() == 0 and pre_attack_time > max_pre_attack_time:
+					update_behaviour(ATTACKING)
 
 
 # Method to move the mob to position
@@ -385,7 +434,9 @@ func search_player():
 
 # Method to update the behaviour of the mob
 func update_behaviour(new_behaviour):
+	var updated = false # To avoid multiple updates in subclasses if behaviour_state was == new_behaviour
 	if behaviour_state != new_behaviour:
+		updated = true
 		
 		# Set previous behaviour state
 		previous_behaviour_state = behaviour_state
@@ -419,6 +470,9 @@ func update_behaviour(new_behaviour):
 		ideling_time = 0.0
 		searching_time = 0.0
 		pre_attack_time = 0.0
+		
+		# Reset variables
+		is_directly_attacking = false
 		
 		# Handle new bahaviour
 		match new_behaviour:
@@ -508,6 +562,54 @@ func update_behaviour(new_behaviour):
 					change_animations(DYING)
 			
 			
+			PRE_ATTACKING:
+				speed = PRE_ATTACKING_SPEED
+				
+				if behaviour_state != PRE_ATTACKING:
+					# Reset path in case player is seen but e.g. state is pre_attacking
+					path.resize(0)
+					
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
+				
+#				print("PRE_ATTACKING")
+				behaviour_state = PRE_ATTACKING
+				mob_need_path = true
+				change_animations(PRE_ATTACKING)
+				
+				# Disable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
+				damageAreaShape.set_deferred("disabled", true)
+				
+				# Get attack style - Directly or Area
+				randomize()
+				var probability = rand_range(0.0, 1.0)
+				if probability <= DIRECT_ATTACK_STYLE_PROBABILITY:
+					is_directly_attacking = true
+				pre_attack_time = 0.0
+				max_pre_attack_time = get_new_pre_attack_time(enemy_type)
+			
+			
+			ATTACKING:
+				if behaviour_state != ATTACKING:
+					# Reset path in case player is seen but e.g. state is wandering
+					path.resize(0)
+					
+					if Constants.SHOW_MOB_PATHES:
+						# Update line path
+						line2D.points = []
+				
+				# Move Mob to player and further more
+				update_animations()
+#				print("ATTACKING")
+				behaviour_state = ATTACKING
+				mob_need_path = false
+				change_animations(ATTACKING)
+				
+				# Enable damagaAreaShape - If the player is too close to the mob, it will not be recognised as new
+				damageAreaShape.set_deferred("disabled", false)
+			
+			
 			CANT_REACH_PLAYER:
 				speed = WANDERING_SPEED
 				
@@ -527,6 +629,8 @@ func update_behaviour(new_behaviour):
 				check_can_reach_player = true
 				
 				change_animations(WANDERING)
+	
+	return updated
 
 
 # Method to update the animation with velocity for direction -> needs to code in child
@@ -536,6 +640,11 @@ func update_animations():
 
 # Method to change the animations dependent on behaviour state -> needs to code in child
 func change_animations(_animation_behaviour_state):
+	pass
+
+
+# Method to update the view direction with custom value
+func set_view_direction(_view_direction):
 	pass
 
 
@@ -571,31 +680,33 @@ func set_mob_activity(is_active):
 
 # Method to simulate damage and behaviour to mob
 func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
-	# Add damage
-	health -= damage_to_mob
-	
-	# Healthbar
-	var healthbar_value_in_percent = (100.0 / max_health) * health
-	healthBar.value = healthbar_value_in_percent
-	if not healthBar.visible:
-		healthBar.visible = true
-		healthBarBackground.visible = true
-	
-	# Mob is killed
-	if health <= 0:
-		update_behaviour(DYING)
-		if Utils.get_player_ui().get_current_quest() == "QUEST3" and !Utils.get_player_ui().is_quest_finished():
-			Utils.get_player_ui().set_quest_progress(1)
-	else:
-		update_behaviour(HURTING)
+	if behaviour_state != DYING:
+		# Add damage
+		health -= damage_to_mob
 		
-	# Add knockback
-	# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-	var min_knockback_velocity_factor = 50
-	var max_knockback_velocity_factor = 200
-	var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
-	var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
-	velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
+		# Healthbar
+		var healthbar_value_in_percent = (100.0 / max_health) * health
+		healthBar.value = healthbar_value_in_percent
+		if not healthBar.visible:
+			healthBar.visible = true
+			healthBarBackground.visible = true
+		
+		# Mob is killed
+		if health <= 0:
+			update_behaviour(DYING)
+			
+			# Update quest if necessary
+			Utils.get_player_ui().on_enemy_killed()
+		else:
+			update_behaviour(HURTING)
+			
+		# Add knockback
+		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
+		var min_knockback_velocity_factor = Constants.MobsSettings.GENERAL.MinKnockbackVelocityFactorToMob
+		var max_knockback_velocity_factor = Constants.MobsSettings.GENERAL.MaxKnockbackVelocityFactorToMob
+		var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
+		var knockback_velocity_factor = m * knockback_to_mob + min_knockback_velocity_factor - mob_weight
+		velocity = Utils.get_current_player().global_position.direction_to(global_position) * knockback_velocity_factor
 
 
 # Method is called when HURT animation is done
@@ -612,9 +723,45 @@ func mob_killed():
 		MobSpawnerService.despawn_mob(self)
 
 
-# Method to return a random time between min_time and max_time
-func get_new_pre_attack_time(min_time, max_time) -> float:
-	return rng.randf_range(min_time, max_time)
+# Method to return a random pre_attack_time of specifiy current_enemy_type
+func get_new_pre_attack_time(current_enemy_type) -> float:
+	# Don't wait
+	if is_directly_attacking:
+		return 0.0
+	
+	# Wait some time depending on current_enemy_type
+	else:
+		match current_enemy_type:
+			EnemyType.BAT:
+				return rng.randf_range(0.0, 2.5)
+				
+			EnemyType.FUNGUS:
+				return rng.randf_range(1.0, 3.0)
+				
+			EnemyType.GHOST:
+				return rng.randf_range(0.0, 2.5)
+				
+			EnemyType.ORBINAUT:
+				return rng.randf_range(0.0, 2.5)
+				
+			EnemyType.RAT:
+				return rng.randf_range(1.0, 3.0)
+				
+			EnemyType.SKELETON:
+				return rng.randf_range(1.0, 3.0)
+				
+			EnemyType.SMALL_SLIME:
+				return rng.randf_range(0.0, 2.5)
+				
+			EnemyType.SNAKE:
+				return rng.randf_range(1.0, 3.0)
+				
+			EnemyType.ZOMBIE:
+				return rng.randf_range(1.0, 3.0)
+		
+		# Default
+		print("-----------------> DEFAULT: " + str(current_enemy_type))
+		return rng.randf_range(0.0, 1.0)
 
 
 # Method to return the attack_damage
@@ -623,7 +770,7 @@ func get_attack_damage(mob_attack_damage):
 	var random_float = randf()
 	
 	# Calculate damage
-	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
+	if random_float <= Constants.AttackDamageStatesProbabilityWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
 		# Return CRITICAL_ATTACK damage
 		var damage = mob_attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
 		return damage
@@ -636,15 +783,15 @@ func get_attack_damage(mob_attack_damage):
 		return damage
 
 
-# Method to check if boss can attack player
+# Method to check if mob can attack player
 func can_attack():
-	# Check if boss can see player
+	# Check if mob can see player
 	if not Utils.get_current_player().is_player_invisible():
 		# Check distance to player
 		if global_position.distance_to(Utils.get_current_player().global_position) <= (ATTACK_RADIUS * 1.3):
 			raycast.cast_to = Utils.get_current_player().global_position - global_position
 			raycast.force_raycast_update()
-			# Check if there is a collision between player and boss
+			# Check if there is a collision between player and mob
 			if not raycast.is_colliding():
 				return true
 	else:

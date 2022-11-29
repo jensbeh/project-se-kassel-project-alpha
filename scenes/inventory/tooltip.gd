@@ -50,6 +50,11 @@ func _ready():
 						get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Difference").show()
 					
 					item_stat += 1
+			elif stat_name == "Selling_price":
+				var stat_value = int(GameData.item_data[item_id]["Worth"])
+				var resell_price = int(ceil(stat_value * Constants.RESELL_FACTOR))
+				get_node("NinePatchRect/Margin/VBox/Stats" + str(item_stat) + "/Stat").set_text(tr((stat_label).to_upper()) + ": " + str(resell_price) + " Gold")
+		
 		if Utils.get_trade_inventory() == null:
 			if GameData.item_data[item_id]["Category"] in ["Potion", "Food", "Map"]:
 				if GameData.item_data[item_id]["Category"] != "Map" or !Utils.get_ui().has_map:

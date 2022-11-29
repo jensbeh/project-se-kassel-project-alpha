@@ -177,10 +177,11 @@ var save_game_data = {
 	"name": charac_name,
 	"level": 1,
 	"exp": 0,
+	"maxStamina": 100.0,
 	"stamina": 100.0,
 	"maxLP": 100,
-	"attack": 0,
-	"attack_speed": 0,
+	"attack": 15,
+	"attack_speed": 4,
 	"knockback": 0,
 	"currentHP": 100,
 	"gold": 100,
@@ -216,42 +217,6 @@ var save_game_data = {
 	"quest": "",
 	"quest_finished": false,
 	"quest_progress": 0,
-}
-
-var save_inventory = {
-	"Inv1": {"Item": null,"Stack": null},
-	"Inv2": {"Item": null,"Stack": null},
-	"Inv3": {"Item": null,"Stack": null},
-	"Inv4": {"Item": null,"Stack": null},
-	"Inv5": {"Item": null,"Stack": null},
-	"Inv6": {"Item": null,"Stack": null},
-	"Inv7": {"Item": null,"Stack": null},
-	"Inv8": {"Item": null,"Stack": null},
-	"Inv9": {"Item": null,"Stack": null},
-	"Inv10": {"Item": null,"Stack": null},
-	"Inv11": {"Item": null,"Stack": null},
-	"Inv12": {"Item": null,"Stack": null},
-	"Inv13": {"Item": null,"Stack": null},
-	"Inv14": {"Item": null,"Stack": null},
-	"Inv15": {"Item": null,"Stack": null},
-	"Inv16": {"Item": null,"Stack": null},
-	"Inv17": {"Item": null,"Stack": null},
-	"Inv18": {"Item": null,"Stack": null},
-	"Inv19": {"Item": null,"Stack": null},
-	"Inv20": {"Item": null,"Stack": null},
-	"Inv21": {"Item": null,"Stack": null},
-	"Inv22": {"Item": null,"Stack": null},
-	"Inv23": {"Item": null,"Stack": null},
-	"Inv24": {"Item": null,"Stack": null},
-	"Inv25": {"Item": null,"Stack": null},
-	"Inv26": {"Item": null,"Stack": null},
-	"Inv27": {"Item": null,"Stack": null},
-	"Inv28": {"Item": null,"Stack": null},
-	"Inv29": {"Item": null,"Stack": null},
-	"Inv30": {"Item": null,"Stack": null},
-	"Weapon": {"Item": null,"Stack": null},
-	"Light": {"Item": null,"Stack": null},
-	"Hotbar": {"Item": null,"Stack": null},
 }
 
 # save the player data
@@ -659,6 +624,9 @@ func start_game():
 	
 	var transition_data = TransitionData.Menu.new(Constants.STORY_SCENE_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
+	
+	# Save game -> AT THE END OF THIS METHOD!
+	Utils.save_game(true)
 
 
 func create_player_inventory():
@@ -666,9 +634,15 @@ func create_player_inventory():
 	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
 		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
 	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
+	
+	var default_player_inv_file = File.new()
+	default_player_inv_file.open(Constants.DEFAULT_PLAYER_INV_PATH, File.READ)
+	var default_player_inv = JSON.parse(default_player_inv_file.get_as_text())
+	default_player_inv_file.close()
+	
 	var save_player = File.new()
 	save_player.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
-	save_player.store_line(to_json(save_inventory))
+	save_player.store_line(to_json(default_player_inv.result))
 	save_player.close()
 	
 	# Create Merchant data files for this character
@@ -698,9 +672,10 @@ func create_player_inventory():
 	Utils.get_current_player().set_gold(save_game_data.gold)
 	Utils.get_current_player().set_level(save_game_data.level)
 	Utils.get_current_player().set_current_health(save_game_data.currentHP)
+	Utils.get_current_player().set_max_stamina(save_game_data.maxStamina)
+	Utils.get_current_player().set_current_stamina(save_game_data.stamina)
 	Utils.get_player_ui().setup_ui()
 	Utils.get_current_player().set_exp(save_game_data.exp)
-	Utils.get_current_player().set_stamina(save_game_data.stamina)
 	
 	Utils.get_current_player().set_current_health(save_game_data.currentHP)
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]

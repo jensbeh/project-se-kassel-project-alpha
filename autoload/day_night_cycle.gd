@@ -11,11 +11,13 @@ signal change_to_daytime
 signal change_to_sunset
 signal change_to_night
 signal change_to_sunrise
+signal on_skip_time_updated
 
 # Variables
 var current_time = 0.0
 var screen_color : Color
 var game_time_active = false
+var emit_signal_skip_time = false
 
 var passed_days_since_start
 
@@ -68,6 +70,12 @@ func _process(delta):
 		if current_minute != previouse_current_minute:
 			previouse_current_minute = current_minute
 			update_ui()
+			
+			# Emit time skipped signal if necessary
+			if emit_signal_skip_time:
+				emit_signal("on_skip_time_updated")
+				emit_signal_skip_time = false
+			
 #			print("DAY_NIGHT_CYCLE: " + str(current_hour) + ":" + str(current_minute))
 		
 		# Daytime
@@ -170,12 +178,22 @@ func pause_time(should_pause):
 		game_time_active = true
 
 
-func skip_time(hours_to_skip):
+# Method to skip time
+# If emit_signal_after_time_updated == true then need to wait after calling skip time function:
+#	# Wait till time changed
+#	yield(DayNightCycle, "on_skip_time_updated")
+func skip_time(hours_to_skip, emit_signal_after_time_updated = false):
+	var new_time
 	if (current_time + ONE_HOUR * hours_to_skip) > COMPLETE_DAY_TIME:
-		current_time = (current_time + ONE_HOUR * hours_to_skip) - COMPLETE_DAY_TIME
+		new_time = (current_time + ONE_HOUR * hours_to_skip) - COMPLETE_DAY_TIME
 		passed_days_since_start += 1
 	else:
-		current_time = (current_time + ONE_HOUR * hours_to_skip)
+		new_time = (current_time + ONE_HOUR * hours_to_skip)
+	
+	set_current_time(new_time)
+	
+	if emit_signal_after_time_updated:
+		emit_signal_skip_time = true
 
 
 func get_passed_days_since_start():
@@ -191,8 +209,8 @@ func set_current_time(new_time):
 	is_night = false
 	is_sunrise = false
 	current_time = new_time
-	
-	
+
+
 func set_passed_days(new_value):
 	passed_days_since_start = new_value
 

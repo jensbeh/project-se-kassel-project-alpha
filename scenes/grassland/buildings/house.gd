@@ -47,8 +47,9 @@ func setup_player():
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
 	
-	# Replace template player in scene with current_player
+	# Remove scene_player with current_player
 	scene_player.get_parent().remove_child(scene_player)
+	scene_player.queue_free()
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals

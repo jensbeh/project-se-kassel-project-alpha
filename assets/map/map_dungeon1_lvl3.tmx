@@ -379,16 +379,16 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="13" name="mobSpawns" visible="0">
+ <objectgroup id="13" name="mobSpawns">
   <object id="12" type="area" x="560" y="-32">
    <properties>
     <property name="biome" value="dungeon"/>
-    <property name="max_mobs" type="int" value="20"/>
+    <property name="max_mobs" type="int" value="18"/>
    </properties>
    <polygon points="32,-80 -16,-96 -80,-112 -240,-112 -368,-112 -448,-96 -544,-64 -608,16 -640,64 -640,160 -608,240 -176,240 -48,240 32,176 32,0"/>
   </object>
  </objectgroup>
- <objectgroup id="14" name="bossSpawn">
+ <objectgroup id="14" name="bossSpawn" visible="0">
   <object id="41" name="boss_spawn_area" type="area" x="560" y="-32">
    <polygon points="32,-80 -16,-96 -80,-112 -240,-112 -368,-112 -448,-96 -544,-64 -608,16 -640,64 -640,160 -608,240 -176,240 -48,240 32,176 32,0"/>
   </object>

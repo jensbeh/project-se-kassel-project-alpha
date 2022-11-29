@@ -4,6 +4,8 @@ extends KinematicBody2D
 signal player_collided(collision)
 signal player_looting
 signal player_interact
+signal current_health_updated
+signal current_stamina_updated
 
 # Animation
 onready var animation_tree = $AnimationTree
@@ -31,7 +33,6 @@ onready var sound_walk = $SoundWalk
 onready var sound = $Sound
 onready var sound_breath = $SoundBreath
 
-const CompositeSprites = preload("res://assets/player/CompositeSprites.gd")
 # Count Textures, Count Colors
 var curr_body: int = 0 #0-7, 1
 var curr_shoes: int = 0 #0, 10
@@ -66,6 +67,7 @@ var current_health: int
 var data
 var level: int = 1
 var player_exp: int = 0
+var max_stamina: float
 var player_stamina: float
 var player_light_radius: int
 var health_cooldown = 0
@@ -89,19 +91,19 @@ var is_player_paused = false
 
 func _ready():
 	# Style
-	bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
-	shoesSprite.texture = CompositeSprites.SHOES_SPRITESHEET[curr_shoes]
-	pantsSprite.texture = CompositeSprites.PANTS_SPRITESHEET[curr_pants]
-	clothesSprite.texture = CompositeSprites.CLOTHES_SPRITESHEET[curr_clothes]
-	blushSprite.texture = CompositeSprites.BLUSH_SPRITESHEET[curr_blush]
-	lipstickSprite.texture = CompositeSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
-	beardSprite.texture = CompositeSprites.BEARD_SPRITESHEET[curr_beard]
-	eyesSprite.texture = CompositeSprites.EYES_SPRITESHEET[curr_eyes]
-	earringSprite.texture = CompositeSprites.EARRING_SPRITESHEET[curr_earring]
-	hairSprite.texture = CompositeSprites.HAIR_SPRITESHEET[curr_hair]
-	maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
-	glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
-	hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
+	bodySprite.texture = Constants.PreloadedPlayerSprites.BODY_SPRITESHEET[curr_body]
+	shoesSprite.texture = Constants.PreloadedPlayerSprites.SHOES_SPRITESHEET[curr_shoes]
+	pantsSprite.texture = Constants.PreloadedPlayerSprites.PANTS_SPRITESHEET[curr_pants]
+	clothesSprite.texture = Constants.PreloadedPlayerSprites.CLOTHES_SPRITESHEET[curr_clothes]
+	blushSprite.texture = Constants.PreloadedPlayerSprites.BLUSH_SPRITESHEET[curr_blush]
+	lipstickSprite.texture = Constants.PreloadedPlayerSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
+	beardSprite.texture = Constants.PreloadedPlayerSprites.BEARD_SPRITESHEET[curr_beard]
+	eyesSprite.texture = Constants.PreloadedPlayerSprites.EYES_SPRITESHEET[curr_eyes]
+	earringSprite.texture = Constants.PreloadedPlayerSprites.EARRING_SPRITESHEET[curr_earring]
+	hairSprite.texture = Constants.PreloadedPlayerSprites.HAIR_SPRITESHEET[curr_hair]
+	maskSprite.texture = Constants.PreloadedPlayerSprites.MASK_SPRITESHEET[curr_mask]
+	glassesSprite.texture = Constants.PreloadedPlayerSprites.GLASSES_SPRITESHEET[curr_glasses]
+	hatSprite.texture = Constants.PreloadedPlayerSprites.HAT_SPRITESHEET[curr_hat]
 	
 	shadow.visible = false
 	
@@ -112,7 +114,7 @@ func _ready():
 	set_visibility("Hat", false)
 	set_visibility("Weapon", false)
 	set_visibility("AttackSwing", false)
-
+	
 	# Animation
 	animation_tree.active = true
 	animation_tree.set("parameters/Idle/blend_position", velocity)
@@ -126,21 +128,15 @@ func _ready():
 	# For debugging
 	# Invisibility
 	if Constants.IS_PLAYER_INVISIBLE:
-		printerr("PLAYER: Is invisible")
 		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
 	else:
 		make_player_invisible(Constants.IS_PLAYER_INVISIBLE)
 	
 	# Invincibility
 	if Constants.IS_PLAYER_INVINCIBLE:
-		printerr("PLAYER: Is invincible")
 		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
 	else:
 		make_player_invincible(Constants.IS_PLAYER_INVINCIBLE)
-	
-	# Infinit stamina
-	if Constants.HAS_PLAYER_INFINIT_STAMINA:
-		printerr("PLAYER: Has infinit stamina")
 
 
 func _physics_process(delta):
@@ -163,7 +159,7 @@ func _physics_process(delta):
 			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview and movement:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
-						set_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
+						set_current_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
 					step_sound(1.2)
 					velocity *= 1.4
 				else:
@@ -202,16 +198,16 @@ func _physics_process(delta):
 			velocity = move_and_slide(velocity)
 			
 		if not is_attacking and not hurting and not dying and data != null and not (Input.is_action_pressed("Shift") and velocity != Vector2.ZERO):
-			if player_stamina + delta * Constants.STAMINA_RECOVER < level * 10 + 90:
-				set_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
-			elif player_stamina < level * 10 + 90:
-				set_stamina(level * 10 + 90)
+			if player_stamina + delta * Constants.STAMINA_RECOVER < get_max_stamina():
+				set_current_stamina(player_stamina + delta * Constants.STAMINA_RECOVER)
+			elif player_stamina < get_max_stamina():
+				set_current_stamina(get_max_stamina())
 		# Breath Sound
 		if weapon_weight < 0 or weapon_weight == null:
 			weapon_weight = 1
 		if ((player_stamina - delta * Constants.STAMINA_SPRINT < 0 or player_stamina - weapon_weight * Constants.WEAPON_STAMINA_USE < 0) 
 		and !Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.MENU):
-			if !sound_breath.is_playing():
+			if !sound_breath.is_playing() and not dying:
 				sound_breath.play()
 		elif sound_breath.is_playing():
 			sound_breath.stop()
@@ -268,7 +264,9 @@ func _input(event):
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
-					set_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+					set_current_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				sound_walk.stop()
+				sound.stop()
 				sound.stream = Constants.PreloadedSounds.Attack
 				sound.play()
 				is_attacking = true
@@ -411,43 +409,43 @@ func set_texture(name, value):
 	match name:
 		"curr_body":
 			curr_body = value
-			bodySprite.texture = CompositeSprites.BODY_SPRITESHEET[curr_body]
+			bodySprite.texture = Constants.PreloadedPlayerSprites.BODY_SPRITESHEET[curr_body]
 		"curr_shoes":
 			curr_shoes = value
-			shoesSprite.texture = CompositeSprites.SHOES_SPRITESHEET[curr_shoes]
+			shoesSprite.texture = Constants.PreloadedPlayerSprites.SHOES_SPRITESHEET[curr_shoes]
 		"curr_pants":
 			curr_pants = value
-			pantsSprite.texture = CompositeSprites.PANTS_SPRITESHEET[curr_pants]
+			pantsSprite.texture = Constants.PreloadedPlayerSprites.PANTS_SPRITESHEET[curr_pants]
 		"curr_clothes":
 			curr_clothes = value
-			clothesSprite.texture = CompositeSprites.CLOTHES_SPRITESHEET[curr_clothes]
+			clothesSprite.texture = Constants.PreloadedPlayerSprites.CLOTHES_SPRITESHEET[curr_clothes]
 		"curr_blush":
 			curr_blush = value
-			blushSprite.texture = CompositeSprites.BLUSH_SPRITESHEET[curr_blush]
+			blushSprite.texture = Constants.PreloadedPlayerSprites.BLUSH_SPRITESHEET[curr_blush]
 		"curr_lipstick":
 			curr_lipstick = value
-			lipstickSprite.texture = CompositeSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
+			lipstickSprite.texture = Constants.PreloadedPlayerSprites.LIPSTICK_SPRITESHEET[curr_lipstick]
 		"curr_beard":
 			curr_beard = value
-			beardSprite.texture = CompositeSprites.BEARD_SPRITESHEET[curr_beard]
+			beardSprite.texture = Constants.PreloadedPlayerSprites.BEARD_SPRITESHEET[curr_beard]
 		"curr_eyes":
 			curr_eyes = value
-			eyesSprite.texture = CompositeSprites.EYES_SPRITESHEET[curr_eyes]
+			eyesSprite.texture = Constants.PreloadedPlayerSprites.EYES_SPRITESHEET[curr_eyes]
 		"curr_earring":
 			curr_earring = value
-			earringSprite.texture = CompositeSprites.EARRING_SPRITESHEET[curr_earring]
+			earringSprite.texture = Constants.PreloadedPlayerSprites.EARRING_SPRITESHEET[curr_earring]
 		"curr_hair":
 			curr_hair = value
-			hairSprite.texture = CompositeSprites.HAIR_SPRITESHEET[curr_hair]
+			hairSprite.texture = Constants.PreloadedPlayerSprites.HAIR_SPRITESHEET[curr_hair]
 		"curr_mask":
 			curr_mask = value
-			maskSprite.texture = CompositeSprites.MASK_SPRITESHEET[curr_mask]
+			maskSprite.texture = Constants.PreloadedPlayerSprites.MASK_SPRITESHEET[curr_mask]
 		"curr_glasses":
 			curr_glasses = value
-			glassesSprite.texture = CompositeSprites.GLASSES_SPRITESHEET[curr_glasses]
+			glassesSprite.texture = Constants.PreloadedPlayerSprites.GLASSES_SPRITESHEET[curr_glasses]
 		"curr_hat":
 			curr_hat = value
-			hatSprite.texture = CompositeSprites.HAT_SPRITESHEET[curr_hat]
+			hatSprite.texture = Constants.PreloadedPlayerSprites.HAT_SPRITESHEET[curr_hat]
 
 
 func reset_key(track_idx):
@@ -730,33 +728,18 @@ func setup_player_in_new_scene(scene_player: KinematicBody2D):
 
 # Method to set/save weapon and stats to player
 func set_weapon(new_weapon_id, new_attack_value: int, new_attack_speed: int, new_knockback: int):
+	# Set weapon
 	if new_weapon_id != null:
 		weapon_weight = GameData.item_data[str(new_weapon_id)]["Weight"]
 		var weapon_id_str = str(new_weapon_id)
 		can_attack = true
-		var weapons_dir = Directory.new()
-		var weapon_path = ""
-		if weapons_dir.open("res://assets/player/weapons/") == OK:
-			weapons_dir.list_dir_begin()
-			var weapon_name : String = weapons_dir.get_next()
-			while weapon_name != "":
-				if weapon_name.ends_with(".png"):
-					var file_weapon_id = weapon_name.substr(weapon_name.find_last("_") + 1, 5)
-					if file_weapon_id == weapon_id_str:
-						weapon_path = "res://assets/player/weapons/" + weapon_name
-						break
-					
-				weapon_name = weapons_dir.get_next()
-		
-		
-		var weapon_texture = load(weapon_path)
-		weaponSprite.texture = weapon_texture
-	
+		weaponSprite.texture = Constants.PreloadedTextures[weapon_id_str]
+	# Remove weapon
 	else:
 		weapon_weight = 0
 		can_attack = false
-		
-		
+	
+	# Set new values
 	attack_damage = new_attack_value
 	data.attack = new_attack_value
 	
@@ -775,7 +758,7 @@ func get_attack_damage():
 	var random_float = randf()
 	
 	# Calculate damage
-	if random_float <= Constants.AttackDamageStatesWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
+	if random_float <= Constants.AttackDamageStatesProbabilityWeights[Constants.AttackDamageStates.CRITICAL_ATTACK]:
 		# Return CRITICAL_ATTACK damage
 		var damage = attack_damage * Constants.CRITICAL_ATTACK_DAMAGE_FACTOR
 		return damage
@@ -825,6 +808,9 @@ func set_current_health(new_current_health: int):
 		current_health = int(max_health)
 	Utils.get_player_ui().set_life(new_current_health*100 / float(max_health))
 	data.currentHP = new_current_health
+	
+	# Emit signal that current health changed
+	emit_signal("current_health_updated")
 
 
 func set_data(new_data):
@@ -857,20 +843,34 @@ func set_exp(new_exp: int):
 	data.exp = player_exp
 
 
-# set a new stamina value for the player
-func set_stamina(new_stamina: float):
-	if new_stamina > level * 10 + 90:
-		new_stamina = level * 10 + 90
+# Method to set new max stamina
+func set_max_stamina(new_max_stamina: int):
+	max_stamina = new_max_stamina
+	data.maxStamina = new_max_stamina
+
+
+# Method to return max stamina
+func get_max_stamina():
+	return max_stamina
+
+
+# Set a new current stamina value for the player
+func set_current_stamina(new_stamina: float):
+	if new_stamina > get_max_stamina():
+		new_stamina = get_max_stamina()
 	player_stamina = new_stamina
 	# for ui update
 	Utils.get_player_ui().set_stamina(new_stamina)
 	# for save
 	data.stamina = player_stamina
+	
+	# Emit signal that current stamina changed
+	emit_signal("current_stamina_updated")
 
 
-# Return maximum Stamina Value
-func get_stamina():
-	return (level * 10 + 90)
+# Return current stamina value
+func get_current_stamina():
+	return player_stamina
 
 
 func _on_DamageAreaBottom_area_entered(area):
@@ -938,8 +938,8 @@ func simulate_damage(enemy_global_position, damage_to_player : int, knockback_to
 		
 		# Add knockback
 		# Caluculate linear function between min_knockback_velocity_factor and max_knockback_velocity_factor to get knockback_velocity_factor depending on knockback between min_knockback_velocity_factor and max_knockback_velocity_factor
-		var min_knockback_velocity_factor = 25
-		var max_knockback_velocity_factor = 100
+		var min_knockback_velocity_factor = Constants.MIN_KNOCKBACK_VELOCITY_FACTOR_TO_PLAYER
+		var max_knockback_velocity_factor = Constants.MAX_KNOCKBACK_VELOCITY_FACTOR_TO_PLAYER
 		var m = (max_knockback_velocity_factor - min_knockback_velocity_factor) / Constants.MAX_KNOCKBACK
 		var knockback_velocity_factor = m * knockback_to_player + min_knockback_velocity_factor
 		velocity = enemy_global_position.direction_to(global_position) * knockback_velocity_factor
@@ -951,6 +951,7 @@ func hurt_player():
 		hurting = true
 	if !collecting:
 		set_movement(false)
+	sound.stop()
 	sound.stream = Constants.PreloadedSounds.Hurt
 	sound.play()
 	animation_state.start("Hurt")
@@ -1010,7 +1011,11 @@ func finished_looting():
 
 # Method is called when DIE animation is done
 func player_killed():
-	Utils.get_main().show_death_screen()
+	# Stop player sounds
+	sound_walk.stop()
+	sound_breath.stop()
+	
+	Utils.show_death_screen()
 	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
 		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
 
@@ -1041,11 +1046,9 @@ func reset_player_after_dying():
 	is_attacking = false
 	collecting = false
 	set_current_health(max_health)
-	set_stamina(level * 10 + 90)
+	set_current_stamina(get_max_stamina())
 	set_movment_animation(true)
 	set_movement(true)
-	
-	rescue_pay()
 
 
 func get_light_radius():
@@ -1119,8 +1122,8 @@ func is_in_change_scene_area():
 
 func rescue_pay():
 	# Pay amount of gold
-	var lost_gold = int(gold * Constants.RESCUE_PAY)
-	set_gold(int(gold * (1 - Constants.RESCUE_PAY)))
+	var lost_gold = int(gold * Constants.RESCUE_PAY_GOLD_FACTOR)
+	set_gold(int(gold * (1 - Constants.RESCUE_PAY_GOLD_FACTOR)))
 	# Pay an item
 	var item_list = []
 	for i in range(1,31):
@@ -1158,6 +1161,7 @@ func rescue_pay():
 		for item in lost_items:
 			lost_string += (", " + item)
 	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
+	sound.stop()
 	if lost_items.size() > 0:
 		sound.stream = Constants.PreloadedSounds.Collect2
 	else:
@@ -1182,3 +1186,7 @@ func set_stamina_cooldown(new_cooldown):
 	stamina_cooldown = new_cooldown
 	# for save
 	data.stamina_cooldown = new_cooldown
+
+
+func destroy_scene():
+	print("destroy_scene")

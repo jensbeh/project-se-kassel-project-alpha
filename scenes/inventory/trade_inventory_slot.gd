@@ -68,9 +68,11 @@ func can_drop_data(_pos, data):
 		else:
 			# swap and check if you have enough gold
 			if data["origin_panel"] == "Inventory":
+				
+				var resell_price = int(ceil(int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * Constants.RESELL_FACTOR))
+				
 				if int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * int(
-					data["target_stack"]) <= player_gold + int(GameData.item_data[str(
-						data["origin_item_id"])]["Worth"]) * int(data["origin_stack"]):
+					data["target_stack"]) <= player_gold + resell_price * int(data["origin_stack"]):
 					return true
 				else:
 					return false
@@ -99,16 +101,23 @@ func drop_data(_pos, data):
 					pass
 				# swap
 				elif data["target_item_id"] != null and (!data["origin_stackable"] or data["target_item_id"] != data["origin_item_id"]):
+					Utils.get_trade_inventory().get_sound_player().stop()
 					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 					Utils.get_trade_inventory().get_sound_player().play(0.03)
-					Utils.get_current_player().set_gold(player_gold + ((int(GameData.item_data[str(
-						data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) - 
+					
+					var resell_price = int(ceil(int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * Constants.RESELL_FACTOR))
+					
+					Utils.get_current_player().set_gold(player_gold + (resell_price * int(data["origin_stack"])) - 
 						(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
 				# sell
 				else:
+					Utils.get_trade_inventory().get_sound_player().stop()
 					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 					Utils.get_trade_inventory().get_sound_player().play(0.03)
-					Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
+					
+					var resell_price = int(ceil(int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * Constants.RESELL_FACTOR))
+					
+					Utils.get_current_player().set_gold(player_gold + resell_price * int(data["origin_stack"]))
 				Utils.get_trade_inventory().find_node("Inventory").get_child(0).find_node("Gold").set_text(
 					"Gold: " + str(Utils.get_current_player().get_gold()))
 			# Update the data of the origin
@@ -211,9 +220,13 @@ func SplitStack(split_amount, data):
 		split_amount = Constants.MAX_STACK_SIZE - data["target_stack"]
 	# paying in case of buying and selling
 	if data["origin_panel"] == "Inventory":
+		Utils.get_trade_inventory().get_sound_player().stop()
 		Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 		Utils.get_trade_inventory().get_sound_player().play(0.03)
-		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))
+		
+		var resell_price = int(ceil(int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * Constants.RESELL_FACTOR))
+		
+		Utils.get_current_player().set_gold(player_gold + resell_price * split_amount)
 		Utils.get_trade_inventory().find_node("Inventory").get_child(0).find_node("Gold").set_text(
 			"Gold: " + str(Utils.get_current_player().get_gold()))
 	
@@ -327,7 +340,7 @@ func check_slots():
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
-				trade.remove_child(trade.get_node("Inv" + str(slots - i)))
+				trade.get_node("Inv" + str(slots - i)).queue_free()
 			MerchantData.save_merchant_inventory()
 			Utils.save_game(true)
 			check_slots()

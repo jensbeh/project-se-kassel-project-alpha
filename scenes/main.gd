@@ -38,13 +38,6 @@ func is_day_night_cycle():
 	return darkness_lights_screen.get_is_day_night_cycle()
 
 
-# Method to show death screen
-func show_death_screen():
-	# Load death screen to ui
-	if Utils.get_ui() != null:
-		ui.add_child(Constants.PreloadedScenes.DeathScreenScene.instance())
-
-
 # Method to add settings screen to view
 func add_settings():
 	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
@@ -59,6 +52,36 @@ func add_settings():
 # Method to disable gui in viewport
 func disable_game_gui(disable_gui):
 	game_viewport.gui_disable_input = disable_gui
+
+
+
+# Method to start skip time animation
+func start_skip_time_transition():
+	Utils.get_current_player().pause_player(true)
+	loading_screen_animation_player.play("SkipTimeFadeToBlack")
+
+
+# Method to skip time - called from animtaion "SkipTimeFadeToBlack" when it ends
+func on_skip_time_start():
+	DayNightCycle.skip_time(8,true)
+	
+	# Reset player stats
+	Utils.get_current_player().set_current_health(Utils.get_current_player().get_max_health())
+	Utils.get_current_player().set_current_stamina(Utils.get_current_player().get_max_stamina())
+	
+	# Wait till time changed
+	yield(DayNightCycle, "on_skip_time_updated")
+	
+	# Save game
+	Utils.save_game(true)
+	
+	# Fade back to normal
+	loading_screen_animation_player.play("SkipTimeFadeToNormal")
+
+
+# Method is called from animtaion "SkipTimeFadeToNormal" when it ends
+func on_skip_time_end():
+	Utils.get_current_player().pause_player(false)
 
 
 # Method to start close game animation - calls ONLY from UTILS
@@ -78,7 +101,7 @@ func stop_game():
 	else:
 		printerr("MAIN: NOT destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
 	
-	# Stop threads
+	# Stop threads -> autoloads
 	# Stop Chunkloader
 	ChunkLoaderService.stop()
 	# Stop Pathfinder

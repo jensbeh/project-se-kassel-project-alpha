@@ -62,7 +62,7 @@ func PopulatePanel():
 			if str(loot_dict[counter][0]) in ["Jewel", "Potion", "Weapon"]:
 				randomize()
 				if loot_dict[counter][0] == "Jewel":
-					var jewel = GameData.jewel_IDs[randi() % 4]
+					var jewel = GameData.jewel_IDs[randi() % GameData.jewel_IDs.size()]
 					var found = false
 					for idx in loot_dict:
 						var item = loot_dict[idx]
@@ -70,16 +70,17 @@ func PopulatePanel():
 							item[1] += 1
 							found = true
 							loot_dict.erase(counter)
+							keys.remove(num-1)
 							counter = idx
 							break
 					if !found:
 						loot_dict[counter][0] = jewel
 				elif loot_dict[counter][0] == "Potion":
-					loot_dict[counter][0] = GameData.potion_IDs[randi() % 5]
+					loot_dict[counter][0] = GameData.food_IDs[randi() % GameData.food_IDs.size()]
 					if loot_type == "Treasure":
-						loot_dict[counter][0] = GameData.potion_IDs[(randi() % 3) + 5]
+						loot_dict[counter][0] = GameData.treasure_potion_IDs[randi() % GameData.treasure_potion_IDs.size()]
 				elif loot_dict[counter][0] == "Weapon":
-					loot_dict[counter][0] = GameData.weapon_IDs[randi() % 4]
+					loot_dict[counter][0] = GameData.weapon_IDs[randi() % GameData.weapon_IDs.size()]
 			num += 1
 		else:
 			i.hide()
@@ -94,7 +95,7 @@ func setup():
 			get_node(str(i.get_path()) + "/Name").set_text(tr(str(GameData.item_data[str(loot_dict[counter][0])]["Name"])))
 			var texture = GameData.item_data[str(loot_dict[counter][0])]["Texture"]
 			var frame = int(GameData.item_data[str(loot_dict[counter][0])]["Frame"])
-			var icon = load("res://Assets/Icon_Items/" + texture + ".png")
+			var icon = load("res://assets/icon_items/" + texture + ".png")
 			var slot = get_node(str(i.get_path()) + "/LootIcon/Icon/Sprite")
 			if texture == "item_icons_1":
 				slot.set_scale(Vector2(2.5,2.5))
@@ -134,11 +135,11 @@ func _on_Icon_gui_input(event, lootpanelslot):
 
 # close the loot panel
 func _on_Close_pressed():
+	Utils.get_current_player().get_node("Sound").stop()
 	Utils.get_current_player().get_node("Sound").stream = Constants.PreloadedSounds.OpenUI
 	Utils.get_current_player().get_node("Sound").play()
 	Utils.get_current_player().player_looted()
 	Utils.save_game(true)
-	get_parent().remove_child(self)
 	queue_free()
 	emit_signal("looted", loot_dict)
 
@@ -153,7 +154,6 @@ func _on_LootAll_pressed():
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect2)
 	else:
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Collect)
-	get_parent().remove_child(self)
 	queue_free()
 	Utils.save_game(true)
 	for i in range(1,size + 1):

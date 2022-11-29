@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="16" nextobjectid="11">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="1" nextlayerid="17" nextobjectid="12">
  <tileset firstgid="1" source="../../../tilesets/quiet_cabin_furniture.tsx"/>
  <tileset firstgid="301" source="../../../tilesets/cabin_animated_tiles.tsx"/>
  <group id="2" name="ground">
@@ -400,5 +400,8 @@
     <property name="view_direction_y" type="int" value="1"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="16" name="bed">
+  <object id="11" name="bed_house1" type="area" x="-96" y="-7" width="22" height="30"/>
  </objectgroup>
 </map>

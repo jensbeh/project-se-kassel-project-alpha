@@ -26,6 +26,10 @@ func get_player():
 
 # Sets a new current_player instance (firstly done when enter the game - not available in the menu)
 func set_current_player(new_current_player: KinematicBody2D):
+	if new_current_player == null:
+		# Free current player if reset
+		current_player.queue_free()
+	
 	current_player = new_current_player
 
 
@@ -81,7 +85,7 @@ func get_game_menu():
 
 # Method to remove the game menu node
 func remove_game_menu():
-	return get_ui().remove_child(get_game_menu())
+	get_game_menu().queue_free()
 
 
 # Method to return the character interface node
@@ -89,9 +93,11 @@ func get_character_interface():
 	return get_ui().get_node_or_null("CharacterInterface")
 
 
-# Method to remove the character interface node
-func remove_character_interface():
-	return get_ui().remove_child(get_character_interface())
+# Method to show death screen
+func show_death_screen():
+	# Load death screen to ui
+	if get_ui() != null:
+		get_ui().add_child(Constants.PreloadedScenes.DeathScreenScene.instance())
 
 
 # Method to return the death screen node
@@ -101,7 +107,7 @@ func get_death_screen():
 
 # Method to remove the death screen node
 func remove_death_screen():
-	return get_ui().remove_child(get_death_screen())
+	get_death_screen().queue_free()
 
 
 # Method to return the control notes node
@@ -518,7 +524,8 @@ func get_random_boss_preload():
 	return Constants.PreloadBossScene[randi() % Constants.PreloadBossScene.size()]
 
 
-# Method to preload game -> called ONLY! from start screen
+# Method to preload game -> called ONLY! from StartScreen
+# When adding here some preloads need to stop in following method in case game is closing while loading
 func preload_game():
 	print("GAME: Preloading...")
 	# Measure time
@@ -526,15 +533,21 @@ func preload_game():
 	var time_now = 0
 	
 	# Load here everything which needs to be preloaded
+	# Preload all scenes, music, ...
+	Constants.preload_variables()
 	# Load AStars
 	PathfindingService.preload_astars()
-	
 	
 	# Calculate needed time
 	time_now = OS.get_system_time_msecs()
 	var time_elapsed = time_now - time_start
 	
 	print("GAME: Preload finished! (" + str(time_elapsed / 1000.0) + " sec)")
+
+# Method to stop preloading -> is called if game is closed while loading/StartScreen
+func stop_preload_game():
+	Constants.stop_preloading()
+	PathfindingService.stop_preloading()
 
 
 # Method to check if node is valid and still present
@@ -589,16 +602,32 @@ func save_game(animation):
 	var data = get_current_player().get_data()
 	data.position = var2str(get_current_player().position)
 	data.scene_transition = get_scene_manager().current_transition_data.get_scene_path()
+	
+	data.view_direction = var2str(get_current_player().view_direction)
+	# When saving inside the dungeon
 	if "Dungeon1" in data.scene_transition:
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(856,682))
+		print("GAME: Saved game in dungeon1!")
 	elif "Dungeon2" in data.scene_transition:
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(376,-198))
+		print("GAME: Saved game in dungeon2!")
 	elif "Dungeon3" in data.scene_transition:
 		data.scene_transition = Constants.GRASSLAND_SCENE_PATH
 		data.position = var2str(Vector2(-602,-678))
-	data.view_direction = var2str(get_current_player().view_direction)
+		print("GAME: Saved game in dungeon3!")
+	
+	# When intro story is played the game will be saved
+	elif Constants.STORY_SCENE_PATH in data.scene_transition:
+		data.scene_transition = Constants.FIRST_SPAWN_SCENE
+		data.position = var2str(Constants.FIRST_SPAWN_POSITION)
+		data.view_direction = var2str(Constants.FIRST_VIEW_DIRECTION)
+		print("GAME: Saved game in intro_story!")
+	
+	else:
+		print("GAME: Saved game in \"" + str(data.scene_transition) + "\"!")
+	
 	data.time = DayNightCycle.get_current_time()
 	data.passed_days = DayNightCycle.get_passed_days_since_start()
 	# map informations
@@ -616,10 +645,12 @@ func save_player_data(player_data):
 
 
 func set_and_play_sound(new_sound):
+	get_sound_player().stop()
 	get_sound_player().stream = new_sound
 	get_sound_player().play(0.03)
 
 
 func set_and_play_music(new_music):
+	get_sound_player().stop()
 	get_music_player().stream = new_music
 	get_music_player().play(0.03)

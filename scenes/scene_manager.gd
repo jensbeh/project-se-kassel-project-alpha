@@ -5,10 +5,10 @@ signal scene_type_updated
 
 # Variables
 var current_scene_type = Constants.SceneType.MENU # Default on startup -> Menu
-var thread
 var previouse_scene_path = ""
 var current_transition_data = null
 var previouse_transition_data = null
+var show_rescue_pay = false
 
 # Nodes CurrentScreen
 onready var current_scene = $CurrentScene
@@ -44,7 +44,7 @@ func transition_to_scene(transition_data):
 		Utils.remove_game_menu()
 	# Remove "I" Inventory
 	if Utils.get_character_interface() != null:
-		Utils.remove_character_interface()
+		Utils.get_character_interface().exit_scene()
 	
 	# Show black fade/loading screen and load new scene after fading to black
 	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
@@ -52,41 +52,17 @@ func transition_to_scene(transition_data):
 	elif current_transition_data.get_transition_type() == Constants.TransitionType.MENU_SCENE:
 		Utils.get_main().play_loading_screen_animation("MenuFadeToBlack")
 
+
 # Method is called from fadeToBlackAnimation after its done
 func load_new_scene():
 	# Pause game
 	Utils.pause_game(true)
 	
-	# Start thread
-	thread = Thread.new()
-	thread.start(self, "_load_scene_in_background")
-
-
-# Method to load the new scene with a thread in background
-func _load_scene_in_background():
-	var loader = ResourceLoader.load_interactive(current_transition_data.get_scene_path())
-	set_process(true)
-
-	while true:
-		var err = loader.poll()
-		
-		if err == ERR_FILE_EOF: # Finished loading.
-#			var resource = thread.wait_to_finish()
-			var resource = loader.get_resource()
-			var scene = resource.instance() # !!! Takes very long time and freezes main thread
-			pass_data_to_scene(scene)
-			# (Only for Dungeons) ONLY A DIRTY FIX / WORKAROUND UNTIL GODOT FIXED THIS BUG: https://github.com/godotengine/godot/issues/39182
-			if get_current_scene().find_node("CanvasModulate") != null:
-				get_current_scene().call_deferred("remove_child", get_current_scene().find_node("CanvasModulate"))
-			
-			call_deferred("_on_load_scene_done", scene)
-			break
-
-
-# Method is called when thread is done and the scene is loaded - here the scene will be instancing with all information and will be added to current_scene
-func _on_load_scene_done(scene):
-	# Get scene and pass init data
-	thread.wait_to_finish()
+	var scene_path = current_transition_data.get_scene_path()
+	
+	var scene = Constants.PreloadedMenusAndMaps[scene_path].instance()
+	print("GAME: Loaded new scene \"" + str(scene_path) + "\"")
+	pass_data_to_scene(scene)
 	
 	# Cleanup previous scene
 	if get_current_scene().has_method("destroy_scene"):
@@ -112,8 +88,6 @@ func _on_load_scene_done(scene):
 	# Add scene to current_scene
 	get_current_scene().queue_free()
 	current_scene.call_deferred("add_child", scene)
-	# Update current_scene_type from the new scene like MENU, CAMP, ...
-	update_scene_type(current_transition_data)
 
 
 # Method to pass the transition_data to the new scene 
@@ -130,6 +104,9 @@ func finish_transition():
 	update_previouse_scene_path()
 	
 	if current_transition_data != null: # In menu it is null
+		# Update current_scene_type from the new scene like MENU, CAMP, ...
+		update_scene_type(current_transition_data)
+		
 		# When finished setting up new scene fade back to normal
 		if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
 			
@@ -145,6 +122,7 @@ func finish_transition():
 			if Utils.get_current_player().get_player_can_interact() == false:
 				Utils.get_current_player().set_player_can_interact(true)
 			if Utils.get_current_player().is_player_dying() == true:
+				show_rescue_pay = true
 				Utils.get_current_player().reset_player_after_dying()
 			if Utils.get_current_player().is_player_invisible() == true:
 				Utils.get_current_player().make_player_invisible(false)
@@ -184,6 +162,10 @@ func finish_transition():
 func on_game_fade_to_normal_finished():
 	# Resume player
 	Utils.get_current_player().pause_player(false)
+	
+	if show_rescue_pay:
+		Utils.get_current_player().rescue_pay()
+		show_rescue_pay = false
 
 
 # Method to update the current_scene_type and emits a signal
@@ -216,8 +198,8 @@ func get_current_scene():
 
 
 # Method to set new current scene without any special calls or transition
-# new_current_scene -> must be scene instance
-func without_transition_to_scene(new_current_scene : Node):
+# new_current_scene_path -> must be scene path
+func without_transition_to_scene(new_current_scene_path : String):
 	# Cleanup previous scene
 	if get_current_scene().has_method("destroy_scene"):
 		get_current_scene().destroy_scene()
@@ -227,5 +209,8 @@ func without_transition_to_scene(new_current_scene : Node):
 	
 	# Remove previous scene
 	get_current_scene().queue_free()
+	
 	# Load new scene
-	current_scene.call_deferred("add_child",new_current_scene)
+	var scene = Constants.PreloadedMenusAndMaps[new_current_scene_path].instance()
+	print("GAME: Loaded new scene \"" + str(new_current_scene_path) + "\"")
+	current_scene.call_deferred("add_child",scene)

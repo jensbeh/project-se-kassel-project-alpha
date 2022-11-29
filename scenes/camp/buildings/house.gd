@@ -6,6 +6,7 @@ var scene_type = Constants.SceneType.HOUSE
 
 # Variables
 var current_area : Area2D = null
+var current_bed_area : Area2D = null
 
 # Variables - Data passed from scene before
 var init_transition_data = null
@@ -24,6 +25,12 @@ func _ready():
 	
 	# setup areas to change areaScenes
 	setup_change_scene_areas()
+	
+	# setup bed areas
+	setup_bed_areas()
+	
+	# Connect signals
+	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -46,14 +53,22 @@ func setup_player():
 	# Set position
 	Utils.calculate_and_set_player_spawn(self, init_transition_data)
 	
-	# Replace template player in scene with current_player
+	# Remove scene_player with current_player
 	scene_player.get_parent().remove_child(scene_player)
+	scene_player.queue_free()
 	find_node("playerlayer").add_child(Utils.get_current_player())
 
 
 # Method to set transition_data which contains stuff about the player and the transition
 func set_transition_data(transition_data):
 	init_transition_data = transition_data
+
+
+# Method to handle interaction of player
+func interaction_detected():
+	if current_bed_area != null:
+		# Start skip time animation
+		Utils.get_main().start_skip_time_transition()
 
 
 # Setup all change_scene objectes/Area2D's on start
@@ -86,6 +101,30 @@ func body_exited_change_scene_area(body, changeSceneArea):
 		print("HOUSE: Body \""  + str(body.name) + "\" EXITED changeSceneArea \"" + changeSceneArea.name + "\"")
 		current_area = null
 		Utils.get_current_player().set_in_change_scene_area(false)
+
+
+# Setup all bed objectes/Area2D's on start
+func setup_bed_areas():
+	var beds_node = find_node("bed")
+	if beds_node != null:
+		for bed_area in beds_node.get_children():
+			if "bed" in bed_area.name:
+				# connect Area2D with functions to handle body action
+				bed_area.connect("body_entered", self, "body_entered_bed_area", [bed_area])
+				bed_area.connect("body_exited", self, "body_exited_bed_area", [bed_area])
+
+
+# Method which is called when a body has entered a bedArea
+func body_entered_bed_area(body, bedArea):
+	if body.name == "Player":
+		current_bed_area = bedArea
+
+
+# Method which is called when a body has exited a bedArea
+func body_exited_bed_area(body, bedArea):
+	if body.name == "Player":
+		print("HOUSE: Body \""  + str(body.name) + "\" EXITED bedArea \"" + bedArea.name + "\"")
+		current_bed_area = null
 
 
 # Method to disconnect all signals

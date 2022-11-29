@@ -23,7 +23,7 @@ func load_hotbar():
 	if PlayerData.equipment_data["Hotbar"]["Item"] != null:
 		var texture = GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Texture"]
 		var frame = GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Frame"]
-		var icon_texture = load("res://Assets/Icon_Items/" + texture + ".png")
+		var icon_texture = load("res://assets/icon_items/" + texture + ".png")
 		if texture == "item_icons_1":
 			item_slot.get_node("Icon/Sprite").set_scale(Vector2(2,2))
 			item_slot.get_node("Icon/Sprite").set_hframes(16)
@@ -86,6 +86,7 @@ func _on_Timer_timeout():
 		cooldown_texture.value = 0
 		disabled = false
 		time_label.hide()
+		type = ""
 	timer1 = false
 	Utils.get_current_player().set_health_cooldown(0)
 
@@ -120,7 +121,7 @@ func use_item():
 			PlayerData.equipment_data["Hotbar"]["Stack"] -= 1
 			var cooldown
 			if GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])].has("Stamina"):
-				Utils.get_current_player().set_stamina(Utils.get_current_player().player_stamina + 
+				Utils.get_current_player().set_current_stamina(Utils.get_current_player().player_stamina + 
 				GameData.item_data[str(PlayerData.equipment_data["Hotbar"]["Item"])]["Stamina"])
 				type = "Stamina"
 				cooldown = Constants.STAMINA_POTION_COOLDOWN
@@ -206,6 +207,7 @@ func _on_Timer2_timeout():
 		cooldown_texture.value = 0
 		disabled = false
 		time_label.hide()
+		type = ""
 	timer2 = false
 	Utils.get_current_player().set_stamina_cooldown(0)
 

@@ -12,7 +12,7 @@ func _ready():
 # Close game menu and set playermovemnt true
 func _on_Back_to_Game_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
-	Utils.get_game_menu().queue_free()
+	Utils.remove_game_menu()
 	Utils.get_current_player().set_movement(true)
 	Utils.get_current_player().set_movment_animation(true)
 	Utils.get_current_player().set_player_can_interact(true)
@@ -32,8 +32,7 @@ func _on_Back_to_Main_Menu_pressed():
 	var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
 	
 	# Remove game menu
-	Utils.get_game_menu().queue_free()
-	
+	Utils.remove_game_menu()
 	# Make ui invisible
 	Utils.get_ui().in_world(false)
 	
@@ -47,7 +46,7 @@ func _on_Exit_Game_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	
 	# Remove game menu
-	Utils.get_game_menu().queue_free()
+	Utils.remove_game_menu()
 	
 	# Save cooldown to player
 	Utils.get_hotbar().save_and_stop_timer()

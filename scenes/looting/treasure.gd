@@ -82,6 +82,7 @@ func open_loot_panel():
 		loot_panel.set_loot_type("Treasure3", true)
 		loot_panel.loot()
 	else:
+		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		loot_panel.set_up_content(content)
 
 

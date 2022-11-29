@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+# Variables
 var input
 var show_map = false
 var has_map = false
@@ -48,7 +49,7 @@ func _input(event):
 			Utils.get_current_player().set_movement(true)
 			Utils.get_current_player().set_movment_animation(true)
 			Utils.get_current_player().set_player_can_interact(true)
-			Utils.get_game_menu().queue_free()
+			Utils.remove_game_menu()
 		
 		# Open character inventory with "i"
 		elif (event.is_action_pressed("character_inventory") and Utils.get_current_player().get_movement() and 
@@ -74,7 +75,7 @@ func _input(event):
 			PlayerData.inv_data["Light"] = PlayerData.equipment_data["Light"]
 			PlayerData.inv_data["Hotbar"] = PlayerData.equipment_data["Hotbar"]
 			Utils.save_game(true)
-			Utils.get_character_interface().queue_free()
+			Utils.get_character_interface().exit_scene()
 		
 		# Use Item from Hotbar
 		elif event.is_action_pressed("hotbar") and not Utils.get_current_player().is_player_dying():
@@ -106,6 +107,7 @@ func _input(event):
 				show_map = false
 				Utils.get_current_player().get_data().show_map = show_map
 				Utils.get_minimap().update_minimap()
+	
 	# Close Quest List
 	if event.is_action_pressed("esc") and get_node_or_null("QuestList") != null:
 		get_node_or_null("QuestList").queue_free()
@@ -115,12 +117,3 @@ func _input(event):
 		Utils.get_current_player().pause_player(false)
 		for npc in Utils.get_scene_manager().get_child(0).get_child(0).find_node("npclayer").get_children():
 			npc.set_interacted(false)
-	
-	
-	######################
-	## Only for debugging
-	######################
-	if Constants.MODIFY_TIME:
-		if event.is_action_pressed("plus"):
-			DayNightCycle.current_time += DayNightCycle.ONE_HOUR
-			print("GAME: Added one hour")

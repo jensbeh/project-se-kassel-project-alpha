@@ -29,7 +29,8 @@ func _ready():
 func setup_ui():
 	var player_level = Utils.get_current_player().get_level()
 	exp_bar.max_value = player_level * 100
-	stamina_bar.max_value = player_level * 10 + 90
+	stamina_bar.max_value = Utils.get_current_player().get_max_stamina()
+	set_stamina(Utils.get_current_player().get_current_stamina())
 	stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / (Constants.MAX_LEVEL -1)) * player_level -1)
 	if player_level >= 10:
 			change_heart_number(5)
@@ -72,10 +73,11 @@ func set_exp(new_value: int):
 			exp_bar.max_value = (player_level + 1) * 100
 			stamina_bar.max_value = 100 + player_level * 10
 			Utils.get_current_player().set_max_health(100 + player_level*10)
+			Utils.get_current_player().set_max_stamina(100 + player_level * 10)
 			player_level += 1
 			# reset life and stamina
 			if !Utils.get_current_player().is_player_dying():
-				Utils.get_current_player().set_stamina(90 + player_level * 10)
+				Utils.get_current_player().set_current_stamina(90 + player_level * 10)
 				life_bar.value = 100
 				Utils.get_current_player().set_current_health(90 + player_level * 10)
 			# save player
@@ -232,3 +234,20 @@ func set_quest_progress(new_value):
 		set_quest_finished(true)
 		quest_progress = 0
 	save_quest()
+
+
+# Method is called if enemy is killed
+func on_enemy_killed():
+	if get_current_quest() == "QUEST3" and !is_quest_finished():
+		set_quest_progress(1)
+
+
+# Method is called if boss is killed
+func on_boss_killed():
+	if get_current_quest() == "QUEST2" and !is_quest_finished():
+		set_quest_finished(true)
+	elif (get_current_quest() == "QUEST1" and !is_quest_finished() 
+		and "Dungeon" in  Utils.get_scene_manager().current_transition_data.get_scene_path()):
+		set_quest_finished(true)
+	elif get_current_quest() == "QUEST3" and !is_quest_finished():
+		set_quest_progress(1)

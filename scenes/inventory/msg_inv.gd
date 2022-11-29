@@ -7,5 +7,4 @@ func _ready():
 
 
 func remove_Msg():
-	get_parent().remove_child(self)
 	queue_free()
