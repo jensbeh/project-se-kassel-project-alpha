@@ -5,7 +5,7 @@
         "EquipmentSlot": "Weapon",
         "Attack": 10,
         "Knockback": 0,
-        "Attack-Speed": 4,
+        "Attack-Speed": 3,
         "Weight": 1,
         "Health": null,
         "Stackable": false,
