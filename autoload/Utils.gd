@@ -645,10 +645,12 @@ func save_player_data(player_data):
 
 
 func set_and_play_sound(new_sound):
+	get_sound_player().stop()
 	get_sound_player().stream = new_sound
 	get_sound_player().play(0.03)
 
 
 func set_and_play_music(new_music):
+	get_sound_player().stop()
 	get_music_player().stream = new_music
 	get_music_player().play(0.03)

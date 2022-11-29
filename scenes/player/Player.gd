@@ -207,7 +207,7 @@ func _physics_process(delta):
 			weapon_weight = 1
 		if ((player_stamina - delta * Constants.STAMINA_SPRINT < 0 or player_stamina - weapon_weight * Constants.WEAPON_STAMINA_USE < 0) 
 		and !Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.MENU):
-			if !sound_breath.is_playing():
+			if !sound_breath.is_playing() and not dying:
 				sound_breath.play()
 		elif sound_breath.is_playing():
 			sound_breath.stop()
@@ -265,6 +265,8 @@ func _input(event):
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
 				if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 					set_current_stamina(player_stamina - weapon_weight *  Constants.WEAPON_STAMINA_USE)
+				sound_walk.stop()
+				sound.stop()
 				sound.stream = Constants.PreloadedSounds.Attack
 				sound.play()
 				is_attacking = true
@@ -949,6 +951,7 @@ func hurt_player():
 		hurting = true
 	if !collecting:
 		set_movement(false)
+	sound.stop()
 	sound.stream = Constants.PreloadedSounds.Hurt
 	sound.play()
 	animation_state.start("Hurt")
@@ -1008,6 +1011,10 @@ func finished_looting():
 
 # Method is called when DIE animation is done
 func player_killed():
+	# Stop player sounds
+	sound_walk.stop()
+	sound_breath.stop()
+	
 	Utils.show_death_screen()
 	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
 		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
@@ -1154,6 +1161,7 @@ func rescue_pay():
 		for item in lost_items:
 			lost_string += (", " + item)
 	var lost_dialog = [{"name":tr("DEATH"), "text": lost_string}]
+	sound.stop()
 	if lost_items.size() > 0:
 		sound.stream = Constants.PreloadedSounds.Collect2
 	else:

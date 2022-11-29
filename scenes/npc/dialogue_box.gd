@@ -90,6 +90,7 @@ func nextPhrase():
 		$Text.bbcode_text = dialog[phraseNum].text
 		$Text.visible_characters = 0
 		# Sound
+		get_node("Sound").stop()
 		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
 		get_node("Sound").play()
 		while $Text.visible_characters < len($Text.text):
@@ -163,6 +164,7 @@ func _on_Quest_pressed():
 	else:
 		finished = false
 		$Text.visible_characters = 0
+		get_node("Sound").stop()
 		get_node("Sound").stream = Constants.PreloadedSounds.Dialog
 		get_node("Sound").play()
 		$Text.bbcode_text = tr("REWARD_FULL")

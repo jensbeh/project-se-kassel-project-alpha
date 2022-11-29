@@ -562,7 +562,7 @@ func start_game():
 	Utils.get_current_player().set_current_health(data.currentHP)
 	Utils.get_current_player().set_max_stamina(data.maxStamina)
 	Utils.get_current_player().set_current_stamina(data.stamina)
-	# must call before set exp and after set lp and level
+	# must call before set exp and after set lp, level & stamina
 	Utils.get_player_ui().setup_ui()
 	
 	Utils.get_current_player().set_exp(data.exp)

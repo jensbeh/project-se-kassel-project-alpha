@@ -757,6 +757,7 @@ func simulate_damage(damage_to_mob : int, knockback_to_mob : int):
 		
 		# Mob is killed
 		if health <= 0:
+			sound.stop()
 			sound.stream = Constants.PreloadedSounds.Win
 			sound.play(0.03)
 			update_behaviour(DYING)

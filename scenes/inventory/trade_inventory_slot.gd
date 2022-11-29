@@ -99,6 +99,7 @@ func drop_data(_pos, data):
 					pass
 				# swap
 				elif data["target_item_id"] != null and (!data["origin_stackable"] or data["target_item_id"] != data["origin_item_id"]):
+					Utils.get_trade_inventory().get_sound_player().stop()
 					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 					Utils.get_trade_inventory().get_sound_player().play(0.03)
 					Utils.get_current_player().set_gold(player_gold + ((int(GameData.item_data[str(
@@ -106,6 +107,7 @@ func drop_data(_pos, data):
 						(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
 				# sell
 				else:
+					Utils.get_trade_inventory().get_sound_player().stop()
 					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 					Utils.get_trade_inventory().get_sound_player().play(0.03)
 					Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"]))
@@ -211,6 +213,7 @@ func SplitStack(split_amount, data):
 		split_amount = Constants.MAX_STACK_SIZE - data["target_stack"]
 	# paying in case of buying and selling
 	if data["origin_panel"] == "Inventory":
+		Utils.get_trade_inventory().get_sound_player().stop()
 		Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 		Utils.get_trade_inventory().get_sound_player().play(0.03)
 		Utils.get_current_player().set_gold(player_gold + (int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * split_amount))

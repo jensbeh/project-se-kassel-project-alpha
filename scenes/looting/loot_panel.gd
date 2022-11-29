@@ -135,6 +135,7 @@ func _on_Icon_gui_input(event, lootpanelslot):
 
 # close the loot panel
 func _on_Close_pressed():
+	Utils.get_current_player().get_node("Sound").stop()
 	Utils.get_current_player().get_node("Sound").stream = Constants.PreloadedSounds.OpenUI
 	Utils.get_current_player().get_node("Sound").play()
 	Utils.get_current_player().player_looted()

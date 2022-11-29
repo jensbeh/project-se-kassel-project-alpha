@@ -30,6 +30,7 @@ func setup_ui():
 	var player_level = Utils.get_current_player().get_level()
 	exp_bar.max_value = player_level * 100
 	stamina_bar.max_value = Utils.get_current_player().get_max_stamina()
+	set_stamina(Utils.get_current_player().get_current_stamina())
 	stamina_bar.rect_min_size.x = minimum_progress_size + ((float(min_max_dif) / (Constants.MAX_LEVEL -1)) * player_level -1)
 	if player_level >= 10:
 			change_heart_number(5)
