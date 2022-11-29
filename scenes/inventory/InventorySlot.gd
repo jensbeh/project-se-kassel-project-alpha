@@ -113,6 +113,9 @@ func can_drop_data(_pos, data):
 			else:
 				# check if buying
 				if data["origin_panel"] == "TradeInventory":
+					
+					var resell_price = int(ceil(int(GameData.item_data[str(data["target_item_id"])]["Worth"]) * Constants.RESELL_FACTOR))
+					
 					if data["target_item_id"] == data["origin_item_id"] and data["origin_stackable"]:
 						if int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(
 							data["origin_stack"]) <= player_gold:
@@ -123,8 +126,7 @@ func can_drop_data(_pos, data):
 							else:
 								return false
 					elif int(GameData.item_data[str(data["origin_item_id"])]["Worth"]) * int(
-						data["origin_stack"]) <= player_gold + (int(GameData.item_data[str(
-							data["target_item_id"])]["Worth"]) * int(data["target_stack"])):
+						data["origin_stack"]) <= player_gold + resell_price * int(data["target_stack"]):
 						return true
 					else:
 						return false
@@ -174,9 +176,11 @@ func drop_data(_pos, data):
 					Utils.get_trade_inventory().get_sound_player().stop()
 					Utils.get_trade_inventory().get_sound_player().stream = Constants.PreloadedSounds.Collect
 					Utils.get_trade_inventory().get_sound_player().play(0.03)
+					
+					var resell_price = int(ceil(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * Constants.RESELL_FACTOR)
+					
 					Utils.get_current_player().set_gold(player_gold - ((int(GameData.item_data[
-						str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) + 
-						(int(GameData.item_data[str(data["target_item_id"])]["Worth"])) * int(data["target_stack"]))
+						str(data["origin_item_id"])]["Worth"])) * int(data["origin_stack"])) + resell_price * int(data["target_stack"]))
 				# buy
 				else:
 					Utils.get_trade_inventory().get_sound_player().stop()

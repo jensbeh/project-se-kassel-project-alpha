@@ -2,8 +2,8 @@ extends Node
 
 var loot_data = {}
 var item_data = {}
-var item_stats = ["Attack", "Health", "Attack-Speed", "Knockback", "Radius", "Stamina", "Worth"]
-var item_stat_labels = ["Attack", "Health", "Speed", "Knockback", "Radius", "Stamina", "Worth"]
+var item_stats = ["Attack", "Health", "Attack-Speed", "Knockback", "Radius", "Stamina", "Worth", "Selling_price"]
+var item_stat_labels = ["Attack", "Health", "Speed", "Knockback", "Radius", "Stamina", "Worth", "Selling_price"]
 var compare_stats = ["Attack", "Attack-Speed", "Knockback", "Radius"]
 
 # dropable item IDs

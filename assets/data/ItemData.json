@@ -285,7 +285,7 @@
         "Stackable": true,
         "Frame": 185,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10023": {
         "Name": "Keys",
@@ -298,7 +298,7 @@
         "Stackable": false,
         "Frame": 186,
         "Texture": "item_icons_1",
-        "Worth": 20
+        "Worth": 40
     },
     "10024": {
         "Name": "Treasure",
@@ -597,7 +597,7 @@
         "Stackable": true,
         "Frame": 44,
         "Texture": "item_icons_2",
-        "Worth": 40
+        "Worth": 80
     },
     "10047": {
         "Name": "Rubin",
@@ -610,7 +610,7 @@
         "Stackable": true,
         "Frame": 42,
         "Texture": "item_icons_2",
-        "Worth": 40
+        "Worth": 80
     },
     "10048": {
         "Name": "Smaragd",
@@ -623,7 +623,7 @@
         "Stackable": true,
         "Frame": 41,
         "Texture": "item_icons_2",
-        "Worth": 40
+        "Worth": 80
     },
     "10049": {
         "Name": "Saphir",
@@ -636,7 +636,7 @@
         "Stackable": true,
         "Frame": 40,
         "Texture": "item_icons_2",
-        "Worth": 40
+        "Worth": 80
     },
     "10050": {
         "Name": "Type A Leaf",
@@ -649,7 +649,7 @@
         "Stackable": true,
         "Frame": 189,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10051": {
         "Name": "Type B Leaf",
@@ -662,7 +662,7 @@
         "Stackable": true,
         "Frame": 190,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10052": {
         "Name": "Type C Leaf",
@@ -675,7 +675,7 @@
         "Stackable": true,
         "Frame": 191,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10053": {
         "Name": "Mushroom",
@@ -688,7 +688,7 @@
         "Stackable": true,
         "Frame": 192,
         "Texture": "item_icons_1",
-        "Worth": 20
+        "Worth": 40
     },
     "10055": {
         "Name": "Plant Onion",
@@ -701,7 +701,7 @@
         "Stackable": true,
         "Frame": 193,
         "Texture": "item_icons_1",
-        "Worth": 20
+        "Worth": 40
     },
     "10056": {
         "Name": "Root",
@@ -714,7 +714,7 @@
         "Stackable": true,
         "Frame": 194,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10057": {
         "Name": "Pebble",
@@ -727,7 +727,7 @@
         "Stackable": true,
         "Frame": 206,
         "Texture": "item_icons_1",
-        "Worth": 1
+        "Worth": 2
     },
     "10058": {
         "Name": "Fossil",
@@ -740,7 +740,7 @@
         "Stackable": true,
         "Frame": 269,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10059": {
         "Name": "Animal Fur",
@@ -753,7 +753,7 @@
         "Stackable": true,
         "Frame": 280,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10060": {
         "Name": "Monster Tooth",
@@ -766,7 +766,7 @@
         "Stackable": true,
         "Frame": 281,
         "Texture": "item_icons_1",
-        "Worth": 10
+        "Worth": 20
     },
     "10061": {
         "Name": "Feather",
@@ -779,7 +779,7 @@
         "Stackable": true,
         "Frame": 282,
         "Texture": "item_icons_1",
-        "Worth": 5
+        "Worth": 10
     },
     "10062": {
         "Name": "Great Empty Flask",

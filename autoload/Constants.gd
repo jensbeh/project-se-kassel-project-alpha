@@ -121,6 +121,7 @@ const AttackDamageStatesProbabilityWeights = {
 const MAX_STACK_SIZE = 5
 const HEALTH_COOLDOWN = 20
 const STAMINA_POTION_COOLDOWN = 15
+const RESELL_FACTOR = 0.5 # 50% of its cost (Factor price x2 -> Keys, Rescourcen, Jewel)
 const MERCHANT = "res://assets/data/merchant_inv_data.json"
 const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 
