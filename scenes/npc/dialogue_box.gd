@@ -192,10 +192,10 @@ func _on_Trade_pressed():
 		Utils.get_control_notes().show()
 		if type != "3":
 			if Utils.get_scene_manager().get_current_scene().player_has_key(origin):
-				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
+				Utils.get_scene_manager().get_current_scene().open_loot_panel(origin)
 			else:
 				Utils.set_and_play_sound(Constants.PreloadedSounds.locked)
 				trade = false
 		else:
-			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
+			origin.open_loot_panel()
 		close_dialog()
