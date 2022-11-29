@@ -531,7 +531,7 @@ const DEFAULT_PLAYER_INV_PATH = "res://assets/data/inv_data_file.json"
 const SAVE_SETTINGS_PATH = "user://game/settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"
 const SAVE_GAME_PATH = "user://game/"
-const SAVE_GAME_PATHFINDING_PATH = SAVE_GAME_PATH + "pathfinding/"
+const SAVE_GAME_PATHFINDING_PATH = "res://assets/pathfinding/"
 
 
 """

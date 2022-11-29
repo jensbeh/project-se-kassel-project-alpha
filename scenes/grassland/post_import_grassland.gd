@@ -317,9 +317,6 @@ func create_astar(scene):
 	
 	# Store astar
 	# Check if directory is existing
-	var dir_game = Directory.new()
-	if !dir_game.dir_exists(CONSTANTS.SAVE_GAME_PATH):
-		dir_game.make_dir(CONSTANTS.SAVE_GAME_PATH)
 	var dir_game_pathfinding = Directory.new()
 	if !dir_game_pathfinding.dir_exists(CONSTANTS.SAVE_GAME_PATHFINDING_PATH):
 		dir_game_pathfinding.make_dir(CONSTANTS.SAVE_GAME_PATHFINDING_PATH)
