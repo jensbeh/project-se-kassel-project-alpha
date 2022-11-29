@@ -6,7 +6,6 @@ var scene_type = Constants.SceneType.GRASSLAND
 var max_ambient_mobs = 50
 
 # Variables
-var thread
 var current_area : Area2D = null
 var spawning_areas = {}
 var ambientMobsSpawnArea

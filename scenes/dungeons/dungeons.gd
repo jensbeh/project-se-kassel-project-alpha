@@ -5,7 +5,6 @@ extends Node
 var scene_type = Constants.SceneType.DUNGEON
 
 # Variables
-var thread
 var current_area : Area2D = null
 var spawning_areas = {}
 var groundChunks

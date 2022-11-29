@@ -524,7 +524,8 @@ func get_random_boss_preload():
 	return Constants.PreloadBossScene[randi() % Constants.PreloadBossScene.size()]
 
 
-# Method to preload game -> called ONLY! from start screen
+# Method to preload game -> called ONLY! from StartScreen
+# When adding here some preloads need to stop in following method in case game is closing while loading
 func preload_game():
 	print("GAME: Preloading...")
 	# Measure time
@@ -537,12 +538,16 @@ func preload_game():
 	# Load AStars
 	PathfindingService.preload_astars()
 	
-	
 	# Calculate needed time
 	time_now = OS.get_system_time_msecs()
 	var time_elapsed = time_now - time_start
 	
 	print("GAME: Preload finished! (" + str(time_elapsed / 1000.0) + " sec)")
+
+# Method to stop preloading -> is called if game is closed while loading/StartScreen
+func stop_preload_game():
+	Constants.stop_preloading()
+	PathfindingService.stop_preloading()
 
 
 # Method to check if node is valid and still present

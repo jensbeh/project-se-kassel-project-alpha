@@ -10,6 +10,7 @@ var bosses_waiting = []
 var mobs_check_can_reach_player = []
 var can_generate_pathes = false
 var should_generate_pathes = false
+var preload_stopped = false
 
 var ambientMobsNavigationTileMap : TileMap = null
 var map_size_in_tiles = null
@@ -36,6 +37,9 @@ func preload_astars():
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
 		
+		# Check if preload is canceled
+		if preload_stopped:
+			return
 		
 		# For debugging
 		if "grassland" in map_name and not Constants.LOAD_GRASSLAND_MAP:
@@ -79,6 +83,11 @@ func preload_astars():
 	
 	map_name = ""
 	astar_nodes_file_dics.clear()
+
+
+# Method to stop preloading -> is called if game is closed while loading/StartScreen
+func stop_preloading():
+	preload_stopped = true
 
 
 # Method is called when new scene is loaded with mobs with pathfinding

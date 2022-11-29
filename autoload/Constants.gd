@@ -1,5 +1,7 @@
 extends Node
 
+# Variables
+var preload_stopped = false
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------
@@ -536,6 +538,13 @@ const SAVE_GAME_PATHFINDING_PATH = "res://assets/pathfinding/"
 
 """
 #################
+## PRELOADED MENUS & MAPS
+#################
+"""
+var PreloadedMenusAndMaps = {}
+
+"""
+#################
 ## PRELOADED SCENES
 #################
 """
@@ -677,104 +686,146 @@ func preload_variables():
 	
 	"""
 	#################
+	## PRELOADED MENUS & MAPS
+	#################
+	"""
+	PreloadedMenusAndMaps = {
+		# Menu
+		"res://scenes/menu/MainMenuScreen.tscn": load_ressource("res://scenes/menu/MainMenuScreen.tscn"),
+		"res://scenes/menu/character_screens/CharacterScreen.tscn": load_ressource("res://scenes/menu/character_screens/CharacterScreen.tscn"),
+		"res://scenes/menu/character_screens/CreateCharacter.tscn": load_ressource("res://scenes/menu/character_screens/CreateCharacter.tscn"),
+		"res://scenes/story/IntroStory.tscn": load_ressource("res://scenes/story/IntroStory.tscn"),
+		# Camp
+		"res://scenes/camp/Camp.tscn": load_ressource("res://scenes/camp/Camp.tscn"),
+		"res://scenes/camp/buildings/Hostel.tscn": load_ressource("res://scenes/camp/buildings/Hostel.tscn"),
+		"res://scenes/camp/buildings/Hostel-lvl2.tscn": load_ressource("res://scenes/camp/buildings/Hostel-lvl2.tscn"),
+		"res://scenes/camp/buildings/House1.tscn": load_ressource("res://scenes/camp/buildings/House1.tscn"),
+		"res://scenes/camp/buildings/House2.tscn": load_ressource("res://scenes/camp/buildings/House2.tscn"),
+		"res://scenes/camp/buildings/House4.tscn": load_ressource("res://scenes/camp/buildings/House4.tscn"),
+		"res://scenes/camp/buildings/House5.tscn": load_ressource("res://scenes/camp/buildings/House5.tscn"),
+		"res://scenes/camp/buildings/Tavern.tscn": load_ressource("res://scenes/camp/buildings/Tavern.tscn"),
+		"res://scenes/camp/buildings/Tavern-lvl2.tscn": load_ressource("res://scenes/camp/buildings/Tavern-lvl2.tscn"),
+		# Grassland
+		"res://scenes/grassland/Grassland.tscn": load_ressource("res://scenes/grassland/Grassland.tscn"),
+		"res://scenes/grassland/buildings/House1.tscn": load_ressource("res://scenes/grassland/buildings/House1.tscn"),
+		"res://scenes/grassland/buildings/House1-basement.tscn": load_ressource("res://scenes/grassland/buildings/House1-basement.tscn"),
+		# Dungeon1
+		"res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn": load_ressource("res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn"),
+		"res://scenes/dungeons/dungeon1/Dungeon1-lvl2.tscn": load_ressource("res://scenes/dungeons/dungeon1/Dungeon1-lvl2.tscn"),
+		"res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn": load_ressource("res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn"),
+		# Dungeon2
+		"res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn": load_ressource("res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn"),
+		"res://scenes/dungeons/dungeon2/Dungeon2-lvl2.tscn": load_ressource("res://scenes/dungeons/dungeon2/Dungeon2-lvl2.tscn"),
+		"res://scenes/dungeons/dungeon2/Dungeon2-lvl3.tscn": load_ressource("res://scenes/dungeons/dungeon2/Dungeon2-lvl3.tscn"),
+		"res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn": load_ressource("res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn"),
+		# Dungeon3
+		"res://scenes/dungeons/dungeon3/Dungeon3-lvl1.tscn": load_ressource("res://scenes/dungeons/dungeon3/Dungeon3-lvl1.tscn"),
+		"res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn": load_ressource("res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn"),
+		"res://scenes/dungeons/dungeon3/Dungeon3-lvl3.tscn": load_ressource("res://scenes/dungeons/dungeon3/Dungeon3-lvl3.tscn"),
+		"res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn": load_ressource("res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn"),
+	}
+	
+	
+	"""
+	#################
 	## PRELOADED SCENES
 	#################
 	"""
 	# Preloaded mob scenes
 	PreloadedMobScenes = {
-		"Butterfly": load("res://scenes/mobs/Butterfly.tscn"),
-		"Moth": load("res://scenes/mobs/Moth.tscn"),
+		"Butterfly": load_ressource("res://scenes/mobs/Butterfly.tscn"),
+		"Moth": load_ressource("res://scenes/mobs/Moth.tscn"),
 		
-		"BatBlue": load("res://scenes/mobs/BatBlue.tscn"),
-		"BatPurple" : load("res://scenes/mobs/BatPurple.tscn"),
-		"BatRed" : load("res://scenes/mobs/BatRed.tscn"),
+		"BatBlue": load_ressource("res://scenes/mobs/BatBlue.tscn"),
+		"BatPurple" : load_ressource("res://scenes/mobs/BatPurple.tscn"),
+		"BatRed" : load_ressource("res://scenes/mobs/BatRed.tscn"),
 		
-		"FungusBlue" : load("res://scenes/mobs/FungusBlue.tscn"),
-		"FungusBrown" : load("res://scenes/mobs/FungusBrown.tscn"),
-		"FungusPurple" : load("res://scenes/mobs/FungusPurple.tscn"),
-		"FungusRed" : load("res://scenes/mobs/FungusRed.tscn"),
+		"FungusBlue" : load_ressource("res://scenes/mobs/FungusBlue.tscn"),
+		"FungusBrown" : load_ressource("res://scenes/mobs/FungusBrown.tscn"),
+		"FungusPurple" : load_ressource("res://scenes/mobs/FungusPurple.tscn"),
+		"FungusRed" : load_ressource("res://scenes/mobs/FungusRed.tscn"),
 		
-		"GhostGreen" : load("res://scenes/mobs/GhostGreen.tscn"),
-		"GhostPurple" : load("res://scenes/mobs/GhostPurple.tscn"),
-		"GhostWhite" : load("res://scenes/mobs/GhostWhite.tscn"),
+		"GhostGreen" : load_ressource("res://scenes/mobs/GhostGreen.tscn"),
+		"GhostPurple" : load_ressource("res://scenes/mobs/GhostPurple.tscn"),
+		"GhostWhite" : load_ressource("res://scenes/mobs/GhostWhite.tscn"),
 		
-		"OrbinautBlue" : load("res://scenes/mobs/OrbinautBlue.tscn"),
-		"OrbinautGreen" : load("res://scenes/mobs/OrbinautGreen.tscn"),
-		"OrbinautOrange" : load("res://scenes/mobs/OrbinautOrange.tscn"),
-		"OrbinautRed" : load("res://scenes/mobs/OrbinautRed.tscn"),
+		"OrbinautBlue" : load_ressource("res://scenes/mobs/OrbinautBlue.tscn"),
+		"OrbinautGreen" : load_ressource("res://scenes/mobs/OrbinautGreen.tscn"),
+		"OrbinautOrange" : load_ressource("res://scenes/mobs/OrbinautOrange.tscn"),
+		"OrbinautRed" : load_ressource("res://scenes/mobs/OrbinautRed.tscn"),
 		
-		"RatGrey" : load("res://scenes/mobs/RatGrey.tscn"),
-		"RatRed" : load("res://scenes/mobs/RatRed.tscn"),
-		"RatWhite" : load("res://scenes/mobs/RatWhite.tscn"),
+		"RatGrey" : load_ressource("res://scenes/mobs/RatGrey.tscn"),
+		"RatRed" : load_ressource("res://scenes/mobs/RatRed.tscn"),
+		"RatWhite" : load_ressource("res://scenes/mobs/RatWhite.tscn"),
 		
-		"SkeletonBlue" : load("res://scenes/mobs/SkeletonBlue.tscn"),
-		"SkeletonRed" : load("res://scenes/mobs/SkeletonRed.tscn"),
-		"SkeletonWhite" : load("res://scenes/mobs/SkeletonWhite.tscn"),
+		"SkeletonBlue" : load_ressource("res://scenes/mobs/SkeletonBlue.tscn"),
+		"SkeletonRed" : load_ressource("res://scenes/mobs/SkeletonRed.tscn"),
+		"SkeletonWhite" : load_ressource("res://scenes/mobs/SkeletonWhite.tscn"),
 		
-		"SmallSlimeGreen" : load("res://scenes/mobs/SmallSlimeGreen.tscn"),
-		"SmallSlimeOrange" : load("res://scenes/mobs/SmallSlimeOrange.tscn"),
-		"SmallSlimePurple" : load("res://scenes/mobs/SmallSlimePurple.tscn"),
-		"SmallSlimeRed" : load("res://scenes/mobs/SmallSlimeRed.tscn"),
+		"SmallSlimeGreen" : load_ressource("res://scenes/mobs/SmallSlimeGreen.tscn"),
+		"SmallSlimeOrange" : load_ressource("res://scenes/mobs/SmallSlimeOrange.tscn"),
+		"SmallSlimePurple" : load_ressource("res://scenes/mobs/SmallSlimePurple.tscn"),
+		"SmallSlimeRed" : load_ressource("res://scenes/mobs/SmallSlimeRed.tscn"),
 		
-		"SnakeGreen" : load("res://scenes/mobs/SnakeGreen.tscn"),
-		"SnakeGrey" : load("res://scenes/mobs/SnakeGrey.tscn"),
-		"SnakePurple" : load("res://scenes/mobs/SnakePurple.tscn"),
+		"SnakeGreen" : load_ressource("res://scenes/mobs/SnakeGreen.tscn"),
+		"SnakeGrey" : load_ressource("res://scenes/mobs/SnakeGrey.tscn"),
+		"SnakePurple" : load_ressource("res://scenes/mobs/SnakePurple.tscn"),
 		
-		"ZombieBlue" : load("res://scenes/mobs/ZombieBlue.tscn"),
-		"ZombieGreen" : load("res://scenes/mobs/ZombieGreen.tscn"),
-		"ZombieGrey" : load("res://scenes/mobs/ZombieGrey.tscn"),
+		"ZombieBlue" : load_ressource("res://scenes/mobs/ZombieBlue.tscn"),
+		"ZombieGreen" : load_ressource("res://scenes/mobs/ZombieGreen.tscn"),
+		"ZombieGrey" : load_ressource("res://scenes/mobs/ZombieGrey.tscn"),
 	}
 	
 	# Preloaded boss scenes
 	PreloadBossScene = [
-		load("res://scenes/mobs/bosses/Boss_FungusBlue.tscn"),
-		load("res://scenes/mobs/bosses/Boss_FungusBrown.tscn"),
-		load("res://scenes/mobs/bosses/Boss_FungusPurple.tscn"),
-		load("res://scenes/mobs/bosses/Boss_FungusRed.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_FungusBlue.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_FungusBrown.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_FungusPurple.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_FungusRed.tscn"),
 		
-		load("res://scenes/mobs/bosses/Boss_GhostGreen.tscn"),
-		load("res://scenes/mobs/bosses/Boss_GhostPurple.tscn"),
-		load("res://scenes/mobs/bosses/Boss_GhostWhite.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_GhostGreen.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_GhostPurple.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_GhostWhite.tscn"),
 		
-		load("res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn"),
-		load("res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn"),
-		load("res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn"),
-		load("res://scenes/mobs/bosses/Boss_OrbinautRed.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_OrbinautBlue.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_OrbinautGreen.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_OrbinautOrange.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_OrbinautRed.tscn"),
 		
-		load("res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn"),
-		load("res://scenes/mobs/bosses/Boss_SkeletonRed.tscn"),
-		load("res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SkeletonBlue.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SkeletonRed.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SkeletonWhite.tscn"),
 		
-		load("res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn"),
-		load("res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn"),
-		load("res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn"),
-		load("res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SmallSlimeGreen.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SmallSlimeOrange.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SmallSlimePurple.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_SmallSlimeRed.tscn"),
 		
-		load("res://scenes/mobs/bosses/Boss_ZombieBlue.tscn"),
-		load("res://scenes/mobs/bosses/Boss_ZombieGreen.tscn"),
-		load("res://scenes/mobs/bosses/Boss_ZombieGrey.tscn")
+		load_ressource("res://scenes/mobs/bosses/Boss_ZombieBlue.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_ZombieGreen.tscn"),
+		load_ressource("res://scenes/mobs/bosses/Boss_ZombieGrey.tscn")
 	]
 	
 	# Preloaded scenes
 	PreloadedScenes = {
-		"GoldenKeyScene": load(GOLDEN_KEY_PATH),
-		"CharacterScreenContainer": load(CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH),
-		"GameMenuScene" : load(GAME_MENU_PATH),
-		"SettingScene" : load(SETTINGS_PATH),
-		"TradeInventoryScene" : load(TRADE_INVENTORY_PATH),
-		"DeathScreenScene" : load(DEATH_SCREEN_PATH),
-		"LootPanelScene" : load(LOOT_PANEL_PATH),
-		"LootDropScene" : load(LOOT_DROP_PATH),
-		"TreasureScene" : load(TREASURE_PATH),
-		"DialogScene" : load(DIALOG_PATH),
-		"FullInvMsgScene" : load(FULL_INV_MSG),
-		"TradeInvSlotScene" : load(TRADE_INV_SLOT),
-		"InvSlotScene" : load(INV_SLOT),
-		"TooltipScene" : load(TOOLTIP),
-		"SplitPopupScene" : load(SPLIT_POPUP),
-		"CharacterInterfaceScene" : load(CHARACTER_INTERFACE_PATH),
-		"QuestScene" : preload(QUEST_SCENE_PATH),
-		"QuestSlot" : preload(QUEST_SLOT_PATH),
+		"GoldenKeyScene": load_ressource(GOLDEN_KEY_PATH),
+		"CharacterScreenContainer": load_ressource(CHARACTER_SCREEN_CONTAINER_SCRIPT_PATH),
+		"GameMenuScene" : load_ressource(GAME_MENU_PATH),
+		"SettingScene" : load_ressource(SETTINGS_PATH),
+		"TradeInventoryScene" : load_ressource(TRADE_INVENTORY_PATH),
+		"DeathScreenScene" : load_ressource(DEATH_SCREEN_PATH),
+		"LootPanelScene" : load_ressource(LOOT_PANEL_PATH),
+		"LootDropScene" : load_ressource(LOOT_DROP_PATH),
+		"TreasureScene" : load_ressource(TREASURE_PATH),
+		"DialogScene" : load_ressource(DIALOG_PATH),
+		"FullInvMsgScene" : load_ressource(FULL_INV_MSG),
+		"TradeInvSlotScene" : load_ressource(TRADE_INV_SLOT),
+		"InvSlotScene" : load_ressource(INV_SLOT),
+		"TooltipScene" : load_ressource(TOOLTIP),
+		"SplitPopupScene" : load_ressource(SPLIT_POPUP),
+		"CharacterInterfaceScene" : load_ressource(CHARACTER_INTERFACE_PATH),
+		"QuestScene" : load_ressource(QUEST_SCENE_PATH),
+		"QuestSlot" : load_ressource(QUEST_SLOT_PATH),
 	}
 	
 	
@@ -784,36 +835,36 @@ func preload_variables():
 	#################
 	"""
 	PreloadedSounds = {
-		"Switch" : load("res://assets/sounds/switch6.wav"),
-		"Click" : load("res://assets/sounds/click3.wav"),
-		"Choose" : load("res://assets/sounds/rollover2.wav"),
-		"Select" : load("res://assets/sounds/Menu_Select_00.mp3"),
-		"Delete" : load("res://assets/sounds/UI_027.wav"),
-		"Levelup" : load("res://assets/sounds/snare.wav"),
-		"OpenUI" : load("res://assets/sounds/Inventory_Open_00.mp3"),
-		"OpenUI2" : load("res://assets/sounds/Inventory_Open_01.mp3"),
-		"Sucsess" : load ("res://assets/sounds/Jingle_Achievement_00.mp3"),
-		"Lose" : load("res://assets/sounds/Jingle_Lose_00.mp3"),
-		"Win" : load("res://assets/sounds/Jingle_Win_00.mp3"),
-		"Collect" : load("res://assets/sounds/Pickup_Gold_00.mp3"),
-		"Collect2" : load("res://assets/sounds/chainmail1.wav"),
-		"open_door" : load("res://assets/sounds/doorOpen_2.ogg"),
-		"locked" : load("res://assets/sounds/lockeddoor.wav"),
-		"Potion" : load("res://assets/sounds/bubble.wav"),
-		"Potion1" : load("res://assets/sounds/bubble2.wav"),
-		"Dialog" : load("res://assets/sounds/Pen_v4_wav.wav"),
-		"Equip" : load("res://assets/sounds/SetSomething.ogg"),
-		"open_close" : load("res://assets/sounds/interface2.wav"),
-		"Steps_Stairs" : load("res://assets/sounds/stepstone_7.wav"),
-		"Steps_Grassland" : load("res://assets/sounds/grass_footsteps.wav"),
-		"Steps_Dungeon" : load("res://assets/sounds/hard-footstep.mp3"),
-		"Steps_Camp" : load("res://assets/sounds/stepdirt.mp3"),
-		"Steps_House" : load("res://assets/sounds/step.mp3"),
-		"Breath" : load("res://assets/sounds/breath-male.mp3"),
-		"Hurt" : load("res://assets/sounds/hit34.mp3.mp3"),
-		"Attack" : load("res://assets/sounds/swing.wav"),
-		"Drop" : load("res://assets/sounds/plugpull.wav"),
-		"Eat" : load("res://assets/sounds/beads.wav"),
+		"Switch" : load_ressource("res://assets/sounds/switch6.wav"),
+		"Click" : load_ressource("res://assets/sounds/click3.wav"),
+		"Choose" : load_ressource("res://assets/sounds/rollover2.wav"),
+		"Select" : load_ressource("res://assets/sounds/Menu_Select_00.mp3"),
+		"Delete" : load_ressource("res://assets/sounds/UI_027.wav"),
+		"Levelup" : load_ressource("res://assets/sounds/snare.wav"),
+		"OpenUI" : load_ressource("res://assets/sounds/Inventory_Open_00.mp3"),
+		"OpenUI2" : load_ressource("res://assets/sounds/Inventory_Open_01.mp3"),
+		"Sucsess" : load_ressource ("res://assets/sounds/Jingle_Achievement_00.mp3"),
+		"Lose" : load_ressource("res://assets/sounds/Jingle_Lose_00.mp3"),
+		"Win" : load_ressource("res://assets/sounds/Jingle_Win_00.mp3"),
+		"Collect" : load_ressource("res://assets/sounds/Pickup_Gold_00.mp3"),
+		"Collect2" : load_ressource("res://assets/sounds/chainmail1.wav"),
+		"open_door" : load_ressource("res://assets/sounds/doorOpen_2.ogg"),
+		"locked" : load_ressource("res://assets/sounds/lockeddoor.wav"),
+		"Potion" : load_ressource("res://assets/sounds/bubble.wav"),
+		"Potion1" : load_ressource("res://assets/sounds/bubble2.wav"),
+		"Dialog" : load_ressource("res://assets/sounds/Pen_v4_wav.wav"),
+		"Equip" : load_ressource("res://assets/sounds/SetSomething.ogg"),
+		"open_close" : load_ressource("res://assets/sounds/interface2.wav"),
+		"Steps_Stairs" : load_ressource("res://assets/sounds/stepstone_7.wav"),
+		"Steps_Grassland" : load_ressource("res://assets/sounds/grass_footsteps.wav"),
+		"Steps_Dungeon" : load_ressource("res://assets/sounds/hard-footstep.mp3"),
+		"Steps_Camp" : load_ressource("res://assets/sounds/stepdirt.mp3"),
+		"Steps_House" : load_ressource("res://assets/sounds/step.mp3"),
+		"Breath" : load_ressource("res://assets/sounds/breath-male.mp3"),
+		"Hurt" : load_ressource("res://assets/sounds/hit34.mp3.mp3"),
+		"Attack" : load_ressource("res://assets/sounds/swing.wav"),
+		"Drop" : load_ressource("res://assets/sounds/plugpull.wav"),
+		"Eat" : load_ressource("res://assets/sounds/beads.wav"),
 	}
 	
 	
@@ -824,15 +875,15 @@ func preload_variables():
 	"""
 	PreloadedTextures = {
 		# Weapons
-		"10001" : load("res://assets/player/weapons/wooden_sword_10001.png"),
-		"10002" : load("res://assets/player/weapons/iron_sword_10002.png"),
-		"10003" : load("res://assets/player/weapons/balanced_sword_10003.png"),
-		"10004" : load("res://assets/player/weapons/large_dagger_10004.png"),
-		"10005" : load("res://assets/player/weapons/greate_sword_10005.png"),
-		"10006" : load("res://assets/player/weapons/epic_sword_10006.png"),
-		"10007" : load("res://assets/player/weapons/legendary_sword_10007.png"),
-		"10008" : load("res://assets/player/weapons/normal_axe_10008.png"),
-		"10009" : load("res://assets/player/weapons/greate_axe_10009.png"),
+		"10001" : load_ressource("res://assets/player/weapons/wooden_sword_10001.png"),
+		"10002" : load_ressource("res://assets/player/weapons/iron_sword_10002.png"),
+		"10003" : load_ressource("res://assets/player/weapons/balanced_sword_10003.png"),
+		"10004" : load_ressource("res://assets/player/weapons/large_dagger_10004.png"),
+		"10005" : load_ressource("res://assets/player/weapons/greate_sword_10005.png"),
+		"10006" : load_ressource("res://assets/player/weapons/epic_sword_10006.png"),
+		"10007" : load_ressource("res://assets/player/weapons/legendary_sword_10007.png"),
+		"10008" : load_ressource("res://assets/player/weapons/normal_axe_10008.png"),
+		"10009" : load_ressource("res://assets/player/weapons/greate_axe_10009.png"),
 	}
 	
 	
@@ -843,108 +894,130 @@ func preload_variables():
 	"""
 	PreloadedPlayerSprites = {
 		"BODY_SPRITESHEET" : {
-			0: load("res://assets/player/characters/char1.png"),
-			1: load("res://assets/player/characters/char2.png"),
-			2: load("res://assets/player/characters/char3.png"),
-			3: load("res://assets/player/characters/char4.png"),
-			4: load("res://assets/player/characters/char5.png"),
-			5: load("res://assets/player/characters/char6.png"),
-			6: load("res://assets/player/characters/char7.png"),
-			7: load("res://assets/player/characters/char8.png"),
+			0: load_ressource("res://assets/player/characters/char1.png"),
+			1: load_ressource("res://assets/player/characters/char2.png"),
+			2: load_ressource("res://assets/player/characters/char3.png"),
+			3: load_ressource("res://assets/player/characters/char4.png"),
+			4: load_ressource("res://assets/player/characters/char5.png"),
+			5: load_ressource("res://assets/player/characters/char6.png"),
+			6: load_ressource("res://assets/player/characters/char7.png"),
+			7: load_ressource("res://assets/player/characters/char8.png"),
 		},
 		
 		"CLOTHES_SPRITESHEET" : {
-			0: load("res://assets/player/clothes/basic.png"),
-			1: load("res://assets/player/clothes/dress .png"),
-			2: load("res://assets/player/clothes/floral.png"),
-			3: load("res://assets/player/clothes/overalls.png"),
-			4: load("res://assets/player/clothes/sailor.png"),
-			5: load("res://assets/player/clothes/sailor_bow.png"),
-			6: load("res://assets/player/clothes/skull.png"),
-			7: load("res://assets/player/clothes/spaghetti.png"),
-			8: load("res://assets/player/clothes/sporty.png"),
-			9: load("res://assets/player/clothes/stripe.png"),
-			10: load("res://assets/player/clothes/suit.png"),
+			0: load_ressource("res://assets/player/clothes/basic.png"),
+			1: load_ressource("res://assets/player/clothes/dress .png"),
+			2: load_ressource("res://assets/player/clothes/floral.png"),
+			3: load_ressource("res://assets/player/clothes/overalls.png"),
+			4: load_ressource("res://assets/player/clothes/sailor.png"),
+			5: load_ressource("res://assets/player/clothes/sailor_bow.png"),
+			6: load_ressource("res://assets/player/clothes/skull.png"),
+			7: load_ressource("res://assets/player/clothes/spaghetti.png"),
+			8: load_ressource("res://assets/player/clothes/sporty.png"),
+			9: load_ressource("res://assets/player/clothes/stripe.png"),
+			10: load_ressource("res://assets/player/clothes/suit.png"),
 		},
 		
 		"CLOTHES1_SPRITESHEET" : {
-			0: load("res://assets/player/clothes/spooky .png"),
-			1: load("res://assets/player/clothes/witch.png"),
+			0: load_ressource("res://assets/player/clothes/spooky .png"),
+			1: load_ressource("res://assets/player/clothes/witch.png"),
 		},
 		
 		"CLOTHES2_SPRITESHEET" : {
-			0: load("res://assets/player/clothes/pumpkin.png"),
-			1: load("res://assets/player/clothes/clown.png"),
+			0: load_ressource("res://assets/player/clothes/pumpkin.png"),
+			1: load_ressource("res://assets/player/clothes/clown.png"),
 		},
 		
 		"PANTS_SPRITESHEET" : {
-			0: load("res://assets/player/clothes/skirt.png"),
-			1: load("res://assets/player/clothes/pants_suit.png"),
-			2: load("res://assets/player/clothes/pants.png"),
+			0: load_ressource("res://assets/player/clothes/skirt.png"),
+			1: load_ressource("res://assets/player/clothes/pants_suit.png"),
+			2: load_ressource("res://assets/player/clothes/pants.png"),
 		},
 		
 		"SHOES_SPRITESHEET" : {
-			0: load("res://assets/player/clothes/shoes.png"),
+			0: load_ressource("res://assets/player/clothes/shoes.png"),
 		},
 		
 		"BEARD_SPRITESHEET" : {
-			0: load("res://assets/player/acc/beard.png"),
+			0: load_ressource("res://assets/player/acc/beard.png"),
 		},
 		
 		"EARRING_SPRITESHEET" : {
-			0: load("res://assets/player/acc/earring_emerald.png"),
-			1: load("res://assets/player/acc/earring_emerald_silver.png"),
-			2: load("res://assets/player/acc/earring_red.png"),
-			3: load("res://assets/player/acc/earring_red_silver.png"),
+			0: load_ressource("res://assets/player/acc/earring_emerald.png"),
+			1: load_ressource("res://assets/player/acc/earring_emerald_silver.png"),
+			2: load_ressource("res://assets/player/acc/earring_red.png"),
+			3: load_ressource("res://assets/player/acc/earring_red_silver.png"),
 		},
 		
 		"GLASSES_SPRITESHEET" : {
-			0: load("res://assets/player/acc/glasses.png"),
-			1: load("res://assets/player/acc/glasses_sun.png"),
+			0: load_ressource("res://assets/player/acc/glasses.png"),
+			1: load_ressource("res://assets/player/acc/glasses_sun.png"),
 		},
 		
 		"HAT_SPRITESHEET" : {
-			0: load("res://assets/player/acc/hat_cowboy.png"),
-			1: load("res://assets/player/acc/hat_lucky.png"),
-			2: load("res://assets/player/acc/hat_pumpkin.png"),
-			3: load("res://assets/player/acc/hat_pumpkin_purple.png"),
-			4: load("res://assets/player/acc/hat_witch.png"),
+			0: load_ressource("res://assets/player/acc/hat_cowboy.png"),
+			1: load_ressource("res://assets/player/acc/hat_lucky.png"),
+			2: load_ressource("res://assets/player/acc/hat_pumpkin.png"),
+			3: load_ressource("res://assets/player/acc/hat_pumpkin_purple.png"),
+			4: load_ressource("res://assets/player/acc/hat_witch.png"),
 		},
 		
 		"MASK_SPRITESHEET" : {
-			0: load("res://assets/player/acc/mask_clown_blue.png"),
-			1: load("res://assets/player/acc/mask_clown_red.png"),
-			2: load("res://assets/player/acc/mask_spooky.png"),
+			0: load_ressource("res://assets/player/acc/mask_clown_blue.png"),
+			1: load_ressource("res://assets/player/acc/mask_clown_red.png"),
+			2: load_ressource("res://assets/player/acc/mask_spooky.png"),
 		},
 		
 		"BLUSH_SPRITESHEET" : {
-			0: load("res://assets/player/face/blush_all.png"),
+			0: load_ressource("res://assets/player/face/blush_all.png"),
 		},
 		
 		"LIPSTICK_SPRITESHEET" : {
-			0: load("res://assets/player/face/lipstick .png"),
+			0: load_ressource("res://assets/player/face/lipstick .png"),
 		},
 		
 		"EYES_SPRITESHEET" : {
-			0: load("res://assets/player/face/eyes.png"),
+			0: load_ressource("res://assets/player/face/eyes.png"),
 		},
 		
 		"HAIR_SPRITESHEET" : {
-			0: load("res://assets/player/hair/bob .png"),
-			1: load("res://assets/player/hair/braids.png"),
-			2: load("res://assets/player/hair/buzzcut.png"),
-			3: load("res://assets/player/hair/curly.png"),
-			4: load("res://assets/player/hair/emo.png"),
-			5: load("res://assets/player/hair/extra_long.png"),
-			6: load("res://assets/player/hair/french_curl.png"),
-			7: load("res://assets/player/hair/gentleman.png"),
-			8: load("res://assets/player/hair/long_straight .png"),
-			9: load("res://assets/player/hair/long_straight_skirt.png"),
-			10: load("res://assets/player/hair/midiwave.png"),
-			11: load("res://assets/player/hair/ponytail .png"),
-			12: load("res://assets/player/hair/spacebuns.png"),
-			13: load("res://assets/player/hair/wavy.png"),
+			0: load_ressource("res://assets/player/hair/bob .png"),
+			1: load_ressource("res://assets/player/hair/braids.png"),
+			2: load_ressource("res://assets/player/hair/buzzcut.png"),
+			3: load_ressource("res://assets/player/hair/curly.png"),
+			4: load_ressource("res://assets/player/hair/emo.png"),
+			5: load_ressource("res://assets/player/hair/extra_long.png"),
+			6: load_ressource("res://assets/player/hair/french_curl.png"),
+			7: load_ressource("res://assets/player/hair/gentleman.png"),
+			8: load_ressource("res://assets/player/hair/long_straight .png"),
+			9: load_ressource("res://assets/player/hair/long_straight_skirt.png"),
+			10: load_ressource("res://assets/player/hair/midiwave.png"),
+			11: load_ressource("res://assets/player/hair/ponytail .png"),
+			12: load_ressource("res://assets/player/hair/spacebuns.png"),
+			13: load_ressource("res://assets/player/hair/wavy.png"),
 		},
 	}
 	
 	print("CONSTANTS: Loaded!")
+
+
+# Method to stop preloading -> is called if game is closed while loading/StartScreen
+func stop_preloading():
+	preload_stopped = true
+
+
+# Method to load the resources
+# Returns Resource
+func load_ressource(path):
+	# Check if preload is canceled
+	if preload_stopped:
+		return
+	
+	var loader = ResourceLoader.load_interactive(path)
+	set_process(true)
+	
+	while true:
+		var err = loader.poll()
+		
+		if err == ERR_FILE_EOF: # Finished loading.
+			return loader.get_resource()
