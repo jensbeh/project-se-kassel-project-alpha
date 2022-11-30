@@ -176,7 +176,7 @@ func _on_Trade_pressed():
 		Utils.get_control_notes().show()
 		MerchantData.set_path(obj_name)
 		MerchantData.load_merchant_data()
-		PlayerData._ready()
+		PlayerData.load_player_data()
 		close_dialog()
 		# Show trade inventory
 		Utils.get_ui().add_child(Constants.PreloadedScenes.TradeInventoryScene.instance())

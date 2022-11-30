@@ -82,7 +82,7 @@ const CAN_MODIFY_TIME = false # Default: false
 ## GAME
 #################
 """
-const DEFAULT_SOUND_VOLUME = -15
+const DEFAULT_SOUND_VOLUME = -25
 const DEFAULT_MUSIC_VOLUME = -15
 
 
