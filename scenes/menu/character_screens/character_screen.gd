@@ -136,6 +136,7 @@ func delete_character():
 	FileManager.delete_character(delete_id, data_list[selected_character].name)
 	
 	# Remove from ui and data and reload ui
+	list.remove_child(delete_container)
 	delete_container.queue_free()
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -153,6 +154,15 @@ func delete_character():
 		Utils.get_player().visible = false
 	delete_id = null
 	delete_container = null
+	
+	# Load all characters new
+	Utils.set_all_character_data(FileManager.load_all_character_with_data())
+	
+	# Navigate to back to main menu if no other created character are available
+	var character_list = Utils.get_all_character_data()
+	if character_list.empty():
+		var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 # click on play button to enter camp
