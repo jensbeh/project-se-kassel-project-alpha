@@ -284,8 +284,8 @@ func add_line():
 			line_timer += 1
 	else:
 		if credits != null:
-			if credits.front() != null:
-				if credits.front().front() in  ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Soundeffekte", "Werkzeuge"]:
+			if not credits.empty() and credits.front() != null:
+				if not credits.front().empty() and credits.front().front() in  ["Music", "Tilesets and sprites", "Project Alpha", "Sound effects", "Tools", "Tilesets und Sprites", "Musik", "Soundeffekte", "Werkzeuge"]:
 					section_timer -= 2
 		section_next = true
 

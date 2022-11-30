@@ -7,6 +7,7 @@ var sound_volume = 0
 var music_volume = 0
 var in_setting_screen
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
+var all_character_data = null
 
 
 func _ready():
@@ -534,6 +535,10 @@ func preload_game():
 	
 	# Load here everything which needs to be preloaded
 	# Preload all scenes, music, ...
+	
+	# Create/Load game files
+	FileManager.on_game_start()
+	# Load variables
 	Constants.preload_variables()
 	# Load AStars
 	PathfindingService.preload_astars()
@@ -633,15 +638,8 @@ func save_game(animation):
 	# map informations
 	data.show_map = get_ui().show_map
 	data.has_map = get_ui().has_map
-	save_player_data(data)
+	FileManager.save_player_data(data)
 	PlayerData.save_inventory()
-
-
-func save_player_data(player_data):
-	var save_game = File.new()
-	save_game.open(Constants.SAVE_CHARACTER_PATH + player_data.id + "/" + player_data.name + ".json", File.WRITE)
-	save_game.store_line(to_json(player_data))
-	save_game.close()
 
 
 func set_and_play_sound(new_sound):
@@ -654,3 +652,13 @@ func set_and_play_music(new_music):
 	get_sound_player().stop()
 	get_music_player().stream = new_music
 	get_music_player().play(0.03)
+
+
+# Method to set all character data
+func set_all_character_data(new_all_character_data):
+	all_character_data = new_all_character_data
+
+
+# Method to return all character data
+func get_all_character_data():
+	return all_character_data

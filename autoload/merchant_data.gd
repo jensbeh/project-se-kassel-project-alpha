@@ -1,23 +1,19 @@
 extends Node
 
 var inv_data = {}
-var path = Constants.MERCHANT
+var path = Constants.MERCHANTS_PATH
 
-# Load the inventory items form the merchant
-func _ready():
-	var item_data_file = File.new()
-	# Data file changes for diffrent merchants
-	item_data_file.open(path, File.READ)
-	var item_data_json = JSON.parse(item_data_file.get_as_text())
-	item_data_file.close()
-	inv_data = item_data_json.result
-	
 
+# Method to set the new path to the merchant
 func set_path(new_path):
-	path = Constants.SAVE_CHARACTER_PATH + Utils.get_current_player().data.id + "/merchant/" + new_path + "_inv_data.json"
+	path = Constants.SAVE_CHARACTER_PATH + Utils.get_current_player().data.id + "/merchants/" + new_path + "_inv_data.json"
 
+
+# Method to load the merchant data to variable
+func load_merchant_data():
+	inv_data = FileManager.load_inventory_data(path)
+
+
+# Method to save the merchant data
 func save_merchant_inventory():
-	var item_data_file = File.new()
-	item_data_file.open(path, File.WRITE)
-	item_data_file.store_line(to_json(inv_data))
-	item_data_file.close()
+	FileManager.save_inventory_data(path, inv_data)

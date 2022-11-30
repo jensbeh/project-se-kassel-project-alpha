@@ -32,10 +32,7 @@ func save_settings():
 	save_setting.language = Utils.get_language()
 	save_setting.sound = $Soundslider.value
 	save_setting.music = $Musicslieder.value
-	var save_game = File.new()
-	save_game.open(Constants.SAVE_SETTINGS_PATH, File.WRITE)
-	save_game.store_line(to_json(save_setting))
-	save_game.close()
+	FileManager.save_settings(save_setting)
 
 
 func _on_Musicslieder_value_changed(value):

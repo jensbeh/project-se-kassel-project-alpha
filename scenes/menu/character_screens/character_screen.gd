@@ -91,36 +91,13 @@ func destroy_scene():
 
 # loaded the player data
 func load_data():
-	var dir = Directory.new()
-	dir.open(Constants.SAVE_CHARACTER_PATH)
-	dir.list_dir_begin()
-	while true:
-		var file = dir.get_next()
-		if file == "":
-			break
-		elif !file.begins_with("."):
-			var save_path = Directory.new()
-			save_path.open(Constants.SAVE_CHARACTER_PATH + file)
-			save_path.list_dir_begin()
-			while true:
-				var data_file = save_path.get_next()
-				if data_file == "":
-					break
-				elif data_file.ends_with(".json") and !"inv_data" in data_file.get_basename() and !file.begins_with("."):
-					data_file.get_file()
-					var save_game = File.new()
-					save_game.open(Constants.SAVE_CHARACTER_PATH + file + "/" + data_file, File.READ)
-					var save_game_data = {}
-					save_game_data = parse_json(save_game.get_line())
-					save_game.close()
-					data_list.append(save_game_data)
-					var name = save_game_data.name
-					var gold = save_game_data.gold
-					var level = save_game_data.level
-					var character_id = save_game_data.id
-					create_item(name, level, gold, character_id)
-			save_path.list_dir_end()
-	dir.list_dir_end()
+	data_list = FileManager.load_all_character_with_data()
+	for player_save_game_data in data_list:
+		var name = player_save_game_data.name
+		var gold = player_save_game_data.gold
+		var level = player_save_game_data.level
+		var character_id = player_save_game_data.id
+		create_item(name, level, gold, character_id)
 
 
 # click for delete this character
@@ -155,17 +132,11 @@ func on_delete_click(id, container):
 
 
 func delete_character():
-	var dir = Directory.new()
-	var name = data_list[selected_character].name
-	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + SAVE_FILE_EXTENSION):
-		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + SAVE_FILE_EXTENSION)
-	# remove inventory data
-	if dir.dir_exists(Constants.SAVE_CHARACTER_PATH + delete_id + "/"):
-		for i in ["bella", "heinz", "lea", "sam", "haley", delete_id]:
-			dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION)
-		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/merchant/")
-		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/" + name + "_inv_data" + SAVE_FILE_EXTENSION)
-		dir.remove(Constants.SAVE_CHARACTER_PATH + delete_id + "/")
+	# Delete files
+	FileManager.delete_character(delete_id, data_list[selected_character].name)
+	
+	# Remove from ui and data and reload ui
+	list.remove_child(delete_container)
 	delete_container.queue_free()
 	data_list.remove(selected_character)
 	if list.get_child_count() != 0:
@@ -183,6 +154,15 @@ func delete_character():
 		Utils.get_player().visible = false
 	delete_id = null
 	delete_container = null
+	
+	# Load all characters new
+	Utils.set_all_character_data(FileManager.load_all_character_with_data())
+	
+	# Navigate to back to main menu if no other created character are available
+	var character_list = Utils.get_all_character_data()
+	if character_list.empty():
+		var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 # click on play button to enter camp
@@ -554,7 +534,7 @@ func start_game():
 	var data = data_list[selected_character]
 	Utils.get_current_player().set_data(data)
 	PlayerData.set_path(data.id)
-	PlayerData._ready()
+	PlayerData.load_player_data()
 	var item_id = PlayerData.equipment_data["Weapon"]["Item"]
 	Utils.get_current_player().set_max_health(data.maxLP)
 	Utils.get_current_player().set_weapon(item_id, data.attack, data.attack_speed, data.knockback)
