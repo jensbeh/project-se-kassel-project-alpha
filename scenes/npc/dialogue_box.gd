@@ -52,7 +52,7 @@ func start(origin_obj, looted_value, treasure_type):
 	if !death:
 		var lang = TranslationServer.get_locale()
 		dialogPath = "res://assets/dialogue/"+ obj_name + "_" + lang + ".json"
-		dialog = getDialog()
+		dialog = FileManager.load_dialog_data(dialogPath)
 	nextPhrase()
 
 
@@ -66,16 +66,7 @@ func _process(_delta):
 			$Text.visible_characters = len($Text.text)
 
 
-# Open dialog text
-func getDialog():
-	var f = File.new()
-	if f.file_exists(dialogPath):
-		f.open(dialogPath, File.READ)
-		var json = f.get_as_text()
-		var output = parse_json(json)
-		if typeof(output) == TYPE_ARRAY:
-			return output
-	return []
+
 
 
 func nextPhrase():
@@ -184,7 +175,7 @@ func _on_Trade_pressed():
 		Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI2)
 		Utils.get_control_notes().show()
 		MerchantData.set_path(obj_name)
-		MerchantData._ready()
+		MerchantData.load_merchant_data()
 		PlayerData._ready()
 		close_dialog()
 		# Show trade inventory

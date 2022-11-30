@@ -28,8 +28,18 @@ func destroy_scene():
 
 func _on_Start_Game_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
-	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
-	Utils.get_scene_manager().transition_to_scene(transition_data)
+	
+	# Load and save all characters
+	Utils.set_all_character_data(FileManager.load_all_character_with_data())
+	
+	# Navigate to create character screen if no created character are available else to character screen
+	var character_list = Utils.get_all_character_data()
+	if character_list.empty():
+		var transition_data = TransitionData.Menu.new(Constants.CREATE_CHARACTER_SCREEN_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
+	else:
+		var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
 
 func _on_Settings_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)

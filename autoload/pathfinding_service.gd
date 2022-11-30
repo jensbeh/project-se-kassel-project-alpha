@@ -32,7 +32,7 @@ func _ready():
 # Method to preload the astar nodes
 func preload_astars():
 	# Load astar points and connections
-	var astar_nodes_file_dics : Dictionary = load_astar_files()
+	var astar_nodes_file_dics : Dictionary = FileManager.load_astar_files()
 	
 	for astar_dic_key in astar_nodes_file_dics.keys():
 		map_name = astar_dic_key
@@ -119,34 +119,6 @@ func init(new_map_name = "", _new_astar2DVisualizerNode = null, new_ambientMobsN
 # Method to start pathfinding service (call after init)
 func start():
 	should_generate_pathes = true
-
-
-# Method to load the astar points and connections from file -> file generated through reimport
-func load_astar_files():
-	var astar_files_dic = {}
-	# Check if directory is existing
-	var dir_game_pathfinding = Directory.new()
-	if dir_game_pathfinding.open(Constants.SAVE_GAME_PATHFINDING_PATH) == OK:
-		dir_game_pathfinding.list_dir_begin()
-		var file_name = dir_game_pathfinding.get_next()
-		while file_name != "":
-			# Check for file extensions
-			if (file_name.get_extension() == "sav"):
-				var file_name_without_suffix = file_name.substr(0, file_name.find_last(".sav"))
-				
-				var astar_load = File.new()
-				astar_load.open(Constants.SAVE_GAME_PATHFINDING_PATH + file_name, File.READ)
-				var dic = astar_load.get_var(true)
-				astar_load.close()
-				
-				astar_files_dic[file_name_without_suffix] = dic
-			
-			file_name = dir_game_pathfinding.get_next()
-		
-		return astar_files_dic
-	
-	else:
-		printerr("ERROR: An error occurred when trying to access the PATHFINDING PATH.")
 
 
 # Method to stop the pathfinder to change map

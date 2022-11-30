@@ -1,19 +1,19 @@
 keys,en,de
-START_GAME,Start Game,Spiel Starten
+START_GAME,Start game,Spiel starten
 SETTINGS,Settings,Einstellungen
-EXIT_TO_DESKTOP,Exit to Desktop,Spiel Verlassen
-BACK_TO_GAME,Back to Game,Zurück zum Spiel
-BACK_TO_MAIN_MENU,Back to Main Menu,Zurück zum Hauptmenü
-EXIT_GAME,Exit Game,Spiel Verlassen
+EXIT_TO_DESKTOP,Exit to desktop,Spiel verlassen
+BACK_TO_GAME,Back to game,Zurück zum Spiel
+BACK_TO_MAIN_MENU,Back to main menu,Zurück zum Hauptmenü
+EXIT_GAME,Exit game,Spiel verlassen
 CHARACTER_NAME,Character name,Charaktername
 SKINCOLOR,Skincolor,Hautfarbe
 HAIR,Hair,Haare
 HAIR_COLOR,Haircolor,Haarfarbe
 SHOES,Shoes,Schuhe
 EYES,Eyes,Augen
-TORSO,Torso,Oberkörper
-TORSO_COLOR,Torsocolor,Oberkörperfarbe
-LEGS,Legs,Beine
+TORSO,Shirt,Shirt
+TORSO_COLOR,Shirtcolor,Shirtfarbe
+LEGS,Pant,Hose
 LEGS_COLOR,Pantcolor,Hosenfarbe
 BEARD,Beard,Bart
 MAKE_UP,Make up,Make up
@@ -22,11 +22,11 @@ MUSIC,Music,Musik
 SOUNDS,Sounds,Sounds
 LANGUAGE,Language,Sprache
 BACK,Back,Zurück
-CREATE_NEW_CHARACTER,Create New Character,Neuen Charakter erstellen
-CREATE_CHARACTER,Create Character, Charakter erstellen
-BACK_TO_CHARACTER_CHOICE,Back to Character Choice,Zurück zur Charakterauswahl
+CREATE_NEW_CHARACTER,Create new character,Neuen Charakter erstellen
+CREATE_CHARACTER,Create character, Charakter erstellen
+BACK_TO_CHARACTER_CHOICE,Back to character choice,Zurück zur Charakterauswahl
 ENTER_NAME_HERE,Enter name here ...,Hier Namen eingeben ...
-DELETECHARAC,Are you sure you want to delete this Character ,Sind sie sicher das sie diesen Charakter löschen möchten 
+DELETECHARAC,Are you sure you want to delete this character ,Sind sie sicher das sie diesen Charakter löschen möchten 
 CANCLE,Cancle,Abbrechen
 DELETE,Delete,Löschen
 TRADE,Trade,Handel
@@ -37,64 +37,64 @@ KNOCKBACK,Knockback,Rückstoß
 WORTH,Worth,Wert
 ATTACK-SPEED,Speed,Geschw.
 SPEED,Speed,Geschw.
-WOODEN SWORD,Wooden Sword,Holzschwert
-IRON SWORD,Iron Sword,Eisenschwert
-GREAT SWORD,Great Sword,Großschwert
-BALANCED SWORD,Balanced Sword,Ausgewogenes Schwert
-EPIC SWORD,Epic Sword,Episches Schwert
-LEGENDARY SWORD,Legendary Sword,Legendäres Schwert
-LARGE DAGGER,Large Dagger,Großer Dolch
-NORMAL AXE,Normal Axe,Normale Axt
-GREATE AXE,Greate Axe,Großartige Axt
-HEALTH POTION,Health Potion,Heiltrank
-GOOD HEALTH POTION,Good Health Potion,Guter Heiltrank
-RARE HEALTH POTION,Rare Health Potion,Seltener Heiltrank
+WOODEN SWORD,Wooden sword,Holzschwert
+IRON SWORD,Iron sword,Eisenschwert
+GREAT SWORD,Great sword,Großschwert
+BALANCED SWORD,Balanced sword,Ausgewogenes Schwert
+EPIC SWORD,Epic sword,Episches Schwert
+LEGENDARY SWORD,Legendary sword,Legendäres Schwert
+LARGE DAGGER,Large dagger,Großer Dolch
+NORMAL AXE,Normal axe,Normale Axt
+GREATE AXE,Greate axe,Großartige Axt
+HEALTH POTION,Health potion,Heiltrank
+GOOD HEALTH POTION,Good health potion,Guter Heiltrank
+RARE HEALTH POTION,Rare health potion,Seltener Heiltrank
 AXE,Axe,Axt
 PICKAXE,Pickaxe,Spitzhacke
 LANTERN,Lantern,Laterne
 TORCH,Torch,Fackel
 CANDLE,Candle,Kerze
-TREASURE KEY,Treasure Key,Schatztruhen Schlüssel
+TREASURE KEY,Treasure key,Schatztruhen Schlüssel
 KEYS,Keys,Schlüssel
 TREASURE,Treasure,Schatz
-GREAT HEALTH POTION,Great Health Potion,Großer Heiltrank
+GREAT HEALTH POTION,Great health potion,Großer Heiltrank
 APPLE,Apple,Apfel
 CARROT,Carrot,Karotte
 BREAD,Bread,Brot
 MEAT,Meat,Fleisch
 FISH,Fish,Fisch
-COPPER SAND,Copper Sand,Kupfer Sand
-COAL SAND,Coal Sand,Kohle Staub
-MAGIC ORE SAND,Magic Ore Sand,Magischer Erzsand
-MAGIC SAND,Magic Sand,Magischer Sand
-IRON SAND,Iron Sand,Eisen Staub
+COPPER SAND,Copper sand,Kupfer Sand
+COAL SAND,Coal sand,Kohle Staub
+MAGIC ORE SAND,Magic ore Sand,Magischer Erzsand
+MAGIC SAND,Magic sand,Magischer Sand
+IRON SAND,Iron sand,Eisen Staub
 IRON,Iron,Eisen
 COPPER,Copper,Kupfer
 COAL,Coal,Kohle
-MAGIC ORE,Magic Ore,Magisches Erz
-MAGIC CLUMP,Magic Clump,Magischer Klumpen
-MAGIC BARS,Magic Bars,Magischer Barren
-MAGIC ORE BARS,Magic Ore Bars,Magischer Erzbarren
-COAL BARS,Coal Bars,Kohlebarren
-COPPER BARS,Copper Bars,Kupferbarren
-IRON BARS,Iron Bars,Eisenbarren
+MAGIC ORE,Magic ore,Magisches Erz
+MAGIC CLUMP,Magic clump,Magischer Klumpen
+MAGIC BARS,Magic bars,Magischer Barren
+MAGIC ORE BARS,Magic ore bars,Magischer Erzbarren
+COAL BARS,Coal bars,Kohlebarren
+COPPER BARS,Copper bars,Kupferbarren
+IRON BARS,Iron bars,Eisenbarren
 DIAMOND,Diamond,Diamant
 RUBIN,Rubin,Rubin
 SMARAGD,Smaragd,Smaragd
 SAPHIR,Saphir,Saphir
-TYPE A LEAF,Type A Leaf,Typ A Blatt
-TYPE B LEAF,Type B Leaf,Typ B Blatt
-TYPE C LEAF,Type C Leaf,Typ C Blatt
+TYPE A LEAF,Type A leaf,Typ A Blatt
+TYPE B LEAF,Type B leaf,Typ B Blatt
+TYPE C LEAF,Type C leaf,Typ C Blatt
 MUSHROOM,Mushroom,Pilz
-PLANT ONION,Plant Onion,Pflanzenzwiebel
+PLANT ONION,Plant onion,Pflanzenzwiebel
 ROOT,Root,Wurzel
 PEBBLE,Pebble,Kiesel
 FOSSIL,Fossil,Fossil
-ANIMAL FUR,Animal Fur,Tierfell
-MONSTER TOOTH,Monster Tooth,Monsterzahn
+ANIMAL FUR,Animal fur,Tierfell
+MONSTER TOOTH,Monster tooth,Monsterzahn
 FEATHER,Feather,Feder
-GREAT EMPTY FLASK,Great Empty Flask,Große Leere Flasche
-EMPTY FLASK,Empty Flask,Leere Flasche
+GREAT EMPTY FLASK,Great empty flask,Große Leere Flasche
+EMPTY FLASK,Empty flask,Leere Flasche
 MOVEMENT,Movement,Bewegung
 RUN,Run,Rennen
 INVENTORY,Inventory,Inventar
@@ -106,8 +106,8 @@ SPLITITEMS,Split items,Aufteilen
 CLOSE,Close,Schließen
 CLOSE_PANEL,Close (E),Schließen (E)
 CLOSEMENU,Close menu, Menü schließen
-LOOTALL,Loot All (F),Alles Nehmen (F)
-LOOT_ALL,Loot All,Alles Nehmen
+LOOTALL,Loot all (F),Alles Nehmen (F)
+LOOT_ALL,Loot all,Alles Nehmen
 LOOT,Looting,Aufnehmen
 LEVEL,Lvl,Lvl
 DEATH_MESSAGE, YOU DIED!, DU BIST GESTORBEN!
@@ -123,13 +123,13 @@ BOSS_SKELETON, GIANT SKELETON, RIESIGES SKELET
 BOSS_SMALL_SLIME, KILLER SLIME, KILLER SLIME
 BOSS_ZOMBIE, ANGRY ZOMBIE, ZORNIGER ZOMBIE
 OPEN,Open,Offen
-FULL_INV,Your Inventory is full,Dein Inventar ist voll
+FULL_INV,Your inventory is full,Dein Inventar ist voll
 STAMINA,Stamina,Ausdauer
-STAMINA POTION,Stamina Potion,Ausdauertrank
-GOOD STAMINA POTION,Good Stamina Potion,Guter Ausdauertrank
-RARE STAMINA POTION,Rare Stamina Potion,Seltener Ausdauertrank
-GREAT STAMINA POTION,Great Stamina Potion,Großer Ausdauertrank
-DELETEITEM,Discard Item,Item wegwerfen
+STAMINA POTION,Stamina potion,Ausdauertrank
+GOOD STAMINA POTION,Good stamina potion,Guter Ausdauertrank
+RARE STAMINA POTION,Rare stamina potion,Seltener Ausdauertrank
+GREAT STAMINA POTION,Great stamina potion,Großer Ausdauertrank
+DELETEITEM,Discard item,Item wegwerfen
 DISCARD,Discard,Wegwerfen
 LOST_ITEMS,You lost these items,Du hast diese Items verloren
 DEATH,You lost,Du hast verloren

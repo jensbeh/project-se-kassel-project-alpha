@@ -79,6 +79,15 @@ const CAN_MODIFY_TIME = false # Default: false
 
 """
 #################
+## GAME
+#################
+"""
+const DEFAULT_SOUND_VOLUME = -15
+const DEFAULT_MUSIC_VOLUME = -15
+
+
+"""
+#################
 ## PLAYER
 #################
 """
@@ -122,8 +131,6 @@ const MAX_STACK_SIZE = 5
 const HEALTH_COOLDOWN = 20
 const STAMINA_POTION_COOLDOWN = 15
 const RESELL_FACTOR = 0.5 # 50% of its cost (Factor price x2 -> Keys, Rescourcen, Jewel)
-const MERCHANT = "res://assets/data/merchant_inv_data.json"
-const INVENTORY_PATH = "res://assets/data/inv_data_file.json"
 
 
 """
@@ -531,6 +538,7 @@ const QUEST_SLOT_PATH = "res://scenes/story/quest/QuestSlot.tscn"
 
 # Save file pathes
 const DEFAULT_PLAYER_INV_PATH = "res://assets/data/inv_data_file.json"
+const MERCHANTS_PATH = "res://assets/data/merchant_inv_data.json"
 const SAVE_SETTINGS_PATH = "user://game/settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"
 const SAVE_GAME_PATH = "user://game/"
@@ -696,6 +704,7 @@ func preload_variables():
 		"res://scenes/menu/character_screens/CharacterScreen.tscn": load_ressource("res://scenes/menu/character_screens/CharacterScreen.tscn"),
 		"res://scenes/menu/character_screens/CreateCharacter.tscn": load_ressource("res://scenes/menu/character_screens/CreateCharacter.tscn"),
 		"res://scenes/story/IntroStory.tscn": load_ressource("res://scenes/story/IntroStory.tscn"),
+		"res://scenes/credits/CreditScreen.tscn": load_ressource("res://scenes/credits/CreditScreen.tscn"),
 		# Camp
 		"res://scenes/camp/Camp.tscn": load_ressource("res://scenes/camp/Camp.tscn"),
 		"res://scenes/camp/buildings/Hostel.tscn": load_ressource("res://scenes/camp/buildings/Hostel.tscn"),

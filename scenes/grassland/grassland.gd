@@ -160,10 +160,8 @@ func setup_spawning_areas():
 		var max_mobs = area.get_meta("max_mobs")
 		
 		# Get biome data from json
-		var file = File.new()
-		file.open("res://assets/biomes/"+ biome + ".json", File.READ)
-		var biome_json = parse_json(file.get_as_text())
-		var biome_mobs : Array = biome_json["data"]["mobs"]
+		var biome_data = FileManager.load_biome_data(biome)
+		var biome_mobs : Array = biome_data["data"]["mobs"]
 		var biome_mobs_count = biome_mobs.size()
 		var current_mobs_count = 0
 		# Generate spawning areas

@@ -1,10 +1,10 @@
 extends Node2D
 
-const SAVE_FILE_EXTENSION = ".json"
 const uuid_util = preload("res://addons/uuid.gd")
 
 onready var player = Utils.get_player()
 
+var characters_existing = false
 var uuid
 var charac_name = ""
 # Count Textures, Count Colors
@@ -59,6 +59,11 @@ onready var HairColorRightNode = find_node("HairColorRight");
 onready var LineEditNode = find_node("LineEdit");
 
 func _ready():
+	# Check if charcter are available to go back to main menu if there is no character which can be loaded
+	var character_list = Utils.get_all_character_data()
+	if not character_list.empty():
+		characters_existing = true
+	
 	find_node("Name").set_text(tr("CHARACTER_NAME"))
 	find_node("Skincolor").set_text(tr("SKINCOLOR"))
 	find_node("Hair").set_text(tr("HAIR"))
@@ -74,6 +79,11 @@ func _ready():
 	find_node("Create Character").set_text(tr("CREATE_CHARACTER"))
 	find_node("Back").set_text(tr("BACK_TO_CHARACTER_CHOICE"))
 	find_node("LineEdit").set_placeholder("ENTER_NAME_HERE")
+	
+	if characters_existing:
+		find_node("Back").set_text(tr("BACK_TO_CHARACTER_CHOICE"))
+	else:
+		find_node("Back").set_text(tr("BACK_TO_MAIN_MENU"))
 	
 	get_sprites()
 	
@@ -219,24 +229,16 @@ var save_game_data = {
 	"quest_progress": 0,
 }
 
-# save the player data
-func save_data():
-	var dir = Directory.new()
-	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
-		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
-	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH + uuid + "/"):
-		dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
-	var save_game = File.new()
-	save_game.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + SAVE_FILE_EXTENSION, File.WRITE)
-	save_game.store_line(to_json(save_game_data))
-	save_game.close()
-	print("CREATE_CHARACTER: Savegame saved")
-
 
 func _on_Back_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
-	var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
-	Utils.get_scene_manager().transition_to_scene(transition_data)
+	
+	if characters_existing:
+		var transition_data = TransitionData.Menu.new(Constants.CHARACTER_SCREEN_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
+	else:
+		var transition_data = TransitionData.Menu.new(Constants.MAIN_MENU_PATH)
+		Utils.get_scene_manager().transition_to_scene(transition_data)
 
 
 func _on_Create_Character_pressed():
@@ -265,8 +267,7 @@ func _on_Create_Character_pressed():
 		save_game_data.hat = curr_hat
 		save_game_data.name = charac_name
 		save_game_data.id = uuid
-		save_data()
-
+		
 		start_game()
 
 
@@ -620,7 +621,9 @@ func start_game():
 	DayNightCycle.set_passed_days(0)
 	
 	Utils.get_current_player().set_data(save_game_data)
-	create_player_inventory()
+	
+	FileManager.create_character(save_game_data)
+	set_current_player_data()
 	
 	var transition_data = TransitionData.Menu.new(Constants.STORY_SCENE_PATH)
 	Utils.get_scene_manager().transition_to_scene(transition_data)
@@ -629,37 +632,10 @@ func start_game():
 	Utils.save_game(true)
 
 
-func create_player_inventory():
-	var dir = Directory.new()
-	if !dir.dir_exists(Constants.SAVE_CHARACTER_PATH):
-		dir.make_dir(Constants.SAVE_CHARACTER_PATH)
-	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/")
-	
-	var default_player_inv_file = File.new()
-	default_player_inv_file.open(Constants.DEFAULT_PLAYER_INV_PATH, File.READ)
-	var default_player_inv = JSON.parse(default_player_inv_file.get_as_text())
-	default_player_inv_file.close()
-	
-	var save_player = File.new()
-	save_player.open(Constants.SAVE_CHARACTER_PATH + uuid + "/" + charac_name + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
-	save_player.store_line(to_json(default_player_inv.result))
-	save_player.close()
-	
-	# Create Merchant data files for this character
-	dir.make_dir(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/")
-	var merchant_data = File.new()
-	for i in ["bella", "heinz", "lea", "sam", "haley"]:
-		var item_data_file = File.new()
-		item_data_file.open("res://assets/data/" + i + "_inv_data.json", File.READ)
-		var item_data_json = JSON.parse(item_data_file.get_as_text())
-		item_data_file.close()
-		merchant_data.open(Constants.SAVE_CHARACTER_PATH + uuid + "/merchant/" + i + "_inv_data" + SAVE_FILE_EXTENSION, File.WRITE)
-		merchant_data.store_line(to_json(item_data_json.result))
-		merchant_data.close()
-
+func set_current_player_data():
 	# set player data
 	PlayerData.set_path(uuid)
-	PlayerData._ready()
+	PlayerData.load_player_data()
 
 	# set hotbar & light
 	Utils.get_hotbar().load_hotbar()

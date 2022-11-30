@@ -15,26 +15,23 @@ var equipment_data = {
 		"Stack": null,
 	},
 }
-var path = Constants.INVENTORY_PATH
-
-# Load the inventar items form the player
-func _ready():
-	var item_data_file = File.new()
-	# Data file change for diffrent characters
-	item_data_file.open(path, File.READ)
-	var item_data_json = JSON.parse(item_data_file.get_as_text())
-	item_data_file.close()
-	inv_data = item_data_json.result
-	equipment_data = {"Weapon": item_data_json.result["Weapon"], 
-	"Light": item_data_json.result["Light"],
-	"Hotbar": item_data_json.result["Hotbar"],}
+var path = Constants.DEFAULT_PLAYER_INV_PATH
 
 
+# Method to set the new path to the character
 func set_path(new_path):
 	path = Constants.SAVE_CHARACTER_PATH + new_path + "/" + Utils.get_current_player().get_data().name + "_inv_data.json"
-	
+
+
+# Method to load the player data to variables
+func load_player_data():
+	inv_data = FileManager.load_inventory_data(path)
+	equipment_data = {"Weapon": inv_data["Weapon"], 
+					"Light": inv_data["Light"],
+					"Hotbar": inv_data["Hotbar"],
+					}
+
+
+# Method to save the player data
 func save_inventory():
-	var item_data_file = File.new()
-	item_data_file.open(path, File.WRITE)
-	item_data_file.store_line(to_json(inv_data))
-	item_data_file.close()
+	FileManager.save_inventory_data(path, inv_data)
