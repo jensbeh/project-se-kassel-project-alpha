@@ -105,7 +105,7 @@ func _ready():
 	TorsoColorCountNode.set_text(str(curr_clothes_color))
 	LegsCountNode.set_text(str(curr_pants))
 	LegsColorCountNode.set_text(str(curr_pants_color))
-	ShoesCountNode.set_text(str(curr_shoes))
+	ShoesCountNode.set_text(str(curr_shoe_color))
 	EyesCountNode.set_text(str(curr_eyes))
 	BeardCountNode.set_text(str(curr_beard))
 	MakeupCountNode.set_text(str(curr_blush))
