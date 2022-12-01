@@ -875,10 +875,10 @@ position = Vector2( 253, 21 )
 position = Vector2( 1219, 356 )
 scale = Vector2( 12, 12 )
 
-[node name="AnimationTree" parent="Node2D/Player" index="16"]
+[node name="AnimationTree" parent="Node2D/Player" index="19"]
 parameters/playback = SubResource( 20 )
 
-[node name="Camera2D" parent="Node2D/Player" index="17"]
+[node name="Camera2D" parent="Node2D/Player" index="20"]
 visible = false
 current = false
 
@@ -911,3 +911,4 @@ current = false
 [connection signal="pressed" from="ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/Make-upRight" to="." method="_on_MakeupRight_pressed"]
 
 [editable path="Node2D/Player"]
+[editable path="Node2D/Player/HitboxZone"]
