@@ -64,8 +64,8 @@ func _ready():
 	# Set stamina
 	find_node("Player").max_stamina = data.maxStamina
 	find_node("Player").player_stamina = data.maxStamina
-	# Set preview state
-	find_node("Player").preview = true
+	# Set preview mode to player in character interface
+	find_node("Player").set_preview_mode(true)
 	for child in find_node("Player").get_children():
 		match child.name:
 			"Body":
