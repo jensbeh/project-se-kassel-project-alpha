@@ -74,7 +74,7 @@ var health_cooldown = 0
 var stamina_cooldown = 0
 var weapon_weight = 0
 var stairs_speed = false
-var preview = false
+var is_in_preview_mode = false
 
 # Variables
 var is_attacking = false
@@ -156,7 +156,7 @@ func _physics_process(delta):
 			if (Input.is_action_pressed("s") or Input.is_action_pressed("w")) and (Input.is_action_pressed("d") or Input.is_action_pressed("a")):
 				velocity /= 1.45
 				
-			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !preview and movement:
+			if Input.is_action_pressed("Shift") and velocity != Vector2.ZERO and !is_in_preview_mode and movement:
 				if player_stamina - delta * Constants.STAMINA_SPRINT >= 0:
 					if not Constants.HAS_PLAYER_INFINIT_STAMINA:
 						set_current_stamina(player_stamina - delta * Constants.STAMINA_SPRINT)
@@ -180,9 +180,9 @@ func _physics_process(delta):
 				animation_state.travel("Idle")
 			
 			if movement:
-				if !sound_walk.is_playing() and velocity != Vector2.ZERO and !preview:
+				if !sound_walk.is_playing() and velocity != Vector2.ZERO and !is_in_preview_mode:
 					sound_walk.play()
-				elif velocity == Vector2.ZERO and sound_walk.is_playing() or preview:
+				elif velocity == Vector2.ZERO and sound_walk.is_playing() or is_in_preview_mode:
 					sound_walk.stop()
 				velocity = move_and_slide(velocity)
 				for i in get_slide_count():
@@ -1120,6 +1120,7 @@ func is_in_change_scene_area():
 	return in_change_scene_area
 
 
+# Method to start rescue pay
 func rescue_pay():
 	# Pay amount of gold
 	var lost_gold = int(gold * Constants.RESCUE_PAY_GOLD_FACTOR)
@@ -1176,17 +1177,20 @@ func rescue_pay():
 		dialog.start(self, "Death", lost_dialog)
 
 
+# Method to set health cooldown
 func set_health_cooldown(new_cooldown):
 	health_cooldown = new_cooldown
 	# for save
 	data.cooldown = new_cooldown
 
 
+# Method to set stamina cooldown
 func set_stamina_cooldown(new_cooldown):
 	stamina_cooldown = new_cooldown
 	# for save
 	data.stamina_cooldown = new_cooldown
 
 
-func destroy_scene():
-	print("destroy_scene")
+# Method to enable or disable preview mode
+func set_preview_mode(shoule_be_preview):
+	is_in_preview_mode = shoule_be_preview

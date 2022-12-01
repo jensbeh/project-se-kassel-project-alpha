@@ -2,7 +2,8 @@ extends Node2D
 
 const uuid_util = preload("res://addons/uuid.gd")
 
-onready var player = Utils.get_player()
+onready var scenePlayer = Utils.get_player()
+onready var characterSettingsContainer = $ScrollContainer
 
 var characters_existing = false
 var uuid
@@ -87,7 +88,7 @@ func _ready():
 	
 	get_sprites()
 	
-	Utils.get_player().set_movement(false)
+	scenePlayer.set_movement(false)
 	
 	beard.visible = false
 	blush.visible = false
@@ -111,37 +112,37 @@ func _ready():
 	MakeupCountNode.set_text(str(curr_blush))
 	# PLAYER (Color & Sprite)
 	# Body
-	player.set_texture("curr_body", curr_body)
+	scenePlayer.set_texture("curr_body", curr_body)
 	# Shoes
-	player.reset_key(1)
-	player._set_key(1, curr_shoe_color*8)
-	player.set_texture("curr_shoes", curr_shoes)
+	scenePlayer.reset_key(1)
+	scenePlayer._set_key(1, curr_shoe_color*8)
+	scenePlayer.set_texture("curr_shoes", curr_shoes)
 	# Pants
-	player.reset_key(2)
-	player._set_key(2, curr_pants_color*8)
-	player.set_texture("curr_pants", curr_pants)
+	scenePlayer.reset_key(2)
+	scenePlayer._set_key(2, curr_pants_color*8)
+	scenePlayer.set_texture("curr_pants", curr_pants)
 	# Clothes
-	player.reset_key(3)
-	player._set_key(3, curr_clothes_color*8)
-	player.set_texture("curr_clothes", curr_clothes)
+	scenePlayer.reset_key(3)
+	scenePlayer._set_key(3, curr_clothes_color*8)
+	scenePlayer.set_texture("curr_clothes", curr_clothes)
 	# Hairs
-	player.reset_key(9)
-	player._set_key(9, curr_hair_color*8)
-	player.set_texture("curr_hair", curr_hair-1)
+	scenePlayer.reset_key(9)
+	scenePlayer._set_key(9, curr_hair_color*8)
+	scenePlayer.set_texture("curr_hair", curr_hair-1)
 	# Eyes
-	player.reset_key(7)
-	player._set_key(7, curr_eyes_color*8)
-	player.set_texture("curr_eyes", curr_eyes)
+	scenePlayer.reset_key(7)
+	scenePlayer._set_key(7, curr_eyes_color*8)
+	scenePlayer.set_texture("curr_eyes", curr_eyes)
 	# Beard
 	if curr_beard_color > 0:
-		player.reset_key(6)
-		player._set_key(6, (curr_beard_color-1)*8)
-	player.set_texture("curr_beard", curr_beard)
+		scenePlayer.reset_key(6)
+		scenePlayer._set_key(6, (curr_beard_color-1)*8)
+	scenePlayer.set_texture("curr_beard", curr_beard)
 	# Blush
 	if curr_lipstick_color > 0:
-		player.reset_key(5)
-		player._set_key(5, (curr_lipstick_color-1)*8)
-	player.set_texture("curr_blush", curr_blush)
+		scenePlayer.reset_key(5)
+		scenePlayer._set_key(5, (curr_lipstick_color-1)*8)
+	scenePlayer.set_texture("curr_blush", curr_blush)
 	# Set frames
 	reset_frame()
 	
@@ -159,7 +160,7 @@ func destroy_scene():
 
 
 func get_sprites():
-	for child in Utils.get_player().get_children():
+	for child in scenePlayer.get_children():
 		match child.name:
 			"Body":
 				body = child
@@ -285,7 +286,7 @@ func _on_HairLeft_pressed():
 		hair.visible = true
 		HairColorLeftNode.disabled = false
 		HairColorRightNode.disabled = false
-		player.set_texture("curr_hair", curr_hair-1)
+		scenePlayer.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairRight_pressed():
@@ -302,7 +303,7 @@ func _on_HairRight_pressed():
 		hair.visible = true
 		HairColorLeftNode.disabled = false
 		HairColorRightNode.disabled = false
-		player.set_texture("curr_hair", curr_hair-1)
+		scenePlayer.set_texture("curr_hair", curr_hair-1)
 
 
 func _on_HairColorLeft_pressed():
@@ -311,8 +312,8 @@ func _on_HairColorLeft_pressed():
 	if curr_hair_color < 0:
 		curr_hair_color = 13
 	reset_frame()
-	player.reset_key(9)
-	player._set_key(9, curr_hair_color*8)
+	scenePlayer.reset_key(9)
+	scenePlayer._set_key(9, curr_hair_color*8)
 	HairColorCountNode.set_text(str(curr_hair_color))
 
 
@@ -322,8 +323,8 @@ func _on_HairColorRight_pressed():
 	if curr_hair_color > 13:
 		curr_hair_color = 0
 	reset_frame()
-	player.reset_key(9)
-	player._set_key(9, curr_hair_color*8)
+	scenePlayer.reset_key(9)
+	scenePlayer._set_key(9, curr_hair_color*8)
 	HairColorCountNode.set_text(str(curr_hair_color))
 
 
@@ -334,7 +335,7 @@ func _on_SkinLeft_pressed():
 	else:
 		curr_body = 7
 	SkinCountNode.set_text(str(curr_body))
-	player.set_texture("curr_body", curr_body)
+	scenePlayer.set_texture("curr_body", curr_body)
 	reset_frame()
 
 
@@ -342,7 +343,7 @@ func _on_SkinRight_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
 	curr_body = (curr_body +1)%8
 	SkinCountNode.set_text(str(curr_body))
-	player.set_texture("curr_body", curr_body)
+	scenePlayer.set_texture("curr_body", curr_body)
 	reset_frame()
 
 
@@ -352,7 +353,7 @@ func _on_TorsoLeft_pressed():
 	if curr_clothes < 0:
 		curr_clothes = 10
 	TorsoCountNode.set_text(str(curr_clothes))
-	player.set_texture("curr_clothes", curr_clothes)
+	scenePlayer.set_texture("curr_clothes", curr_clothes)
 
 
 func _on_TorsoRight_pressed():
@@ -361,7 +362,7 @@ func _on_TorsoRight_pressed():
 	if curr_clothes > 10:
 		curr_clothes = 0
 	TorsoCountNode.set_text(str(curr_clothes))
-	player.set_texture("curr_clothes", curr_clothes)
+	scenePlayer.set_texture("curr_clothes", curr_clothes)
 
 
 func _on_TorsoColorLeft_pressed():
@@ -370,8 +371,8 @@ func _on_TorsoColorLeft_pressed():
 	if curr_clothes_color < 0:
 		curr_clothes_color = 9
 	reset_frame()
-	player.reset_key(3)
-	player._set_key(3, curr_clothes_color*8)
+	scenePlayer.reset_key(3)
+	scenePlayer._set_key(3, curr_clothes_color*8)
 	TorsoColorCountNode.set_text(str(curr_clothes_color))
 
 
@@ -381,8 +382,8 @@ func _on_TorsoColorRight_pressed():
 	if curr_clothes_color > 9:
 		curr_clothes_color = 0
 	reset_frame()
-	player.reset_key(3)
-	player._set_key(3, curr_clothes_color*8)
+	scenePlayer.reset_key(3)
+	scenePlayer._set_key(3, curr_clothes_color*8)
 	TorsoColorCountNode.set_text(str(curr_clothes_color))
 
 
@@ -392,7 +393,7 @@ func _on_LegsLeft_pressed():
 	if curr_pants < 0:
 		curr_pants = 2
 	LegsCountNode.set_text(str(curr_pants))
-	player.set_texture("curr_pants", curr_pants)
+	scenePlayer.set_texture("curr_pants", curr_pants)
 
 
 func _on_LegsRight_pressed():
@@ -401,7 +402,7 @@ func _on_LegsRight_pressed():
 	if curr_pants > 2:
 		curr_pants = 0
 	LegsCountNode.set_text(str(curr_pants))
-	player.set_texture("curr_pants", curr_pants)
+	scenePlayer.set_texture("curr_pants", curr_pants)
 
 
 func _on_LegsColorLeft_pressed():
@@ -410,8 +411,8 @@ func _on_LegsColorLeft_pressed():
 	if curr_pants_color < 0:
 		curr_pants_color = 9
 	reset_frame()
-	player.reset_key(2)
-	player._set_key(2, curr_pants_color*8)
+	scenePlayer.reset_key(2)
+	scenePlayer._set_key(2, curr_pants_color*8)
 	LegsColorCountNode.set_text(str(curr_pants_color))
 
 
@@ -421,8 +422,8 @@ func _on_LegsColorRight_pressed():
 	if curr_pants_color > 9:
 		curr_pants_color = 0
 	reset_frame()
-	player.reset_key(2)
-	player._set_key(2, curr_pants_color*8)
+	scenePlayer.reset_key(2)
+	scenePlayer._set_key(2, curr_pants_color*8)
 	LegsColorCountNode.set_text(str(curr_pants_color))
 
 
@@ -432,10 +433,10 @@ func _on_ShoesLeft_pressed():
 	if curr_shoe_color < 0:
 		curr_shoe_color = 9
 	reset_frame()
-	player.reset_key(1)
-	player._set_key(1, curr_shoe_color*8)
+	scenePlayer.reset_key(1)
+	scenePlayer._set_key(1, curr_shoe_color*8)
 	ShoesCountNode.set_text(str(curr_shoe_color))
-	player.set_texture("curr_shoes", curr_shoes)
+	scenePlayer.set_texture("curr_shoes", curr_shoes)
 
 
 func _on_ShoesRight_pressed():
@@ -444,10 +445,10 @@ func _on_ShoesRight_pressed():
 	if curr_shoe_color > 9:
 		curr_shoe_color = 0
 	reset_frame()
-	player.reset_key(1)
-	player._set_key(1, curr_shoe_color*8)
+	scenePlayer.reset_key(1)
+	scenePlayer._set_key(1, curr_shoe_color*8)
 	ShoesCountNode.set_text(str(curr_shoe_color))
-	player.set_texture("curr_shoes", curr_shoes)
+	scenePlayer.set_texture("curr_shoes", curr_shoes)
 
 
 func _on_EyesLeft_pressed():
@@ -456,10 +457,10 @@ func _on_EyesLeft_pressed():
 	if curr_eyes_color < 0:
 		curr_eyes_color = 13
 	reset_frame()
-	player.reset_key(7)
-	player._set_key(7, curr_eyes_color*8)
+	scenePlayer.reset_key(7)
+	scenePlayer._set_key(7, curr_eyes_color*8)
 	EyesCountNode.set_text(str(curr_eyes_color))
-	player.set_texture("curr_eyes", curr_eyes)
+	scenePlayer.set_texture("curr_eyes", curr_eyes)
 
 
 func _on_EyesRight_pressed():
@@ -468,10 +469,10 @@ func _on_EyesRight_pressed():
 	if curr_eyes_color > 13:
 		curr_eyes_color = 0
 	reset_frame()
-	player.reset_key(7)
-	player._set_key(7, curr_eyes_color*8)
+	scenePlayer.reset_key(7)
+	scenePlayer._set_key(7, curr_eyes_color*8)
 	EyesCountNode.set_text(str(curr_eyes_color))
-	player.set_texture("curr_eyes", curr_eyes)
+	scenePlayer.set_texture("curr_eyes", curr_eyes)
 
 
 func _on_MakeupLeft_pressed():
@@ -483,10 +484,10 @@ func _on_MakeupLeft_pressed():
 		lipstick.visible = false
 	else:
 		reset_frame()
-		player.reset_key(5)
-		player._set_key(5, (curr_lipstick_color-1)*8)
+		scenePlayer.reset_key(5)
+		scenePlayer._set_key(5, (curr_lipstick_color-1)*8)
 		lipstick.visible = true
-	player.set_texture("curr_lipstick", curr_lipstick)
+	scenePlayer.set_texture("curr_lipstick", curr_lipstick)
 	
 	curr_blush_color = (curr_blush_color -1)
 	if curr_blush_color < 0:
@@ -495,10 +496,10 @@ func _on_MakeupLeft_pressed():
 		blush.visible = false
 	else:
 		reset_frame()
-		player.reset_key(4)
-		player._set_key(4, (curr_blush_color-1)*8)
+		scenePlayer.reset_key(4)
+		scenePlayer._set_key(4, (curr_blush_color-1)*8)
 		blush.visible = true
-	player.set_texture("curr_blush", curr_blush)
+	scenePlayer.set_texture("curr_blush", curr_blush)
 	MakeupCountNode.set_text(str(curr_lipstick_color))
 
 
@@ -511,10 +512,10 @@ func _on_MakeupRight_pressed():
 		lipstick.visible = false
 	else:
 		reset_frame()
-		player.reset_key(5)
-		player._set_key(5, (curr_lipstick_color-1)*8)
+		scenePlayer.reset_key(5)
+		scenePlayer._set_key(5, (curr_lipstick_color-1)*8)
 		lipstick.visible = true
-	player.set_texture("curr_lipstick", curr_lipstick)
+	scenePlayer.set_texture("curr_lipstick", curr_lipstick)
 	
 	curr_blush_color = (curr_blush_color +1)
 	if curr_blush_color > 5:
@@ -523,10 +524,10 @@ func _on_MakeupRight_pressed():
 		blush.visible = false
 	else:
 		reset_frame()
-		player.reset_key(4)
-		player._set_key(4, (curr_blush_color-1)*8)
+		scenePlayer.reset_key(4)
+		scenePlayer._set_key(4, (curr_blush_color-1)*8)
 		blush.visible = true
-	player.set_texture("curr_blush", curr_blush)
+	scenePlayer.set_texture("curr_blush", curr_blush)
 	MakeupCountNode.set_text(str(curr_lipstick_color))
 
 
@@ -541,9 +542,9 @@ func _on_BeardLeft_pressed():
 	else:
 		beard.visible = true
 		reset_frame()
-		player.reset_key(6)
-		player._set_key(6, (curr_beard_color-1)*8)
-	player.set_texture("curr_beard", curr_beard)
+		scenePlayer.reset_key(6)
+		scenePlayer._set_key(6, (curr_beard_color-1)*8)
+	scenePlayer.set_texture("curr_beard", curr_beard)
 
 
 func _on_BeardRight_pressed(): 
@@ -557,9 +558,9 @@ func _on_BeardRight_pressed():
 	else:
 		beard.visible = true
 		reset_frame()
-		player.reset_key(6)
-		player._set_key(6, (curr_beard_color-1)*8)
-	player.set_texture("curr_beard", curr_beard)
+		scenePlayer.reset_key(6)
+		scenePlayer._set_key(6, (curr_beard_color-1)*8)
+	scenePlayer.set_texture("curr_beard", curr_beard)
 
 
 func _on_LineEdit_text_changed(new_text):
@@ -590,14 +591,14 @@ func reset_frame():
 	hair.frame = curr_hair_color*8
 
 
-# Disable movment of player when type in name
+# Disable movment of scenePlayer when type in name
 func _on_LineEdit_focus_entered():
-	Utils.get_player().set_movment_animation(false)
+	scenePlayer.pause_player(true)
 
 
-# Enable movment of player when exiting the lineEdit
+# Enable movment of scenePlayer when exiting the lineEdit
 func _on_LineEdit_focus_exited():
-	Utils.get_player().set_movment_animation(true)
+	scenePlayer.pause_player(false)
 
 
 # Method to start game scene
@@ -614,8 +615,8 @@ func start_game():
 	# Set colors for collect animations
 	set_colors_for_collect_anim()
 	
-	# Set current player to use for other scenes
-	Utils.set_current_player(Utils.get_player())
+	# Set scenePlayer to current_player to use for other scenes
+	Utils.set_current_player(scenePlayer)
 	
 	DayNightCycle.set_current_time(0.0)
 	DayNightCycle.set_passed_days(0)
@@ -633,7 +634,7 @@ func start_game():
 
 
 func set_current_player_data():
-	# set player data
+	# set scenePlayer data
 	PlayerData.set_path(uuid)
 	PlayerData.load_player_data()
 
@@ -662,149 +663,168 @@ func set_current_player_data():
 func set_colors_for_attack_anim():
 	# set the ATTACK animation colors
 	# Shoes
-	player.reset_attack_key("Shoes:frame")
-	player._set_attack_key("Shoes:frame", curr_shoe_color * 8)
+	scenePlayer.reset_attack_key("Shoes:frame")
+	scenePlayer._set_attack_key("Shoes:frame", curr_shoe_color * 8)
 	# Pants
-	player.reset_attack_key("Pants:frame")
-	player._set_attack_key("Pants:frame", curr_pants_color * 8)
+	scenePlayer.reset_attack_key("Pants:frame")
+	scenePlayer._set_attack_key("Pants:frame", curr_pants_color * 8)
 	# Clothes
-	player.reset_attack_key("Clothes:frame")
-	player._set_attack_key("Clothes:frame", curr_clothes_color * 8)
+	scenePlayer.reset_attack_key("Clothes:frame")
+	scenePlayer._set_attack_key("Clothes:frame", curr_clothes_color * 8)
 	# Blush
-	player.reset_attack_key("Blush:frame")
+	scenePlayer.reset_attack_key("Blush:frame")
 	if curr_blush_color == 0:
-		player._set_attack_key("Blush:frame", curr_blush_color * 8)
+		scenePlayer._set_attack_key("Blush:frame", curr_blush_color * 8)
 	else: 
-		player._set_attack_key("Blush:frame", (curr_blush_color - 1) * 8)
+		scenePlayer._set_attack_key("Blush:frame", (curr_blush_color - 1) * 8)
 	# Lipstick
-	player.reset_attack_key("Lipstick:frame")
+	scenePlayer.reset_attack_key("Lipstick:frame")
 	if curr_lipstick_color == 0:
-		player._set_attack_key("Lipstick:frame", curr_lipstick_color * 8)
+		scenePlayer._set_attack_key("Lipstick:frame", curr_lipstick_color * 8)
 	else: 
-		player._set_attack_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+		scenePlayer._set_attack_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
 	# Beard
-	player.reset_attack_key("Beard:frame")
+	scenePlayer.reset_attack_key("Beard:frame")
 	if curr_beard_color == 0:
-		player._set_attack_key("Beard:frame", curr_beard_color * 8)
+		scenePlayer._set_attack_key("Beard:frame", curr_beard_color * 8)
 	else: 
-		player._set_attack_key("Beard:frame", (curr_beard_color - 1) * 8)
+		scenePlayer._set_attack_key("Beard:frame", (curr_beard_color - 1) * 8)
 	# Eyes
-	player.reset_attack_key("Eyes:frame")
-	player._set_attack_key("Eyes:frame", curr_eyes_color * 8)
+	scenePlayer.reset_attack_key("Eyes:frame")
+	scenePlayer._set_attack_key("Eyes:frame", curr_eyes_color * 8)
 	# Hairs
-	player.reset_attack_key("Hair:frame")
-	player._set_attack_key("Hair:frame", curr_hair_color * 8)
+	scenePlayer.reset_attack_key("Hair:frame")
+	scenePlayer._set_attack_key("Hair:frame", curr_hair_color * 8)
 
 
 # Method to set all colors/frames to hurt animations
 func set_colors_for_hurt_anim():
 	# set the HURT animation colors
 	# Shoes
-	player.reset_hurt_key("Shoes:frame")
-	player._set_hurt_key("Shoes:frame", curr_shoe_color * 8)
+	scenePlayer.reset_hurt_key("Shoes:frame")
+	scenePlayer._set_hurt_key("Shoes:frame", curr_shoe_color * 8)
 	# Pants
-	player.reset_hurt_key("Pants:frame")
-	player._set_hurt_key("Pants:frame", curr_pants_color * 8)
+	scenePlayer.reset_hurt_key("Pants:frame")
+	scenePlayer._set_hurt_key("Pants:frame", curr_pants_color * 8)
 	# Clothes
-	player.reset_hurt_key("Clothes:frame")
-	player._set_hurt_key("Clothes:frame", curr_clothes_color * 8)
+	scenePlayer.reset_hurt_key("Clothes:frame")
+	scenePlayer._set_hurt_key("Clothes:frame", curr_clothes_color * 8)
 	# Blush
-	player.reset_hurt_key("Blush:frame")
+	scenePlayer.reset_hurt_key("Blush:frame")
 	if curr_blush_color == 0:
-		player._set_hurt_key("Blush:frame", curr_blush_color * 8)
+		scenePlayer._set_hurt_key("Blush:frame", curr_blush_color * 8)
 	else: 
-		player._set_hurt_key("Blush:frame", (curr_blush_color - 1) * 8)
+		scenePlayer._set_hurt_key("Blush:frame", (curr_blush_color - 1) * 8)
 	# Lipstick
-	player.reset_hurt_key("Lipstick:frame")
+	scenePlayer.reset_hurt_key("Lipstick:frame")
 	if curr_lipstick_color == 0:
-		player._set_hurt_key("Lipstick:frame", curr_lipstick_color * 8)
+		scenePlayer._set_hurt_key("Lipstick:frame", curr_lipstick_color * 8)
 	else: 
-		player._set_hurt_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+		scenePlayer._set_hurt_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
 	# Beard
-	player.reset_hurt_key("Beard:frame")
+	scenePlayer.reset_hurt_key("Beard:frame")
 	if curr_beard_color == 0:
-		player._set_hurt_key("Beard:frame", curr_beard_color * 8)
+		scenePlayer._set_hurt_key("Beard:frame", curr_beard_color * 8)
 	else: 
-		player._set_hurt_key("Beard:frame", (curr_beard_color - 1) * 8)
+		scenePlayer._set_hurt_key("Beard:frame", (curr_beard_color - 1) * 8)
 	# Eyes
-	player.reset_hurt_key("Eyes:frame")
-	player._set_hurt_key("Eyes:frame", curr_eyes_color * 8)
+	scenePlayer.reset_hurt_key("Eyes:frame")
+	scenePlayer._set_hurt_key("Eyes:frame", curr_eyes_color * 8)
 	# Hairs
-	player.reset_hurt_key("Hair:frame")
-	player._set_hurt_key("Hair:frame", curr_hair_color * 8)
+	scenePlayer.reset_hurt_key("Hair:frame")
+	scenePlayer._set_hurt_key("Hair:frame", curr_hair_color * 8)
 
 
 # Method to set all colors/frames to die animation
 func set_colors_for_die_anim():
 	# set the DIE animation colors
 	# Shoes
-	player.reset_die_key("Shoes:frame")
-	player._set_die_key("Shoes:frame", curr_shoe_color * 8)
+	scenePlayer.reset_die_key("Shoes:frame")
+	scenePlayer._set_die_key("Shoes:frame", curr_shoe_color * 8)
 	# Pants
-	player.reset_die_key("Pants:frame")
-	player._set_die_key("Pants:frame", curr_pants_color * 8)
+	scenePlayer.reset_die_key("Pants:frame")
+	scenePlayer._set_die_key("Pants:frame", curr_pants_color * 8)
 	# Clothes
-	player.reset_die_key("Clothes:frame")
-	player._set_die_key("Clothes:frame", curr_clothes_color * 8)
+	scenePlayer.reset_die_key("Clothes:frame")
+	scenePlayer._set_die_key("Clothes:frame", curr_clothes_color * 8)
 	# Blush
-	player.reset_die_key("Blush:frame")
+	scenePlayer.reset_die_key("Blush:frame")
 	if curr_blush_color == 0:
-		player._set_die_key("Blush:frame", curr_blush_color * 8)
+		scenePlayer._set_die_key("Blush:frame", curr_blush_color * 8)
 	else: 
-		player._set_die_key("Blush:frame", (curr_blush_color - 1) * 8)
+		scenePlayer._set_die_key("Blush:frame", (curr_blush_color - 1) * 8)
 	# Lipstick
-	player.reset_die_key("Lipstick:frame")
+	scenePlayer.reset_die_key("Lipstick:frame")
 	if curr_lipstick_color == 0:
-		player._set_die_key("Lipstick:frame", curr_lipstick_color * 8)
+		scenePlayer._set_die_key("Lipstick:frame", curr_lipstick_color * 8)
 	else: 
-		player._set_die_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+		scenePlayer._set_die_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
 	# Beard
-	player.reset_die_key("Beard:frame")
+	scenePlayer.reset_die_key("Beard:frame")
 	if curr_beard_color == 0:
-		player._set_die_key("Beard:frame", curr_beard_color * 8)
+		scenePlayer._set_die_key("Beard:frame", curr_beard_color * 8)
 	else: 
-		player._set_die_key("Beard:frame", (curr_beard_color - 1) * 8)
+		scenePlayer._set_die_key("Beard:frame", (curr_beard_color - 1) * 8)
 	# Eyes
-	player.reset_die_key("Eyes:frame")
-	player._set_die_key("Eyes:frame", curr_eyes_color * 8)
+	scenePlayer.reset_die_key("Eyes:frame")
+	scenePlayer._set_die_key("Eyes:frame", curr_eyes_color * 8)
 	# Hairs
-	player.reset_die_key("Hair:frame")
-	player._set_die_key("Hair:frame", curr_hair_color * 8)
+	scenePlayer.reset_die_key("Hair:frame")
+	scenePlayer._set_die_key("Hair:frame", curr_hair_color * 8)
 
 
 # Method to set all colors/frames to collect animations
 func set_colors_for_collect_anim():
 	# set the collect animation colors
 	# Shoes
-	player.reset_collect_key("Shoes:frame")
-	player._set_collect_key("Shoes:frame", curr_shoe_color * 8)
+	scenePlayer.reset_collect_key("Shoes:frame")
+	scenePlayer._set_collect_key("Shoes:frame", curr_shoe_color * 8)
 	# Pants
-	player.reset_collect_key("Pants:frame")
-	player._set_collect_key("Pants:frame", curr_pants_color * 8)
+	scenePlayer.reset_collect_key("Pants:frame")
+	scenePlayer._set_collect_key("Pants:frame", curr_pants_color * 8)
 	# Clothes
-	player.reset_collect_key("Clothes:frame")
-	player._set_collect_key("Clothes:frame", curr_clothes_color * 8)
+	scenePlayer.reset_collect_key("Clothes:frame")
+	scenePlayer._set_collect_key("Clothes:frame", curr_clothes_color * 8)
 	# Blush
-	player.reset_collect_key("Blush:frame")
+	scenePlayer.reset_collect_key("Blush:frame")
 	if curr_blush_color == 0:
-		player._set_collect_key("Blush:frame", curr_blush_color * 8)
+		scenePlayer._set_collect_key("Blush:frame", curr_blush_color * 8)
 	else: 
-		player._set_collect_key("Blush:frame", (curr_blush_color - 1) * 8)
+		scenePlayer._set_collect_key("Blush:frame", (curr_blush_color - 1) * 8)
 	# Lipstick
-	player.reset_collect_key("Lipstick:frame")
+	scenePlayer.reset_collect_key("Lipstick:frame")
 	if curr_lipstick_color == 0:
-		player._set_collect_key("Lipstick:frame", curr_lipstick_color * 8)
+		scenePlayer._set_collect_key("Lipstick:frame", curr_lipstick_color * 8)
 	else: 
-		player._set_collect_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
+		scenePlayer._set_collect_key("Lipstick:frame", (curr_lipstick_color - 1) * 8)
 	# Beard
-	player.reset_collect_key("Beard:frame")
+	scenePlayer.reset_collect_key("Beard:frame")
 	if curr_beard_color == 0:
-		player._set_collect_key("Beard:frame", curr_beard_color * 8)
+		scenePlayer._set_collect_key("Beard:frame", curr_beard_color * 8)
 	else: 
-		player._set_collect_key("Beard:frame", (curr_beard_color - 1) * 8)
+		scenePlayer._set_collect_key("Beard:frame", (curr_beard_color - 1) * 8)
 	# Eyes
-	player.reset_collect_key("Eyes:frame")
-	player._set_collect_key("Eyes:frame", curr_eyes_color * 8)
+	scenePlayer.reset_collect_key("Eyes:frame")
+	scenePlayer._set_collect_key("Eyes:frame", curr_eyes_color * 8)
 	# Hairs
-	player.reset_collect_key("Hair:frame")
-	player._set_collect_key("Hair:frame", curr_hair_color * 8)
+	scenePlayer.reset_collect_key("Hair:frame")
+	scenePlayer._set_collect_key("Hair:frame", curr_hair_color * 8)
+
+
+# Method to check if pos is inside or outside of LineEditNode
+func is_pos_in_line_edit(pos: Vector2):
+	var global_rect = LineEditNode.get_global_rect()
+	var is_inside = pos.x >= global_rect.position.x \
+		and pos.y >= global_rect.position.y \
+		and pos.x <= global_rect.end.x \
+		and pos.y <= global_rect.end.y
+	return is_inside
+
+
+func _input(event):
+	if event is InputEventMouseButton:
+		# Check if mouse click is inside or outside of LineEditNode to release focus if click is outside
+		if characterSettingsContainer.get_focus_owner() == LineEditNode:
+			# Release focus if click is outside of LineEditNode
+			if not is_pos_in_line_edit(event.position):
+				LineEditNode.release_focus()
