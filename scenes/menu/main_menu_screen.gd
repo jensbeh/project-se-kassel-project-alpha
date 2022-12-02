@@ -43,12 +43,14 @@ func _on_Start_Game_pressed():
 
 func _on_Settings_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
-	Utils.get_main().add_settings()
+	Utils.add_settings_screen()
+
 
 func _on_Exit_to_Desktop_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	# Stop game
 	Utils.stop_game()
+
 
 func _on_Credits_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
