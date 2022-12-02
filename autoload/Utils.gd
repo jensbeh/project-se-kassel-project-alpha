@@ -5,6 +5,10 @@ var current_player : KinematicBody2D = null # Must be used in game scenes
 var language = ""
 var sound_volume = 0
 var music_volume = 0
+var window_size : Vector2
+var window_maximized : bool
+var window_fullscreen : bool
+var game_is_preloading : bool = false
 var in_setting_screen
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var all_character_data = null
@@ -49,6 +53,81 @@ func set_language(lang):
 	language = lang
 
 
+# Returns the current language
+func get_language():
+	return language
+
+
+# Sets the current window_size
+func set_window_size(new_window_size: Vector2, update_window : bool):
+	window_size = new_window_size
+	if update_window:
+		OS.set_window_size(window_size)
+		# Center window if window not fullscreen or maximized 
+		if not get_window_fullscreen() and not get_window_maximized():
+			OS.center_window()
+	
+	print("GAME: Window size changed: " + str(window_size) + " - UI changed: " + str(update_window))
+
+
+# Returns the current window_size
+func get_window_size() -> Vector2:
+	return window_size
+
+
+# Sets the current window_maximized
+func set_window_maximized(new_window_maximized: bool, update_window : bool):
+	window_maximized = new_window_maximized
+	if update_window:
+		# Maximize
+		if not OS.is_window_maximized() and window_maximized:
+			OS.set_window_maximized(window_maximized)
+		# Not maximize
+		elif OS.is_window_maximized() and not window_maximized:
+			OS.set_window_maximized(window_maximized)
+	
+	print("GAME: Window maximized: " + str(window_maximized) + " - UI changed: " + str(update_window))
+
+
+# Returns the current window_maximized
+func get_window_maximized() -> bool:
+	return window_maximized
+
+
+# Sets the current window_fullscreen
+func set_window_fullscreen(new_window_fullscreen: bool, update_window : bool):
+	window_fullscreen = new_window_fullscreen
+	if update_window:
+		# Fullscreen
+		if not OS.is_window_fullscreen() and window_fullscreen:
+			OS.set_window_fullscreen(window_fullscreen)
+		# Not fullscreen
+		elif OS.is_window_fullscreen() and not window_fullscreen:
+			OS.set_window_fullscreen(window_fullscreen)
+	
+	print("GAME: Window fullscreen: " + str(window_fullscreen) + " - UI changed: " + str(update_window))
+
+
+# Returns the current window_fullscreen
+func get_window_fullscreen() -> bool:
+	return window_fullscreen
+
+
+# Sets the current window resizable
+func set_window_resizable(window_resizable: bool):
+	if OS.is_window_resizable() and not window_resizable:
+		OS.set_window_resizable(false)
+	elif not OS.is_window_resizable() and window_resizable:
+		OS.set_window_resizable(true)
+	
+	print("GAME: Window resizable: " + str(window_resizable))
+
+
+# Returns the current window resizable
+func get_window_resizable() -> bool:
+	return OS.is_window_resizable()
+
+
 # Sets the current music volume
 func set_music_volume(value):
 	music_volume = value
@@ -57,11 +136,6 @@ func set_music_volume(value):
 # Sets the current sound volume
 func set_sound_volume(value):
 	sound_volume = value
-
-
-# Returns the current language
-func get_language():
-	return language
 
 
 # Returns the scene_manager instance
@@ -533,6 +607,8 @@ func preload_game():
 	var time_start = OS.get_system_time_msecs()
 	var time_now = 0
 	
+	game_is_preloading = true
+	
 	# Load here everything which needs to be preloaded
 	# Preload all scenes, music, ...
 	
@@ -542,6 +618,8 @@ func preload_game():
 	Constants.preload_variables()
 	# Load AStars
 	PathfindingService.preload_astars()
+	
+	game_is_preloading = false
 	
 	# Calculate needed time
 	time_now = OS.get_system_time_msecs()
@@ -553,6 +631,9 @@ func preload_game():
 func stop_preload_game():
 	Constants.stop_preloading()
 	PathfindingService.stop_preloading()
+
+func is_game_preloading():
+	return game_is_preloading
 
 
 # Method to check if node is valid and still present
@@ -662,3 +743,19 @@ func set_all_character_data(new_all_character_data):
 # Method to return all character data
 func get_all_character_data():
 	return all_character_data
+
+
+# Method to add settings screen to main screen
+func add_settings_screen():
+	if Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen") != null:
+		# Called Settings from MainMenuScreen
+		# Need to disable to gui in viewport of game
+		Utils.get_main().disable_game_gui(true)
+		
+	# Add settings screen to main screen
+	Utils.get_ui().add_child(Constants.PreloadedScenes.SettingScene.instance())
+
+
+# Method to return the settings screen node
+func get_settings_screen():
+	return Utils.get_ui().get_node_or_null("SettingScreen")

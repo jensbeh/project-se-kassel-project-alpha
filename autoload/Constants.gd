@@ -2,6 +2,7 @@ extends Node
 
 # Variables
 var preload_stopped = false
+var valid_window_sizes : Array = []
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------
@@ -84,6 +85,50 @@ const CAN_MODIFY_TIME = false # Default: false
 """
 const DEFAULT_SOUND_VOLUME = -25
 const DEFAULT_MUSIC_VOLUME = -15
+const DEFAULT_WINDOW_MAXIMIZED = false
+const DEFAULT_WINDOW_FULLSCREEN = true
+var GAME_SETTINGS = {
+	"language": "en",
+	"sound": DEFAULT_SOUND_VOLUME,
+	"music": DEFAULT_MUSIC_VOLUME,
+	"window_size": var2str(WINDOW_SIZES.HD.value),
+	"window_maximized": DEFAULT_WINDOW_MAXIMIZED,
+	"window_fullscreen": DEFAULT_WINDOW_FULLSCREEN,
+}
+const WINDOW_SIZES = {
+	"nHD": {
+		"text": "640 x 360",
+		"value": Vector2(640, 360),
+	},
+	"FWVGA": {
+		"text": "854 x 480",
+		"value": Vector2(854, 480),
+	},
+	"qHD": {
+		"text": "960 x 540",
+		"value": Vector2(960, 540),
+	},
+	"WSVGA": {
+		"text": "1024 x 576",
+		"value": Vector2(1024, 576),
+	},
+	"HD": {
+		"text": "1280 x 720",
+		"value": Vector2(1280, 720),
+	},
+	"FWXGA": {
+		"text": "1366 x 768",
+		"value": Vector2(1366, 768),
+	},
+	"HD+": {
+		"text": "1600 x 900",
+		"value": Vector2(1600, 900),
+	},
+	"FHD": {
+		"text": "1920 x 1080",
+		"value": Vector2(1920, 1080),
+	}
+}
 
 
 """
@@ -1031,3 +1076,16 @@ func load_ressource(path):
 		
 		if err == ERR_FILE_EOF: # Finished loading.
 			return loader.get_resource()
+
+
+func load_valid_window_sizes():
+	var current_window_size = OS.get_screen_size()
+	for window_size_dic in Constants.WINDOW_SIZES.values():
+		if window_size_dic.value < current_window_size:
+			valid_window_sizes.append(window_size_dic)
+	print(valid_window_sizes)
+
+
+# Returns the current window_size
+func get_valid_window_sizes() -> Array:
+	return valid_window_sizes

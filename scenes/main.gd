@@ -38,21 +38,9 @@ func is_day_night_cycle():
 	return darkness_lights_screen.get_is_day_night_cycle()
 
 
-# Method to add settings screen to view
-func add_settings():
-	if (Utils.get_scene_manager().get_child(0).get_node_or_null("MainMenuScreen")) != null:
-		# Called Settings from MainMenuScreen
-		# Need to disable to gui in viewport of game
-		disable_game_gui(true)
-		
-	# Add settings screen
-	add_child(Constants.PreloadedScenes.SettingScene.instance())
-
-
 # Method to disable gui in viewport
 func disable_game_gui(disable_gui):
 	game_viewport.gui_disable_input = disable_gui
-
 
 
 # Method to start skip time animation
@@ -118,8 +106,38 @@ func stop_game():
 # Handle notifications
 func _notification(notification):
 	# If game is closed
-	if (notification == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
+	if notification == NOTIFICATION_WM_QUIT_REQUEST:
+		print("GAME: Game closed signal received")
 		stop_game()
+	# Window size, ... changed
+	elif notification == 30:
+		print("GAME: Window resized signal received")
+		if FileManager.is_finished_loading():
+			# Check if window maximize changed
+			var window_maximize_changed = false
+			if Utils.get_window_maximized() != OS.is_window_maximized():
+				# Window maximize changed without changing settings in settings screen
+				# Save new window maximize
+				Utils.set_window_maximized(OS.is_window_maximized(), false)
+				Constants.GAME_SETTINGS.window_maximized = OS.is_window_maximized()
+				window_maximize_changed = true
+			
+			# Check if window size changed
+			var window_size_changed = false
+			if Utils.get_window_size() != OS.get_window_size():
+				Constants.GAME_SETTINGS.window_size = var2str(OS.get_window_size())
+				# Save new window size
+				Utils.set_window_size(OS.get_window_size(), false)
+				window_maximize_changed = true
+			
+			# Update ui and save settings if something changed
+			if window_maximize_changed or window_size_changed:
+				# Update ui if in settings screen
+				if Utils.get_settings_screen() != null:
+					Utils.get_settings_screen().update_ui()
+				
+				# Save settings
+				FileManager.save_settings()
 
 
 func play_save_notification():

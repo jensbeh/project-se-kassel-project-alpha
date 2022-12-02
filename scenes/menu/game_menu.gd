@@ -6,7 +6,6 @@ func _ready():
 	get_node("Back to Main Menu").set_text(tr("BACK_TO_MAIN_MENU"))
 	get_node("Back to Game").set_text(tr("BACK_TO_GAME"))
 	get_node("Settings").set_text(tr("SETTINGS"))
-	set_layer(2)
 
 
 # Close game menu and set playermovemnt true
@@ -22,7 +21,7 @@ func _on_Settings_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Click)
 	
 	Utils.setting_screen(true)
-	Utils.get_main().add_settings()
+	Utils.add_settings_screen()
 
 
 # Close game and go to main menu
