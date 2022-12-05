@@ -7,7 +7,6 @@ onready var animationPlayer = $CanvasLayer/AnimationPlayer
 var preload_game_thread
 
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Start animation

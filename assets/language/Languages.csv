@@ -21,6 +21,12 @@ VOLUME,Volume,Lautstärke
 MUSIC,Music,Musik
 SOUNDS,Sounds,Sounds
 LANGUAGE,Language,Sprache
+WINDOW,Window,Fenster
+WINDOW_SIZE,Size,Größe
+WINDOW_FULLSCREEN,Fullscreen,Vollbild
+WINDOW_FULLSCREEN_ON,On,An
+WINDOW_FULLSCREEN_OFF,Off,Aus
+CUSTOM_WINDOW_SIZE,Custom,Benutzerdefiniert
 BACK,Back,Zurück
 CREATE_NEW_CHARACTER,Create new character,Neuen Charakter erstellen
 CREATE_CHARACTER,Create character, Charakter erstellen

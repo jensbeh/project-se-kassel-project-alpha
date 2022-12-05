@@ -2,12 +2,7 @@ extends Node
 
 # Variables
 var current_language
-var settings_dic = {
-		"language": "en",
-		"sound": Constants.DEFAULT_SOUND_VOLUME,
-		"music": Constants.DEFAULT_MUSIC_VOLUME
-	}
-
+var finished_loading = false
 
 # Method is called on game start -> at starting of preloading!
 func on_game_start():
@@ -16,8 +11,17 @@ func on_game_start():
 	
 	# Load settings
 	load_settings()
+	# Load window settings
+	load_window_settings()
 	# Load language and music
-	load_language_and_music()
+	load_language_and_music()#
+	
+	finished_loading = true
+
+
+# Method to return if FileManager finished loading
+func is_finished_loading() -> bool:
+	return finished_loading
 
 
 # Method to create all folder
@@ -38,27 +42,26 @@ func load_settings():
 	# Load settings
 	if save_settings.file_exists(Constants.SAVE_SETTINGS_PATH):
 		save_settings.open(Constants.SAVE_SETTINGS_PATH, File.READ)
-		settings_dic = parse_json(save_settings.get_as_text())
+		Constants.GAME_SETTINGS = parse_json(save_settings.get_as_text())
 		save_settings.close()
-		current_language = settings_dic.language
+		# Set value
+		current_language = Constants.GAME_SETTINGS.language
 	
 	# Create settings
 	else:
 		# Create file
 		save_settings.open(Constants.SAVE_SETTINGS_PATH, File.WRITE)
-		save_settings.store_line(to_json(settings_dic))
+		save_settings.store_line(to_json(Constants.GAME_SETTINGS))
 		save_settings.close()
-		# Set values
-		current_language = "en"
-		settings_dic.sound = Constants.DEFAULT_SOUND_VOLUME # Sets to half
-		settings_dic.music = Constants.DEFAULT_MUSIC_VOLUME # Sets to half
+		# Set value
+		current_language = Constants.GAME_SETTINGS.language
 
 
 # Method to save settings
-func save_settings(setting_data):
+func save_settings():
 	var save_game = File.new()
 	save_game.open(Constants.SAVE_SETTINGS_PATH, File.WRITE)
-	save_game.store_line(to_json(setting_data))
+	save_game.store_line(to_json(Constants.GAME_SETTINGS))
 	save_game.close()
 
 
@@ -66,20 +69,41 @@ func save_settings(setting_data):
 func load_language_and_music():
 	# Sets the Langauge and the sound/music volume
 	Utils.set_language(current_language)
-	Utils.set_music_volume(settings_dic.music)
-	AudioServer.set_bus_volume_db(1, settings_dic.music)
-	if float(settings_dic.music) == -40:
+	Utils.set_music_volume(Constants.GAME_SETTINGS.music)
+	AudioServer.set_bus_volume_db(1, Constants.GAME_SETTINGS.music)
+	if float(Constants.GAME_SETTINGS.music) == -40:
 		AudioServer.set_bus_mute(1, true)
 	else:
 		AudioServer.set_bus_mute(1, false)
-	Utils.set_sound_volume(settings_dic.sound)
-	AudioServer.set_bus_volume_db(2, settings_dic.sound)
-	if float(settings_dic.sound) == -40:
+	Utils.set_sound_volume(Constants.GAME_SETTINGS.sound)
+	AudioServer.set_bus_volume_db(2, Constants.GAME_SETTINGS.sound)
+	if float(Constants.GAME_SETTINGS.sound) == -40:
 		AudioServer.set_bus_mute(2, true)
 	else:
 		AudioServer.set_bus_mute(2, false)
 	TranslationServer.set_locale(current_language)
 	Utils.set_and_play_music(Constants.PreloadedMusic.Menu_Music)
+
+
+# Method to load the window settings
+func load_window_settings():
+	# Load valid window sizes depending on current screen size
+	Constants.load_valid_window_sizes()
+	
+	# Set window fullscreen
+	Utils.set_window_fullscreen(Constants.GAME_SETTINGS.window_fullscreen, true)
+	# Set window maximized and size
+	if Constants.GAME_SETTINGS.window_maximized:
+		# Set window maximized
+		Utils.set_window_size(str2var(Constants.GAME_SETTINGS.window_size), false)
+		Utils.set_window_maximized(Constants.GAME_SETTINGS.window_maximized, true)
+	else:
+		# Set window size
+		Utils.set_window_size(str2var(Constants.GAME_SETTINGS.window_size), true)
+		Utils.set_window_maximized(Constants.GAME_SETTINGS.window_maximized, false)
+	
+	# Set minimum size to window
+	OS.set_min_window_size(Constants.WINDOW_SIZES.values()[0].value)
 
 
 # Method to load the astar points and connections from file -> file generated through reimport

@@ -6,16 +6,16 @@
 [ext_resource path="res://assets/slider_icon.png" type="Texture" id=4]
 [ext_resource path="res://assets/slider_icon_selected.png" type="Texture" id=5]
 
+[sub_resource type="DynamicFont" id=6]
+size = 20
+font_data = ExtResource( 2 )
+
 [sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.333333, 0.27451, 0.27451, 0.92549 )
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-
-[sub_resource type="DynamicFont" id=6]
-size = 20
-font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 48
@@ -58,13 +58,6 @@ margin_bottom = 1080.0
 texture = ExtResource( 1 )
 expand = true
 
-[node name="Panel" type="Panel" parent="."]
-margin_left = 484.0
-margin_top = 186.0
-margin_right = 1452.0
-margin_bottom = 858.0
-custom_styles/panel = SubResource( 8 )
-
 [node name="Back" type="Button" parent="."]
 margin_left = 144.0
 margin_top = 64.0
@@ -75,96 +68,200 @@ custom_colors/font_color_pressed = Color( 0, 1, 0.298039, 1 )
 custom_fonts/font = SubResource( 6 )
 text = "Back"
 
-[node name="Settings" type="Label" parent="."]
-margin_left = 845.0
-margin_top = 218.0
-margin_right = 1077.0
-margin_bottom = 275.0
+[node name="UiPanel" type="Control" parent="."]
+margin_left = 484.0
+margin_top = 98.0
+margin_right = 524.0
+margin_bottom = 138.0
+
+[node name="Panel" type="Panel" parent="UiPanel"]
+margin_right = 968.0
+margin_bottom = 867.0
+custom_styles/panel = SubResource( 8 )
+
+[node name="Separator" type="Control" parent="UiPanel"]
+margin_left = 84.0
+margin_top = 597.0
+margin_right = 124.0
+margin_bottom = 637.0
+
+[node name="HSeparator" type="HSeparator" parent="UiPanel/Separator"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = -43.0
+margin_top = -508.0
+margin_right = 853.0
+margin_bottom = -444.0
+
+[node name="HSeparator2" type="HSeparator" parent="UiPanel/Separator"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = -43.0
+margin_top = -203.0
+margin_right = 853.0
+margin_bottom = -139.0
+
+[node name="HSeparator3" type="HSeparator" parent="UiPanel/Separator"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = -43.0
+margin_top = -73.0
+margin_right = 853.0
+margin_bottom = -9.0
+
+[node name="SettingsLabel" type="Label" parent="UiPanel"]
+margin_left = 361.0
+margin_top = 40.0
+margin_right = 593.0
+margin_bottom = 97.0
 grow_horizontal = 2
 grow_vertical = 2
 custom_fonts/font = SubResource( 1 )
 text = "Settings"
 
-[node name="Volume" type="Label" parent="."]
-margin_left = 600.0
-margin_top = 394.0
-margin_right = 719.0
-margin_bottom = 482.0
+[node name="Volume" type="Control" parent="UiPanel"]
+margin_left = -484.0
+margin_top = -195.0
+margin_right = -444.0
+margin_bottom = -155.0
+
+[node name="VolumeLabel" type="Label" parent="UiPanel/Volume"]
+margin_left = 576.0
+margin_top = 341.0
+margin_right = 776.0
+margin_bottom = 379.0
 grow_horizontal = 0
 grow_vertical = 0
+rect_min_size = Vector2( 200, 38 )
 custom_fonts/font = SubResource( 2 )
 text = "Volume"
 
-[node name="Music" type="Label" parent="."]
-margin_left = 637.0
-margin_top = 483.0
-margin_right = 749.0
-margin_bottom = 579.0
+[node name="Music" type="Control" parent="UiPanel/Volume"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="MusicLabel" type="Label" parent="UiPanel/Volume/Music"]
+margin_left = 567.0
+margin_top = 430.0
+margin_right = 767.0
+margin_bottom = 463.0
+rect_min_size = Vector2( 200, 33 )
 custom_fonts/font = SubResource( 3 )
 text = "Music"
+align = 2
 
-[node name="Sounds" type="Label" parent="."]
-margin_left = 617.0
-margin_top = 579.0
-margin_right = 737.0
-margin_bottom = 633.0
-custom_fonts/font = SubResource( 4 )
-text = "Sounds"
-
-[node name="Language" type="Label" parent="."]
-margin_left = 565.0
-margin_top = 762.0
-margin_right = 717.0
-margin_bottom = 800.0
-custom_fonts/font = SubResource( 5 )
-text = "Language"
-
-[node name="Musicslieder" type="HSlider" parent="."]
-margin_left = 909.0
-margin_top = 465.0
-margin_right = 1357.0
-margin_bottom = 537.0
+[node name="MusicSlider" type="HSlider" parent="UiPanel/Volume/Music"]
+margin_left = 897.0
+margin_top = 412.0
+margin_right = 1345.0
+margin_bottom = 484.0
 custom_icons/grabber_highlight = ExtResource( 5 )
 custom_icons/grabber = ExtResource( 4 )
 min_value = -40.0
 max_value = 10.0
 value = -15.0
 
-[node name="Soundslider" type="HSlider" parent="."]
-margin_left = 909.0
-margin_top = 560.0
-margin_right = 1357.0
-margin_bottom = 632.0
+[node name="Sounds" type="Control" parent="UiPanel/Volume"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="SoundsLabel" type="Label" parent="UiPanel/Volume/Sounds"]
+margin_left = 568.0
+margin_top = 526.0
+margin_right = 768.0
+margin_bottom = 559.0
+rect_min_size = Vector2( 200, 33 )
+custom_fonts/font = SubResource( 4 )
+text = "Sounds"
+align = 2
+
+[node name="SoundSlider" type="HSlider" parent="UiPanel/Volume/Sounds"]
+margin_left = 897.0
+margin_top = 507.0
+margin_right = 1345.0
+margin_bottom = 579.0
 custom_icons/grabber_highlight = ExtResource( 5 )
 custom_icons/grabber = ExtResource( 4 )
 min_value = -40.0
 max_value = 10.0
 value = -25.0
 
-[node name="OptionButton" type="OptionButton" parent="."]
-margin_left = 912.0
-margin_top = 754.0
-margin_right = 1136.0
-margin_bottom = 810.0
+[node name="Language" type="Control" parent="UiPanel"]
+margin_left = 81.0
+margin_top = 472.0
+margin_right = 121.0
+margin_bottom = 512.0
+
+[node name="LanguageLabel" type="Label" parent="UiPanel/Language"]
+margin_left = 10.0
+margin_right = 210.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 200, 38 )
+custom_fonts/font = SubResource( 5 )
+text = "Language"
+
+[node name="LanguageOptionButton" type="OptionButton" parent="UiPanel/Language"]
+margin_left = 444.0
+margin_top = -8.0
+margin_right = 668.0
+margin_bottom = 48.0
 theme = SubResource( 10 )
 custom_fonts/font = SubResource( 11 )
 text = "English"
+align = 1
 
-[node name="HSeparator" type="HSeparator" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 525.0
-margin_top = 643.0
-margin_right = 1421.0
-margin_bottom = 707.0
+[node name="WindowSize" type="Control" parent="UiPanel"]
+margin_left = 84.0
+margin_top = 597.0
+margin_right = 124.0
+margin_bottom = 637.0
 
-[node name="HSeparator2" type="HSeparator" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 525.0
-margin_top = 291.0
-margin_right = 1421.0
-margin_bottom = 355.0
+[node name="WindowLabel" type="Label" parent="UiPanel/WindowSize"]
+margin_left = 10.0
+margin_right = 260.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 250, 38 )
+custom_fonts/font = SubResource( 5 )
+text = "Window"
+
+[node name="SizeLabel" type="Label" parent="UiPanel/WindowSize"]
+margin_top = 83.0
+margin_right = 200.0
+margin_bottom = 116.0
+rect_min_size = Vector2( 200, 33 )
+custom_fonts/font = SubResource( 4 )
+text = "Size"
+align = 2
+
+[node name="SizeOptionButton" type="OptionButton" parent="UiPanel/WindowSize"]
+margin_left = 440.0
+margin_top = 67.0
+margin_right = 664.0
+margin_bottom = 123.0
+theme = SubResource( 10 )
+custom_fonts/font = SubResource( 11 )
+text = "1280 x 720"
+align = 1
+
+[node name="FullscreenLabel" type="Label" parent="UiPanel/WindowSize"]
+margin_top = 174.0
+margin_right = 200.0
+margin_bottom = 207.0
+rect_min_size = Vector2( 200, 33 )
+custom_fonts/font = SubResource( 4 )
+text = "Fullscreen"
+align = 2
+
+[node name="FullscreenOptionButton" type="OptionButton" parent="UiPanel/WindowSize"]
+margin_left = 440.0
+margin_top = 163.0
+margin_right = 664.0
+margin_bottom = 219.0
+theme = SubResource( 10 )
+custom_fonts/font = SubResource( 11 )
+text = "On"
+align = 1
 
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
-[connection signal="value_changed" from="Musicslieder" to="." method="_on_Musicslieder_value_changed"]
-[connection signal="value_changed" from="Soundslider" to="." method="_on_Soundslider_value_changed"]
-[connection signal="item_selected" from="OptionButton" to="." method="_on_OptionButton_item_selected"]
+[connection signal="value_changed" from="UiPanel/Volume/Music/MusicSlider" to="." method="_on_Musicslieder_value_changed"]
+[connection signal="value_changed" from="UiPanel/Volume/Sounds/SoundSlider" to="." method="_on_Soundslider_value_changed"]
+[connection signal="item_selected" from="UiPanel/Language/LanguageOptionButton" to="." method="_on_Language_selected"]
+[connection signal="item_selected" from="UiPanel/WindowSize/SizeOptionButton" to="." method="_on_Window_Size_selected"]
+[connection signal="item_selected" from="UiPanel/WindowSize/FullscreenOptionButton" to="." method="_on_Window_Fullscreen_selected"]
