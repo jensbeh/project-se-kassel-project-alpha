@@ -575,15 +575,17 @@ func _on_LineEdit_text_changed(new_text):
 		else:
 			charac_name = new_text
 	else:
-		if new_text == "":
+		if "  " in new_text:
+			LineEditNode.delete_char_at_cursor()
+		elif new_text == "":
 			charac_name = ""
-		if new_text.length() > Constants.NAME_LENGTH:
+		elif new_text.length() > Constants.NAME_LENGTH:
 			LineEditNode.delete_char_at_cursor()
 		elif new_text.ends_with("  "):
 			LineEditNode.delete_char_at_cursor()
 		elif new_text.ends_with(" ") and new_text.length() == Constants.NAME_LENGTH:
 			LineEditNode.delete_char_at_cursor()
-		if new_text.begins_with(" "):
+		elif new_text.begins_with(" "):
 			LineEditNode.text = charac_name
 	LineEditNode.set_cursor_position(new_text.length())
 
