@@ -571,25 +571,22 @@ func _on_BeardRight_pressed():
 
 
 func _on_LineEdit_text_changed(new_text):
-	if line_editRegEx.search(new_text):
+	if new_text.length() > Constants.NAME_LENGTH:
+		LineEditNode.delete_char_at_cursor()
+	elif line_editRegEx.search(new_text):
 		charac_name = str(new_text)
-		if new_text.length() > Constants.NAME_LENGTH:
-			LineEditNode.delete_char_at_cursor()
-		else:
-			charac_name = new_text
+		charac_name = new_text
 	else:
 		if "  " in new_text:
 			LineEditNode.delete_char_at_cursor()
 		elif new_text == "":
 			charac_name = ""
-		elif new_text.length() > Constants.NAME_LENGTH:
-			LineEditNode.delete_char_at_cursor()
-		elif new_text.ends_with("  "):
-			LineEditNode.delete_char_at_cursor()
-		elif new_text.ends_with(" ") and new_text.length() == Constants.NAME_LENGTH:
-			LineEditNode.delete_char_at_cursor()
+		elif new_text.ends_with(" "):
+			charac_name = new_text
 		elif new_text.begins_with(" "):
 			LineEditNode.text = charac_name
+		else:
+			LineEditNode.delete_char_at_cursor()
 		if line_editRegEx.search(new_text):
 			charac_name = new_text
 		elif new_text.ends_with(" "):
