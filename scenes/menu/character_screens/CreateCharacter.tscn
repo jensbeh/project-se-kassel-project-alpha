@@ -190,9 +190,13 @@ text = "Character name"
 align = 1
 
 [node name="LineEdit" type="LineEdit" parent="ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+margin_left = 149.0
 margin_top = 34.0
-margin_right = 698.0
+margin_right = 549.0
 margin_bottom = 66.0
+rect_min_size = Vector2( 400, 0 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
 custom_fonts/font = SubResource( 5 )
 align = 1
 placeholder_text = "Enter name here ..."
@@ -875,10 +879,10 @@ position = Vector2( 253, 21 )
 position = Vector2( 1219, 356 )
 scale = Vector2( 12, 12 )
 
-[node name="AnimationTree" parent="Node2D/Player" index="16"]
+[node name="AnimationTree" parent="Node2D/Player" index="19"]
 parameters/playback = SubResource( 20 )
 
-[node name="Camera2D" parent="Node2D/Player" index="17"]
+[node name="Camera2D" parent="Node2D/Player" index="20"]
 visible = false
 current = false
 
@@ -911,3 +915,4 @@ current = false
 [connection signal="pressed" from="ScrollContainer/MarginContainer/VBoxContainer/MarginContainer7/MarginContainer/VBoxContainer/HBoxContainer/Make-upRight" to="." method="_on_MakeupRight_pressed"]
 
 [editable path="Node2D/Player"]
+[editable path="Node2D/Player/HitboxZone"]

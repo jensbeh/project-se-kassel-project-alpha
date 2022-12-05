@@ -4,6 +4,7 @@ const uuid_util = preload("res://addons/uuid.gd")
 
 onready var scenePlayer = Utils.get_player()
 onready var characterSettingsContainer = $ScrollContainer
+onready var line_editRegEx = RegEx.new()
 
 var characters_existing = false
 var uuid
@@ -151,6 +152,8 @@ func _ready():
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
+	
+	line_editRegEx.compile("^([\\w\\-öüäÄÜÖ]+((\\x20?)[\\w\\-öüäÄÜÖ]+)+|[\\w\\-öüäÄÜÖ]+)+$")
 
 
 # Method to destroy the scene
@@ -244,6 +247,10 @@ func _on_Back_pressed():
 
 func _on_Create_Character_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
+	
+	if charac_name.ends_with(" "):
+		LineEditNode.delete_char_at_cursor()
+	
 	if charac_name != "":
 		save_game_data.skincolor = curr_body
 		save_game_data.shoes = curr_shoes
@@ -566,8 +573,22 @@ func _on_BeardRight_pressed():
 func _on_LineEdit_text_changed(new_text):
 	if new_text.length() > Constants.NAME_LENGTH:
 		LineEditNode.delete_char_at_cursor()
+	elif line_editRegEx.search(new_text):
+		charac_name = str(new_text)
 	else:
-		charac_name = new_text
+		if "  " in new_text:
+			LineEditNode.delete_char_at_cursor()
+		elif new_text == "":
+			charac_name = ""
+		elif new_text.begins_with(" "):
+			LineEditNode.delete_text(0,1)
+		elif new_text.ends_with(" "):
+			charac_name = new_text
+		else:
+			LineEditNode.delete_char_at_cursor()
+		
+		if line_editRegEx.search(new_text):
+			charac_name = new_text
 
 
 func reset_frame():
