@@ -581,7 +581,7 @@ func _on_LineEdit_text_changed(new_text):
 		elif new_text == "":
 			charac_name = ""
 		elif new_text.begins_with(" "):
-			LineEditNode.delete_char_at_cursor()
+			LineEditNode.delete_text(0,1)
 		elif new_text.ends_with(" "):
 			charac_name = new_text
 		else:
