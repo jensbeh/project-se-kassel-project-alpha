@@ -153,7 +153,7 @@ func _ready():
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 	
-	line_editRegEx.compile("^([\\w\\-]+((\\x20?)[\\w\\-]+)+|[\\w\\-]+)+$")
+	line_editRegEx.compile("^([\\w\\-öüäÄÜÖ]+((\\x20?)[\\w\\-öüäÄÜÖ]+)+|[\\w\\-öüäÄÜÖ]+)+$")
 
 
 # Method to destroy the scene
@@ -575,21 +575,19 @@ func _on_LineEdit_text_changed(new_text):
 		LineEditNode.delete_char_at_cursor()
 	elif line_editRegEx.search(new_text):
 		charac_name = str(new_text)
-		charac_name = new_text
 	else:
 		if "  " in new_text:
 			LineEditNode.delete_char_at_cursor()
 		elif new_text == "":
 			charac_name = ""
+		elif new_text.begins_with(" "):
+			LineEditNode.delete_char_at_cursor()
 		elif new_text.ends_with(" "):
 			charac_name = new_text
-		elif new_text.begins_with(" "):
-			LineEditNode.text = charac_name
 		else:
 			LineEditNode.delete_char_at_cursor()
+		
 		if line_editRegEx.search(new_text):
-			charac_name = new_text
-		elif new_text.ends_with(" "):
 			charac_name = new_text
 
 
