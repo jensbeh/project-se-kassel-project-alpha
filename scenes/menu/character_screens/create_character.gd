@@ -153,7 +153,7 @@ func _ready():
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
 	
-	line_editRegEx.compile("^([\\w\\-]+(\\x20?)[\\w\\-]+|[\\w\\-]+)+$")
+	line_editRegEx.compile("^([\\w\\-]+((\\x20?)[\\w\\-]+)+|[\\w\\-]+)+$")
 
 
 # Method to destroy the scene
@@ -587,7 +587,6 @@ func _on_LineEdit_text_changed(new_text):
 			LineEditNode.delete_char_at_cursor()
 		elif new_text.begins_with(" "):
 			LineEditNode.text = charac_name
-	LineEditNode.set_cursor_position(new_text.length())
 
 
 func reset_frame():
