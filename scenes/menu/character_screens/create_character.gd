@@ -248,6 +248,9 @@ func _on_Back_pressed():
 func _on_Create_Character_pressed():
 	Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
 	
+	if charac_name.ends_with(" "):
+		LineEditNode.delete_char_at_cursor()
+	
 	if charac_name != "":
 		save_game_data.skincolor = curr_body
 		save_game_data.shoes = curr_shoes
@@ -587,6 +590,10 @@ func _on_LineEdit_text_changed(new_text):
 			LineEditNode.delete_char_at_cursor()
 		elif new_text.begins_with(" "):
 			LineEditNode.text = charac_name
+		if line_editRegEx.search(new_text):
+			charac_name = new_text
+		elif new_text.ends_with(" "):
+			charac_name = new_text
 
 
 func reset_frame():
