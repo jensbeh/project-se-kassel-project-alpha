@@ -190,11 +190,13 @@ text = "Character name"
 align = 1
 
 [node name="LineEdit" type="LineEdit" parent="ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
-anchor_left = 0.212034
-anchor_right = 0.212034
+margin_left = 149.0
 margin_top = 34.0
-margin_right = 400.0
+margin_right = 549.0
 margin_bottom = 66.0
+rect_min_size = Vector2( 400, 0 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
 custom_fonts/font = SubResource( 5 )
 align = 1
 placeholder_text = "Enter name here ..."
