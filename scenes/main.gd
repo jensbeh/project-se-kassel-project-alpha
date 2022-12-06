@@ -24,8 +24,13 @@ func _ready():
 
 
 # Method to set mouse filter on black screen -> called from scene manager
-func set_black_screen_mouse_filter(mouse_filter):
-	black_screen.mouse_filter = mouse_filter
+func disable_mouse_interaction(disable):
+	if disable:
+		black_screen.mouse_filter = Control.MOUSE_FILTER_STOP
+		game_viewport.gui_disable_input = true
+	else:
+		black_screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		game_viewport.gui_disable_input = false
 
 
 # Method to play a loading screen animation -> called from scene manager

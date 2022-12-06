@@ -1,5 +1,10 @@
 extends Node
 
+
+# Signals
+signal map_loaded(map_name)
+
+# Variables
 var pathfinder_thread = Thread.new()
 var mobs_to_update : Dictionary = {}
 var enemies_to_update = []
@@ -78,6 +83,9 @@ func preload_astars():
 			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
 			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
 			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+		
+		# Emit signal that map is loaded
+		emit_signal("map_loaded", map_name)
 		
 		print("PATHFINDING: LOADED MAP \"" + str(map_name) + "\"")
 	

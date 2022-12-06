@@ -63,6 +63,7 @@ PathfindingService="*res://autoload/pathfinding_service.gd"
 ChunkLoaderService="*res://autoload/chunk_loader_service.gd"
 MobSpawnerService="*res://autoload/mob_spawner_service.gd"
 FileManager="*res://autoload/file_manager.gd"
+PreloadService="*res://autoload/preload_service.gd"
 
 [debug]
 
