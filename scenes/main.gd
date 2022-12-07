@@ -95,6 +95,8 @@ func stop_game():
 		printerr("MAIN: NOT destroyed scene: \"" + str(Utils.get_scene_manager().get_current_scene().name) + "\"")
 	
 	# Stop threads -> autoloads
+	# Stop Preloader
+	PreloadService.stop()
 	# Stop Chunkloader
 	ChunkLoaderService.stop()
 	# Stop Pathfinder

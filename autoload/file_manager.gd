@@ -4,6 +4,7 @@ extends Node
 var current_language
 var finished_loading = false
 
+
 # Method is called on game start -> at starting of preloading!
 func on_game_start():
 	# Firstly create all folder
@@ -14,7 +15,7 @@ func on_game_start():
 	# Load window settings
 	load_window_settings()
 	# Load language and music
-	load_language_and_music()#
+	load_language_and_music()
 	
 	finished_loading = true
 

@@ -1096,7 +1096,6 @@ func load_valid_window_sizes():
 	for window_size_dic in Constants.WINDOW_SIZES.values():
 		if window_size_dic.value < current_window_size:
 			valid_window_sizes.append(window_size_dic)
-	print(valid_window_sizes)
 
 
 # Returns the current window_size
