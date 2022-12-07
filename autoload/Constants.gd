@@ -91,6 +91,7 @@ const CAN_MODIFY_TIME = false # Default: false
 ## GAME
 #################
 """
+const GAME_VERSION_NR = "1.0.0"
 const DEFAULT_SOUND_VOLUME = -25
 const DEFAULT_MUSIC_VOLUME = -15
 const DEFAULT_WINDOW_MAXIMIZED = false
@@ -603,11 +604,13 @@ const QUEST_SCENE_PATH = "res://scenes/story/quest/QuestList.tscn"
 const QUEST_SLOT_PATH = "res://scenes/story/quest/QuestSlot.tscn"
 
 # Save file pathes
+const APP_DATA_FOLDER_PATH = "user://"
 const DEFAULT_PLAYER_INV_PATH = "res://assets/data/inv_data_file.json"
 const MERCHANTS_PATH = "res://assets/data/merchant_inv_data.json"
 const SAVE_SETTINGS_PATH = "user://game/settings.json"
 const SAVE_CHARACTER_PATH = "user://character/"
 const SAVE_GAME_PATH = "user://game/"
+const VERSION_PATH = SAVE_GAME_PATH + "version.sav"
 const SAVE_GAME_PATHFINDING_PATH = "res://assets/pathfinding/"
 
 

@@ -133,7 +133,7 @@ func on_delete_click(id, container):
 
 func delete_character():
 	# Delete files
-	FileManager.delete_character(delete_id, data_list[selected_character].name)
+	FileManager.delete_character(delete_id)
 	
 	# Remove from ui and data and reload ui
 	list.remove_child(delete_container)

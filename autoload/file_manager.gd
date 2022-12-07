@@ -10,6 +10,9 @@ func on_game_start():
 	# Firstly create all folder
 	create_folder()
 	
+	# Compare game version
+	check_version()
+	
 	# Load settings
 	load_settings()
 	# Load window settings
@@ -23,6 +26,61 @@ func on_game_start():
 # Method to return if FileManager finished loading
 func is_finished_loading() -> bool:
 	return finished_loading
+
+
+# Method to check the current game version with saved version
+func check_version():
+	var create_new_version = false
+	
+	var dir_appdata = Directory.new()
+	# Check if existing
+	if dir_appdata.dir_exists(Constants.APP_DATA_FOLDER_PATH):
+		var dir_game = Directory.new()
+		if dir_game.dir_exists(Constants.SAVE_GAME_PATH):
+			
+			var version_file = File.new()
+			# Version file existing
+			if version_file.file_exists(Constants.VERSION_PATH):
+				# Load version file
+				version_file.open(Constants.VERSION_PATH, File.READ)
+				var version = version_file.get_var(true)
+				version_file.close()
+				
+				# Compare versions
+				# If not equal -> update/delete
+				if version != Constants.GAME_VERSION_NR:
+					printerr("FILE_MANAGER: Version not equal -> Delete all")
+					
+					# Delete all -> Maybe update possibility
+					delete_directory(Constants.APP_DATA_FOLDER_PATH)
+					
+					# Create folder again
+					create_folder()
+					
+					# Need new version nr
+					create_new_version = true
+			
+			# Version file NOT existing - Very old version
+			else:
+				printerr("FILE_MANAGER: Version file NOT existing -> Delete all")
+				
+				# Delete all
+				delete_directory(Constants.APP_DATA_FOLDER_PATH)
+				
+				# Create folder again
+				create_folder()
+				
+				# Need new version nr
+				create_new_version = true
+	
+	
+	# Create new version file
+	if create_new_version:
+		# Save version file
+		var version_save_file = File.new()
+		version_save_file.open(Constants.VERSION_PATH, File.WRITE)
+		version_save_file.store_var(Constants.GAME_VERSION_NR)
+		version_save_file.close()
 
 
 # Method to create all folder
@@ -211,17 +269,8 @@ func load_all_character_with_data() -> Array:
 
 
 # Method to delete the character depending on id and name
-func delete_character(character_id: String, character_name: String):
-	var dir = Directory.new()
-	if dir.file_exists(Constants.SAVE_CHARACTER_PATH + character_id + "/" + character_name + ".json"):
-		dir.remove(Constants.SAVE_CHARACTER_PATH + character_id + "/" + character_name + ".json")
-	# remove inventory data
-	if dir.dir_exists(Constants.SAVE_CHARACTER_PATH + character_id + "/"):
-		for i in ["bella", "heinz", "lea", "sam", "haley", character_id]:
-			dir.remove(Constants.SAVE_CHARACTER_PATH + character_id + "/merchants/" + i + "_inv_data.json")
-		dir.remove(Constants.SAVE_CHARACTER_PATH + character_id + "/merchants/")
-		dir.remove(Constants.SAVE_CHARACTER_PATH + character_id + "/" + character_name + "_inv_data.json")
-		dir.remove(Constants.SAVE_CHARACTER_PATH + character_id + "/")
+func delete_character(character_id: String):
+	delete_directory(Constants.SAVE_CHARACTER_PATH + character_id + "/")
 
 
 # Method to save the player data
@@ -269,3 +318,31 @@ func load_dialog_data(dialog_path) -> Array:
 		if typeof(output) == TYPE_ARRAY:
 			return output
 	return []
+
+
+# Method to delete recursive the given directory
+# Sample path -> "user://character/test/"
+func delete_directory(dir_path : String):
+	var dir = Directory.new()
+	# Open stream/dir
+	dir.open(dir_path)
+	dir.list_dir_begin()
+	
+	while true:
+		var file_or_dir = dir.get_next()
+		if file_or_dir == "":
+			break
+		
+		elif !file_or_dir.begins_with("."):
+			# Case: Directory
+			if dir.current_is_dir():
+				delete_directory(dir_path + file_or_dir + "/")
+			# Case: File
+			else:
+				dir.remove(dir_path + file_or_dir)
+	
+	# End stream
+	dir.list_dir_end()
+	
+	# Remove this dir
+	dir.remove(dir_path)
