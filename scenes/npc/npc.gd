@@ -134,7 +134,7 @@ func _on_interactionZone_NPC_body_exited(body):
 
 # When player interact with npc with "e"
 func interaction_detected():
-	if not Utils.get_current_player().is_in_change_scene_area():
+	if not Utils.get_current_player().is_in_change_scene_area() and not Utils.get_current_player().get_player_in_looting_zone():
 		if player_in_interacting_zone:
 			# Proof if some interactions in process
 			for npc in self.get_parent().get_children():

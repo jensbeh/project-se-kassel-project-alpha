@@ -8,12 +8,13 @@ var zoom_factor = 1.0
 var max_zoom_factor = 1.5
 var min_zoom_factor = 1.0
 var deactivated = false
+var show_map = false
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set visibility on start
-	visible = false
+	set_visible(false)
 	
 	# Set zoom factor for minimap_camera
 	minimap_camera.zoom = Vector2(zoom_factor, zoom_factor) # min: 1; max: 1.5
@@ -52,38 +53,43 @@ func _on_ViewportContainer_gui_input(event):
 # Switch texture when change scene
 func update_minimap():
 	Utils.get_player_ui().without_minimap(false)
+	
+	var new_visibility : bool = false
 	match Utils.get_scene_manager().get_current_scene_type():
 		Constants.SceneType.CAMP:
 			max_zoom_factor = 1.8
 			min_zoom_factor = 1.0
 			zoom_factor = 1.0
-			visible = true
+			new_visibility = true
 			deactivated = false
 		
 		Constants.SceneType.HOUSE:
 			Utils.get_player_ui().without_minimap(true)
-			visible = false
+			new_visibility = false
 			deactivated = true
 		
 		Constants.SceneType.GRASSLAND:
 			max_zoom_factor = 2.1
 			min_zoom_factor = 1.3
 			zoom_factor = 1.3
-			visible = true
+			new_visibility = true
 			deactivated = false
 		
 		Constants.SceneType.DUNGEON:
 			Utils.get_player_ui().without_minimap(true)
-			visible = false
+			new_visibility = false
 			deactivated = true
 		
 		Constants.SceneType.MENU:
-			visible = false
+			new_visibility = false
 			deactivated = true
 	
-	if (!Utils.get_ui().has_map or !Utils.get_ui().show_map):
-		visible = false
+	# If player has no map
+	if not Utils.get_ui().has_map or not show_map:
+		new_visibility = false
 		deactivated = true
+	
+	visible = new_visibility
 	
 	set_camera_limits()
 
@@ -103,3 +109,23 @@ func set_camera_limits():
 			minimap_camera.limit_top = -10000000
 			minimap_camera.limit_right = 10000000
 			minimap_camera.limit_bottom = 794
+
+
+# Method to set visibility of map
+func set_show_map(new_show_map):
+	show_map = new_show_map
+	deactivated = not new_show_map
+	
+	# Update player ui with hotbar
+	Utils.get_player_ui().without_minimap(not new_show_map)
+
+
+# Method to set visibility of map
+func set_visible(is_visible):
+	visible = is_visible
+	set_show_map(is_visible)
+
+
+# Method to return visibility of map
+func is_visible():
+	return show_map

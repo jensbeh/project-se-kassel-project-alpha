@@ -658,13 +658,13 @@ func set_current_player_data():
 	# set scenePlayer data
 	PlayerData.set_path(uuid)
 	PlayerData.load_player_data()
-
+	
 	# set hotbar & light
 	Utils.get_hotbar().load_hotbar()
 	Utils.get_current_player().set_light(save_game_data.light)
 	Utils.get_ui().has_map = save_game_data.has_map
-	Utils.get_ui().show_map = save_game_data.show_map
-
+	Utils.get_minimap().set_show_map(save_game_data.show_map)
+	
 	# sets lp & weapon
 	Utils.get_current_player().set_max_health(save_game_data.maxLP)
 	Utils.get_current_player().set_gold(save_game_data.gold)

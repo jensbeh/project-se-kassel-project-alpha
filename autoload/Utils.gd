@@ -153,6 +153,11 @@ func get_minimap():
 	return get_ui().get_node("/root/Main/UI/Minimap")
 
 
+# Method to return the dialog_box node
+func get_dialogue_box():
+	return get_ui().get_node_or_null("DialogueBox")
+
+
 # Method to return the game menu node
 func get_game_menu():
 	return get_ui().get_node_or_null("GameMenu")
@@ -599,43 +604,6 @@ func get_random_boss_preload():
 	return Constants.PreloadBossScene[randi() % Constants.PreloadBossScene.size()]
 
 
-# Method to preload game -> called ONLY! from StartScreen
-# When adding here some preloads need to stop in following method in case game is closing while loading
-func preload_game():
-	print("GAME: Preloading...")
-	# Measure time
-	var time_start = OS.get_system_time_msecs()
-	var time_now = 0
-	
-	game_is_preloading = true
-	
-	# Load here everything which needs to be preloaded
-	# Preload all scenes, music, ...
-	
-	# Create/Load game files
-	FileManager.on_game_start()
-	# Load variables
-	Constants.preload_variables()
-	# Load AStars
-	PathfindingService.preload_astars()
-	
-	game_is_preloading = false
-	
-	# Calculate needed time
-	time_now = OS.get_system_time_msecs()
-	var time_elapsed = time_now - time_start
-	
-	print("GAME: Preload finished! (" + str(time_elapsed / 1000.0) + " sec)")
-
-# Method to stop preloading -> is called if game is closed while loading/StartScreen
-func stop_preload_game():
-	Constants.stop_preloading()
-	PathfindingService.stop_preloading()
-
-func is_game_preloading():
-	return game_is_preloading
-
-
 # Method to check if node is valid and still present
 func is_node_valid(node):
 	if is_instance_valid(node) and node != null and not node.is_queued_for_deletion() and node.is_inside_tree():
@@ -717,7 +685,7 @@ func save_game(animation):
 	data.time = DayNightCycle.get_current_time()
 	data.passed_days = DayNightCycle.get_passed_days_since_start()
 	# map informations
-	data.show_map = get_ui().show_map
+	data.show_map = get_minimap().is_visible()
 	data.has_map = get_ui().has_map
 	FileManager.save_player_data(data)
 	PlayerData.save_inventory()

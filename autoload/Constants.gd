@@ -59,6 +59,14 @@ var IS_PLAYER_INVINCIBLE = false # Default: false
 const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = false # Default: false
 var HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 
+
+"""
+#################
+## PATHFINDING
+#################
+"""
+const SHOW_PATHFINDING_POINTS = false # Default: false
+
 """
 #################
 ## LOADED MAPS
@@ -226,7 +234,20 @@ const RENDER_DISTANCE = 3 # Loaded chunks each direction except the one where th
 const POINTS_HORIZONTAL_PER_TILE = 3
 const POINTS_VERTICAL_PER_TILE = 3
 const POINT_SIZE_IN_PIXEL_PER_TILE = ceil(float(TILE_SIZE) / (POINTS_HORIZONTAL_PER_TILE - 1))
-
+const ASTAR_MAP_NAMES_PATHES = {
+	"map_dungeon1_lvl1": "res://scenes/dungeons/dungeon1/Dungeon1-lvl1.tscn",
+	"map_dungeon1_lvl2": "res://scenes/dungeons/dungeon1/Dungeon1-lvl2.tscn",
+	"map_dungeon1_lvl3": "res://scenes/dungeons/dungeon1/Dungeon1-lvl3.tscn",
+	"map_dungeon2_lvl1": "res://scenes/dungeons/dungeon2/Dungeon2-lvl1.tscn",
+	"map_dungeon2_lvl2": "res://scenes/dungeons/dungeon2/Dungeon2-lvl2.tscn",
+	"map_dungeon2_lvl3": "res://scenes/dungeons/dungeon2/Dungeon2-lvl3.tscn",
+	"map_dungeon2_lvl4": "res://scenes/dungeons/dungeon2/Dungeon2-lvl4.tscn",
+	"map_dungeon3_lvl1": "res://scenes/dungeons/dungeon3/Dungeon3-lvl1.tscn",
+	"map_dungeon3_lvl2": "res://scenes/dungeons/dungeon3/Dungeon3-lvl2.tscn",
+	"map_dungeon3_lvl3": "res://scenes/dungeons/dungeon3/Dungeon3-lvl3.tscn",
+	"map_dungeon3_lvl4": "res://scenes/dungeons/dungeon3/Dungeon3-lvl4.tscn",
+	"map_grassland": "res://scenes/grassland/Grassland.tscn",
+}
 
 """
 #################
@@ -1083,7 +1104,6 @@ func load_valid_window_sizes():
 	for window_size_dic in Constants.WINDOW_SIZES.values():
 		if window_size_dic.value < current_window_size:
 			valid_window_sizes.append(window_size_dic)
-	print(valid_window_sizes)
 
 
 # Returns the current window_size

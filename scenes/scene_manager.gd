@@ -9,6 +9,7 @@ var previouse_scene_path = ""
 var current_transition_data = null
 var previouse_transition_data = null
 var show_rescue_pay = false
+var wait_for_map_loaded = false
 
 # Nodes CurrentScreen
 onready var current_scene = $CurrentScene
@@ -29,7 +30,7 @@ func transition_to_scene(transition_data):
 	current_transition_data = transition_data
 	
 	# Mouse actions will be stopped until transition is done
-	Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_STOP)
+	Utils.get_main().disable_mouse_interaction(true)
 	
 	# Disabel movment & interaction of player
 	if Utils.get_current_player() != null:
@@ -58,6 +59,26 @@ func load_new_scene():
 	# Pause game
 	Utils.pause_game(true)
 	
+	var scene_path = current_transition_data.get_scene_path()
+	
+	if current_transition_data.get_transition_type() == Constants.TransitionType.GAME_SCENE:
+		if PreloadService.is_game_preloading():
+			if not PreloadService.is_map_loaded(scene_path):
+				wait_for_map_loaded = true
+				return
+	
+	continue_transition()
+
+
+func _process(_delta):
+	if wait_for_map_loaded:
+		var scene_path = current_transition_data.get_scene_path()
+		if PreloadService.is_map_loaded(scene_path):
+				wait_for_map_loaded = false
+				continue_transition()
+
+
+func continue_transition():
 	var scene_path = current_transition_data.get_scene_path()
 	
 	var scene = Constants.PreloadedMenusAndMaps[scene_path].instance()
@@ -155,7 +176,7 @@ func finish_transition():
 		Utils.get_minimap().update_minimap()
 		
 		# Mouse actions works now again
-		Utils.get_main().set_black_screen_mouse_filter(Control.MOUSE_FILTER_IGNORE)
+		Utils.get_main().disable_mouse_interaction(false)
 
 
 # Method is called when "GameFadeToNormal" animation finished and game is back to normal
