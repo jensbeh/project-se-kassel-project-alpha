@@ -2,7 +2,6 @@ extends CanvasLayer
 
 # Variables
 var input
-var show_map = false
 var has_map = false
 var is_dialog = false
 
@@ -91,22 +90,20 @@ func _input(event):
 		# open map
 		elif ((Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.CAMP or 
 		Utils.get_scene_manager().get_current_scene_type() == Constants.SceneType.GRASSLAND) and not is_dialog):
-			if event.is_action_pressed("map") and has_map and !show_map:
+			if event.is_action_pressed("map") and has_map and !Utils.get_minimap().is_visible():
 				# Sound
 				Utils.set_and_play_sound(Constants.PreloadedSounds.open_close)
 				
-				show_map = true
-				Utils.get_current_player().get_data().show_map = show_map
-				Utils.get_minimap().update_minimap()
+				Utils.get_current_player().get_data().show_map = true
+				Utils.get_minimap().set_visible(true)
 		
 			# close map
-			elif event.is_action_pressed("map") and has_map and show_map:
+			elif event.is_action_pressed("map") and has_map and Utils.get_minimap().is_visible():
 				# Sound
 				Utils.set_and_play_sound(Constants.PreloadedSounds.open_close)
 				
-				show_map = false
-				Utils.get_current_player().get_data().show_map = show_map
-				Utils.get_minimap().update_minimap()
+				Utils.get_current_player().get_data().show_map = false
+				Utils.get_minimap().set_visible(false)
 	
 	# Close Quest List
 	if event.is_action_pressed("esc") and get_node_or_null("QuestList") != null:

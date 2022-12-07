@@ -75,6 +75,7 @@ var stamina_cooldown = 0
 var weapon_weight = 0
 var stairs_speed = false
 var is_in_preview_mode = false
+var player_in_looting_zone = false
 
 # Variables
 var is_attacking = false
@@ -1016,8 +1017,8 @@ func player_killed():
 	sound_breath.stop()
 	
 	Utils.show_death_screen()
-	if Utils.get_ui().get_node_or_null("DialogueBox") != null:
-		Utils.get_ui().get_node_or_null("DialogueBox").queue_free()
+	if Utils.get_dialogue_box() != null:
+		Utils.get_dialogue_box().queue_free()
 
 
 # Method to return true if player is dying/died otherwise false -> called from scene_manager
@@ -1194,3 +1195,14 @@ func set_stamina_cooldown(new_cooldown):
 # Method to enable or disable preview mode
 func set_preview_mode(shoule_be_preview):
 	is_in_preview_mode = shoule_be_preview
+
+
+# Method to set if player is in looting zone or not
+func set_player_in_looting_zone(is_player_in_looting_zone):
+	print(is_player_in_looting_zone)
+	player_in_looting_zone = is_player_in_looting_zone
+
+
+# Method to return if player is in looting zone
+func get_player_in_looting_zone():
+	return player_in_looting_zone

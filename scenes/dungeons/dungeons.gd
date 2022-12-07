@@ -145,8 +145,8 @@ func setup_player():
 	find_node("playerlayer").add_child(Utils.get_current_player())
 	
 	# Connect signals
-	Utils.get_current_player().connect("player_interact", self, "interaction_detected")
-	Utils.get_current_player().connect("player_interact", self, "interaction")
+	Utils.get_current_player().connect("player_interact", self, "interaction_change_scene")
+	Utils.get_current_player().connect("player_interact", self, "interaction_treasure")
 
 
 # Method to set transition_data which contains stuff about the player and the transition
@@ -155,7 +155,7 @@ func set_transition_data(transition_data):
 
 
 # Method to handle collision detetcion dependent of the collision object type
-func interaction_detected():
+func interaction_change_scene():
 	if Utils.get_current_player().is_in_change_scene_area():
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Steps_Stairs)
 		var next_scene_path = current_area.get_meta("next_scene_path")
@@ -225,8 +225,8 @@ func body_exited_safe_area(body, safeArea):
 # Method to disconnect all signals
 func clear_signals():
 	# Player
-	Utils.get_current_player().disconnect("player_interact", self, "interaction_detected")
-	Utils.get_current_player().disconnect("player_interact", self, "interaction")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_change_scene")
+	Utils.get_current_player().disconnect("player_interact", self, "interaction_treasure")
 	
 	# Change scene areas
 	var changeScenesObject = find_node("changeScenes")
@@ -355,12 +355,14 @@ func spawn_loot(position, mob_name):
 func body_entered_treasure(body, treasureArea):
 	if body.name == "Player":
 		treasure_dict[treasureArea][0] = true
+		Utils.get_current_player().set_player_in_looting_zone(true)
 
 # Method which is called when a body has exited a treasure Area
 func body_exited_treasure(body, treasureArea):
 	if body.name == "Player":
 		treasure_dict[treasureArea][0] = false
 		interacted = false
+		Utils.get_current_player().set_player_in_looting_zone(false)
 
 
 # Setup all treasure objectes/Area2D's on start
@@ -426,13 +428,13 @@ func setup_treasure_areas():
 
 
 # when interacted, open dialog
-func interaction():
+func interaction_treasure():
 	var treasure
 	for i in treasure_dict.keys():
 		if treasure_dict[i][0]:
 			treasure = i
 	if treasure != null:
-		if treasure_dict[treasure][0] and !interacted:
+		if treasure_dict[treasure][0] and !interacted and Utils.get_dialogue_box() == null:
 			interacted = true
 			Utils.get_current_player().set_movement(false)
 			Utils.get_current_player().set_player_can_interact(false)

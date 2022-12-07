@@ -625,8 +625,7 @@ func _on_Icon_gui_input(event):
 				elif GameData.item_data[str(PlayerData.inv_data[slot]["Item"])]["Category"] == "Map" and !Utils.get_ui().has_map:
 					Utils.set_and_play_sound(Constants.PreloadedSounds.Equip)
 					Utils.get_ui().has_map = true
-					Utils.get_ui().show_map = true
-					Utils.get_minimap().update_minimap()
+					Utils.get_minimap().set_visible(true)
 					PlayerData.inv_data[slot]["Item"] = null
 					PlayerData.inv_data[slot]["Stack"] = null
 					get_node("../Icon/Sprite").set_texture(null)

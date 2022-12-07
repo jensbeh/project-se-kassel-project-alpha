@@ -46,7 +46,7 @@ func _on_Area2D_body_exited(body):
 
 # when interacted, open loot panel for looting
 func interaction():
-	if player_in_looting_zone and !interacted and Utils.get_ui().get_node_or_null("DialogueBox") == null:
+	if player_in_looting_zone and !interacted and Utils.get_dialogue_box() == null:
 		Utils.get_current_player().set_movement(false)
 		if Utils.get_loot_panel() == null:
 			loot_panel = Constants.PreloadedScenes.LootPanelScene.instance()

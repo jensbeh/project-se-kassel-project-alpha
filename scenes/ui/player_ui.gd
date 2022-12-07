@@ -139,8 +139,10 @@ func change_heart_number(number_heart):
 
 # position for hotbar with or without minimap
 func without_minimap(value):
-	if (value or (!Utils.get_ui().has_map or !Utils.get_ui().show_map)):
+	# Without minimap
+	if (value or (!Utils.get_ui().has_map or !Utils.get_minimap().is_visible())):
 		get_node("Hotbar").rect_position = Vector2(-916,456)
+	# With minimap
 	else:
 		get_node("Hotbar").rect_position = Vector2(-504,456)
 

@@ -40,18 +40,20 @@ func init(init_current_spawn_area, init_navigation_tile_map, init_scene_type, in
 func _on_Area2D_body_entered(body):
 	if body == Utils.get_current_player():
 		player_in_looting_zone = true
+		Utils.get_current_player().set_player_in_looting_zone(true)
 
 
 # When player leave zone
 func _on_Area2D_body_exited(body):
 	if body == Utils.get_current_player():
 		player_in_looting_zone = false
+		Utils.get_current_player().set_player_in_looting_zone(false)
 		interacted = false
 
 
 # when interacted, open dialog
 func interaction():
-	if player_in_looting_zone and !interacted:
+	if player_in_looting_zone and !interacted and Utils.get_dialogue_box() == null:
 		interacted = true
 		Utils.get_current_player().set_movement(false)
 		Utils.get_current_player().set_player_can_interact(false)

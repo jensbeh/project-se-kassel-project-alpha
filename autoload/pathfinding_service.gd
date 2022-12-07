@@ -107,7 +107,7 @@ func stop_preloading():
 
 
 # Method is called when new scene is loaded with mobs with pathfinding
-func init(new_map_name = "", _new_astar2DVisualizerNode = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
+func init(new_map_name = "", new_astar2DVisualizerNode = null, new_ambientMobsNavigationTileMap : TileMap = null, new_map_size_in_tiles : Vector2 = Vector2.ZERO, new_map_min_global_pos = null):
 	print("PATHFINDING_SERVICE: Init")
 	# Check if thread is active wait to stop
 	if pathfinder_thread.is_active():
@@ -126,10 +126,11 @@ func init(new_map_name = "", _new_astar2DVisualizerNode = null, new_ambientMobsN
 	pathfinder_thread.start(self, "generate_pathes")
 	can_generate_pathes = true
 	
-#	# Init visualizer
-#	astar2DVisualizerNode = new_astar2DVisualizerNode
-#	if astar2DVisualizerNode != null:
-#		astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["bosses"])
+	# Init visualizer
+	if Constants.CAN_DEBUG and Constants.SHOW_PATHFINDING_POINTS:
+		astar2DVisualizerNode = new_astar2DVisualizerNode
+		if astar2DVisualizerNode != null:
+			astar2DVisualizerNode.call_deferred("visualize", astar_nodes_cache[map_name]["mobs"])
 
 
 # Method to start pathfinding service (call after init)
@@ -676,9 +677,10 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 				astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][collisionshape_node.get_instance_id()].append(current_point_index)
 				astar_nodes_cache[map_name]["bosses"].set_point_disabled(current_point_index, true)
 	
-#	# Update obstacles visual
-#	if astar2DVisualizerNode != null:
-#		astar2DVisualizerNode.call_deferred("update_disabled_points")
+	# Update obstacles visual
+	if Constants.CAN_DEBUG and Constants.SHOW_PATHFINDING_POINTS:
+		if astar2DVisualizerNode != null:
+			astar2DVisualizerNode.call_deferred("update_disabled_points")
 
 
 # Method to remove dynamic obstacle from astar
@@ -698,9 +700,10 @@ func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
 	# Delete obstacle from dic
 	astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].erase(collisionshape_node.get_instance_id())
 	
-#	# Update obstacles visual
-#	if astar2DVisualizerNode != null:
-#		astar2DVisualizerNode.call_deferred("update_disabled_points")
+	# Update obstacles visual
+	if Constants.CAN_DEBUG and Constants.SHOW_PATHFINDING_POINTS:
+		if astar2DVisualizerNode != null:
+			astar2DVisualizerNode.call_deferred("update_disabled_points")
 
 
 # New position for MOB has arrived

@@ -59,6 +59,14 @@ var IS_PLAYER_INVINCIBLE = false # Default: false
 const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = false # Default: false
 var HAS_PLAYER_INFINIT_STAMINA = false # Default: false
 
+
+"""
+#################
+## PATHFINDING
+#################
+"""
+const SHOW_PATHFINDING_POINTS = false # Default: false
+
 """
 #################
 ## LOADED MAPS

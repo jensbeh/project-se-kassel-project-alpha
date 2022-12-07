@@ -153,6 +153,11 @@ func get_minimap():
 	return get_ui().get_node("/root/Main/UI/Minimap")
 
 
+# Method to return the dialog_box node
+func get_dialogue_box():
+	return get_ui().get_node_or_null("DialogueBox")
+
+
 # Method to return the game menu node
 func get_game_menu():
 	return get_ui().get_node_or_null("GameMenu")
@@ -680,7 +685,7 @@ func save_game(animation):
 	data.time = DayNightCycle.get_current_time()
 	data.passed_days = DayNightCycle.get_passed_days_since_start()
 	# map informations
-	data.show_map = get_ui().show_map
+	data.show_map = get_minimap().is_visible()
 	data.has_map = get_ui().has_map
 	FileManager.save_player_data(data)
 	PlayerData.save_inventory()

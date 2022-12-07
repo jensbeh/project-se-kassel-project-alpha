@@ -551,7 +551,7 @@ func start_game():
 	if data.has("has_map"):
 		Utils.get_ui().has_map = data.has_map
 	if data.has("show_map"):
-		Utils.get_ui().show_map = data.show_map
+		Utils.get_minimap().set_show_map(data.show_map)
 	
 	Utils.get_current_player().health_cooldown = data.cooldown
 	Utils.get_current_player().stamina_cooldown = data.stamina_cooldown
