@@ -32,6 +32,7 @@ onready var attackSwingSprite = $AttackSwing
 onready var sound_walk = $SoundWalk
 onready var sound = $Sound
 onready var sound_breath = $SoundBreath
+onready var sound_hurt = $SoundHurt
 
 # Count Textures, Count Colors
 var curr_body: int = 0 #0-7, 1
@@ -952,9 +953,8 @@ func hurt_player():
 		hurting = true
 	if !collecting:
 		set_movement(false)
-	sound.stop()
-	sound.stream = Constants.PreloadedSounds.Hurt
-	sound.play()
+	sound_hurt.stop()
+	sound_hurt.play()
 	animation_state.start("Hurt")
 
 
