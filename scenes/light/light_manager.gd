@@ -25,8 +25,8 @@ func _ready():
 
 
 func _process(_delta):
+	update_shader()
 	if Utils.get_current_player() != null and Utils.is_node_valid(Utils.get_current_player()) and Utils.is_node_valid(Utils.get_current_player().get_node("Camera2D")):
-		update_shader()
 		var t = Transform2D(0, Vector2())
 		# Use camera for the correct position of the current screen to show correct light positions
 		t = update_shader_transformation()
