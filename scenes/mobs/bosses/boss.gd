@@ -159,6 +159,11 @@ func _ready():
 	# Enable raycast
 	raycast.enabled = true
 	
+	collision.set_deferred("disabled", false)
+	hitbox.monitorable = true
+	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
+	$DamageArea.set_deferred("monitoring", true)
+	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)

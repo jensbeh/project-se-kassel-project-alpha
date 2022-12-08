@@ -776,6 +776,7 @@ parameters/WALK/blend_position = Vector2( 0.00155044, 0.00578034 )
 visible = false
 position = Vector2( 0, -3 )
 shape = SubResource( 7 )
+disabled = true
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 1 )]
 visible = false

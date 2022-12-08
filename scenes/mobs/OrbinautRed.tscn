@@ -181,7 +181,6 @@ script = ExtResource( 2 )
 position = Vector2( 0, -1 )
 texture = ExtResource( 1 )
 hframes = 3
-frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Die = SubResource( 35 )
@@ -199,6 +198,7 @@ parameters/MOVE/TimeScale/scale = 1.0
 visible = false
 position = Vector2( 0, -5 )
 shape = SubResource( 7 )
+disabled = true
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 4 )]
 visible = false

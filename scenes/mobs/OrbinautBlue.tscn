@@ -198,6 +198,7 @@ parameters/MOVE/TimeScale/scale = 1.0
 visible = false
 position = Vector2( 0, -5 )
 shape = SubResource( 7 )
+disabled = true
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 4 )]
 visible = false

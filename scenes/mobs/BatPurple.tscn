@@ -716,7 +716,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 5
+frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -753,6 +753,7 @@ parameters/WALK/blend_position = Vector2( 0.00155044, 0.00578034 )
 visible = false
 position = Vector2( 0, -3 )
 shape = SubResource( 7 )
+disabled = true
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 3 )]
 visible = false
