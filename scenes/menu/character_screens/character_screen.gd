@@ -47,10 +47,10 @@ func _ready():
 		Utils.get_player().visible = true
 		# disabled the play and delete buttons
 		for child in list.get_children():
-			child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
-			child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
-		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
-		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
+			child.get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", true)
+			child.get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", true)
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", false)
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", false)
 	else:
 		Utils.get_player().visible = false
 	Utils.get_player().set_movement(false)
@@ -145,10 +145,10 @@ func delete_character():
 		load_character()
 		change_menu_color()
 		for child in list.get_children():
-			child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
-			child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
-		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
-		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
+			child.get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", true)
+			child.get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", true)
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", false)
+		list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", false)
 	else:
 		selected_character = 0
 		Utils.get_player().visible = false
@@ -268,10 +268,10 @@ func _input(_event):
 			list.get_child(selected_character).grab_focus()
 			load_character()
 			for child in list.get_children():
-				child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
-				child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
-			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
-			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
+				child.get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", true)
+				child.get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", true)
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", false)
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", false)
 		change_menu_color()
 	elif Input.is_action_just_pressed("ui_up"):
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Choose)
@@ -281,10 +281,10 @@ func _input(_event):
 			list.get_child(selected_character).grab_focus()
 			load_character()
 			for child in list.get_children():
-				child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
-				child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
-			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
-			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
+				child.get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", true)
+				child.get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", true)
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", false)
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", false)
 		change_menu_color()
 	elif Input.is_action_just_pressed("enter"):
 		Utils.set_and_play_sound(Constants.PreloadedSounds.Select)
@@ -298,10 +298,10 @@ func on_click(id):
 			unchange_menu_color()
 			selected_character = item.get_index()
 			for child in list.get_children():
-				child.get_child(1).get_child(0).get_child(1).get_child(0).disabled = true
-				child.get_child(1).get_child(0).get_child(1).get_child(1).disabled = true
-			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).disabled = false
-			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).disabled = false
+				child.get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", true)
+				child.get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", true)
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(0).set_deferred("disabled", false)
+			list.get_child(selected_character).get_child(1).get_child(0).get_child(1).get_child(1).set_deferred("disabled", false)
 			load_character()
 
 

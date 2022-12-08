@@ -147,8 +147,8 @@ func _ready():
 	# Set frames
 	reset_frame()
 	
-	HairColorLeftNode.disabled = false
-	HairColorRightNode.disabled = false
+	HairColorLeftNode.set_deferred("disabled", false)
+	HairColorRightNode.set_deferred("disabled", false)
 	
 	# Say SceneManager that new_scene is ready
 	Utils.get_scene_manager().finish_transition()
@@ -287,12 +287,12 @@ func _on_HairLeft_pressed():
 	HairCountNode.set_text(str(curr_hair))
 	if curr_hair == 0:
 		hair.visible = false
-		HairColorLeftNode.disabled = true
-		HairColorRightNode.disabled = true
+		HairColorLeftNode.set_deferred("disabled", true)
+		HairColorRightNode.set_deferred("disabled", true)
 	else:
 		hair.visible = true
-		HairColorLeftNode.disabled = false
-		HairColorRightNode.disabled = false
+		HairColorLeftNode.set_deferred("disabled", false)
+		HairColorRightNode.set_deferred("disabled", false)
 		scenePlayer.set_texture("curr_hair", curr_hair-1)
 
 
@@ -304,12 +304,12 @@ func _on_HairRight_pressed():
 	HairCountNode.set_text(str(curr_hair))
 	if curr_hair == 0:
 		hair.visible = false
-		HairColorLeftNode.disabled = true
-		HairColorRightNode.disabled = true
+		HairColorLeftNode.set_deferred("disabled", true)
+		HairColorRightNode.set_deferred("disabled", true)
 	else:
 		hair.visible = true
-		HairColorLeftNode.disabled = false
-		HairColorRightNode.disabled = false
+		HairColorLeftNode.set_deferred("disabled", false)
+		HairColorRightNode.set_deferred("disabled", false)
 		scenePlayer.set_texture("curr_hair", curr_hair-1)
 
 
