@@ -2,6 +2,8 @@ extends Node2D
 
 # Nodes
 onready var mainMenuAnimationPlayer = $MainMenuAnimationPlayer
+onready var versionLabel = $VersionLabel
+
 
 func _ready():
 	if Utils.get_music_player().stream != Constants.PreloadedMusic.Menu_Music:
@@ -18,7 +20,7 @@ func _ready():
 	get_node("Settings").set_text(tr("SETTINGS"))
 	get_node("Credits").set_text(tr("CREDITS"))
 	get_node("Exit to Desktop").set_text(tr("EXIT_TO_DESKTOP"))
-
+	versionLabel.text = "V" + Constants.GAME_VERSION_NR
 
 # Method to destroy the scene
 # Is called when SceneManager changes scene after loading new scene

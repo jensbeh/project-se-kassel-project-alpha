@@ -47,9 +47,9 @@ func check_version():
 				version_file.close()
 				
 				# Compare versions
-				# If not equal -> update/delete
+				# Not equal -> update/delete
 				if version != Constants.GAME_VERSION_NR:
-					printerr("FILE_MANAGER: Version not equal -> Delete all")
+					printerr("FILE_MANAGER: Version not equal (old: " + str(version) + ", new: " + str(Constants.GAME_VERSION_NR) + ") -> Delete all")
 					
 					# Delete all -> Maybe update possibility
 					delete_directory(Constants.APP_DATA_FOLDER_PATH)
@@ -59,10 +59,14 @@ func check_version():
 					
 					# Need new version nr
 					create_new_version = true
+				
+				# Equal
+				else:
+					print("FILE_MANAGER: Version is equal (version: " + str(Constants.GAME_VERSION_NR) + ")")
 			
 			# Version file NOT existing - Very old version
 			else:
-				printerr("FILE_MANAGER: Version file NOT existing -> Delete all")
+				printerr("FILE_MANAGER: Version file NOT existing (new: " + str(Constants.GAME_VERSION_NR) + ") -> Delete all")
 				
 				# Delete all
 				delete_directory(Constants.APP_DATA_FOLDER_PATH)
