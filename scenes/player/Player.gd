@@ -1199,7 +1199,6 @@ func set_preview_mode(shoule_be_preview):
 
 # Method to set if player is in looting zone or not
 func set_player_in_looting_zone(is_player_in_looting_zone):
-	print(is_player_in_looting_zone)
 	player_in_looting_zone = is_player_in_looting_zone
 
 
