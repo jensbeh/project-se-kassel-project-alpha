@@ -1151,7 +1151,7 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
 	Utils.save_game(true)
 	var lost_string = tr("LOST_ITEMS") + ": \n"
-	if lost_gold > 0 and lost_items.size() < 4:
+	if lost_gold > 0 and lost_items.size() <= 4:
 		lost_string += " • " + str(lost_gold) + " Gold" + "\n"
 	elif lost_gold > 0:
 		lost_string += str(lost_gold) + " Gold"
