@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/menu/main_menu_screen.gd" type="Script" id=1]
 [ext_resource path="res://assets/gameName.png" type="Texture" id=2]
 [ext_resource path="res://assets/mainMenuBackground.png" type="Texture" id=3]
+[ext_resource path="res://assets/Hack_Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="Theme" id=1]
 
@@ -109,6 +110,10 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 0 ) ]
 }
 
+[sub_resource type="DynamicFont" id=4]
+size = 22
+font_data = ExtResource( 4 )
+
 [node name="MainMenuScreen" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -181,6 +186,14 @@ text = "Exit to Desktop"
 [node name="MainMenuAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/FadeIn = SubResource( 2 )
 anims/RESET = SubResource( 3 )
+
+[node name="VersionLabel" type="Label" parent="."]
+margin_left = 24.0
+margin_top = 1035.0
+margin_right = 102.0
+margin_bottom = 1062.0
+custom_fonts/font = SubResource( 4 )
+text = "V1.0.0"
 
 [connection signal="pressed" from="Start Game" to="." method="_on_Start_Game_pressed"]
 [connection signal="pressed" from="Settings" to="." method="_on_Settings_pressed"]

@@ -32,6 +32,7 @@ onready var attackSwingSprite = $AttackSwing
 onready var sound_walk = $SoundWalk
 onready var sound = $Sound
 onready var sound_breath = $SoundBreath
+onready var sound_hurt = $SoundHurt
 
 # Count Textures, Count Colors
 var curr_body: int = 0 #0-7, 1
@@ -239,28 +240,27 @@ func step_sound(value):
 # Method handles key inputs
 func _input(event):
 	if not is_player_paused:
-		if event.is_action_pressed("e"):
-			if (player_can_interact and not is_attacking and not is_player_dying()):
+		if event.is_action_pressed("e") and player_can_interact and not is_attacking and not is_player_dying():
 				emit_signal("player_interact")
-			
-			# Remove the Loot Panel
-			elif Utils.get_loot_panel() != null:
-				# Call close Method in Loot Panel
-				Utils.get_loot_panel()._on_Close_pressed()
-				
-			# Remove the trade inventory
-			elif Utils.get_trade_inventory() != null:
-				Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
-				Utils.get_trade_inventory().queue_free()
-				Utils.get_current_player().set_player_can_interact(true)
-				Utils.get_current_player().set_movement(true)
-				Utils.get_current_player().set_movment_animation(true)
-				# Reset npc interaction state
-				for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
-					npc.set_interacted(false)
-				Utils.save_game(true)
-				MerchantData.save_merchant_inventory()
-					
+		
+		# Remove the Loot Panel
+		elif (event.is_action_pressed("esc") or event.is_action_pressed("e")) and Utils.get_loot_panel() != null:
+			# Call close Method in Loot Panel
+			Utils.get_loot_panel()._on_Close_pressed()
+		
+		# Remove the trade inventory
+		elif (event.is_action_pressed("esc") or event.is_action_pressed("e")) and Utils.get_trade_inventory() != null:
+			Utils.set_and_play_sound(Constants.PreloadedSounds.OpenUI)
+			Utils.get_trade_inventory().queue_free()
+			Utils.get_current_player().set_player_can_interact(true)
+			Utils.get_current_player().set_movement(true)
+			Utils.get_current_player().set_movment_animation(true)
+			# Reset npc interaction state
+			for npc in Utils.get_scene_manager().get_current_scene().find_node("npclayer").get_children():
+				npc.set_interacted(false)
+			Utils.save_game(true)
+			MerchantData.save_merchant_inventory()
+		
 		# Attack with "left_mouse"
 		elif event.is_action_pressed("attack") and not is_attacking and can_attack and movement and not hurting and not dying and not collecting:
 			if player_stamina > weapon_weight * Constants.WEAPON_STAMINA_USE:
@@ -952,9 +952,8 @@ func hurt_player():
 		hurting = true
 	if !collecting:
 		set_movement(false)
-	sound.stop()
-	sound.stream = Constants.PreloadedSounds.Hurt
-	sound.play()
+	sound_hurt.stop()
+	sound_hurt.play()
 	animation_state.start("Hurt")
 
 
@@ -1152,7 +1151,7 @@ func rescue_pay():
 			PlayerData.inv_data["Inv" + str(payed_item)]["Stack"] = null
 	Utils.save_game(true)
 	var lost_string = tr("LOST_ITEMS") + ": \n"
-	if lost_gold > 0 and lost_items.size() < 4:
+	if lost_gold > 0 and lost_items.size() <= 4:
 		lost_string += " • " + str(lost_gold) + " Gold" + "\n"
 	elif lost_gold > 0:
 		lost_string += str(lost_gold) + " Gold"
@@ -1199,7 +1198,6 @@ func set_preview_mode(shoule_be_preview):
 
 # Method to set if player is in looting zone or not
 func set_player_in_looting_zone(is_player_in_looting_zone):
-	print(is_player_in_looting_zone)
 	player_in_looting_zone = is_player_in_looting_zone
 
 

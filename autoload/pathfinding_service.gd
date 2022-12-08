@@ -30,6 +30,7 @@ var boss_mutex = Mutex.new()
 var mobs_with_new_position : Dictionary = {}
 var bosses_with_new_position : Dictionary = {}
 
+
 func _ready():
 	print("PATHFINDING_SERVICE: Start")
 
@@ -40,26 +41,26 @@ func preload_astars():
 	var astar_nodes_file_dics : Dictionary = FileManager.load_astar_files()
 	
 	for astar_dic_key in astar_nodes_file_dics.keys():
-		map_name = astar_dic_key
+		var iterating_map_name = astar_dic_key
 		
 		# Check if preload is canceled
 		if preload_stopped:
 			return
 		
 		# For debugging
-		if "grassland" in map_name and not Constants.LOAD_GRASSLAND_MAP:
+		if "grassland" in iterating_map_name and not Constants.LOAD_GRASSLAND_MAP:
 			# Skip grassland
-			printerr("PATHFINDING: NOT LOADED MAP \"" + str(map_name) + "\"")
+			printerr("PATHFINDING: NOT LOADED MAP \"" + str(iterating_map_name) + "\"")
 			continue
-		elif "dungeon" in map_name and not Constants.LOAD_DUNGEONS_MAPS:
+		elif "dungeon" in iterating_map_name and not Constants.LOAD_DUNGEONS_MAPS:
 			# Skip all dungeons
-			printerr("PATHFINDING: NOT LOADED MAP \"" + str(map_name) + "\"")
+			printerr("PATHFINDING: NOT LOADED MAP \"" + str(iterating_map_name) + "\"")
 			continue
 		
 		
 		# Create new AStars and store them to use later again
-		if not astar_nodes_cache.has(map_name):
-			astar_nodes_cache[map_name] = {
+		if not astar_nodes_cache.has(iterating_map_name):
+			astar_nodes_cache[iterating_map_name] = {
 								"mobs" : null,
 								"bosses" : null,
 								"ambient_mobs" : null,
@@ -68,36 +69,35 @@ func preload_astars():
 								}
 		
 		# Mobs
-		astar_nodes_cache[map_name]["mobs"] = CustomAstar.new()
-		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
-		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[map_name]["mobs"]["points"])
+		astar_nodes_cache[iterating_map_name]["mobs"] = CustomAstar.new()
+		astar_add_walkable_cells_for_mobs(astar_nodes_file_dics[iterating_map_name]["mobs"]["points"], iterating_map_name)
+		astar_connect_walkable_cells_for_mobs(astar_nodes_file_dics[iterating_map_name]["mobs"]["points"], iterating_map_name)
 		
 		# Check if preload is canceled
 		if preload_stopped:
 			return
 		
 		# Bosses
-		if astar_nodes_file_dics[map_name]["bosses"]["points"].size() > 0:
-			astar_nodes_cache[map_name]["bosses"] = CustomAstar.new()
-			astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
-			astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[map_name]["bosses"]["points"])
+		if astar_nodes_file_dics[iterating_map_name]["bosses"]["points"].size() > 0:
+			astar_nodes_cache[iterating_map_name]["bosses"] = CustomAstar.new()
+			astar_add_walkable_cells_for_bosses(astar_nodes_file_dics[iterating_map_name]["bosses"]["points"], iterating_map_name)
+			astar_connect_walkable_cells_for_bosses(astar_nodes_file_dics[iterating_map_name]["bosses"]["points"], iterating_map_name)
 		
 		# Check if preload is canceled
 		if preload_stopped:
 			return
 		
 		# Ambient mobs
-		if astar_nodes_file_dics[map_name]["ambient_mobs"]["points"].size() > 0:
-			astar_nodes_cache[map_name]["ambient_mobs"] = CustomAstar.new()
-			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
-			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[map_name]["ambient_mobs"]["points"])
+		if astar_nodes_file_dics[iterating_map_name]["ambient_mobs"]["points"].size() > 0:
+			astar_nodes_cache[iterating_map_name]["ambient_mobs"] = CustomAstar.new()
+			astar_add_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[iterating_map_name]["ambient_mobs"]["points"], iterating_map_name)
+			astar_connect_walkable_cells_for_ambient_mobs(astar_nodes_file_dics[iterating_map_name]["ambient_mobs"]["points"], iterating_map_name)
 		
 		# Emit signal that map is loaded
-		emit_signal("map_loaded", map_name)
+		emit_signal("map_loaded", iterating_map_name)
 		
-		print("PATHFINDING: LOADED MAP \"" + str(map_name) + "\"")
+		print("PATHFINDING: LOADED MAP \"" + str(iterating_map_name) + "\"")
 	
-	map_name = ""
 	astar_nodes_file_dics.clear()
 
 
@@ -361,11 +361,11 @@ func clean_thread():
 
 
 # Loops through all cells within the map's bounds and
-# adds all points to the astar_nodes_cache[map_name]["mobs"], except the obstacles.
-func astar_add_walkable_cells_for_mobs(astar_node_points_dic):
+# adds all points to the astar_nodes_cache[current_map_name]["mobs"], except the obstacles.
+func astar_add_walkable_cells_for_mobs(astar_node_points_dic, current_map_name):
 	for point in astar_node_points_dic.keys():
 		var point_index = astar_node_points_dic[point]["point_index"]
-		astar_nodes_cache[map_name]["mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
+		astar_nodes_cache[current_map_name]["mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 		
 		# Check if preload is canceled
 		if preload_stopped:
@@ -373,11 +373,11 @@ func astar_add_walkable_cells_for_mobs(astar_node_points_dic):
 
 
 # Loops through all cells within the map's bounds and
-# adds all points to the astar_nodes_cache[map_name]["mobs"], except the obstacles.
-func astar_add_walkable_cells_for_bosses(astar_node_points_dic):
+# adds all points to the astar_nodes_cache[current_map_name]["mobs"], except the obstacles.
+func astar_add_walkable_cells_for_bosses(astar_node_points_dic, current_map_name):
 	for point in astar_node_points_dic.keys():
 		var point_index = astar_node_points_dic[point]["point_index"]
-		astar_nodes_cache[map_name]["bosses"].add_point(point_index, Vector3(point.x, point.y, 0.0))
+		astar_nodes_cache[current_map_name]["bosses"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 		
 		# Check if preload is canceled
 		if preload_stopped:
@@ -385,50 +385,50 @@ func astar_add_walkable_cells_for_bosses(astar_node_points_dic):
 
 
 # Loops through all cells within the map's bounds and
-# adds all points to the astar_nodes_cache[map_name]["ambient_mobs"], except the obstacles.
-func astar_add_walkable_cells_for_ambient_mobs(astar_node_points_dic):
+# adds all points to the astar_nodes_cache[current_map_name]["ambient_mobs"], except the obstacles.
+func astar_add_walkable_cells_for_ambient_mobs(astar_node_points_dic, current_map_name):
 	for point in astar_node_points_dic.keys():
 		var point_index = astar_node_points_dic[point]["point_index"]
-		astar_nodes_cache[map_name]["ambient_mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
+		astar_nodes_cache[current_map_name]["ambient_mobs"].add_point(point_index, Vector3(point.x, point.y, 0.0))
 		
 		# Check if preload is canceled
 		if preload_stopped:
 			return
 
 
-# After added all points to the astar_nodes_cache[map_name]["mobs"], connect them
-func astar_connect_walkable_cells_for_mobs(astar_node_points_dic):
+# After added all points to the astar_nodes_cache[current_map_name]["mobs"], connect them
+func astar_connect_walkable_cells_for_mobs(astar_node_points_dic, current_map_name):
 	for point in astar_node_points_dic.keys():
 		var point_index = astar_node_points_dic[point]["point_index"]
 		var point_connections = astar_node_points_dic[point]["connections"]
 		for point_connection in point_connections:
-			astar_nodes_cache[map_name]["mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
+			astar_nodes_cache[current_map_name]["mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
 		
 		# Check if preload is canceled
 		if preload_stopped:
 			return
 
 
-# After added all points to the astar_nodes_cache[map_name]["mobs"], connect them
-func astar_connect_walkable_cells_for_bosses(astar_node_points_dic):
+# After added all points to the astar_nodes_cache[current_map_name]["mobs"], connect them
+func astar_connect_walkable_cells_for_bosses(astar_node_points_dic, current_map_name):
 	for point in astar_node_points_dic.keys():
 		var point_index = astar_node_points_dic[point]["point_index"]
 		var point_connections = astar_node_points_dic[point]["connections"]
 		for point_connection in point_connections:
-			astar_nodes_cache[map_name]["bosses"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
+			astar_nodes_cache[current_map_name]["bosses"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
 		
 		# Check if preload is canceled
 		if preload_stopped:
 			return
 
 
-# After added all points to the astar_nodes_cache[map_name]["ambient_mobs"], connect them
-func astar_connect_walkable_cells_for_ambient_mobs(astar_node_points_dic):
+# After added all points to the astar_nodes_cache[current_map_name]["ambient_mobs"], connect them
+func astar_connect_walkable_cells_for_ambient_mobs(astar_node_points_dic, current_map_name):
 	for point in astar_node_points_dic.keys():
 		var point_index = astar_node_points_dic[point]["point_index"]
 		var point_connections = astar_node_points_dic[point]["connections"]
 		for point_connection in point_connections:
-			astar_nodes_cache[map_name]["ambient_mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
+			astar_nodes_cache[current_map_name]["ambient_mobs"].connect_points(point_index, point_connection, false) # False means it is one-way / not bilateral
 		
 		# Check if preload is canceled
 		if preload_stopped:

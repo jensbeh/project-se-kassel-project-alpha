@@ -43,26 +43,27 @@ func check_version():
 			if version_file.file_exists(Constants.VERSION_PATH):
 				# Load version file
 				version_file.open(Constants.VERSION_PATH, File.READ)
-				var version = version_file.get_var(true)
+				var build_nr = version_file.get_var(true)
 				version_file.close()
 				
 				# Compare versions
-				# If not equal -> update/delete
-				if version != Constants.GAME_VERSION_NR:
-					printerr("FILE_MANAGER: Version not equal -> Delete all")
+				# Not equal -> update/delete
+				if build_nr != Constants.GAME_BUILD_NR:
+					printerr("FILE_MANAGER: Version not equal (old: " + str(build_nr) + ", new: " + str(Constants.GAME_BUILD_NR) + ") -> Update game")
 					
-					# Delete all -> Maybe update possibility
-					delete_directory(Constants.APP_DATA_FOLDER_PATH)
-					
-					# Create folder again
-					create_folder()
+					# Udpate game
+					update_game(build_nr)
 					
 					# Need new version nr
 					create_new_version = true
+				
+				# Equal
+				else:
+					print("FILE_MANAGER: Version is equal (version: " + str(Constants.GAME_BUILD_NR) + ")")
 			
 			# Version file NOT existing - Very old version
 			else:
-				printerr("FILE_MANAGER: Version file NOT existing -> Delete all")
+				printerr("FILE_MANAGER: Version file NOT existing (new: " + str(Constants.GAME_BUILD_NR) + ") -> Delete all")
 				
 				# Delete all
 				delete_directory(Constants.APP_DATA_FOLDER_PATH)
@@ -79,8 +80,38 @@ func check_version():
 		# Save version file
 		var version_save_file = File.new()
 		version_save_file.open(Constants.VERSION_PATH, File.WRITE)
-		version_save_file.store_var(Constants.GAME_VERSION_NR)
+		version_save_file.store_var(Constants.GAME_BUILD_NR)
 		version_save_file.close()
+
+
+# Method to update game
+# Example: Build-Nr.: 1, 2, 3, 4
+# 	# 1 -> 2
+#	if build_nr < 2:
+#		pass
+#	# 2 -> 3
+#	if build_nr < 3:
+#		pass
+#	# 3 -> 4
+#	if build_nr < 4:
+#		pass
+func update_game(build_nr):
+	print("FILE_MANAGER: Updating game...")
+	# Firstly check if version file is corrupted
+	if build_nr == null:
+		print("FILE_MANAGER: Version file is corrupted")
+		# Delete all
+		delete_directory(Constants.APP_DATA_FOLDER_PATH)
+		# Create folder again
+		create_folder()
+		return
+	
+	
+	# Add here update cases
+	
+	
+	
+	print("FILE_MANAGER: Update finished!")
 
 
 # Method to create all folder

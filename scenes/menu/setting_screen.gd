@@ -82,10 +82,10 @@ func _ready():
 		windowFullscreenOptionButton.add_item(window_fullscreen[1].text)
 	# Select item
 	if Utils.get_window_fullscreen() == true:
-		windowSizeOptionButton.disabled = true
+		windowSizeOptionButton.set_deferred("disabled", true)
 		windowFullscreenOptionButton.select(1)
 	else:
-		windowSizeOptionButton.disabled = false
+		windowSizeOptionButton.set_deferred("disabled", false)
 		windowFullscreenOptionButton.select(0)
 
 
@@ -159,9 +159,9 @@ func _on_Window_Fullscreen_selected(index):
 	
 	# Update window size option button depending on fullscreen or not 
 	if OS.is_window_fullscreen():
-		windowSizeOptionButton.disabled = true
+		windowSizeOptionButton.set_deferred("disabled", true)
 	else:
-		windowSizeOptionButton.disabled = false
+		windowSizeOptionButton.set_deferred("disabled", false)
 
 
 # Close settings and resetup the scene

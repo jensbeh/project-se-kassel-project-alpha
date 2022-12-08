@@ -92,6 +92,7 @@ const CAN_MODIFY_TIME = false # Default: false
 #################
 """
 const GAME_VERSION_NR = "1.0.0"
+const GAME_BUILD_NR = 1
 const DEFAULT_SOUND_VOLUME = -25
 const DEFAULT_MUSIC_VOLUME = -15
 const DEFAULT_WINDOW_MAXIMIZED = false

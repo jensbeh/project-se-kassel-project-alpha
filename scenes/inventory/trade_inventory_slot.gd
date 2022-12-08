@@ -328,7 +328,8 @@ func check_slots():
 		for i in range(slots+1,slots +7):
 			var inv_slot_new = inv_slot.instance()
 			MerchantData.inv_data["Inv" + str(i)] = {"Item":null,"Stack":null, "Time":null}
-			trade.add_child(inv_slot_new,true)
+			inv_slot_new.set_name("Inv" + str(i))
+			trade.add_child(inv_slot_new)
 		MerchantData.save_merchant_inventory()
 		Utils.save_game(true)
 	elif slots > 30:
@@ -340,7 +341,9 @@ func check_slots():
 			slots = MerchantData.inv_data.size()
 			for i in range(0,6):
 				MerchantData.inv_data.erase("Inv" + str(slots - i))
-				trade.get_node("Inv" + str(slots - i)).queue_free()
+				var inv_slot_empty = trade.get_node("Inv" + str(slots - i))
+				trade.remove_child(inv_slot_empty)
+				inv_slot_empty.queue_free()
 			MerchantData.save_merchant_inventory()
 			Utils.save_game(true)
 			check_slots()
