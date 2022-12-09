@@ -12,6 +12,9 @@ var lootLayer
 
 # connect interaction signal with player
 func _ready():
+	$Area2D.set_deferred("monitoring", true)
+	$Area2D/CollisionShape2D.set_deferred("disabled", false)
+	
 	self.name = "treasure"
 	Utils.get_current_player().connect("player_interact", self, "interaction")
 	

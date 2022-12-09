@@ -24,11 +24,11 @@ func _physics_process(_delta):
 	if not deactivated:
 		# Move map position with player position
 		if Utils.get_current_player() != null and Utils.is_node_valid(Utils.get_current_player()):
-			minimap_camera.position = Utils.get_current_player().global_position
+			minimap_camera.set_deferred("position", Utils.get_current_player().global_position)
 		
 		# Handle minimap_camera zoom
 		if minimap_camera.zoom != Vector2(zoom_factor, zoom_factor):
-			minimap_camera.zoom = Vector2(zoom_factor, zoom_factor)
+			minimap_camera.set_deferred("zoom" ,Vector2(zoom_factor, zoom_factor))
 
 
 # Method to setup the viewport world2d with game_viewport world2d otherwise there is no content in minimap
@@ -105,10 +105,10 @@ func set_camera_limits():
 			minimap_camera.limit_bottom = 10000000
 		
 		Constants.SceneType.GRASSLAND:
-			minimap_camera.limit_left = -4335
-			minimap_camera.limit_top = -10000000
-			minimap_camera.limit_right = 10000000
-			minimap_camera.limit_bottom = 794
+			minimap_camera.set_deferred("limit_left", -4335)
+			minimap_camera.set_deferred("limit_top", -10000000)
+			minimap_camera.set_deferred("limit_right", 10000000)
+			minimap_camera.set_deferred("limit_bottom", 794)
 
 
 # Method to set visibility of map

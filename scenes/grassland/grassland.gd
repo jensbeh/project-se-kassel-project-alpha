@@ -70,7 +70,7 @@ func _ready():
 	spawn_treasures()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
+	MobSpawnerService.init(self, spawning_areas, true, max_ambient_mobs, true)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()

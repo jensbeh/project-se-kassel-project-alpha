@@ -54,10 +54,13 @@ frame = 16
 position = Vector2( 4, 4 )
 collision_layer = 2
 collision_mask = 2
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 2, 2 )
 shape = SubResource( 1 )
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/OpenTreasure = SubResource( 4 )

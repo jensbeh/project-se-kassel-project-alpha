@@ -60,9 +60,9 @@ func _ready():
 	
 	# Setup MobSpawnerService
 	if is_boss_room():
-		MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer, Constants.MOB_RESPAWN_TIMER_BOSS_ROOM)
+		MobSpawnerService.init(self, spawning_areas, false, 0, false, Constants.MOB_RESPAWN_TIMER_BOSS_ROOM)
 	else:
-		MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, false, null, null, null, 0, false, lootLayer)
+		MobSpawnerService.init(self, spawning_areas, false, 0, false)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
