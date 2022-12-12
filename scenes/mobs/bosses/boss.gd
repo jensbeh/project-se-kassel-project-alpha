@@ -105,24 +105,14 @@ onready var sound = get_node("HitboxZone/Sound")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	get_viewport().audio_listener_enable_2d = true
-	# Show or hide nodes for debugging
-	collision.visible = Constants.SHOW_BOSS_COLLISION
-	playerDetectionZone.visible = Constants.SHOW_BOSS_DETECTION_RADIUS
-	line2D.visible = Constants.SHOW_BOSS_PATHES
-	hitbox.visible = Constants.SHOW_BOSS_HITBOX
-	damageArea.visible = Constants.SHOW_BOSS_DAMAGE_AREA
-	
 	
 	# Set detection and attack radius depending on grassland or not
 	if in_grassland:
-		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_GRASSLAND
 		attack_radius = ATTACK_RADIUS_IN_GRASSLAND
 		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_GRASSLAND
 	else:
-		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_DUNGEON
 		attack_radius = ATTACK_RADIUS_IN_DUNGEON
 		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_DUNGEON
-	
 	
 	# Set spawn position
 	collision_radius = collision.shape.radius
@@ -145,8 +135,6 @@ func _ready():
 	
 	
 	# Setup Healthbar
-	healthBar.value = 100
-	healthBarNode.visible = false
 	max_regeneration_interval = 0.1 # every 0.1 sek
 	REGENERATION_HP_AMOUNT = 20 * max_regeneration_interval  # 20 health every 1 sec == 2 health every max_regeneration_interval
 	
@@ -156,19 +144,43 @@ func _ready():
 	max_attacking_radius_around_player = attack_radius * rand_range(0.9, 1.0)
 	min_attacking_radius_around_player = attack_radius * rand_range(0.75, 0.85)
 	
-	# Enable raycast
-	raycast.enabled = true
-	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	call_deferred("activate_areas_and_collisions")
+	
+	# Update mobs activity depending on is in active chunk or not
+	ChunkLoaderService.update_mob(self)
+
+
+func activate_areas_and_collisions():
+	# Show or hide nodes for debugging
+	collision.set_deferred("visible", Constants.SHOW_BOSS_COLLISION)
+	playerDetectionZone.set_deferred("visible", Constants.SHOW_BOSS_DETECTION_RADIUS)
+	line2D.set_deferred("visible", Constants.SHOW_BOSS_PATHES)
+	hitbox.set_deferred("visible", Constants.SHOW_BOSS_HITBOX)
+	damageArea.set_deferred("visible", Constants.SHOW_BOSS_DAMAGE_AREA)
+	# Set detection and attack radius depending on grassland or not
+	if in_grassland:
+		playerDetectionZoneShape.shape.set_deferred("radius", DETECTION_RADIUS_IN_GRASSLAND)
+		attack_radius = ATTACK_RADIUS_IN_GRASSLAND
+		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_GRASSLAND
+	else:
+		playerDetectionZoneShape.shape.set_deferred("radius", DETECTION_RADIUS_IN_DUNGEON)
+		attack_radius = ATTACK_RADIUS_IN_DUNGEON
+		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_DUNGEON
+	
+	# Healthbar
+	healthBar.value = 100
+	healthBarNode.visible = false
+	
+	# Enable raycast
+	raycast.set_deferred("enabled", true)
+	
 	collision.set_deferred("disabled", false)
 	hitbox.set_deferred("monitorable", true)
 	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 	$DamageArea.set_deferred("monitoring", true)
 	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
-	
-	# Update mobs activity depending on is in active chunk or not
-	ChunkLoaderService.update_mob(self)
 
 
 # Method to init variables, typically called after instancing

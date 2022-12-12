@@ -97,12 +97,6 @@ onready var raycast = $RayCast2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	get_viewport().audio_listener_enable_2d = true
-	# Show or hide nodes for debugging
-	collision.visible = Constants.SHOW_MOB_COLLISION
-	playerDetectionZone.visible = Constants.SHOW_MOB_DETECTION_RADIUS
-	line2D.visible = Constants.SHOW_MOB_PATHES
-	hitbox.visible = Constants.SHOW_MOB_HITBOX
-	damageArea.visible = Constants.SHOW_MOB_DAMAGE_AREA
 	
 	# Set spawn_position
 	collision_radius = collision.shape.radius
@@ -120,23 +114,15 @@ func _ready():
 	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius * 0.33
 	
-	# Healthbar
-	healthBar.value = 100
-	healthBar.visible = false
-	healthBarBackground.visible = false
-	
 	# Setup attacking radius around player variables
 	randomize()
 	max_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.9, 1.0)
 	min_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.75, 0.85)
 	
-	# Enable raycast
-	raycast.enabled = true
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
 	call_deferred("activate_areas_and_collisions")
-
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
@@ -147,6 +133,21 @@ func _ready():
 
 
 func activate_areas_and_collisions():
+	# Show or hide nodes for debugging
+	collision.set_deferred("visible", Constants.SHOW_MOB_COLLISION)
+	playerDetectionZone.set_deferred("visible", Constants.SHOW_MOB_DETECTION_RADIUS)
+	line2D.set_deferred("visible", Constants.SHOW_MOB_PATHES)
+	hitbox.set_deferred("visible", Constants.SHOW_MOB_HITBOX)
+	damageArea.set_deferred("visible", Constants.SHOW_MOB_DAMAGE_AREA)
+	
+	# Healthbar
+	healthBar.value = 100
+	healthBar.visible = false
+	healthBarBackground.visible = false
+	
+	# Enable raycast
+	raycast.set_deferred("enabled", true)
+	
 	collision.set_deferred("disabled", false)
 	hitbox.set_deferred("monitorable", true)
 	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
