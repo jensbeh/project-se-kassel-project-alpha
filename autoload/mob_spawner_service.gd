@@ -133,9 +133,9 @@ func handle_mob_spawns():
 			
 			print("SPAWN-3")
 			
-			if with_ambient_mobs:
-				# Spawn ambient mobs
-				spawn_ambient_mobs()
+#			if with_ambient_mobs:
+#				# Spawn ambient mobs
+#				spawn_ambient_mobs()
 			
 			print("SPAWN-4")
 
@@ -161,6 +161,7 @@ func despawn_mobs():
 				removed_mobs.append(mobs_to_despawn.find(mob))
 				
 				mob.call_deferred("queue_free")
+				print("------------------------------------> REMOVE MOB: " + str(mob))
 				mob_list_mutex.lock()
 				mob_list.remove(mob_list.find(mob))
 				mob_list_mutex.unlock()

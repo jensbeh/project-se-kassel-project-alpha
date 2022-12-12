@@ -58,6 +58,8 @@ func _ready():
 	ChunkLoaderService.update_mob(self)
 	
 	Utils.count_new_ambient_mob()
+	
+#	MobSpawnerService.new_mob_spawned(self)
 
 
 # Method to init variables, typically called after instancing

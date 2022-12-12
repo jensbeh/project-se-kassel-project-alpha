@@ -134,13 +134,13 @@ func get_screen_color():
 
 # Method is called when day is started to call some actions
 func change_to_daytime():
-#	print("DAY_NIGHT_CYCLE: TO DAYTIME")
+	print("-----------------------------------> DAY_NIGHT_CYCLE: TO DAYTIME")
 	emit_signal("change_to_daytime")
 
 
 # Method is called when sunset is started to call some actions
 func change_to_sunset():
-#	print("DAY_NIGHT_CYCLE: TO SUNSET")
+	print("-----------------------------------> DAY_NIGHT_CYCLE: TO SUNSET")
 	emit_signal("change_to_sunset")
 
 
@@ -152,7 +152,7 @@ func change_to_night():
 
 # Method is called when sunrise is started to call some actions
 func change_to_sunrise():
-#	print("DAY_NIGHT_CYCLE: TO SUNRISE")
+	print("-----------------------------------> DAY_NIGHT_CYCLE: TO SUNRISE")
 	emit_signal("change_to_sunrise")
 
 

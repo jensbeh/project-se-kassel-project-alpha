@@ -135,16 +135,23 @@ func _ready():
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	collision.set_deferred("disabled", false)
-	hitbox.set_deferred("monitorable", true)
-	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
-	$DamageArea.set_deferred("monitoring", true)
-	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
+	call_deferred("activate_areas_and_collisions")
+
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
 	
 	Utils.count_new_mob()
+	
+	MobSpawnerService.new_mob_spawned(self)
+
+
+func activate_areas_and_collisions():
+	collision.set_deferred("disabled", false)
+	hitbox.set_deferred("monitorable", true)
+	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
+	$DamageArea.set_deferred("monitoring", true)
+	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
 
 
 # Method to init variables, typically called after instancing
@@ -321,9 +328,9 @@ func _process(delta):
 						var end_pos : Vector2 = player_pos + ATTACK_RADIUS * direction
 						
 						new_position_dic = {
-											"generate_again": false,
-											"position": end_pos
-											}
+							"generate_again": false,
+							"position": end_pos
+							}
 					
 					else:
 						# AREA: Take position around player
