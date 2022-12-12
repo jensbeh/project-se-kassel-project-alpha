@@ -3,7 +3,6 @@ extends Node2D
 
 # Map specific
 var scene_type = Constants.SceneType.GRASSLAND
-var max_ambient_mobs = 50
 
 # Variables
 var current_area : Area2D = null
@@ -29,6 +28,7 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("-----------------------------------------------------------> DayNightCycle.is_night: " + str(DayNightCycle.is_night))
 	# Music
 	if DayNightCycle.is_night:
 		night_sound()
@@ -70,7 +70,7 @@ func _ready():
 	spawn_treasures()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(self, spawning_areas, true, max_ambient_mobs, true)
+	MobSpawnerService.init(self, spawning_areas, true, Constants.MAX_AMBIENT_MOBS_GRASSLAND, true)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -363,7 +363,7 @@ func spawn_treasures():
 				lootLayer.call_deferred("add_child", treasure)
 			quantity -= 1
 
-
+var counter = 0
 # Method is called from MobSpawnerService to instance and spawn the mob -> instancing in other threads causes random errors
 func spawn_mob(packedMobScene, current_spawn_area):
 	if Utils.is_node_valid(mobsLayer):
@@ -371,8 +371,11 @@ func spawn_mob(packedMobScene, current_spawn_area):
 		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 		mobsLayer.call_deferred("add_child", mob_instance)
 		MobSpawnerService.new_mob_spawned(mob_instance)
+		
+		counter += 1
+		print("GRASSLAND: spawn_mob: " + str(mob_instance) + " : " + str(counter))
 
-
+var counter2 = 0
 # Method is called from MobSpawnerService to instance and spawn the ambient mob -> instancing in other threads causes random errors
 func spawn_ambient_mob(mobScene, spawn_time):
 	if Utils.is_node_valid(ambientMobsLayer):
@@ -380,3 +383,6 @@ func spawn_ambient_mob(mobScene, spawn_time):
 		mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, spawn_time, scene_type)
 		ambientMobsLayer.call_deferred("add_child", mob_instance)
 		MobSpawnerService.new_mob_spawned(mob_instance)
+		
+		counter2 += 1
+		print("GRASSLAND: spawn_ambient_mob: " + str(mob_instance) + " : " + str(counter2) + " : " + str(counter + counter2))

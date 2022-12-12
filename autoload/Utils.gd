@@ -727,3 +727,14 @@ func add_settings_screen():
 # Method to return the settings screen node
 func get_settings_screen():
 	return Utils.get_ui().get_node_or_null("SettingScreen")
+
+
+var count_mobs = 0
+func count_new_mob():
+	count_mobs += 1
+	print("ENEMY: " + str(count_mobs))
+
+var count_ambient_mobs = 0
+func count_new_ambient_mob():
+	count_ambient_mobs += 1
+	print("AMBIENT_MOB: " + str(count_ambient_mobs))

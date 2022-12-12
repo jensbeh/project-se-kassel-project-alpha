@@ -56,6 +56,8 @@ func _ready():
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.update_mob(self)
+	
+	Utils.count_new_ambient_mob()
 
 
 # Method to init variables, typically called after instancing

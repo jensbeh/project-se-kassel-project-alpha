@@ -28,6 +28,7 @@ func _input(event):
 			if event.is_action_pressed("toggle_debugging"):
 				debuggingNode.visible = !debuggingNode.visible
 				show_fps = !show_fps
+				DayNightCycle.set_process(show_fps)
 		
 		# Time
 		if Constants.CAN_MODIFY_TIME:

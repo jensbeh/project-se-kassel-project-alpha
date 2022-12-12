@@ -162,7 +162,7 @@ func _ready():
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
 	collision.set_deferred("disabled", false)
-	hitbox.monitorable = true
+	hitbox.set_deferred("monitorable", true)
 	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 	$DamageArea.set_deferred("monitoring", true)
 	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)

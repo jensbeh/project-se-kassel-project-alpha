@@ -13,8 +13,8 @@ var valid_window_sizes : Array = []
 ## GENERAL
 #################
 """
-const CAN_DEBUG = false # Default: false
-const CAN_TOGGLE_DEBUGGING_WINDOW = false # Default: false
+const CAN_DEBUG = true # Default: false
+const CAN_TOGGLE_DEBUGGING_WINDOW = true # Default: false
 
 """
 #################
@@ -53,11 +53,11 @@ const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 """
 const IS_PLAYER_INVISIBLE = false # Default: false
 
-const CAN_TOGGLE_PLAYER_INVINCIBLE = false # Default: false
-var IS_PLAYER_INVINCIBLE = false # Default: false
+const CAN_TOGGLE_PLAYER_INVINCIBLE = true # Default: false
+var IS_PLAYER_INVINCIBLE = true # Default: false
 
-const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = false # Default: false
-var HAS_PLAYER_INFINIT_STAMINA = false # Default: false
+const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = true # Default: false
+var HAS_PLAYER_INFINIT_STAMINA = true # Default: false
 
 
 """
@@ -80,7 +80,7 @@ const LOAD_DUNGEONS_MAPS = true # Default: true
 ## TIME
 #################
 """
-const CAN_MODIFY_TIME = false # Default: false
+const CAN_MODIFY_TIME = true # Default: false
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------
@@ -227,6 +227,13 @@ const INVALID_TILE_ID = -1
 const CHUNK_SIZE_TILES = 10 # In tiles -> if changing need reimport of maps!
 const chunk_size_pixel = CHUNK_SIZE_TILES * TILE_SIZE # In pixel
 const RENDER_DISTANCE = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
+
+"""
+#################
+## MOB_SPAWNER
+#################
+"""
+const MAX_AMBIENT_MOBS_GRASSLAND = 50
 
 """
 #################
