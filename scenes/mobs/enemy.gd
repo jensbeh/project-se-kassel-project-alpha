@@ -96,8 +96,6 @@ onready var raycast = $RayCast2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_viewport().audio_listener_enable_2d = true
-	
 	# Set spawn_position
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true, lootLayer)
@@ -115,14 +113,13 @@ func _ready():
 	min_searching_radius = max_searching_radius * 0.33
 	
 	# Setup attacking radius around player variables
-	randomize()
-	max_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.9, 1.0)
-	min_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.75, 0.85)
+	max_attacking_radius_around_player = ATTACK_RADIUS * rng.randf_range(0.9, 1.0)
+	min_attacking_radius_around_player = ATTACK_RADIUS * rng.randf_range(0.75, 0.85)
 	
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	call_deferred("activate_areas_and_collisions")
+	call_deferred("set_states_to_nodes")
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.call_deferred("update_mob", self)
@@ -132,7 +129,18 @@ func _ready():
 	MobSpawnerService.call_deferred("new_mob_spawned", self)
 
 
-func activate_areas_and_collisions():
+# Method to init variables, typically called after instancing
+func init(init_spawnArea, new_navigation_tile_map, init_scene_type, init_lootLayer):
+	spawnArea = init_spawnArea
+	navigation_tile_map = new_navigation_tile_map
+	scene_type = init_scene_type
+	lootLayer = init_lootLayer
+
+
+# Method to set states to nodes but not in _ready directly -> called with call_deferred
+func set_states_to_nodes():
+	get_viewport().set_deferred("audio_listener_enable_2d", true)
+	
 	# Show or hide nodes for debugging
 	collision.set_deferred("visible", Constants.SHOW_MOB_COLLISION)
 	playerDetectionZone.set_deferred("visible", Constants.SHOW_MOB_DETECTION_RADIUS)
@@ -141,9 +149,9 @@ func activate_areas_and_collisions():
 	damageArea.set_deferred("visible", Constants.SHOW_MOB_DAMAGE_AREA)
 	
 	# Healthbar
-	healthBar.value = 100
-	healthBar.visible = false
-	healthBarBackground.visible = false
+	healthBar.set_deferred("value", 100)
+	healthBar.set_deferred("visible", false)
+	healthBarBackground.set_deferred("visible", false)
 	
 	# Enable raycast
 	raycast.set_deferred("enabled", true)
@@ -153,14 +161,6 @@ func activate_areas_and_collisions():
 	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 	$DamageArea.set_deferred("monitoring", true)
 	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
-
-
-# Method to init variables, typically called after instancing
-func init(init_spawnArea, new_navigation_tile_map, init_scene_type, init_lootLayer):
-	spawnArea = init_spawnArea
-	navigation_tile_map = new_navigation_tile_map
-	scene_type = init_scene_type
-	lootLayer = init_lootLayer
 
 
 func _physics_process(delta):

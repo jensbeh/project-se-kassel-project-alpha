@@ -39,10 +39,6 @@ onready var line2D = $Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Show or hide nodes for debugging
-	collision.visible = Constants.SHOW_AMBIENT_MOB_COLLISION
-	line2D.visible = Constants.SHOW_AMBIENT_MOB_PATHES
-	
 	# Set spawn_position
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, ambientMobsSpawnArea, ambientMobsNavigationTileMap, 0, true, null)
 	position = spawn_position
@@ -54,7 +50,7 @@ func _ready():
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	call_deferred("activate_areas_and_collisions")
+	call_deferred("set_states_to_nodes")
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.call_deferred("update_mob", self)
@@ -64,21 +60,22 @@ func _ready():
 	MobSpawnerService.call_deferred("new_mob_spawned", self)
 
 
-func activate_areas_and_collisions():
-	# Show or hide nodes for debugging
-	collision.set_deferred("visible", Constants.SHOW_AMBIENT_MOB_COLLISION)
-	line2D.set_deferred("visible", Constants.SHOW_AMBIENT_MOB_PATHES)
-	
-	# Setup sprite
-	mobSprite.set_deferred("flip_h", rng.randi_range(0,1))
-
-
 # Method to init variables, typically called after instancing
 func init(init_ambientMobsSpawnArea, init_ambientMobsNavigationTileMap, init_spawn_time, init_scene_type):
 	ambientMobsSpawnArea = init_ambientMobsSpawnArea
 	ambientMobsNavigationTileMap = init_ambientMobsNavigationTileMap
 	spawn_time = init_spawn_time
 	scene_type = init_scene_type
+
+
+# Method to set states to nodes but not in _ready directly -> called with call_deferred
+func set_states_to_nodes():
+	# Show or hide nodes for debugging
+	collision.set_deferred("visible", Constants.SHOW_AMBIENT_MOB_COLLISION)
+	line2D.set_deferred("visible", Constants.SHOW_AMBIENT_MOB_PATHES)
+	
+	# Setup sprite
+	mobSprite.set_deferred("flip_h", rng.randi_range(0,1))
 
 
 func _physics_process(delta):

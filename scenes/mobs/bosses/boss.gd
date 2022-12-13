@@ -104,8 +104,6 @@ onready var sound = get_node("HitboxZone/Sound")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_viewport().audio_listener_enable_2d = true
-	
 	# Set detection and attack radius depending on grassland or not
 	if in_grassland:
 		attack_radius = ATTACK_RADIUS_IN_GRASSLAND
@@ -140,19 +138,30 @@ func _ready():
 	
 	
 	# Setup attacking radius around player variables
-	randomize()
-	max_attacking_radius_around_player = attack_radius * rand_range(0.9, 1.0)
-	min_attacking_radius_around_player = attack_radius * rand_range(0.75, 0.85)
+	max_attacking_radius_around_player = attack_radius * rng.randf_range(0.9, 1.0)
+	min_attacking_radius_around_player = attack_radius * rng.randf_range(0.75, 0.85)
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	call_deferred("activate_areas_and_collisions")
+	call_deferred("set_states_to_nodes")
 	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.call_deferred("update_mob", self)
 
 
-func activate_areas_and_collisions():
+# Method to init variables, typically called after instancing
+func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_is_in_boss_room, init_lootLayer):
+	boss_spawn_area = init_boss_spawn_area
+	navigation_tile_map = init_navigation_tile_map
+	scene_type = init_scene_type
+	is_in_boss_room = init_is_in_boss_room
+	lootLayer = init_lootLayer
+
+
+# Method to set states to nodes but not in _ready directly -> called with call_deferred
+func set_states_to_nodes():
+	get_viewport().set_deferred("audio_listener_enable_2d", true)
+	
 	# Show or hide nodes for debugging
 	collision.set_deferred("visible", Constants.SHOW_BOSS_COLLISION)
 	playerDetectionZone.set_deferred("visible", Constants.SHOW_BOSS_DETECTION_RADIUS)
@@ -170,8 +179,8 @@ func activate_areas_and_collisions():
 		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_DUNGEON
 	
 	# Healthbar
-	healthBar.value = 100
-	healthBarNode.visible = false
+	healthBar.set_deferred("value", 100)
+	healthBar.set_deferred("visible", false)
 	
 	# Enable raycast
 	raycast.set_deferred("enabled", true)
@@ -181,15 +190,6 @@ func activate_areas_and_collisions():
 	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
 	$DamageArea.set_deferred("monitoring", true)
 	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
-
-
-# Method to init variables, typically called after instancing
-func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_is_in_boss_room, init_lootLayer):
-	boss_spawn_area = init_boss_spawn_area
-	navigation_tile_map = init_navigation_tile_map
-	scene_type = init_scene_type
-	is_in_boss_room = init_is_in_boss_room
-	lootLayer = init_lootLayer
 
 
 func _physics_process(delta):
