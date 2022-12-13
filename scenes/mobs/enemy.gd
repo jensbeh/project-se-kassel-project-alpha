@@ -125,11 +125,11 @@ func _ready():
 	call_deferred("activate_areas_and_collisions")
 	
 	# Update mobs activity depending on is in active chunk or not
-	ChunkLoaderService.update_mob(self)
+	ChunkLoaderService.call_deferred("update_mob", self)
 	
 	Utils.count_new_mob()
 	
-	MobSpawnerService.new_mob_spawned(self)
+	MobSpawnerService.call_deferred("new_mob_spawned", self)
 
 
 func activate_areas_and_collisions():
@@ -738,7 +738,8 @@ func mob_killed():
 	if not killed:
 		killed = true
 		Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-		MobSpawnerService.despawn_mob(self)
+		Utils.get_scene_manager().get_current_scene().spawn_loot(position, get_name())
+		MobSpawnerService.call_deferred("despawn_mob", self)
 
 
 # Method to return a random pre_attack_time of specifiy current_enemy_type

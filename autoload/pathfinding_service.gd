@@ -27,11 +27,10 @@ var map_name
 var astar_nodes_cache = {}
 var astar_nodes_cache_mutex = Mutex.new()
 var astar2DVisualizerNode = null
-var mob_mutex = Mutex.new()
-var boss_mutex = Mutex.new()
 var mobs_with_new_position : Dictionary = {}
+var mobs_with_new_position_mutex = Mutex.new()
 var bosses_with_new_position : Dictionary = {}
-
+var bosses_with_new_position_mutex = Mutex.new()
 
 func _ready():
 	print("PATHFINDING_SERVICE: Start")
@@ -166,11 +165,9 @@ func stop():
 	mobs_check_can_reach_player = null
 	
 	map_name = null
-	astar_nodes_cache_mutex.lock()
 	if astar_nodes_cache != null:
 		astar_nodes_cache.clear()
 	astar_nodes_cache = null
-	astar_nodes_cache_mutex.unlock()
 	
 	print("PATHFINDING_SERVICE: Stopped")
 
@@ -202,26 +199,18 @@ func cleanup():
 	bosses_with_new_position.clear()
 	
 	# Clean MOBS dynamic obstacles
-	astar_nodes_cache[map_name]["dynamic_obstacles_mobs_mutex"].lock()
 	if not astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].empty():
 		for obstacle in astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].keys():
-			astar_nodes_cache[map_name]["mobs_mutex"].lock()
 			for point_index in astar_nodes_cache[map_name]["dynamic_obstacles_mobs"][obstacle]:
 				astar_nodes_cache[map_name]["mobs"].set_point_disabled(point_index, false)
-			astar_nodes_cache[map_name]["mobs_mutex"].unlock()
 		astar_nodes_cache[map_name]["dynamic_obstacles_mobs"].clear()
-	astar_nodes_cache[map_name]["dynamic_obstacles_mobs_mutex"].unlock()
 	
 	# Clean BOSSES dynamic obstacles
-	astar_nodes_cache[map_name]["dynamic_obstacles_bosses_mutex"].lock()
 	if not astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].empty():
 		for obstacle in astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].keys():
-			astar_nodes_cache[map_name]["bosses_mutex"].lock()
 			for point_index in astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][obstacle]:
 				astar_nodes_cache[map_name]["bosses"].set_point_disabled(point_index, false)
-			astar_nodes_cache[map_name]["bosses_mutex"].unlock()
 		astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].clear()
-	astar_nodes_cache[map_name]["dynamic_obstacles_bosses_mutex"].unlock()
 	map_name = ""
 	
 	print("PATHFINDING_SERVICE: Cleaned")
@@ -244,10 +233,8 @@ func generate_pathes():
 				for enemy in enemies:
 					if Utils.is_node_valid(enemy):
 						# Check if enemy needs new path and pathfinder is not waiting for mob to return new target position
-						mob_mutex.lock()
 						if enemy.mob_need_path and not mobs_waiting.has(enemy):
 							enemies_to_update.append(enemy)
-						mob_mutex.unlock()
 						# Check if enemy need to know if player is reachable
 						if enemy.check_can_reach_player:
 							mobs_check_can_reach_player.append(enemy)
@@ -259,10 +246,8 @@ func generate_pathes():
 				for boss in bosses:
 					if Utils.is_node_valid(boss):
 						# Check if boss needs new path and pathfinder is not waiting for boss to return new target position
-						boss_mutex.lock()
 						if boss.mob_need_path and not bosses_waiting.has(boss):
 							bosses_to_update.append(boss)
-						boss_mutex.unlock()
 						# Check if boss need to know if player is reachable
 						if boss.check_can_reach_player:
 							mobs_check_can_reach_player.append(boss)
@@ -288,9 +273,7 @@ func generate_pathes():
 						for enemy in enemies_which_need_new_path:
 							if Utils.is_node_valid(enemy):
 								enemy.get_target_position()
-								mob_mutex.lock()
 								mobs_waiting.append(enemy)
-								mob_mutex.unlock()
 					
 					
 					# Notify BOSSES that new end_position is needed
@@ -299,9 +282,7 @@ func generate_pathes():
 						for boss in bosses_which_need_new_path:
 							if Utils.is_node_valid(boss):
 								boss.get_target_position()
-								boss_mutex.lock()
 								bosses_waiting.append(boss)
-								boss_mutex.unlock()
 					
 					
 					# Notify AMBIENT_MOB that new end_position is needed
@@ -316,7 +297,7 @@ func generate_pathes():
 									target_pos = ambient_mob.global_position
 								
 								var new_path = get_ambient_mob_astar_path(ambient_mob.global_position, target_pos)
-								call_deferred("send_path_to_mob", ambient_mob, new_path)
+								send_path_to_mob(ambient_mob, new_path)
 							ambientMobsNavigationTileMap_mutex.unlock()
 			
 			
@@ -327,33 +308,33 @@ func generate_pathes():
 						var new_path = get_boss_astar_path(mob.global_position, Utils.get_current_player().global_position)
 						if new_path.size() == 0:
 							# Mob can reach player
-							call_deferred("inform_mob_about_reachable", mob, false, new_path)
+							inform_mob_about_reachable(mob, false, new_path)
 						else:
 							# Mob can't reach player
-							call_deferred("inform_mob_about_reachable", mob, true, new_path)
+							inform_mob_about_reachable(mob, true, new_path)
 				# Remove mobs from mobs_check_can_reach_player list
 				mobs_check_can_reach_player.clear()
 			
 			
 			# Get path for MOB which got new end_position
-			mob_mutex.lock()
+			mobs_with_new_position_mutex.lock()
 			if mobs_with_new_position.size() > 0:
 				for mob in mobs_with_new_position.keys():
 					if Utils.is_node_valid(mob):
 						var new_path = get_mob_astar_path(mob.global_position, mobs_with_new_position[mob])
-						call_deferred("send_path_to_mob", mob, new_path)
+						send_path_to_mob(mob, new_path)
 						var _was_present = mobs_with_new_position.erase(mob)
-			mob_mutex.unlock()
+			mobs_with_new_position_mutex.unlock()
 			
 			# Get path for BOSS which got new end_position
-			boss_mutex.lock()
+			bosses_with_new_position_mutex.lock()
 			if bosses_with_new_position.size() > 0:
 				for boss in bosses_with_new_position.keys():
 					if Utils.is_node_valid(boss):
 						var new_path = get_boss_astar_path(boss.global_position, bosses_with_new_position[boss])
-						call_deferred("send_path_to_boss", boss, new_path)
+						send_path_to_boss(boss, new_path)
 						var _was_present = bosses_with_new_position.erase(boss)
-			boss_mutex.unlock()
+			bosses_with_new_position_mutex.unlock()
 
 
 # Method to send new path to mob
@@ -364,10 +345,8 @@ func send_path_to_mob(mob, new_path):
 			mob.call_deferred("update_path", new_path)
 			
 			# Remove mob from waiting list
-			mob_mutex.lock()
 			if mobs_waiting.find(mob) != -1:
 				mobs_waiting.remove(mobs_waiting.find(mob))
-			mob_mutex.unlock()
 
 
 # Method to send new path to mob
@@ -378,10 +357,8 @@ func send_path_to_boss(boss, new_path):
 			boss.call_deferred("update_path", new_path)
 			
 			# Remove mob from waiting list
-			boss_mutex.lock()
 			if bosses_waiting.find(boss) != -1:
 				bosses_waiting.remove(bosses_waiting.find(boss))
-			boss_mutex.unlock()
 
 
 # Method is called when thread finished
@@ -392,6 +369,7 @@ func clean_thread():
 
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_nodes_cache[current_map_name]["mobs"], except the obstacles.
+# Called from another thread
 func astar_add_walkable_cells_for_mobs(astar_node_points_dic, current_map_name):
 	astar_nodes_cache[current_map_name]["mobs_mutex"].lock()
 	for point in astar_node_points_dic.keys():
@@ -406,6 +384,7 @@ func astar_add_walkable_cells_for_mobs(astar_node_points_dic, current_map_name):
 
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_nodes_cache[current_map_name]["mobs"], except the obstacles.
+# Called from another thread
 func astar_add_walkable_cells_for_bosses(astar_node_points_dic, current_map_name):
 	astar_nodes_cache[current_map_name]["bosses_mutex"].lock()
 	for point in astar_node_points_dic.keys():
@@ -420,6 +399,7 @@ func astar_add_walkable_cells_for_bosses(astar_node_points_dic, current_map_name
 
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_nodes_cache[current_map_name]["ambient_mobs"], except the obstacles.
+# Called from another thread
 func astar_add_walkable_cells_for_ambient_mobs(astar_node_points_dic, current_map_name):
 	astar_nodes_cache[current_map_name]["ambient_mobs_mutex"].lock()
 	for point in astar_node_points_dic.keys():
@@ -433,6 +413,7 @@ func astar_add_walkable_cells_for_ambient_mobs(astar_node_points_dic, current_ma
 
 
 # After added all points to the astar_nodes_cache[current_map_name]["mobs"], connect them
+# Called from another thread
 func astar_connect_walkable_cells_for_mobs(astar_node_points_dic, current_map_name):
 	astar_nodes_cache[current_map_name]["mobs_mutex"].lock()
 	for point in astar_node_points_dic.keys():
@@ -448,6 +429,7 @@ func astar_connect_walkable_cells_for_mobs(astar_node_points_dic, current_map_na
 
 
 # After added all points to the astar_nodes_cache[current_map_name]["mobs"], connect them
+# Called from another thread
 func astar_connect_walkable_cells_for_bosses(astar_node_points_dic, current_map_name):
 	astar_nodes_cache[current_map_name]["bosses_mutex"].lock()
 	for point in astar_node_points_dic.keys():
@@ -463,6 +445,7 @@ func astar_connect_walkable_cells_for_bosses(astar_node_points_dic, current_map_
 
 
 # After added all points to the astar_nodes_cache[current_map_name]["ambient_mobs"], connect them
+# Called from another thread
 func astar_connect_walkable_cells_for_ambient_mobs(astar_node_points_dic, current_map_name):
 	astar_nodes_cache[current_map_name]["ambient_mobs_mutex"].lock()
 	for point in astar_node_points_dic.keys():
@@ -499,6 +482,8 @@ func get_mob_astar_path(mob_start, mob_end):
 	var end_point_index = calculate_point_index(path_end_tile_position)
 	
 	
+	astar_nodes_cache[map_name]["mobs_mutex"].lock()
+	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
 	if not astar_nodes_cache[map_name]["mobs"].has_point(start_point_index):
 		start_point_index = astar_nodes_cache[map_name]["mobs"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
@@ -520,6 +505,8 @@ func get_mob_astar_path(mob_start, mob_end):
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["mobs"]
 	var point_path = astar_nodes_cache[map_name]["mobs"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269
+	
+	astar_nodes_cache[map_name]["mobs_mutex"].unlock()
 	
 	
 	# Get time to calculate path
@@ -560,6 +547,8 @@ func get_boss_astar_path(boss_start, boss_end):
 	var end_point_index = calculate_point_index(path_end_tile_position)
 	
 	
+	astar_nodes_cache[map_name]["bosses_mutex"].lock()
+	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
 	if not astar_nodes_cache[map_name]["bosses"].has_point(start_point_index):
 		start_point_index = astar_nodes_cache[map_name]["bosses"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
@@ -576,6 +565,8 @@ func get_boss_astar_path(boss_start, boss_end):
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["bosses"]
 	var point_path = astar_nodes_cache[map_name]["bosses"].get_point_path(start_point_index, end_point_index) # !!! TAKES LONG TIME!!!!!!!! 73217 57269
+	
+	astar_nodes_cache[map_name]["bosses_mutex"].unlock()
 	
 	if point_path.size() != 0:
 		# Remove the position in index 0 because this is the starting cell
@@ -625,6 +616,7 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 	
 	
 	astar_nodes_cache[map_name]["ambient_mobs_mutex"].lock()
+	
 	# Check if start_position is valid - else take nearest & valid point to the invalid point
 	if not astar_nodes_cache[map_name]["ambient_mobs"].has_point(start_point_index):
 		start_point_index = astar_nodes_cache[map_name]["ambient_mobs"].get_closest_point(Vector3(path_start_tile_position.x, path_start_tile_position.y, 0), false)
@@ -635,6 +627,7 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 	
 	# Get the path as an array of points from astar_nodes_cache[map_name]["ambient_mobs"]
 	var point_path = astar_nodes_cache[map_name]["ambient_mobs"].get_point_path(start_point_index, end_point_index)
+	
 	astar_nodes_cache[map_name]["ambient_mobs_mutex"].unlock()
 	
 	if point_path.size() != 0:
@@ -657,6 +650,7 @@ func get_ambient_mob_astar_path(mob_start, mob_end):
 
 
 # Method to disable points within the collisionshape FOR MOBS
+# Called from another thread but with call_deferred so this method is executed in this thread
 func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 	astar_nodes_cache[map_name]["dynamic_obstacles_mobs_mutex"].lock()
 	astar_nodes_cache[map_name]["dynamic_obstacles_bosses_mutex"].lock()
@@ -740,6 +734,7 @@ func add_dynamic_obstacle(collisionshape_node : CollisionShape2D, position):
 
 
 # Method to remove dynamic obstacle from astar
+# Called from another thread but with call_deferred so this method is executed in this thread
 func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
 	astar_nodes_cache[map_name]["dynamic_obstacles_mobs_mutex"].lock()
 	astar_nodes_cache[map_name]["dynamic_obstacles_bosses_mutex"].lock()
@@ -773,19 +768,21 @@ func remove_dynamic_obstacle(collisionshape_node : CollisionShape2D):
 
 
 # New position for MOB has arrived
+# Called from another thread but with call_deferred so this method is executed in this thread
 func got_mob_position(mob, position):
+	mobs_with_new_position_mutex.lock()
 	if Utils.is_node_valid(mob):
-		mob_mutex.lock()
 		mobs_with_new_position[mob] = position
-		mob_mutex.unlock()
+	mobs_with_new_position_mutex.unlock()
 
 
 # New position for BOSS has arrived
+# Called from another thread but with call_deferred so this method is executed in this thread
 func got_boss_position(boss, position):
+	bosses_with_new_position_mutex.lock()
 	if Utils.is_node_valid(boss):
-		boss_mutex.lock()
 		bosses_with_new_position[boss] = position
-		boss_mutex.unlock()
+	bosses_with_new_position_mutex.unlock()
 
 
 # Inform mob about reachability of player

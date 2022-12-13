@@ -149,7 +149,7 @@ func _ready():
 	call_deferred("activate_areas_and_collisions")
 	
 	# Update mobs activity depending on is in active chunk or not
-	ChunkLoaderService.update_mob(self)
+	ChunkLoaderService.call_deferred("update_mob", self)
 
 
 func activate_areas_and_collisions():

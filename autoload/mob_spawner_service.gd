@@ -9,13 +9,15 @@ var should_spawn_mobs = false
 var spawning_areas = null
 var with_ambient_mobs : bool = false
 var mob_list : Array
+var mob_list_mutex = Mutex.new()
 var current_ambient_mobs : int
 var max_ambient_mobs : int
 var is_time_sensitiv : bool = false
 var mobs_to_despawn : Array
-var world
-var mob_list_mutex = Mutex.new()
 var mobs_to_despawn_mutex = Mutex.new()
+var world
+var change_to_sunrise = false
+var change_to_night = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,6 +30,7 @@ func _ready():
 
 
 # Method to init all important variables
+# Called from another thread
 func init(init_world, new_spawning_areas, new_with_ambient_mobs, new_max_ambient_mobs, new_is_time_sensitiv, new_mob_respawn_timer : float = Constants.MOB_RESPAWN_TIMER):
 	print("MOB_SPAWNER_SERVICE: Init")
 	# Check if thread is active wait to stop
@@ -54,17 +57,21 @@ func init(init_world, new_spawning_areas, new_with_ambient_mobs, new_max_ambient
 
 
 # Method to stop the mobspawner to change map
+# Called from another thread
 func stop():
 	# Reset variables
 	can_spawn_mobs = null
 	mob_spawner_timer = null
 	mob_spawn_interval = null
 	should_spawn_mobs = null
+	change_to_sunrise = null
+	change_to_night = null
 	
 	print("MOB_SPAWNER_SERVICE: Stopped")
 
 
 # Method to cleanup the mobspawner
+# Called from another thread
 func cleanup():
 	# Check if thread is active wait to stop
 	can_spawn_mobs = false
@@ -77,9 +84,7 @@ func cleanup():
 	with_ambient_mobs = false
 	current_ambient_mobs = 0
 	max_ambient_mobs = 0
-	mobs_to_despawn_mutex.lock()
 	mobs_to_despawn.clear()
-	mobs_to_despawn_mutex.unlock()
 	# -> Reset timer
 	mob_spawner_timer.stop()
 	# -> Disconnect signals
@@ -89,18 +94,19 @@ func cleanup():
 		if DayNightCycle.is_connected("change_to_night", self, "on_change_to_night"):
 			DayNightCycle.disconnect("change_to_night", self, "on_change_to_night")
 	# -> Clean mobs
-	mob_list_mutex.lock()
 	for mob in mob_list:
 		if Utils.is_node_valid(mob):
 			mob.call_deferred("queue_free")
 	mob_list.clear()
-	mob_list_mutex.unlock()
 	world = null
+	change_to_sunrise = false
+	change_to_night = false
 	
 	print("MOB_SPAWNER_SERVICE: Cleaned")
 
 
 # Method to activate spawn mobs
+# Called from another thread
 func spawn_mobs():
 	if can_spawn_mobs:
 		should_spawn_mobs = true
@@ -113,12 +119,43 @@ func spawn_mobs():
 func handle_mob_spawns():
 	while can_spawn_mobs:
 		
-#		if time_not_updated:
-#			continue
+		# Handle time changes
+		# To sunrise
+		if change_to_sunrise:
+			change_to_sunrise = false
+			# Spawn specific day mobs and remove specific night mobs
+			# Remove mobs
+			mob_list_mutex.lock()
+			mobs_to_despawn_mutex.lock()
+			for mob in mob_list:
+				if Utils.is_node_valid(mob):
+					if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT and mobs_to_despawn.find(mob) == -1:
+						mobs_to_despawn.append(mob)
+			mobs_to_despawn_mutex.unlock()
+			mob_list_mutex.unlock()
+			# Despawn and spawn mobs
+			should_spawn_mobs = true
 		
+		# To night
+		if change_to_night:
+			change_to_night = false
+			# Spawn specific night mobs and remove specific day mobs
+			# Remove mobs
+			mob_list_mutex.lock()
+			mobs_to_despawn_mutex.lock()
+			for mob in mob_list:
+				if Utils.is_node_valid(mob):
+					if mob.spawn_time == Constants.SpawnTime.ONLY_DAY and mobs_to_despawn.find(mob) == -1:
+						mobs_to_despawn.append(mob)
+			mobs_to_despawn_mutex.unlock()
+			mob_list_mutex.unlock()
+			# Despawn and spawn mobs
+			should_spawn_mobs = true
+		
+		
+		# Handle mob spawning
 		if should_spawn_mobs == true:
 			should_spawn_mobs = false
-			print("SPAWN-1")
 			
 			# Despawn mobs if necessary
 			mobs_to_despawn_mutex.lock()
@@ -126,18 +163,12 @@ func handle_mob_spawns():
 				despawn_mobs()
 			mobs_to_despawn_mutex.unlock()
 			
-			print("SPAWN-2")
-			
 			# Spawn area mobs
 			spawn_area_mobs()
 			
-			print("SPAWN-3")
-			
-#			if with_ambient_mobs:
-#				# Spawn ambient mobs
-#				spawn_ambient_mobs()
-			
-			print("SPAWN-4")
+			if with_ambient_mobs:
+				# Spawn ambient mobs
+				spawn_ambient_mobs()
 
 
 # Method is called when thread finished
@@ -160,7 +191,8 @@ func despawn_mobs():
 				
 				removed_mobs.append(mobs_to_despawn.find(mob))
 				
-				mob.call_deferred("queue_free")
+				if Utils.is_node_valid(mob):
+					mob.call_deferred("queue_free")
 				print("------------------------------------> REMOVE MOB: " + str(mob))
 				mob_list_mutex.lock()
 				mob_list.remove(mob_list.find(mob))
@@ -246,18 +278,20 @@ func spawn_ambient_mobs():
 
 
 # Method to despawn/remove mob - NOT FOR AMBIENT MOBS - called from mob
+# Called from another thread but with call_deferred so this method is executed in this thread
 func despawn_mob(mob):
 	if Utils.is_node_valid(mob):
-		Utils.get_scene_manager().get_current_scene().spawn_loot(mob.position, mob.get_name())
 		# Remove from variables
 		mob_list_mutex.lock()
 		if mob_list.find(mob) != -1:
 			mob_list.remove(mob_list.find(mob))
 		mob_list_mutex.unlock()
+		
 		mobs_to_despawn_mutex.lock()
 		if mobs_to_despawn.find(mob) != -1:
 			mobs_to_despawn.remove(mobs_to_despawn.find(mob))
 		mobs_to_despawn_mutex.unlock()
+		
 		# Remove from nodes
 		spawning_areas[mob.spawnArea]["current_mobs_count"] -= 1
 		mob.call_deferred("queue_free")
@@ -275,40 +309,17 @@ func spawn_despawn_mobs():
 # Method to recognize sunrise
 func on_change_to_sunrise():
 	print("on_change_to_sunrise")
-	if can_spawn_mobs:
-		# Spawn specific day mobs and remove specific night mobs
-		# Remove mobs
-		mob_list_mutex.lock()
-		for mob in mob_list:
-			if Utils.is_node_valid(mob):
-				if mob.spawn_time == Constants.SpawnTime.ONLY_NIGHT:
-					mobs_to_despawn_mutex.lock()
-					mobs_to_despawn.append(mob)
-					mobs_to_despawn_mutex.unlock()
-		mob_list_mutex.unlock()
-		# Despawn and spawn mobs
-		should_spawn_mobs = true
+	change_to_sunrise = true
 
 
 # Method to recognize night
 func on_change_to_night():
 	print("on_change_to_night")
-	if can_spawn_mobs:
-		# Spawn specific night mobs and remove specific day mobs
-		# Remove mobs
-		mob_list_mutex.lock()
-		for mob in mob_list:
-			if Utils.is_node_valid(mob):
-				if mob.spawn_time == Constants.SpawnTime.ONLY_DAY:
-					mobs_to_despawn_mutex.lock()
-					mobs_to_despawn.append(mob)
-					mobs_to_despawn_mutex.unlock()
-		mob_list_mutex.unlock()
-		# Despawn and spawn mobs
-		should_spawn_mobs = true
+	change_to_night = true
 
 
 # Method to enable or disable mob respawning
+# Called from another thread
 func disable_mob_respawning(disable):
 	can_spawn_mobs = !disable
 	
@@ -325,8 +336,8 @@ func disable_mob_respawning(disable):
 
 var counter3 = 0
 # Method is called from world after mob is instanced and added to world -> to handle mob spawning/despawning
+# Called from another thread but with call_deferred so this method is executed in this thread
 func new_mob_spawned(mob_instance):
-#	print("new_mob_spawned" + str(mob_instance))
 	mob_list_mutex.lock()
 	mob_list.append(mob_instance)
 	mob_list_mutex.unlock()

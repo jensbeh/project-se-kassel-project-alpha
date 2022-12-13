@@ -51,15 +51,26 @@ func _ready():
 	rng.randomize()
 	max_ideling_time = rng.randi_range(0, 8)
 	
-	# Setup sprite
-	mobSprite.flip_h = rng.randi_range(0,1)
+	
+	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
+	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	call_deferred("activate_areas_and_collisions")
 	
 	# Update mobs activity depending on is in active chunk or not
-	ChunkLoaderService.update_mob(self)
+	ChunkLoaderService.call_deferred("update_mob", self)
 	
 	Utils.count_new_ambient_mob()
 	
-#	MobSpawnerService.new_mob_spawned(self)
+	MobSpawnerService.call_deferred("new_mob_spawned", self)
+
+
+func activate_areas_and_collisions():
+	# Show or hide nodes for debugging
+	collision.set_deferred("visible", Constants.SHOW_AMBIENT_MOB_COLLISION)
+	line2D.set_deferred("visible", Constants.SHOW_AMBIENT_MOB_PATHES)
+	
+	# Setup sprite
+	mobSprite.set_deferred("flip_h", rng.randi_range(0,1))
 
 
 # Method to init variables, typically called after instancing

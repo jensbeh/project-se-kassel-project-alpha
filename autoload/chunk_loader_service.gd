@@ -26,6 +26,7 @@ func _ready():
 
 
 # Method to init all important variables
+# Called from another thread
 func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, init_map_min_global_pos):
 	print("CHUNK_LOADER_SERVICE: Init")
 	# Check if thread is active wait to stop
@@ -47,6 +48,7 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 
 
 # Method to stop the chunkloader to change map
+# Called from another thread
 func stop():
 	# Reset variables
 	# Variables
@@ -59,6 +61,7 @@ func stop():
 
 
 # Method to cleanup the chunkloader
+# Called from another thread
 func cleanup():
 	# Check if thread is active wait to stop
 	can_load_chunks = false
@@ -192,6 +195,7 @@ func clean_thread():
 
 
 # Method to calculate mob activity -> called from every mob after instancing
+# Called from another thread but with call_deferred so this method is executed in this thread
 func update_mob(mob):
 	if Utils.is_node_valid(mob) and map_min_global_pos != null:
 		var mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, mob.global_position)

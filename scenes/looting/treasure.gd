@@ -24,7 +24,7 @@ func _ready():
 	print("TREASURE: Spawned treasure at: " + str(position))
 	
 	# Add treasure to dynamic obstacles in PathfindingService
-	PathfindingService.add_dynamic_obstacle(get_node("StaticBody/CollisionShape2D"), position)
+	PathfindingService.call_deferred("add_dynamic_obstacle", get_node("StaticBody/CollisionShape2D"), position)
 
 
 # Method to disconnect all signals

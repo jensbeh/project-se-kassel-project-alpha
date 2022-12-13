@@ -82,7 +82,7 @@ func _ready():
 		# Handle locked door
 		var lockedDoorsNode = find_node("locked_doors")
 		var lockedDoorCollisionShape = lockedDoorsNode.find_node("CollisionShape2D")
-		PathfindingService.add_dynamic_obstacle(lockedDoorCollisionShape, lockedDoorCollisionShape.get_parent().global_position)
+		PathfindingService.call_deferred("add_dynamic_obstacle", lockedDoorCollisionShape, lockedDoorCollisionShape.get_parent().global_position)
 	
 	# Start PathfindingService
 	PathfindingService.start()
@@ -416,7 +416,7 @@ func setup_treasure_areas():
 							treasure_position = child.position
 							treasure_collision = child.get_child(0)
 							break
-					PathfindingService.add_dynamic_obstacle(treasure_collision, treasure_position)
+					PathfindingService.call_deferred("add_dynamic_obstacle", treasure_collision, treasure_position)
 			
 			# Delete treasure_nodes which should be removed
 			for treasure_to_delete in treasures_to_delete:
@@ -520,4 +520,4 @@ func spawn_mob(packedMobScene, current_spawn_area):
 		var mob_instance = packedMobScene.instance()
 		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 		mobsLayer.call_deferred("add_child", mob_instance)
-		MobSpawnerService.new_mob_spawned(mob_instance)
+		MobSpawnerService.call_deferred("new_mob_spawned", mob_instance)

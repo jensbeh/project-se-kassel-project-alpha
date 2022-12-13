@@ -382,7 +382,7 @@ func spawn_ambient_mob(mobScene, spawn_time):
 	if Utils.is_node_valid(ambientMobsLayer):
 		var mob_instance = mobScene.instance()
 		mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, spawn_time, scene_type)
-#		ambientMobsLayer.call_deferred("add_child", mob_instance)
+		ambientMobsLayer.call_deferred("add_child", mob_instance)
 		
 		counter2 += 1
 		print("GRASSLAND: spawn_ambient_mob: " + str(mob_instance) + " : " + str(counter2) + " : " + str(counter + counter2))
