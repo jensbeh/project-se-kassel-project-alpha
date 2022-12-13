@@ -520,4 +520,3 @@ func spawn_mob(packedMobScene, current_spawn_area):
 		var mob_instance = packedMobScene.instance()
 		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 		mobsLayer.call_deferred("add_child", mob_instance)
-		MobSpawnerService.call_deferred("new_mob_spawned", mob_instance)

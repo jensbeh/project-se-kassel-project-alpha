@@ -180,7 +180,7 @@ func set_states_to_nodes():
 	
 	# Healthbar
 	healthBar.set_deferred("value", 100)
-	healthBar.set_deferred("visible", false)
+	healthBarNode.set_deferred("visible", false)
 	
 	# Enable raycast
 	raycast.set_deferred("enabled", true)
