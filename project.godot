@@ -49,7 +49,8 @@ run/main_scene="res://scenes/Main.tscn"
 config/use_custom_user_dir=true
 boot_splash/image="res://assets/start_screen.png"
 boot_splash/use_filter=false
-config/icon="res://icon.png"
+config/icon="res://assets/project_alpha_logo.png"
+config/windows_native_icon="res://assets/logo/project_alpha_logo_16-256.ico"
 
 [autoload]
 
@@ -201,6 +202,10 @@ toggle_debugging={
 
 translations=PoolStringArray( "res://assets/language/Languages.de.translation", "res://assets/language/Languages.en.translation" )
 locale_filter=[ 1, [ "de", "en" ] ]
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=65536
 
 [physics]
 

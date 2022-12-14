@@ -89,21 +89,16 @@ onready var damageArea = $DamageArea
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 onready var hitbox = $HitboxZone
+onready var hitboxShape = $HitboxZone/CollisionShape2D
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
 onready var raycast = $RayCast2D
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_viewport().audio_listener_enable_2d = true
-	# Show or hide nodes for debugging
-	collision.visible = Constants.SHOW_MOB_COLLISION
-	playerDetectionZone.visible = Constants.SHOW_MOB_DETECTION_RADIUS
-	line2D.visible = Constants.SHOW_MOB_PATHES
-	hitbox.visible = Constants.SHOW_MOB_HITBOX
-	damageArea.visible = Constants.SHOW_MOB_DAMAGE_AREA
-	
 	# Set spawn_position
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, spawnArea, navigation_tile_map, collision_radius, true, lootLayer)
@@ -120,29 +115,20 @@ func _ready():
 	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius * 0.33
 	
-	# Healthbar
-	healthBar.value = 100
-	healthBar.visible = false
-	healthBarBackground.visible = false
-	
 	# Setup attacking radius around player variables
-	randomize()
-	max_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.9, 1.0)
-	min_attacking_radius_around_player = ATTACK_RADIUS * rand_range(0.75, 0.85)
+	max_attacking_radius_around_player = ATTACK_RADIUS * rng.randf_range(0.9, 1.0)
+	min_attacking_radius_around_player = ATTACK_RADIUS * rng.randf_range(0.75, 0.85)
 	
-	# Enable raycast
-	raycast.enabled = true
+	# Update mobs activity depending on is in active chunk or not
+	ChunkLoaderService.call_deferred("update_mob", self)
+	
+	# Notify that mob is spawned
+	MobSpawnerService.call_deferred("new_mob_spawned", self)
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	collision.set_deferred("disabled", false)
-	hitbox.monitorable = true
-	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
-	$DamageArea.set_deferred("monitoring", true)
-	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
-	
-	# Update mobs activity depending on is in active chunk or not
-	ChunkLoaderService.update_mob(self)
+	yield(get_tree(), "idle_frame") # Wait also a game frame to avoid game crash
+	call_deferred("set_states_to_nodes")
 
 
 # Method to init variables, typically called after instancing
@@ -151,6 +137,34 @@ func init(init_spawnArea, new_navigation_tile_map, init_scene_type, init_lootLay
 	navigation_tile_map = new_navigation_tile_map
 	scene_type = init_scene_type
 	lootLayer = init_lootLayer
+
+
+# Method to set states to nodes but not in _ready directly -> called with call_deferred
+func set_states_to_nodes():
+	get_viewport().set_deferred("audio_listener_enable_2d", true)
+	animationTree.set_deferred("active", true)
+	
+	# Show or hide nodes for debugging
+	collision.set_deferred("visible", Constants.SHOW_MOB_COLLISION)
+	playerDetectionZone.set_deferred("visible", Constants.SHOW_MOB_DETECTION_RADIUS)
+	line2D.set_deferred("visible", Constants.SHOW_MOB_PATHES)
+	hitbox.set_deferred("visible", Constants.SHOW_MOB_HITBOX)
+	damageArea.set_deferred("visible", Constants.SHOW_MOB_DAMAGE_AREA)
+	
+	# Healthbar
+	healthBar.set_deferred("value", 100)
+	healthBar.set_deferred("visible", false)
+	healthBarBackground.set_deferred("visible", false)
+	
+	# Enable raycast
+	raycast.set_deferred("enabled", true)
+	
+	# Setup areas & collisions
+	collision.set_deferred("disabled", false)
+	hitbox.set_deferred("monitorable", true)
+	hitboxShape.set_deferred("disabled", false)
+	damageArea.set_deferred("monitoring", true)
+	damageAreaShape.set_deferred("disabled", false)
 
 
 func _physics_process(delta):
@@ -319,9 +333,9 @@ func _process(delta):
 						var end_pos : Vector2 = player_pos + ATTACK_RADIUS * direction
 						
 						new_position_dic = {
-											"generate_again": false,
-											"position": end_pos
-											}
+							"generate_again": false,
+							"position": end_pos
+							}
 					
 					else:
 						# AREA: Take position around player
@@ -728,7 +742,8 @@ func mob_killed():
 	if not killed:
 		killed = true
 		Utils.get_current_player().set_exp(Utils.get_current_player().get_exp() + experience)
-		MobSpawnerService.despawn_mob(self)
+		Utils.get_scene_manager().get_current_scene().spawn_loot(position, get_name())
+		MobSpawnerService.call_deferred("despawn_mob", self)
 
 
 # Method to return a random pre_attack_time of specifiy current_enemy_type

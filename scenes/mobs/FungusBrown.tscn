@@ -764,7 +764,6 @@ anims/Walk_Up = SubResource( 145 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 146 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 147 )
 parameters/DIE/blend_position = Vector2( 0, 0 )
 parameters/HURT/blend_position = Vector2( 0, 0 )

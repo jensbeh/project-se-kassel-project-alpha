@@ -96,79 +96,56 @@ onready var damageArea = $DamageArea
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 onready var hitbox = $HitboxZone
+onready var hitboxShape = $HitboxZone/CollisionShape2D
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarNode = $NinePatchRect
 onready var raycast = $RayCast2D
 onready var sound = get_node("HitboxZone/Sound")
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_viewport().audio_listener_enable_2d = true
-	# Show or hide nodes for debugging
-	collision.visible = Constants.SHOW_BOSS_COLLISION
-	playerDetectionZone.visible = Constants.SHOW_BOSS_DETECTION_RADIUS
-	line2D.visible = Constants.SHOW_BOSS_PATHES
-	hitbox.visible = Constants.SHOW_BOSS_HITBOX
-	damageArea.visible = Constants.SHOW_BOSS_DAMAGE_AREA
-	
-	
 	# Set detection and attack radius depending on grassland or not
 	if in_grassland:
-		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_GRASSLAND
 		attack_radius = ATTACK_RADIUS_IN_GRASSLAND
 		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_GRASSLAND
 	else:
-		playerDetectionZoneShape.shape.radius = DETECTION_RADIUS_IN_DUNGEON
 		attack_radius = ATTACK_RADIUS_IN_DUNGEON
 		CANT_REACH_DISTANCE = ATTACK_RADIUS_IN_DUNGEON
-	
 	
 	# Set spawn position
 	collision_radius = collision.shape.radius
 	var spawn_position : Vector2 = Utils.generate_position_in_mob_area(scene_type, boss_spawn_area, navigation_tile_map, collision_radius, true, lootLayer, 3)
 	position = spawn_position
 	
-	
 	# Set init max_ideling_time for startstate IDLING
 	rng.randomize()
 	max_ideling_time = rng.randi_range(0, 8)
 	
-	
 	# Setup initial mob view direction
 	velocity = Vector2(rng.randi_range(-1,1), rng.randi_range(-1,1))
-	
 	
 	# Setup searching variables
 	max_searching_radius = playerDetectionZoneShape.shape.radius
 	min_searching_radius = max_searching_radius * 0.33
 	
-	
 	# Setup Healthbar
-	healthBar.value = 100
-	healthBarNode.visible = false
 	max_regeneration_interval = 0.1 # every 0.1 sek
 	REGENERATION_HP_AMOUNT = 20 * max_regeneration_interval  # 20 health every 1 sec == 2 health every max_regeneration_interval
 	
-	
 	# Setup attacking radius around player variables
-	randomize()
-	max_attacking_radius_around_player = attack_radius * rand_range(0.9, 1.0)
-	min_attacking_radius_around_player = attack_radius * rand_range(0.75, 0.85)
+	max_attacking_radius_around_player = attack_radius * rng.randf_range(0.9, 1.0)
+	min_attacking_radius_around_player = attack_radius * rng.randf_range(0.75, 0.85)
 	
-	# Enable raycast
-	raycast.enabled = true
+	# Update mobs activity depending on is in active chunk or not
+	ChunkLoaderService.call_deferred("update_mob", self)
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	collision.set_deferred("disabled", false)
-	hitbox.monitorable = true
-	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
-	$DamageArea.set_deferred("monitoring", true)
-	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
-	
-	# Update mobs activity depending on is in active chunk or not
-	ChunkLoaderService.update_mob(self)
+	yield(get_tree(), "idle_frame") # Wait also a game frame to avoid game crash
+	call_deferred("set_states_to_nodes")
 
 
 # Method to init variables, typically called after instancing
@@ -178,6 +155,38 @@ func init(init_boss_spawn_area, init_navigation_tile_map, init_scene_type, init_
 	scene_type = init_scene_type
 	is_in_boss_room = init_is_in_boss_room
 	lootLayer = init_lootLayer
+
+
+# Method to set states to nodes but not in _ready directly -> called with call_deferred
+func set_states_to_nodes():
+	get_viewport().set_deferred("audio_listener_enable_2d", true)
+	
+	# Show or hide nodes for debugging
+	collision.set_deferred("visible", Constants.SHOW_BOSS_COLLISION)
+	playerDetectionZone.set_deferred("visible", Constants.SHOW_BOSS_DETECTION_RADIUS)
+	line2D.set_deferred("visible", Constants.SHOW_BOSS_PATHES)
+	hitbox.set_deferred("visible", Constants.SHOW_BOSS_HITBOX)
+	damageArea.set_deferred("visible", Constants.SHOW_BOSS_DAMAGE_AREA)
+	
+	# Set detection and attack radius depending on grassland or not
+	if in_grassland:
+		playerDetectionZoneShape.shape.set_deferred("radius", DETECTION_RADIUS_IN_GRASSLAND)
+	else:
+		playerDetectionZoneShape.shape.set_deferred("radius", DETECTION_RADIUS_IN_DUNGEON)
+	
+	# Healthbar
+	healthBar.set_deferred("value", 100)
+	healthBarNode.set_deferred("visible", false)
+	
+	# Enable raycast
+	raycast.set_deferred("enabled", true)
+	
+	# Setup areas & collisions
+	collision.set_deferred("disabled", false)
+	hitbox.set_deferred("monitorable", true)
+	hitboxShape.set_deferred("disabled", false)
+	damageArea.set_deferred("monitoring", true)
+	damageAreaShape.set_deferred("disabled", false)
 
 
 func _physics_process(delta):

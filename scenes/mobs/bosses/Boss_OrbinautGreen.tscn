@@ -132,7 +132,7 @@ nodes/Animation/position = Vector2( 0, 100 )
 nodes/TimeScale/node = SubResource( 26 )
 nodes/TimeScale/position = Vector2( 240, 100 )
 nodes/output/position = Vector2( 480, 120 )
-node_connections = [ "TimeScale", 0, "Animation", "output", 0, "TimeScale" ]
+node_connections = [ "output", 0, "TimeScale", "TimeScale", 0, "Animation" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=33]
 
@@ -191,7 +191,6 @@ anims/RESET = SubResource( 37 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 38 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 39 )
 parameters/MOVE/TimeScale/scale = 1.0
 

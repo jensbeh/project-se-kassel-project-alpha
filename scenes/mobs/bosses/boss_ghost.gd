@@ -1,10 +1,6 @@
 extends "res://scenes/mobs/bosses/boss.gd"
 
 
-# Nodes
-onready var animationTree = $AnimationTree
-onready var animationState = animationTree.get("parameters/playback")
-
 # Variables
 var is_attacking = false
 

@@ -1,8 +1,5 @@
 extends "res://scenes/mobs/enemy.gd"
 
-# Nodes
-onready var animationTree = $AnimationTree
-onready var animationState = animationTree.get("parameters/playback")
 
 # Variables
 var is_attacking = false

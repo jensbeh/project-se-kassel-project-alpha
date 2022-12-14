@@ -3,7 +3,6 @@ extends Node2D
 
 # Map specific
 var scene_type = Constants.SceneType.GRASSLAND
-var max_ambient_mobs = 50
 
 # Variables
 var current_area : Area2D = null
@@ -70,7 +69,7 @@ func _ready():
 	spawn_treasures()
 	
 	# Setup MobSpawnerService
-	MobSpawnerService.init(self, scene_type, spawning_areas, mobsNavigationTileMap, mobsLayer, true, ambientMobsSpawnArea, ambientMobsNavigationTileMap, ambientMobsLayer, max_ambient_mobs, true, lootLayer)
+	MobSpawnerService.init(self, spawning_areas, true, Constants.MAX_AMBIENT_MOBS_GRASSLAND, true)
 	
 	# Spawn all mobs
 	MobSpawnerService.spawn_mobs()
@@ -370,7 +369,6 @@ func spawn_mob(packedMobScene, current_spawn_area):
 		var mob_instance = packedMobScene.instance()
 		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 		mobsLayer.call_deferred("add_child", mob_instance)
-		MobSpawnerService.new_mob_spawned(mob_instance)
 
 
 # Method is called from MobSpawnerService to instance and spawn the ambient mob -> instancing in other threads causes random errors
@@ -379,4 +377,3 @@ func spawn_ambient_mob(mobScene, spawn_time):
 		var mob_instance = mobScene.instance()
 		mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, spawn_time, scene_type)
 		ambientMobsLayer.call_deferred("add_child", mob_instance)
-		MobSpawnerService.new_mob_spawned(mob_instance)

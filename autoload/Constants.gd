@@ -91,7 +91,7 @@ const CAN_MODIFY_TIME = false # Default: false
 ## GAME
 #################
 """
-const GAME_VERSION_NR = "1.0.0"
+const GAME_VERSION_NR = "1.0.1"
 const GAME_BUILD_NR = 1
 const DEFAULT_SOUND_VOLUME = -25
 const DEFAULT_MUSIC_VOLUME = -15
@@ -227,6 +227,13 @@ const INVALID_TILE_ID = -1
 const CHUNK_SIZE_TILES = 10 # In tiles -> if changing need reimport of maps!
 const chunk_size_pixel = CHUNK_SIZE_TILES * TILE_SIZE # In pixel
 const RENDER_DISTANCE = 3 # Loaded chunks each direction except the one where the player stands -> min 3 !!!
+
+"""
+#################
+## MOB_SPAWNER
+#################
+"""
+const MAX_AMBIENT_MOBS_GRASSLAND = 50
 
 """
 #################
@@ -407,7 +414,7 @@ const MobsSettings = {
 		"Knockback" : 2,
 		"Weight" : 30,
 		"Experience" : 10 * MOB_DIFFICULTY_FACTOR,
-		"SpawnTime" : SpawnTime.ALWAYS,
+		"SpawnTime" : SpawnTime.ONLY_DAY,
 		"HuntingSpeed" : 25 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 12 * MOB_SPEED_FACTOR,
 		"PreAttackingSpeed" : MOB_PRE_ATTACK_SPEED_FACTOR * 25 * MOB_SPEED_FACTOR,
@@ -422,7 +429,7 @@ const MobsSettings = {
 		"Knockback" : 1,
 		"Weight" : 10,
 		"Experience" : 8 * MOB_DIFFICULTY_FACTOR,
-		"SpawnTime" : SpawnTime.ALWAYS,
+		"SpawnTime" : SpawnTime.ONLY_DAY,
 		"HuntingSpeed" : 35 * MOB_SPEED_FACTOR,
 		"WanderingSpeed" : 20 * MOB_SPEED_FACTOR,
 		"PreAttackingSpeed" : MOB_PRE_ATTACK_SPEED_FACTOR * 35 * MOB_SPEED_FACTOR,

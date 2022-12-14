@@ -5,7 +5,7 @@ extends Node2D
 class_name AStar2DVisualizer
 
 
-export(float) var point_radius = 2
+export(float) var point_radius = 2.0
 export(float) var scale_multiplier = 16.0 / 2.0
 export(Color) var enabled_point_color = Color('00ff00')
 export(Color) var disabled_point_color = Color('ff0000')

@@ -16,7 +16,6 @@ signal on_skip_time_updated
 # Variables
 var current_time = 0.0
 var screen_color : Color
-var game_time_active = false
 var emit_signal_skip_time = false
 
 var passed_days_since_start
@@ -54,80 +53,78 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	# If game time should run
-	if game_time_active:
+	current_time += delta
+	
+	# Calculate real hours and minutes from time
+	current_hour = (int(floor(current_time / ONE_HOUR)) + DAY_TIME_START_OFFSET) % 24
+	current_minute = int((fmod(current_time, ONE_HOUR) / ONE_HOUR) * 60)
+	# Reset current_time on new day
+	if current_time >= COMPLETE_DAY_TIME:
+		passed_days_since_start += 1
+		current_time = 0
+	
+	# Calls stuff every 1min (ingame time)
+	if current_minute != previouse_current_minute:
+		previouse_current_minute = current_minute
+		update_ui()
 		
-		current_time += delta
+		# Emit time skipped signal if necessary
+		if emit_signal_skip_time:
+			emit_signal("on_skip_time_updated")
+			emit_signal_skip_time = false
 		
-		# Calculate real hours and minutes from time
-		current_hour = (int(floor(current_time / ONE_HOUR)) + DAY_TIME_START_OFFSET) % 24
-		current_minute = int((fmod(current_time, ONE_HOUR) / ONE_HOUR) * 60)
-		# Reset current_time on new day
-		if current_time >= COMPLETE_DAY_TIME:
-			passed_days_since_start += 1
-			current_time = 0
+#		print("DAY_NIGHT_CYCLE: " + str(current_hour) + ":" + str(current_minute))
+	
+	# Daytime
+	if current_time <= DAY_TIME:
+		if is_daytime == false:
+			is_sunrise = false
+			is_daytime = true
+			change_to_daytime()
 		
-		# Calls stuff every 1min (ingame time)
-		if current_minute != previouse_current_minute:
-			previouse_current_minute = current_minute
-			update_ui()
-			
-			# Emit time skipped signal if necessary
-			if emit_signal_skip_time:
-				emit_signal("on_skip_time_updated")
-				emit_signal_skip_time = false
-			
-#			print("DAY_NIGHT_CYCLE: " + str(current_hour) + ":" + str(current_minute))
+		if screen_color != Constants.DAY_COLOR:
+			screen_color = Constants.DAY_COLOR
+	
+	# Day to Sunset
+	elif current_time <= (DAY_TIME + (SUNSET_TIME / 2)):
+		if is_sunset == false:
+			is_daytime = false
+			is_sunset = true
+			change_to_sunset()
 		
-		# Daytime
-		if current_time <= DAY_TIME:
-			if is_daytime == false:
-				is_sunrise = false
-				is_daytime = true
-				change_to_daytime()
-			
-			if screen_color != Constants.DAY_COLOR:
-				screen_color = Constants.DAY_COLOR
 		
-		# Day to Sunset
-		elif current_time <= (DAY_TIME + (SUNSET_TIME / 2)):
-			if is_sunset == false:
-				is_daytime = false
-				is_sunset = true
-				change_to_sunset()
-			
-			
-			var value = (current_time - DAY_TIME) / (SUNSET_TIME / 2)
-			screen_color = Constants.DAY_COLOR.linear_interpolate(Constants.SUNSET_COLOR, value)
+		var value = (current_time - DAY_TIME) / (SUNSET_TIME / 2)
+		screen_color = Constants.DAY_COLOR.linear_interpolate(Constants.SUNSET_COLOR, value)
+	
+	# Sunset to NIGHT
+	elif current_time <= (DAY_TIME + SUNSET_TIME):
+		var value = (current_time - (DAY_TIME + (SUNSET_TIME / 2))) / (SUNSET_TIME / 2)
+		screen_color = Constants.SUNSET_COLOR.linear_interpolate(Constants.NIGHT_COLOR, value)
+	
+	# Night
+	elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME):
+		if is_night == false:
+			is_sunset = false
+			is_night = true
+			change_to_night()
 		
-		# Sunset to NIGHT
-		elif current_time <= (DAY_TIME + SUNSET_TIME):
-			var value = (current_time - (DAY_TIME + (SUNSET_TIME / 2))) / (SUNSET_TIME / 2)
-			screen_color = Constants.SUNSET_COLOR.linear_interpolate(Constants.NIGHT_COLOR, value)
+		if screen_color != Constants.NIGHT_COLOR:
+			screen_color = Constants.NIGHT_COLOR
+	
+	# Night to Sunrise
+	elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME + (SUNRISE_TIME / 2)):
+		if is_sunrise == false:
+			is_night = false
+			is_sunrise = true
+			change_to_sunrise()
 		
-		# Night
-		elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME):
-			if is_night == false:
-				is_sunset = false
-				is_night = true
-				change_to_night()
-			
-			if screen_color != Constants.NIGHT_COLOR:
-				screen_color = Constants.NIGHT_COLOR
-		
-		# Night to Sunrise
-		elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME + (SUNRISE_TIME / 2)):
-			if is_sunrise == false:
-				is_night = false
-				is_sunrise = true
-				change_to_sunrise()
-			
-			var value = (current_time - (DAY_TIME + SUNSET_TIME + NIGHT_TIME)) / (SUNRISE_TIME / 2)
-			screen_color = Constants.NIGHT_COLOR.linear_interpolate(Constants.SUNRISE_COLOR, value)
-		
-		# Sunrise to Day
-		elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME + SUNRISE_TIME):
-			var value = (current_time - (DAY_TIME + SUNSET_TIME + NIGHT_TIME + (SUNRISE_TIME / 2))) / (SUNRISE_TIME / 2)
-			screen_color = Constants.SUNRISE_COLOR.linear_interpolate(Constants.DAY_COLOR, value)
+		var value = (current_time - (DAY_TIME + SUNSET_TIME + NIGHT_TIME)) / (SUNRISE_TIME / 2)
+		screen_color = Constants.NIGHT_COLOR.linear_interpolate(Constants.SUNRISE_COLOR, value)
+	
+	# Sunrise to Day
+	elif current_time <= (DAY_TIME + SUNSET_TIME + NIGHT_TIME + SUNRISE_TIME):
+		var value = (current_time - (DAY_TIME + SUNSET_TIME + NIGHT_TIME + (SUNRISE_TIME / 2))) / (SUNRISE_TIME / 2)
+		screen_color = Constants.SUNRISE_COLOR.linear_interpolate(Constants.DAY_COLOR, value)
 
 
 # Method to return the current screen color
@@ -170,12 +167,12 @@ func pause_time(should_pause):
 	# Pass
 	if should_pause:
 		print("DAY_NIGHT_CYCLE: Pause")
-		game_time_active = false
+		set_process(false)
 	
 	# Resume
 	else:
 		print("DAY_NIGHT_CYCLE: Resume")
-		game_time_active = true
+		set_process(true)
 
 
 # Method to skip time
@@ -201,6 +198,10 @@ func get_passed_days_since_start():
 
 
 func set_current_time(new_time):
+	# Pause time to set new time
+	pause_time(true)
+	
+	# Set new variables
 	current_hour = 0
 	current_minute = 0
 	previouse_current_minute = 0
@@ -209,6 +210,9 @@ func set_current_time(new_time):
 	is_night = false
 	is_sunrise = false
 	current_time = new_time
+	
+	# Resume time (on next process iteration flags will be set correctly)
+	pause_time(false)
 
 
 func set_passed_days(new_value):

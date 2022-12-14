@@ -13,6 +13,7 @@ var can_load_chunks = false
 var chunk_loader_timer = Timer.new()
 var chunk_load_interval = 0.5
 var should_load_chunks = true
+var active_chunks_mutex = Mutex.new()
 
 
 # Called when the node enters the scene tree for the first time.
@@ -25,6 +26,7 @@ func _ready():
 
 
 # Method to init all important variables
+# Called from another thread
 func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, init_map_min_global_pos):
 	print("CHUNK_LOADER_SERVICE: Init")
 	# Check if thread is active wait to stop
@@ -46,6 +48,7 @@ func init(init_world, init_vertical_chunks_count, init_horizontal_chunks_count, 
 
 
 # Method to stop the chunkloader to change map
+# Called from another thread
 func stop():
 	# Reset variables
 	# Variables
@@ -58,6 +61,7 @@ func stop():
 
 
 # Method to cleanup the chunkloader
+# Called from another thread
 func cleanup():
 	# Check if thread is active wait to stop
 	can_load_chunks = false
@@ -71,7 +75,9 @@ func cleanup():
 	map_min_global_pos = null
 	current_chunk = null
 	previouse_chunk = null
+	active_chunks_mutex.lock()
 	active_chunks.clear()
+	active_chunks_mutex.unlock()
 	chunk_loader_timer.stop()
 	
 	print("CHUNK_LOADER_SERVICE: Cleaned")
@@ -105,10 +111,13 @@ func load_chunks():
 							var chunk_coords = Vector2(chunk_x, chunk_y)
 							loading_chunks.append(chunk_coords)
 							
+							active_chunks_mutex.lock()
 							if active_chunks.find(chunk_coords) == -1:
 								# Set chunk to active ones
 								active_chunks.append(chunk_coords)
+							active_chunks_mutex.unlock()
 				
+				active_chunks_mutex.lock()
 				var deleting_chunks = []
 				var new_chunks = active_chunks
 				for chunk in new_chunks:
@@ -118,9 +127,10 @@ func load_chunks():
 					if new_chunks.find(chunk) != -1:
 						var index = new_chunks.find(chunk)
 						new_chunks.remove(index)
-						
+				
 				active_chunks = new_chunks
-			
+				active_chunks_mutex.unlock()
+				
 				# Make chunks visibel
 				call_deferred("send_chunks_to_world", deleting_chunks)
 				
@@ -138,26 +148,32 @@ func update_mobs():
 	for enemy in enemies:
 		if Utils.is_node_valid(enemy):
 			var enemy_chunk = Utils.get_chunk_from_position(map_min_global_pos, enemy.global_position)
+			active_chunks_mutex.lock()
 			if enemy_chunk in active_chunks:
 				call_deferred("set_mob_activity_state", enemy, true)
 			else:
 				call_deferred("set_mob_activity_state", enemy, false)
+			active_chunks_mutex.unlock()
 	
 	for boss in bosses:
 		if Utils.is_node_valid(boss):
 			var boss_chunk = Utils.get_chunk_from_position(map_min_global_pos, boss.global_position)
+			active_chunks_mutex.lock()
 			if boss_chunk in active_chunks:
 				call_deferred("set_mob_activity_state", boss, true)
 			else:
 				call_deferred("set_mob_activity_state", boss, false)
+			active_chunks_mutex.unlock()
 	
 	for ambient_mob in ambient_mobs:
 		if Utils.is_node_valid(ambient_mob):
 			var ambient_mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, ambient_mob.global_position)
+			active_chunks_mutex.lock()
 			if ambient_mob_chunk in active_chunks:
 				call_deferred("set_mob_activity_state", ambient_mob, true)
 			else:
 				call_deferred("set_mob_activity_state", ambient_mob, false)
+			active_chunks_mutex.unlock()
 
 
 # Method to send mob activity to mob
@@ -179,10 +195,13 @@ func clean_thread():
 
 
 # Method to calculate mob activity -> called from every mob after instancing
+# Called from another thread but with call_deferred so this method is executed in this thread
 func update_mob(mob):
-	if Utils.is_node_valid(mob):
+	if Utils.is_node_valid(mob) and map_min_global_pos != null:
 		var mob_chunk = Utils.get_chunk_from_position(map_min_global_pos, mob.global_position)
+		active_chunks_mutex.lock()
 		if mob_chunk in active_chunks:
 			call_deferred("set_mob_activity_state", mob, true)
 		else:
 			call_deferred("set_mob_activity_state", mob, false)
+		active_chunks_mutex.unlock()

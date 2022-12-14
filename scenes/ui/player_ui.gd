@@ -141,10 +141,10 @@ func change_heart_number(number_heart):
 func without_minimap(value):
 	# Without minimap
 	if (value or (!Utils.get_ui().has_map or !Utils.get_minimap().is_visible())):
-		get_node("Hotbar").rect_position = Vector2(-916,456)
+		get_node("Hotbar").set_deferred("rect_position", Vector2(-916,456))
 	# With minimap
 	else:
-		get_node("Hotbar").rect_position = Vector2(-504,456)
+		get_node("Hotbar").set_deferred("rect_position", Vector2(-504,456))
 
 
 # Method to reset boss hp in ui
