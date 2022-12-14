@@ -202,6 +202,10 @@ toggle_debugging={
 translations=PoolStringArray( "res://assets/language/Languages.de.translation", "res://assets/language/Languages.en.translation" )
 locale_filter=[ 1, [ "de", "en" ] ]
 
+[network]
+
+limits/debugger_stdout/max_chars_per_second=65536
+
 [physics]
 
 common/enable_pause_aware_picking=true

@@ -89,9 +89,11 @@ onready var damageArea = $DamageArea
 onready var damageAreaShape = $DamageArea/CollisionShape2D
 onready var line2D = $Line2D
 onready var hitbox = $HitboxZone
+onready var hitboxShape = $HitboxZone/CollisionShape2D
 onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
 onready var raycast = $RayCast2D
+onready var animationTree = $AnimationTree
 
 
 # Called when the node enters the scene tree for the first time.
@@ -116,17 +118,16 @@ func _ready():
 	max_attacking_radius_around_player = ATTACK_RADIUS * rng.randf_range(0.9, 1.0)
 	min_attacking_radius_around_player = ATTACK_RADIUS * rng.randf_range(0.75, 0.85)
 	
-	
-	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
-	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	call_deferred("set_states_to_nodes")
-	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.call_deferred("update_mob", self)
 	
 	Utils.count_new_mob()
 	
 	MobSpawnerService.call_deferred("new_mob_spawned", self)
+	
+	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
+	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	call_deferred("set_states_to_nodes")
 
 
 # Method to init variables, typically called after instancing
@@ -140,6 +141,7 @@ func init(init_spawnArea, new_navigation_tile_map, init_scene_type, init_lootLay
 # Method to set states to nodes but not in _ready directly -> called with call_deferred
 func set_states_to_nodes():
 	get_viewport().set_deferred("audio_listener_enable_2d", true)
+	animationTree.set_deferred("active", true)
 	
 	# Show or hide nodes for debugging
 	collision.set_deferred("visible", Constants.SHOW_MOB_COLLISION)
@@ -156,11 +158,12 @@ func set_states_to_nodes():
 	# Enable raycast
 	raycast.set_deferred("enabled", true)
 	
+	# Setup areas & collisions
 	collision.set_deferred("disabled", false)
 	hitbox.set_deferred("monitorable", true)
-	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
-	$DamageArea.set_deferred("monitoring", true)
-	$DamageArea.get_node("CollisionShape2D").set_deferred("disabled", false)
+	hitboxShape.set_deferred("disabled", false)
+	damageArea.set_deferred("monitoring", true)
+	damageAreaShape.set_deferred("disabled", false)
 
 
 func _physics_process(delta):
