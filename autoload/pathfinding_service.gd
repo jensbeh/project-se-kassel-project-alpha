@@ -211,6 +211,7 @@ func cleanup():
 			for point_index in astar_nodes_cache[map_name]["dynamic_obstacles_bosses"][obstacle]:
 				astar_nodes_cache[map_name]["bosses"].set_point_disabled(point_index, false)
 		astar_nodes_cache[map_name]["dynamic_obstacles_bosses"].clear()
+	
 	map_name = ""
 	
 	print("PATHFINDING_SERVICE: Cleaned")

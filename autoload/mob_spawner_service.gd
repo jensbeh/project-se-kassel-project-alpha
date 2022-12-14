@@ -193,11 +193,10 @@ func despawn_mobs():
 				
 				if Utils.is_node_valid(mob):
 					mob.call_deferred("queue_free")
-				print("------------------------------------> REMOVE MOB: " + str(mob))
+				
 				mob_list_mutex.lock()
 				mob_list.remove(mob_list.find(mob))
 				mob_list_mutex.unlock()
-				counter3 -= 1
 	
 	var i = 0
 	for removed_mob in removed_mobs:
@@ -206,7 +205,6 @@ func despawn_mobs():
 	removed_mobs.clear()
 
 
-var counter = 0
 # Method to spawn mobs
 func spawn_area_mobs():
 	for current_spawn_area in spawning_areas.keys():
@@ -235,13 +233,11 @@ func spawn_area_mobs():
 							if mob == mob_id:
 								world.call_deferred("spawn_mob", mobScene, current_spawn_area)
 								spawning_areas[current_spawn_area]["current_mobs_count"] += 1
-								counter += 1
-								print("MOB_SPAWNER: spawn_mob: " + str(mobScene) + " : " + str(counter))
+					
 					else:
 						printerr("ERROR: \""+ biome_mobs[mob] + "\" scene can't be loaded!")
 
 
-var counter2 = 0
 # Method to spawn ambient mobs
 func spawn_ambient_mobs():
 	# Spawn only if needed
@@ -256,8 +252,6 @@ func spawn_ambient_mobs():
 				while current_ambient_mobs < max_ambient_mobs:
 					world.call_deferred("spawn_ambient_mob", mobScene, Constants.SpawnTime.ONLY_NIGHT)
 					current_ambient_mobs += 1
-					counter2 += 1
-					print("MOB_SPAWNER: spawn_ambient_mobs - NIGHT: " + str(mobScene) + " : " + str(counter2))
 			
 			else:
 				printerr("ERROR: \"Moth\" scene can't be loaded!")
@@ -270,8 +264,6 @@ func spawn_ambient_mobs():
 				while current_ambient_mobs < max_ambient_mobs:
 					world.call_deferred("spawn_ambient_mob", mobScene, Constants.SpawnTime.ONLY_DAY)
 					current_ambient_mobs += 1
-					counter2 += 1
-					print("MOB_SPAWNER: spawn_ambient_mobs - DAY: " + str(mobScene) + " : " + str(counter2))
 			
 			else:
 				printerr("ERROR: \"Butterfly\" scene can't be loaded!")
@@ -308,13 +300,11 @@ func spawn_despawn_mobs():
 
 # Method to recognize sunrise
 func on_change_to_sunrise():
-	print("on_change_to_sunrise")
 	change_to_sunrise = true
 
 
 # Method to recognize night
 func on_change_to_night():
-	print("on_change_to_night")
 	change_to_night = true
 
 
@@ -334,12 +324,9 @@ func disable_mob_respawning(disable):
 		mob_spawner_timer.start()
 
 
-var counter3 = 0
 # Method is called from world after mob is instanced and added to world -> to handle mob spawning/despawning
 # Called from another thread but with call_deferred so this method is executed in this thread
 func new_mob_spawned(mob_instance):
 	mob_list_mutex.lock()
 	mob_list.append(mob_instance)
 	mob_list_mutex.unlock()
-	counter3 += 1
-	print("new_mob_spawned - finished " + str(counter3))
