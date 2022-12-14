@@ -553,7 +553,6 @@ render_target_update_mode = 3
 [node name="DarknessLightsCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="DarknessLightsScreen" type="ColorRect" parent="DarknessLightsCanvasLayer"]
-visible = false
 material = SubResource( 25 )
 anchor_right = 1.0
 anchor_bottom = 1.0

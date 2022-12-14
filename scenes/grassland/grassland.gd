@@ -28,7 +28,6 @@ onready var lootLayer = $map_grassland/entitylayer/lootLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("-----------------------------------------------------------> DayNightCycle.is_night: " + str(DayNightCycle.is_night))
 	# Music
 	if DayNightCycle.is_night:
 		night_sound()
@@ -364,25 +363,17 @@ func spawn_treasures():
 			quantity -= 1
 
 
-var counter = 0
 # Method is called from MobSpawnerService to instance and spawn the mob -> instancing in other threads causes random errors
 func spawn_mob(packedMobScene, current_spawn_area):
 	if Utils.is_node_valid(mobsLayer):
 		var mob_instance = packedMobScene.instance()
 		mob_instance.init(current_spawn_area, mobsNavigationTileMap, scene_type, lootLayer)
 		mobsLayer.call_deferred("add_child", mob_instance)
-		
-		counter += 1
-		print("GRASSLAND: spawn_mob: " + str(mob_instance) + " : " + str(counter))
 
 
-var counter2 = 0
 # Method is called from MobSpawnerService to instance and spawn the ambient mob -> instancing in other threads causes random errors
 func spawn_ambient_mob(mobScene, spawn_time):
 	if Utils.is_node_valid(ambientMobsLayer):
 		var mob_instance = mobScene.instance()
 		mob_instance.init(ambientMobsSpawnArea, ambientMobsNavigationTileMap, spawn_time, scene_type)
 		ambientMobsLayer.call_deferred("add_child", mob_instance)
-		
-		counter2 += 1
-		print("GRASSLAND: spawn_ambient_mob: " + str(mob_instance) + " : " + str(counter2) + " : " + str(counter + counter2))

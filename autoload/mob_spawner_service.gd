@@ -227,7 +227,7 @@ func spawn_area_mobs():
 				# Check if mob should be spawned
 				if mob in mobs_to_spawn:
 					# Load and spawn mobs
-					var mobScene : PackedScene = Constants.PreloadedMobScenes["BatBlue"] # biome_mobs[mob]]
+					var mobScene : PackedScene = Constants.PreloadedMobScenes[biome_mobs[mob]]
 					
 					if mobScene != null:
 						# Spawn the mob as often as it is in the list

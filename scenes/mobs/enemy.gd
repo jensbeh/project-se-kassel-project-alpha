@@ -122,12 +122,12 @@ func _ready():
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.call_deferred("update_mob", self)
 	
-	Utils.count_new_mob()
-	
+	# Notify that mob is spawned
 	MobSpawnerService.call_deferred("new_mob_spawned", self)
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	yield(get_tree(), "idle_frame") # Wait also a game frame to avoid game crash
 	call_deferred("set_states_to_nodes")
 
 

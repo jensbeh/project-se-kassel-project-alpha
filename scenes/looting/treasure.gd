@@ -1,5 +1,7 @@
 extends Node2D
 
+
+# Variables
 var player_in_looting_zone = false
 var interacted = false
 var loot_panel
@@ -10,11 +12,9 @@ var navigation_tile_map
 var scene_type
 var lootLayer
 
+
 # connect interaction signal with player
 func _ready():
-	$Area2D.set_deferred("monitoring", true)
-	$Area2D/CollisionShape2D.set_deferred("disabled", false)
-	
 	self.name = "treasure"
 	Utils.get_current_player().connect("player_interact", self, "interaction")
 	
@@ -25,11 +25,11 @@ func _ready():
 	
 	# Add treasure to dynamic obstacles in PathfindingService
 	PathfindingService.call_deferred("add_dynamic_obstacle", get_node("StaticBody/CollisionShape2D"), position)
-
-
-# Method to disconnect all signals
-func clear_signals():
-	Utils.get_current_player().disconnect("player_interact", self, "interaction")
+	
+	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
+	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	yield(get_tree(), "idle_frame") # Wait also a game frame to avoid game crash
+	call_deferred("set_states_to_nodes")
 
 
 func init(init_current_spawn_area, init_navigation_tile_map, init_scene_type, init_lootLayer):
@@ -37,6 +37,17 @@ func init(init_current_spawn_area, init_navigation_tile_map, init_scene_type, in
 	navigation_tile_map = init_navigation_tile_map
 	scene_type = init_scene_type
 	lootLayer = init_lootLayer
+
+
+# Method to set states to nodes but not in _ready directly -> called with call_deferred
+func set_states_to_nodes():
+	$Area2D.set_deferred("monitoring", true)
+	$Area2D/CollisionShape2D.set_deferred("disabled", false)
+
+
+# Method to disconnect all signals
+func clear_signals():
+	Utils.get_current_player().disconnect("player_interact", self, "interaction")
 
 
 # When player enter zone, player can interact

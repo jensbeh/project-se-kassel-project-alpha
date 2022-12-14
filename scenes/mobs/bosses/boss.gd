@@ -144,6 +144,7 @@ func _ready():
 	
 	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
 	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	yield(get_tree(), "idle_frame") # Wait also a game frame to avoid game crash
 	call_deferred("set_states_to_nodes")
 
 
@@ -183,9 +184,9 @@ func set_states_to_nodes():
 	# Setup areas & collisions
 	collision.set_deferred("disabled", false)
 	hitbox.set_deferred("monitorable", true)
-	hitbox.get_node("CollisionShape2D").set_deferred("disabled", false)
+	hitboxShape.set_deferred("disabled", false)
 	damageArea.set_deferred("monitoring", true)
-	damageAreaShape.get_node("CollisionShape2D").set_deferred("disabled", false)
+	damageAreaShape.set_deferred("disabled", false)
 
 
 func _physics_process(delta):
