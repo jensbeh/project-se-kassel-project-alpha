@@ -716,7 +716,7 @@ position = Vector2( 0, -3 )
 texture = ExtResource( 1 )
 hframes = 9
 vframes = 4
-frame = 4
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite")
@@ -741,7 +741,6 @@ anims/Walk_Up = SubResource( 130 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 112 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 113 )
 parameters/DIE/blend_position = Vector2( 0, 0 )
 parameters/HURT/blend_position = Vector2( 0, 0 )

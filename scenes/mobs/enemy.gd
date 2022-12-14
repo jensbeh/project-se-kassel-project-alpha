@@ -94,6 +94,7 @@ onready var healthBar = $NinePatchRect/ProgressBar
 onready var healthBarBackground = $NinePatchRect
 onready var raycast = $RayCast2D
 onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 
 
 # Called when the node enters the scene tree for the first time.

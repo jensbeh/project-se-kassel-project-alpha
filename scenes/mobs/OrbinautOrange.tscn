@@ -190,7 +190,6 @@ anims/RESET = SubResource( 37 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 38 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/playback = SubResource( 39 )
 parameters/MOVE/TimeScale/scale = 1.0
 
