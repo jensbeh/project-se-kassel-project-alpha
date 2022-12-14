@@ -47,17 +47,16 @@ func _ready():
 	rng.randomize()
 	max_ideling_time = rng.randi_range(0, 8)
 	
-	
-	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
-	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
-	call_deferred("set_states_to_nodes")
-	
 	# Update mobs activity depending on is in active chunk or not
 	ChunkLoaderService.call_deferred("update_mob", self)
 	
 	Utils.count_new_ambient_mob()
 	
 	MobSpawnerService.call_deferred("new_mob_spawned", self)
+	
+	# Set here to avoid error "ERROR: FATAL: Index p_index = 30 is out of bounds (count = 30)."
+	# Related "https://godotengine.org/qa/142283/game-inconsistently-crashes-what-does-local_vector-h-do"
+	call_deferred("set_states_to_nodes")
 
 
 # Method to init variables, typically called after instancing
