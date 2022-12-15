@@ -13,7 +13,7 @@ var valid_window_sizes : Array = []
 ## GENERAL
 #################
 """
-const CAN_DEBUG = true # Default: false
+const CAN_DEBUG = false # Default: false
 const CAN_TOGGLE_DEBUGGING_WINDOW = false # Default: false
 
 """
@@ -53,8 +53,8 @@ const SHOW_BOSS_DAMAGE_AREA = false # Default: false
 """
 const IS_PLAYER_INVISIBLE = false # Default: false
 
-const CAN_TOGGLE_PLAYER_INVINCIBLE = true # Default: false
-var IS_PLAYER_INVINCIBLE = true # Default: false
+const CAN_TOGGLE_PLAYER_INVINCIBLE = false # Default: false
+var IS_PLAYER_INVINCIBLE = false # Default: false
 
 const CAN_TOGGLE_PLAYER_INFINIT_STAMINA = false # Default: false
 var HAS_PLAYER_INFINIT_STAMINA = false # Default: false
@@ -80,7 +80,7 @@ const LOAD_DUNGEONS_MAPS = true # Default: true
 ## TIME
 #################
 """
-const CAN_MODIFY_TIME = true # Default: false
+const CAN_MODIFY_TIME = false # Default: false
 
 # ----------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------
