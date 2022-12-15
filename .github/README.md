@@ -5,7 +5,7 @@
 </p>
 
 
-# Übersicht
+## Übersicht
 - [What is Project Alpha?](#whatisprojectalpha)
 - [Features](#features)
 - [Let's get started](#letsgetstarted)
@@ -17,10 +17,10 @@
 
 <a name="whatisprojectalpha"></a>
 
-# What is Project Alpha?
+## What is Project Alpha?
 Project Alpha is a pixel art game played from a bird's eye view. You can fight, trade and explore. All this in a beautiful environment surrounded by NPCs, enemies and animals. But watch out! The game requires a tactical approach in order not to die in the wilderness.
 
-## Story
+### Story
 The year is 2433, Earth's resources and materials have been completely depleted by human greed. Earth is no longer a viable planet. There is garbage everywhere and more and more people die of epidemics or CO2 - poisoning. 
 
 A research facility planned with last hope to find a new viable environment for a group of selected people and researchers. A black hole was discovered and raised the hope, of finding a new planet. That is where the group should travel, to start a new life and save humanity. The group set out on a mission. The mission "Project Alpha" was launched. 
@@ -28,10 +28,10 @@ A research facility planned with last hope to find a new viable environment for 
 
 <a name="features"></a>
 
-# Features
+## Features
 Below are some of the features in this game:
 
-## Maps
+### Maps
 Many areas such as open terrain, dungeons or houses.
 <p align="center">
     <img src="pictures/camp.png" alt="Project Alpha logo"width=400/>
@@ -39,7 +39,7 @@ Many areas such as open terrain, dungeons or houses.
     <img src="pictures/grassland.png" alt="Project Alpha logo" width=400/>
 </p>
 
-## Day/night cycle
+### Day/night cycle
 In the game there is a day/night cycle for which a shader is used.
 <p align="center">
     <img src="pictures/camp_day.png" alt="Project Alpha logo"width=400/>
@@ -47,26 +47,26 @@ In the game there is a day/night cycle for which a shader is used.
     <img src="pictures/camp_night.png" alt="Project Alpha logo" width=400/>
 </p>
 
-## Enemies & bosses
+### Enemies & bosses
 Many enemies can be met and defeated in the game. But beware of the bosses! The movement of the mobs was realized by implementing the AStar pathfinding.
 <p align="center">
     <img src="pictures/grassland_mobs.png" alt="Project Alpha logo"width=400/>
     <img src="pictures/dungeon_boss.png" alt="Project Alpha logo" width=400/>
 </p>
 
-## Combat system
+### Combat system
 The player can defend himself against the opponents by defeating them with weapons. But the opponents are not easy to defeat, because they can defend themselves as well.
 <p align="center">
     <img src="pictures/combat_system.png" alt="Project Alpha logo" width=600/>
 </p>
 
-## Loot & treasures
+### Loot & treasures
 The mobs drop loot, but treasure can also be found on the maps.
 <p align="center">
     <img src="pictures/loot_&_treasures.png" alt="Project Alpha logo" width=600/>
 </p>
 
-## NPCs & Quests
+### NPCs & Quests
 NPCs can be encountered in various areas. They walk around and can be talked to. Some of them can trade or give quests.
 <p align="center">
     <img src="pictures/npc_dialog.png" alt="Project Alpha logo" width=400/>
@@ -77,13 +77,13 @@ NPCs can be encountered in various areas. They walk around and can be talked to.
 
 <a name="letsgetstarted"></a>
 
-# Let's get started
+## Let's get started
 There are two methods to download and install the game:
 
 
 <a name="runexecutable"></a>
 
-## Method 1 - Run executable
+### Method 1 - Run executable
 1. **Download** the [latest release version](https://github.com/jensbeh/project-se-kassel-project-alpha/releases).
 2. **Unpack** the *.zip* file
 3. **Start** the *.exe* file
@@ -91,7 +91,7 @@ There are two methods to download and install the game:
 
 <a name="compileyourself"></a>
 
-## Method 2 - Compile yourself
+### Method 2 - Compile yourself
 1. **Clone** the source code from GitHub:
     ```
     git clone https://github.com/jensbeh/project-se-kassel-project-alpha.git
@@ -103,7 +103,7 @@ There are two methods to download and install the game:
 
 <a name="minimumsystemrequirements"></a>
 
-# Minimum system requirements
+## Minimum system requirements
 These are the minimum system requirements that the game needs:
 - **Processor:** At least dual-core CPU
 - **Graphics card:** OpenGL 3.3 support; NVIDIA GeForce 400 or newer / AMD Radeon HD 7000 series
@@ -113,7 +113,7 @@ These are the minimum system requirements that the game needs:
 
 <a name="contributors"></a>
 
-# Contributors
+## Contributors
 The game was implemented and designed by:
 - [Tim Kolitsch](https://github.com/timme963)
 - [Jens Behmenburg](https://github.com/jensbeh)
