@@ -29,7 +29,7 @@ A research facility planned with last hope to find a new viable environment for 
 <a name="features"></a>
 
 # Features
-Here are only some of the features the game contains.
+Below are some of the features in this game:
 
 ## Maps
 Many areas such as open terrain, dungeons or houses.
