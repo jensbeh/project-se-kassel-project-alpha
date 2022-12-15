@@ -1,0 +1,35 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/camp_day.png-602156e80c5c51c9b05cdd131b8ab38c.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://docs/readme/pictures/camp_day.png"
+dest_files=[ "res://.import/camp_day.png-602156e80c5c51c9b05cdd131b8ab38c.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=false
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+process/normal_map_invert_y=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0
